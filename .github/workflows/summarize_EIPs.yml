@@ -34,11 +34,11 @@ jobs:
 
       - name: Run summarizer for EIPs
         run: |
-          python summarize.py --type eip --input-dir ./ethereum-eips/EIPS --output-dir ./ethereum
+          python ./ethereum/summarize.py --type eip --input-dir ./ethereum-eips/EIPS --output-dir ./ethereum
 
       - name: Run summarizer for ERCs
         run: |
-          python summarize.py --type erc --input-dir ./ethereum-ercs/ERCS --output-dir ./ethereum
+          python ./ethereum/summarize.py --type erc --input-dir ./ethereum-ercs/ERCS --output-dir ./ethereum
 
       - name: Commit and push if changes exist
         env:
