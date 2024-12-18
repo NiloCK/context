@@ -4021,21 +4021,21 @@ There have been various proposals of removing `SELFDESTRUCT` and many would just
 === EIP-7691 ===
 TITLE: Blob throughput increase
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-04-17
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes to increase to the number of blobs in a block to provide more scale to Ethereum via L2 solution that rely
+Increases the number of blobs in a block to provide more scale to Ethereum via L2 solution that rely on L1 data capacity.
 
 SPECIFICATION:
-### Parameters | Constant | Value | |------------------------------------------|---------------------| | `PECTRA_FORK_EPOCH` | `tbd` <!-- TODO --> | | `MAX_BLOBS_PER_BLOCK_ELECTRA` | `9` | | `TARGET_BLOBS_PER_BLOCK_ELECTRA` |
+### Parameters | Constant | Value | |------------------------------------------|---------------------| | `MAX_BLOBS_PER_BLOCK_ELECTRA` | `9` | | `TARGET_BLOBS_PER_BLOCK_ELECTRA` | `6` | | `MAX_BLOB_GAS_PER_BLOCK` | `1179648` | |
 
 MOTIVATION:
 Ethereum, with its rollup centric roadmap, scales by relying on L2. Since the Dencun fork, the blob gas target and maximum was set to
 
 RATIONALE:
-### Simplicity A blob limit increase at the fork transition is relatively straightforward from an implementation perspective. We would need to deploy an increased
+### Simplicity The EIP aims to minimize the amount of testing and implementation effort from the perspective of the client teams, to allow for
 
 
 === EIP-3455 ===

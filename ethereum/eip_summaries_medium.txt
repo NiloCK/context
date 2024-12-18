@@ -4021,21 +4021,21 @@ There have been various proposals of removing `SELFDESTRUCT` and many would just
 === EIP-7691 ===
 TITLE: Blob throughput increase
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-04-17
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes to increase to the number of blobs in a block to provide more scale to Ethereum via L2 solution that rely on L1 data capacity.
+Increases the number of blobs in a block to provide more scale to Ethereum via L2 solution that rely on L1 data capacity.
 
 SPECIFICATION:
-### Parameters | Constant | Value | |------------------------------------------|---------------------| | `PECTRA_FORK_EPOCH` | `tbd` <!-- TODO --> | | `MAX_BLOBS_PER_BLOCK_ELECTRA` | `9` | | `TARGET_BLOBS_PER_BLOCK_ELECTRA` | `6` | | `MAX_BLOB_GAS_PER_BLOCK` | `1179648` | | `TARGET_BLOB_GAS_PER_BLOCK` | `786432` | | `BLOB_BASE_FEE_UPDATE_FRACTION_ELECTRA` | `5007716` | `MAX_BLOBS_PER_BLOCK_ELECTRA` and `TARGET_BLOBS_PER_BLOCK_ELECTRA` are consumed by the consensus
+### Parameters | Constant | Value | |------------------------------------------|---------------------| | `MAX_BLOBS_PER_BLOCK_ELECTRA` | `9` | | `TARGET_BLOBS_PER_BLOCK_ELECTRA` | `6` | | `MAX_BLOB_GAS_PER_BLOCK` | `1179648` | | `TARGET_BLOB_GAS_PER_BLOCK` | `786432` | | `BLOB_BASE_FEE_UPDATE_FRACTION_ELECTRA` | `5007716` | `MAX_BLOBS_PER_BLOCK_ELECTRA` and `TARGET_BLOBS_PER_BLOCK_ELECTRA` are consumed by the consensus layer clients, and starting at `PECTRA_FORK_EPOCH` replace the
 
 MOTIVATION:
 Ethereum, with its rollup centric roadmap, scales by relying on L2. Since the Dencun fork, the blob gas target and maximum was set to 3/6 respectively. The blob gas limit was arrived at based on a series of big block tests performed on the Ethereum mainnet network as well
 
 RATIONALE:
-### Simplicity A blob limit increase at the fork transition is relatively straightforward from an implementation perspective. We would need to deploy an increased amount of monitoring around the fork epoch, but after a period of stability we can assume that the blob limit increase was successful, reducing any
+### Simplicity The EIP aims to minimize the amount of testing and implementation effort from the perspective of the client teams, to allow for more resources to be allocated to peerDAS and other scaling research. While this EIP may not achieve the new optimal blob limit, it offers a
 
 
 === EIP-3455 ===

@@ -503,7 +503,7 @@ MOTIVATION:
 The Casper development and switch to proof-of-stake is delayed, the Ethash proof-of-work should be feasible for miners and allow sealing new blocks every 15 seconds on average for another 12 months. With the delay of the ice age, there is a desire to not suddenly also increase miner rewards. The difficulty bomb has been known about for a long time and now it's going to stop from happening. In order to maintain stability of the system, a block reward reduction that offsets the ice age delay would leave the system in the same general state as before. Reducing
 
 RATIONALE:
-This will delay the ice age by 29 million seconds (approximately 12 months), so the chain would be back at 30 second block times in winter 2019. An alternate proposal was to add special rules to the difficulty calculation to effectively _pause_ the difficulty between different blocks. This would lead to similar results. This was previously discussed at All Core Devs Meeting [#42](https://github.com/ethereum/pm/blob/master/All%20Core%20Devs%20Meetings/Meeting%2042.md) and subsequent meetings; and accepted in the Constantinople Session [#1](https://github.com/ethereum/pm/issues/55).
+This will delay the ice age by 29 million seconds (approximately 12 months), so the chain would be back at 30 second block times in winter 2019. An alternate proposal was to add special rules to the difficulty calculation to effectively _pause_ the difficulty between different blocks. This would lead to similar results. This was previously discussed at All Core Devs Meeting [#42](https://github.com/ethereum/pm/blob/6dbd82303bfcb697eaf9a76de37f5fa570e6379d/AllCoreDevs-EL-Meetings/Meeting%2042.md) and subsequent meetings; and accepted in the Constantinople Session [#1](https://github.com/ethereum/pm/issues/55).
 
 
 === EIP-706 ===
@@ -891,7 +891,7 @@ SUMMARY:
 The SWC is a smart contract specific software weakness classification scheme for developers, tool vendors and security practitioners. The SWC is loosely aligned to the terminologies and structure used in the [Common Weakness Enumeration - CWE](https://cwe.mitre.org) scheme while overlaying a wide range of weakness variants that are specific to smart contracts. The goals of the SWC scheme are as follows: - Provide a straightforward way to classify weaknesses in smart contract systems. - Provide a straightforward way to identify the weakness(es) that lead to a vulnerability in a smart contract system. - Define a common language for describing
 
 SPECIFICATION:
-Before discussing the SWC specification it is important to describe the terminology used: - Weakness: A software error or mistake that in the right conditions can by itself or coupled with other weaknesses lead to a vulnerability. - Vulnerability: A weakness or multiple weaknesses which directly or indirectly lead to an undesirable state in a smart contract system. - Variant: A specific weakness that is described in a very low detail specific to Ethereum smart contracts. Each variant is assigned an unique SWC ID. - Relationships: CWE has a wide range of _Base_ and _Class_ types that group
+Before discussing the SWC specification it is important to describe the terminology used: - Weakness: A software error or mistake that in the right conditions can by itself or coupled with other weaknesses lead to a vulnerability. - Vulnerability: A weakness or multiple weaknesses which directly or indirectly lead to an undesirable state in a smart contract system. - Variant: A specific weakness that is described in a very low detail specific to Ethereum smart contracts. Each variant is assigned a unique SWC ID. - Relationships: CWE has a wide range of _Base_ and _Class_ types that group
 
 MOTIVATION:
 In the software security industry, it is a widely accepted practice to use a common terminology and to classify security related bugs and errors with a standardized scheme. While this has not stopped vulnerabilities from appearing in software, it has helped communities focusing on web applications, network protocols, IOT devices and various other fields to educate users and developers to understand the nature of security related issues in their software. It has also allowed the security community to quickly understand vulnerabilities that occur in production systems to perform root cause analysis or triage findings from various security analysis
@@ -4021,21 +4021,21 @@ There have been various proposals of removing `SELFDESTRUCT` and many would just
 === EIP-7691 ===
 TITLE: Blob throughput increase
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-04-17
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes to increase to the number of blobs in a block to provide more scale to Ethereum via L2 solution that rely on L1 data capacity.
+Increases the number of blobs in a block to provide more scale to Ethereum via L2 solution that rely on L1 data capacity.
 
 SPECIFICATION:
-### Parameters | Constant | Value | |------------------------------------------|---------------------| | `PECTRA_FORK_EPOCH` | `tbd` <!-- TODO --> | | `MAX_BLOBS_PER_BLOCK_ELECTRA` | `9` | | `TARGET_BLOBS_PER_BLOCK_ELECTRA` | `6` | | `MAX_BLOB_GAS_PER_BLOCK` | `1179648` | | `TARGET_BLOB_GAS_PER_BLOCK` | `786432` | | `BLOB_BASE_FEE_UPDATE_FRACTION_ELECTRA` | `5007716` | `MAX_BLOBS_PER_BLOCK_ELECTRA` and `TARGET_BLOBS_PER_BLOCK_ELECTRA` are consumed by the consensus layer clients, and starting at `PECTRA_FORK_EPOCH` replace the respective old max and target values. `MAX_BLOB_GAS_PER_BLOCK`, `TARGET_BLOB_GAS_PER_BLOCK` and `BLOB_BASE_FEE_UPDATE_FRACTION_ELECTRA` are consumed by the execution layer clients, and starting at `PECTRA_FORK_EPOCH` timestamp replace the old max, target and update fraction values.
+### Parameters | Constant | Value | |------------------------------------------|---------------------| | `MAX_BLOBS_PER_BLOCK_ELECTRA` | `9` | | `TARGET_BLOBS_PER_BLOCK_ELECTRA` | `6` | | `MAX_BLOB_GAS_PER_BLOCK` | `1179648` | | `TARGET_BLOB_GAS_PER_BLOCK` | `786432` | | `BLOB_BASE_FEE_UPDATE_FRACTION_ELECTRA` | `5007716` | `MAX_BLOBS_PER_BLOCK_ELECTRA` and `TARGET_BLOBS_PER_BLOCK_ELECTRA` are consumed by the consensus layer clients, and starting at `PECTRA_FORK_EPOCH` replace the respective old max and target values. `MAX_BLOB_GAS_PER_BLOCK`, `TARGET_BLOB_GAS_PER_BLOCK` and `BLOB_BASE_FEE_UPDATE_FRACTION_ELECTRA` are consumed by the execution layer clients, and starting at `PECTRA_FORK_EPOCH` timestamp replace the old max, target and update fraction values.
 
 MOTIVATION:
 Ethereum, with its rollup centric roadmap, scales by relying on L2. Since the Dencun fork, the blob gas target and maximum was set to 3/6 respectively. The blob gas limit was arrived at based on a series of big block tests performed on the Ethereum mainnet network as well as a series of testnets. The values were chosen cautiously, as it's extremely hard to predict the exact p2p behaviour of Ethereum mainnet. As we now have the Dencun upgrade live, we are able to use monitoring tools to check the network health. Initial monitoring indicates that we have
 
 RATIONALE:
-### Simplicity A blob limit increase at the fork transition is relatively straightforward from an implementation perspective. We would need to deploy an increased amount of monitoring around the fork epoch, but after a period of stability we can assume that the blob limit increase was successful, reducing any unexpected co-ordination efforts. The EIP aims to minimize the amount of testing and implementation effort from the perspective of the client teams, to allow for more resources to be allocated to peerDAS and other scaling research. While this EIP may not achieve the new optimal blob limit, it offers
+### Simplicity The EIP aims to minimize the amount of testing and implementation effort from the perspective of the client teams, to allow for more resources to be allocated to peerDAS and other scaling research. While this EIP may not achieve the new optimal blob limit, it offers a compromise for a short term increase. ### Update Fraction The original target and max values from [EIP-4844](./eip-4844.md) were at a 1:2 ratio. As a consequence, responsiveness to full and empty blob sections was symmetrical: * full blobs: basefee increases by ~12.5% * no blobs: basefee decreases by ~11.1% The
 
 
 === EIP-3455 ===
