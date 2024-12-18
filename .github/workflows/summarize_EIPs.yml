@@ -1,0 +1,43 @@
+name: Generate EIP Summaries
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # Runs every 6 hours
+  workflow_dispatch: # Allows manual triggering
+  push:
+    paths:
+      - "summarize.py"
+      - ".github/workflows/summarize_EIPs.yml"
+
+jobs:
+  generate-summaries:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+
+      - name: Clone Ethereum EIPs repository
+        run: |
+          git clone https://github.com/ethereum/EIPs.git
+
+      - name: Run summarizer
+        run: |
+          python summarize.py
+
+      - name: Commit and push if changes exist
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add ethereum/
+          git diff --staged --quiet || (git commit -m "Auto-update EIP summaries" && git push)
