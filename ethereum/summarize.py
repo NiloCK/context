@@ -24,7 +24,11 @@ class ProposalSummarizer:
         match = re.search(pattern, content, re.DOTALL)
         if match:
             try:
-                return yaml.safe_load(match.group(1))
+                metadata = yaml.safe_load(match.group(1))
+                # If this is an ERC (based on the proposal_type) but the number is in 'eip' field
+                if self.proposal_type == 'erc' and 'erc' not in metadata and 'eip' in metadata:
+                    metadata['erc'] = metadata['eip']
+                return metadata
             except yaml.YAMLError:
                 return {}
         return {}
@@ -50,8 +54,12 @@ class ProposalSummarizer:
 
             metadata = self.extract_frontmatter(content)
 
-            # Handle proposal number
-            proposal_num = metadata.get('eip' if self.proposal_type == 'eip' else 'erc', 'Unknown')
+            # Handle proposal number - try both fields
+            proposal_num = 'Unknown'
+            if self.proposal_type == 'eip':
+                proposal_num = metadata.get('eip', 'Unknown')
+            else:  # erc
+                proposal_num = metadata.get('erc', metadata.get('eip', 'Unknown'))
 
             # Handle 'requires' field - convert single int to list
             requires = metadata.get('requires', [])
