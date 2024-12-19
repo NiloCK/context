@@ -6364,13 +6364,13 @@ TITLE: Retroactively Included EIPs
 TYPE: Meta 
 STATUS: Review
 CREATED: 2024-04-04
-REQUIRES: 2, 6, 8, 1, ,,  , 3, 6, 0, 7, ,,  , 7, 5, 2, 3, ,,  , 7, 6, 1, 0
+REQUIRES: 2, 6, 8, 1, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 0, 3, ,,  , 7, 5, 2, 3, ,,  , 7, 6, 1, 0
 
 SUMMARY:
 This Meta EIP lists Core EIPs introducing changes to Ethereum's consensus which were activated independently of an Ethereum hard fork due to their backward compatible nature. These EIPs generally introduce constraints to underspecified protocol rules or clarify how certain edge cases should be handled.
 
 SPECIFICATION:
-### Retroactively Activated EIPs * [EIP-2681](./eip-2681.md): Limit account nonce to 2^64-1 * [EIP-3607](./eip-3607.md): Reject transactions from senders with deployed code * [EIP-7523](./eip-7523.md): Empty accounts deprecation * [EIP-7610](./eip-7610.md): Revert creation in case of non-empty storage ### Activation All EIPs listed above are considered activated as of Ethereum's genesis block. Note that EIP-7523 distinguishes pre- and post-merge behavior on the Ethereum mainnet.
+### Retroactively Activated EIPs * [EIP-2681](./eip-2681.md): Limit account nonce to 2^64-1 * [EIP-3607](./eip-3607.md): Reject transactions from senders with deployed code * [EIP-4803](./eip-4803.md): Limit transaction gas to a maximum of 2^63-1 * [EIP-7523](./eip-7523.md): Empty accounts deprecation * [EIP-7610](./eip-7610.md): Revert creation in case of non-empty storage ### Activation All EIPs listed above are considered activated as of Ethereum's genesis block. Note that EIP-7523 distinguishes pre- and post-merge behavior on the Ethereum mainnet.
 
 MOTIVATION:
 To maintain consensus across all nodes, backward incompatible changes to Ethereum must be activated synchronously. Given the coordination required for this, changes are usually bundled together in network upgrades. A Meta EIP is typically used to list the changes included in a network upgrade, as well as its activation time. However, backward compatible consensus changes do not require a network upgrade to be activated. For example, if a consensus rule is underspecified, an EIP can propose a constraint to bound it. If the constraint was never broken in Ethereum's history and is unlikely to be broken in the
@@ -7607,13 +7607,13 @@ TITLE: Hardfork Meta - Pectra
 TYPE: Meta 
 STATUS: Review
 CREATED: 2024-01-18
-REQUIRES: 2, 5, 3, 7, ,,  , 2, 9, 3, 5, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 5, 4, 9, ,,  , 7, 5, 9, 4, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 4, 2
+REQUIRES: 2, 5, 3, 7, ,,  , 2, 9, 3, 5, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 5, 4, 9, ,,  , 7, 5, 9, 4, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Considered and Scheduled for Inclusion in the Prague/Electra network upgrade.
+This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Prague/Electra network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion` and `Considered for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits * [EIP-7251](./eip-7251.md): Increase the MAX_EFFECTIVE_BALANCE * [EIP-7549](./eip-7549.md): Move committee index outside Attestation * [EIP-7685](./eip-7685.md): General purpose execution layer requests * [EIP-7702](./eip-7702.md): Set EOA account code * [EIP-7742](./eip-7742.md): Uncouple blob count between CL and EL ### EIPs Considered for Inclusion * [EIP-7623](./eip-7623.md): Increase calldata cost * [EIP-7762](./eip-7762.md): Increase MIN_BASE_FEE_PER_BLOB_GAS ### Full Specifications
+A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits * [EIP-7251](./eip-7251.md): Increase the MAX_EFFECTIVE_BALANCE * [EIP-7549](./eip-7549.md): Move committee index outside Attestation * [EIP-7623](./eip-7623.md): Increase calldata cost * [EIP-7685](./eip-7685.md): General purpose execution layer requests * [EIP-7691](./eip-7691.md): Blob throughput increase * [EIP-7702](./eip-7702.md): Set EOA account code ### Full Specifications #### Consensus Layer EIP-6110, EIP-7002 EIP-7251, EIP-7549 and EIP-7691 require changes to Ethereum's consensus layer.
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Prague/Electra network upgrade, as well as links to full specification.
