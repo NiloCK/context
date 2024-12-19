@@ -671,7 +671,7 @@ SUMMARY:
 Adds a new mechanism to allow validators to trigger withdrawals and exits from their execution layer (0x01) withdrawal credentials. These new execution layer exit
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | | - | - | - | |`FORK_TIMESTAMP` | *TBD* | Mainnet | ### Configuration
+### Configuration | Name | Value | Comment | | - | - | - | | `WITHDRAWAL_REQUEST_PREDEPLOY_ADDRESS` | `0x0c15F14308530b7CDB8460094BbB9cC28b9AaaAA` | Where to call
 
 MOTIVATION:
 Validators have two keys -- an active key and a withdrawal credential. The active key takes the form of a BLS key, whereas the
@@ -6957,7 +6957,7 @@ SUMMARY:
 Store last `HISTORY_SERVE_WINDOW` historical block hashes in the storage of a system contract as part of the block processing logic. Furthermore this EIP has
 
 SPECIFICATION:
-| Parameter | Value | | - | - | | `FORK_TIMESTAMP` | TBD | | `BLOCKHASH_SERVE_WINDOW` | `256` | | `HISTORY_SERVE_WINDOW` | `8192`
+| Parameter | Value | | - | - | | `BLOCKHASH_SERVE_WINDOW` | `256` | | `HISTORY_SERVE_WINDOW` | `8192` | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe`
 
 MOTIVATION:
 EVM implicitly assumes the client has the recent block (hashes) at hand. This assumption is not future-proof given the prospect of stateless clients. Including
