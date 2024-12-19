@@ -3776,7 +3776,7 @@ SUMMARY:
 Appends validator deposits to the Execution Layer block structure. This shifts responsibility of deposit inclusion and validation to the Execution Layer and removes the need for deposit (or `eth1data`) voting from the Consensus Layer. Validator deposits list supplied in a block is obtained by parsing deposit contract log events
 
 SPECIFICATION:
-### Execution Layer #### Constants | Name | Value | Comment | | - | - | - | |`FORK_TIMESTAMP` | *TBD* | Mainnet | |`DEPOSIT_REQUEST_TYPE` | `b'0'` | The [EIP-7685](./eip-7685.md) request type byte for deposit operation | #### Configuration | Name | Value | Comment | | -
+### Execution Layer #### Constants | Name | Value | Comment | | - | - | - | |`DEPOSIT_REQUEST_TYPE` | `b'0'` | The [EIP-7685](./eip-7685.md) request type byte for deposit operation | #### Configuration | Name | Value | Comment | | - | - | - | |`DEPOSIT_CONTRACT_ADDRESS`
 
 MOTIVATION:
 Validator deposits are a core component of the proof-of-stake consensus mechanism. This EIP allows for an in-protocol mechanism of deposit processing on the Consensus Layer and eliminates the proposer voting mechanism utilized currently. This proposed mechanism relaxes safety assumptions and reduces complexity of client software design, contributing to the
