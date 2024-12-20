@@ -7225,10 +7225,10 @@ CREATED: 2024-02-29
 REQUIRES: 5793
 
 SUMMARY:
-After the merge a few fields (`td`) and messages (`NewBlockHashes`, `NewBlock`) in the networking protocol became obsolete. This EIP modifies the networking messages such
+After the merge the `td` field in the networking protocol became obsolete. This EIP modifies the networking messages such that this field is not
 
 SPECIFICATION:
-Remove the `NewBlockHashes (0x01)` message. Remove the `NewBlock (0x07)` message. Modify the `Status (0x00)` message as follows: - (eth/68): `[version: P, networkid: P, td:
+Modify the `Status (0x00)` message as follows: - (eth/68): `[version: P, networkid: P, td: P, blockhash: B_32, genesis: B_32, forkid]` - (eth/69): `[version: P,
 
 MOTIVATION:
 We recently discovered that none of the clients store the `Bloom` field of the receipts as it can be recomputed on demand. However the
