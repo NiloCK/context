@@ -4026,7 +4026,7 @@ SUMMARY:
 Increases the number of blobs in a block to provide more scale to Ethereum via L2 solution that rely on L1 data capacity.
 
 SPECIFICATION:
-### Parameters | Constant | Value | |------------------------------------------|---------------------| | `MAX_BLOBS_PER_BLOCK_ELECTRA` | `9` | | `TARGET_BLOBS_PER_BLOCK_ELECTRA` | `6` | | `MAX_BLOB_GAS_PER_BLOCK` | `1179648` | | `TARGET_BLOB_GAS_PER_BLOCK` | `786432` | | `BLOB_BASE_FEE_UPDATE_FRACTION_ELECTRA` | `5007716` | `MAX_BLOBS_PER_BLOCK_ELECTRA` and `TARGET_BLOBS_PER_BLOCK_ELECTRA` are consumed by the consensus layer clients, and starting at `PECTRA_FORK_EPOCH` replace the
+### Parameters | Constant | Value | |------------------------------------------|---------------------| | `MAX_BLOBS_PER_BLOCK_ELECTRA` | `9` | | `TARGET_BLOBS_PER_BLOCK_ELECTRA` | `6` | | `MAX_BLOB_GAS_PER_BLOCK` | `1179648` | | `TARGET_BLOB_GAS_PER_BLOCK` | `786432` | | `BLOB_BASE_FEE_UPDATE_FRACTION_PRAGUE` | `5007716` | `MAX_BLOBS_PER_BLOCK_ELECTRA` and `TARGET_BLOBS_PER_BLOCK_ELECTRA` are consumed by the consensus layer clients, and starting at `PECTRA_FORK_EPOCH` replace the
 
 MOTIVATION:
 Ethereum, with its rollup centric roadmap, scales by relying on L2. Since the Dencun fork, the blob gas target and maximum was set to 3/6 respectively. The blob gas limit was arrived at based on a series of big block tests performed on the Ethereum mainnet network as well
