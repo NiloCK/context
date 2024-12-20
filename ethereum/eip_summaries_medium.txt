@@ -3711,18 +3711,15 @@ RATIONALE:
 === EIP-7503 ===
 TITLE: Zero-Knowledge Wormholes
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2023-08-14
-REQUIRES: 
+REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 8
 
 SUMMARY:
 While researching on privacy solutions and applications of ZKP, we discovered a technique, by which people can burn their digital asset (E.g ETH) by sending it to an unspendable address, and later build a ZK proof showing that some amount of tokens reside in an account that are unspendable,
 
 SPECIFICATION:
-In Elliptic-Curve based digital signatures, normally there is a secret scalar $s$, from which a public-key is calculated (By multiplying the generator point with the scalar: $s \times G$). An Ethereum EOA-address is the keccak hash of a public-key. Also, the funds in an Ethereum address might be spendable
-
-RATIONALE:
-Cryptocurrency mixers like TornadoCash can successfully obfuscate Ethereum transactions, but it's easy for the governments to ban usage of them. Anybody who has interactions with a mixer contract, whether the sender or receiver, can get marked. However this EIP tries to minimize the privacy leakage of the senders, by
+### Parameters * `MAGIC_ADDRESS`: `0xfe` (one byte) * `MAGIC_NULLIFIER`: `0x01` (one byte) * `MAGIC_POW`: `0x02` (one byte) * `MAGIC_CHANGE`: `0x0404040404040404040404040404040404040404040404040404040404040404` * `POW_LOG_DIFFICULTY`: `24` * `MAX_DEPOSIT`: `32 * 10**18` wei * `WormholeTxType`: `TBD` * `WORMHOLE_NULLIFIER_ADDRESS`: `TBD` * `RECEIPT_PREFIX`: `TBD` (datatype `List[bool]`) - - - We define a new [EIP-2718](./eip-2718.md) transaction
 
 
 === EIP-2464 ===

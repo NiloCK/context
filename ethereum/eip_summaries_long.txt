@@ -3711,18 +3711,15 @@ RATIONALE:
 === EIP-7503 ===
 TITLE: Zero-Knowledge Wormholes
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2023-08-14
-REQUIRES: 
+REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 8
 
 SUMMARY:
 While researching on privacy solutions and applications of ZKP, we discovered a technique, by which people can burn their digital asset (E.g ETH) by sending it to an unspendable address, and later build a ZK proof showing that some amount of tokens reside in an account that are unspendable, without revealing the account. The EIP proposes to add a minting functionality to Ethereum, so that people can re-mint Ethers they have purposefully burnt. The mentioned privacy solution will bring strong levels of ***plausible deniability*** for the sender, since there is no way one can prove that the sender
 
 SPECIFICATION:
-In Elliptic-Curve based digital signatures, normally there is a secret scalar $s$, from which a public-key is calculated (By multiplying the generator point with the scalar: $s \times G$). An Ethereum EOA-address is the keccak hash of a public-key. Also, the funds in an Ethereum address might be spendable by a smart-contract, if the keccak hash of the smart-contract's parameters is equal with that address. Therefore, an Ethereum address $A$ is spendable if and only if: 1. A private-key $s$ exists. such that $A = keccak(s \times G)$. 2. There exists a smart-contract $c$, such that $A =
-
-RATIONALE:
-Cryptocurrency mixers like TornadoCash can successfully obfuscate Ethereum transactions, but it's easy for the governments to ban usage of them. Anybody who has interactions with a mixer contract, whether the sender or receiver, can get marked. However this EIP tries to minimize the privacy leakage of the senders, by requiring zero smart-contract interactions in order to send money, so we only use plain EOA-to-EOA transfers. In order to have a "teleportation" mechanism we divide the set of all Secp256k1 points $E(K)$ into two subsets/address-spaces: - The spendable address-space: $\\{p \in \\{0,1\\}^{160} | \exists s : keccak(s \times G)=p
+### Parameters * `MAGIC_ADDRESS`: `0xfe` (one byte) * `MAGIC_NULLIFIER`: `0x01` (one byte) * `MAGIC_POW`: `0x02` (one byte) * `MAGIC_CHANGE`: `0x0404040404040404040404040404040404040404040404040404040404040404` * `POW_LOG_DIFFICULTY`: `24` * `MAX_DEPOSIT`: `32 * 10**18` wei * `WormholeTxType`: `TBD` * `WORMHOLE_NULLIFIER_ADDRESS`: `TBD` * `RECEIPT_PREFIX`: `TBD` (datatype `List[bool]`) - - - We define a new [EIP-2718](./eip-2718.md) transaction type, where `TransactionType` is `WormholeTxType` and the `TransactionPayload` format is as follows: `[chain_id, nonce, max_priority_fee_per_gas, max_fee_per_gas, gas_limit, to, data, access_list, root_beacon_block_number, proof]` Verifying this type of transaction requires confirming that: 1. The proof is a zero-knowledge proof: * Private inputs: `secret`, `main_index`, `main_branch`, `privacy_pool_index`, `privacy_pool_branch`, `deposit_value`, `deposit_sender`, `change_value_salt`, `change_value`
 
 
 === EIP-2464 ===

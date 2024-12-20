@@ -3711,18 +3711,15 @@ RATIONALE:
 === EIP-7503 ===
 TITLE: Zero-Knowledge Wormholes
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2023-08-14
-REQUIRES: 
+REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 8
 
 SUMMARY:
 While researching on privacy solutions and applications of ZKP, we discovered a technique, by which people can burn their digital asset (E.g ETH) by
 
 SPECIFICATION:
-In Elliptic-Curve based digital signatures, normally there is a secret scalar $s$, from which a public-key is calculated (By multiplying the generator point with
-
-RATIONALE:
-Cryptocurrency mixers like TornadoCash can successfully obfuscate Ethereum transactions, but it's easy for the governments to ban usage of them. Anybody who has interactions
+### Parameters * `MAGIC_ADDRESS`: `0xfe` (one byte) * `MAGIC_NULLIFIER`: `0x01` (one byte) * `MAGIC_POW`: `0x02` (one byte) * `MAGIC_CHANGE`: `0x0404040404040404040404040404040404040404040404040404040404040404` * `POW_LOG_DIFFICULTY`: `24` *
 
 
 === EIP-2464 ===
