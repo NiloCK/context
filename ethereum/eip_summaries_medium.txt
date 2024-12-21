@@ -7536,7 +7536,7 @@ SUMMARY:
 Add functionality to efficiently perform operations over the BLS12-381 curve, including those for BLS signature verification. Along with the curve arithmetic, multi-scalar-multiplication operations are included to efficiently aggregate public keys or individual signer's signatures during BLS signature verification.
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | |---------------------|-------|--------------------| | `FORK_TIMESTAMP` | *TBD* | Mainnet | | BLS12_G1ADD | 0x0b | precompile address | | BLS12_G1MSM | 0x0c | precompile address | | BLS12_G2ADD | 0x0d | precompile address | | BLS12_G2MSM | 0x0e | precompile address |
+### Constants | Name | Value | Comment | |---------------------|-------|--------------------| | BLS12_G1ADD | 0x0b | precompile address | | BLS12_G1MSM | 0x0c | precompile address | | BLS12_G2ADD | 0x0d | precompile address | | BLS12_G2MSM | 0x0e | precompile address | | BLS12_PAIRING_CHECK | 0x0f | precompile address
 
 MOTIVATION:
 The motivation of this precompile is to add a cryptographic primitive that allows to get 120+ bits of security for operations over pairing friendly curve compared to the existing BN254 precompile that only provides 80 bits of security.

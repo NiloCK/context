@@ -7536,7 +7536,7 @@ SUMMARY:
 Add functionality to efficiently perform operations over the BLS12-381 curve, including those for BLS signature verification. Along with the curve arithmetic, multi-scalar-multiplication operations are
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | |---------------------|-------|--------------------| | `FORK_TIMESTAMP` | *TBD* | Mainnet | | BLS12_G1ADD | 0x0b | precompile address
+### Constants | Name | Value | Comment | |---------------------|-------|--------------------| | BLS12_G1ADD | 0x0b | precompile address | | BLS12_G1MSM | 0x0c | precompile
 
 MOTIVATION:
 The motivation of this precompile is to add a cryptographic primitive that allows to get 120+ bits of security for operations over pairing friendly
