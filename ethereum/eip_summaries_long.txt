@@ -3474,7 +3474,7 @@ This introduces account versioning via a new RLP item in account state. The desi
 === EIP-7706 ===
 TITLE: Separate gas type for calldata
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-05-13
 REQUIRES: 1, 5, 5, 9, ,,  , 4, 8, 4, 4
 
@@ -4807,7 +4807,7 @@ This EIP is largely based on the previous non-official documentation for EVM tra
 === EIP-7705 ===
 TITLE: NONREENTRANT and REENTRANT opcodes
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-05-09
 REQUIRES: 
 
@@ -5394,7 +5394,7 @@ A mechanism for estimation of contract storage size has been proposed [here](htt
 === EIP-7543 ===
 TITLE: EVM arbitrary precision decimal math
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2023-10-22
 REQUIRES: 
 
@@ -7220,7 +7220,7 @@ This behavior is already possible by deploying a new contract that does `SELFDES
 === EIP-7642 ===
 TITLE: eth/69 - Drop pre-merge fields
 TYPE: Standards Track Networking
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-02-29
 REQUIRES: 5793
 
@@ -7548,7 +7548,7 @@ The motivation section covers a total motivation to have operations over the BLS
 === EIP-7676 ===
 TITLE: EOF - Prepare for Address Space Extension
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-04-03
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 7, 0, 6, 9
 
