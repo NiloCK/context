@@ -241,7 +241,7 @@ Technically, the cases of L2s and databases are similar; routing to an L2 involv
 === ERC-7746 ===
 TITLE: Composable Security Middleware Hooks
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-07-17
 REQUIRES: 
 
@@ -252,7 +252,7 @@ SPECIFICATION:
 A contract implementing the `ILayer` interface MUST provide two functions: ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity 0.8.20; interface ILayer { /// @notice Validates a function call before execution. /// @param configuration Layer-specific configuration data. /// @param selector The function selector being called. /// @param sender The address initiating the call. /// @param value The amount of ETH sent with the call (if any). /// @param data The calldata for the function call. /// @return beforeCallResult Arbitrary data to be passed to `afterCallValidation`. /// @dev MUST revert if validation fails. function beforeCall( bytes memory configuration, bytes4 selector, address sender,
 
 MOTIVATION:
-Current smart contract security practices often rely on monolithic validation logic within the contract itself. This can lead to tightly coupled code, making it difficult to isolate and address security concerns. Existing ERCs already are using something that can be seen as specific implementation of such layers wrapping: [ERC-4337](./eip-4337.md) describes requirements to perform validate user operations in a separate contract, and later elaborates same need to paymaster validation, that can be seen as a separate layers of a generic system. The Security Layers Standard introduces a modular approach, enabling: - **Independent Security Providers:** Specialized security providers can focus
+Current smart contract security practices often rely on monolithic validation logic within the contract itself. This can lead to tightly coupled code, making it difficult to isolate and address security concerns. Better structured architecture is needed, middleware like approach is widely used in the industry, allowing to wrap calls in other calls in generic and repeatable pattern with same call signatures. The Security Layers Standard introduces a modular approach, enabling: - **Independent Security Providers:** Specialized security providers can focus on developing and maintaining specific security checks. - **Composable Security:** Layers can be combined to create comprehensive security profiles
 
 RATIONALE:
 **Flexibility**: The `layerConfig` parameter allows for layer-specific customization, enabling a single layer implementation to serve multiple contracts with varying requirements. **non-static calls**: Layers can maintain their own state, allowing for more complex validation logic (e.g., rate limiting, usage tracking). **Strict Validation**: Reverts on validation failure ensure a fail-safe mechanism, preventing execution of potentially harmful transactions. **Gas Costs**: Layers naturally will have gas costs associated with their execution. However, the benefits of enhanced security and modularity outweigh these costs, especially as blockchain technology continues to evolve and we expect gas costs to decrease over time.
@@ -1466,7 +1466,7 @@ The "offer" and "consideration" structs from Seaport were used to create a simil
 === ERC-7820 ===
 TITLE: Access Control Registry
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-19
 REQUIRES: 
 
@@ -1480,7 +1480,7 @@ MOTIVATION:
 As decentralized applications (dApps) grow in complexity, managing access control across multiple smart contracts becomes increasingly difficult. Current practices involve bespoke implementations, leading to redundancy and potential security flaws. A standardized approach for managing roles and permissions will ensure better interoperability, security, and transparency. By providing a unified interface for registering contracts and managing roles, this standard simplifies development, ensures consistency and enhances security. It facilitates easier integration and auditing, fostering a more robust and interoperable ecosystem. The advantages of using the provided system might be: Structured smart contracts management via specialized contracts. Ad-hoc access-control provision of a
 
 RATIONALE:
-The `IAccessControlRegistry` interface aims to provide a standardized way to manage access control across multiple contracts within the ecosystem. By defining a clear structure and set of events, this interface helps streamline the process of registering, unregistering, and managing roles for contracts. The rationale for each function and event is as follows: ### Contract Registration and Unregistration **registerContract(address _admin)**: This function allows the registration of a new contract along with its admin address. This is crucial for initializing the access control settings for a contract and ensuring that there is an accountable admin who can manage roles and
+The `IAccessControlRegistry` interface aims to provide a standardized way to manage access control across multiple contracts within the ecosystem. By defining a clear structure and set of events, this interface helps streamline the process of registering, unregistering, and managing roles for contracts. The rationale for each function and event is as follows: ### Contract Registration and Unregistration **`registerContract(address _admin)`**: This function allows the registration of a new contract along with its admin address. This is crucial for initializing the access control settings for a contract and ensuring that there is an accountable admin who can manage roles and
 
 
 === ERC-6865 ===

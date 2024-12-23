@@ -546,7 +546,7 @@ RATIONALE:
 === EIP-7808 ===
 TITLE: Reserve Tx-Type Range for RIPs
 TYPE: Meta 
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-04
 REQUIRES: 2718
 
@@ -2602,6 +2602,26 @@ The transaction capacity of an Ethereum block is determined by the gas cost of t
 
 RATIONALE:
 Adoption of fractional gas costs should only be an implementation detail inside the EVM, and not alter the current user experience around transaction gas
+
+
+=== EIP-7843 ===
+TITLE: SLOT precompile
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-12-06
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes to add a new precompile that returns the corresponding slot for the current block.
+
+SPECIFICATION:
+If `block.timestamp >= TBD` a new precompiled contract `SLOT` shall be created at address `TBD`. `SLOT` returns as output the current slot number as
+
+MOTIVATION:
+It is currently possible to calculate the slot number from the block timestamp. However, this requires hardcoding the chain slot length into a smart
+
+RATIONALE:
+### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than
 
 
 === EIP-7610 ===
@@ -5904,6 +5924,26 @@ Although [EIP-1474](./eip-1474.md) outlines a JSON-RPC specification. Ethereum s
 
 RATIONALE:
 ### Why would we do this? Services need to figure out how to talk to each other. If we really want to build the
+
+
+=== EIP-7793 ===
+TITLE: TXINDEX precompile
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-10-17
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes to add a new precompile that returns the index of the transaction being executed within the current block.
+
+SPECIFICATION:
+If `block.timestamp >= TBD` a new precompiled contract `TXINDEX` shall be created at address `TBD`. `TXINDEX` returns as output the transaction index as a
+
+MOTIVATION:
+The new precompile aims to improve support for encrypted mempools. In order to be secure, the validity of encrypted mempool transactions should be tied
+
+RATIONALE:
+### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than
 
 
 === EIP-779 ===

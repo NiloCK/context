@@ -241,7 +241,7 @@ Technically, the cases of L2s and databases are similar; routing to an L2 involv
 === ERC-7746 ===
 TITLE: Composable Security Middleware Hooks
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-07-17
 REQUIRES: 
 
@@ -252,7 +252,7 @@ SPECIFICATION:
 A contract implementing the `ILayer` interface MUST provide two functions: ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity 0.8.20; interface ILayer { /// @notice Validates a function call before execution. /// @param configuration Layer-specific configuration data. /// @param selector The function selector being called. /// @param sender The address initiating the
 
 MOTIVATION:
-Current smart contract security practices often rely on monolithic validation logic within the contract itself. This can lead to tightly coupled code, making it difficult to isolate and address security concerns. Existing ERCs already are using something that can be seen as specific implementation of such layers wrapping: [ERC-4337](./eip-4337.md)
+Current smart contract security practices often rely on monolithic validation logic within the contract itself. This can lead to tightly coupled code, making it difficult to isolate and address security concerns. Better structured architecture is needed, middleware like approach is widely used in the industry, allowing to wrap calls
 
 RATIONALE:
 **Flexibility**: The `layerConfig` parameter allows for layer-specific customization, enabling a single layer implementation to serve multiple contracts with varying requirements. **non-static calls**: Layers can maintain their own state, allowing for more complex validation logic (e.g., rate limiting, usage tracking). **Strict Validation**: Reverts on validation failure ensure a fail-safe mechanism,
@@ -1466,7 +1466,7 @@ The "offer" and "consideration" structs from Seaport were used to create a simil
 === ERC-7820 ===
 TITLE: Access Control Registry
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-19
 REQUIRES: 
 

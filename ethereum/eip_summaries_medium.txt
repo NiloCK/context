@@ -546,7 +546,7 @@ RATIONALE:
 === EIP-7808 ===
 TITLE: Reserve Tx-Type Range for RIPs
 TYPE: Meta 
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-04
 REQUIRES: 2718
 
@@ -2602,6 +2602,26 @@ The transaction capacity of an Ethereum block is determined by the gas cost of t
 
 RATIONALE:
 Adoption of fractional gas costs should only be an implementation detail inside the EVM, and not alter the current user experience around transaction gas limits and block gas limits. The concept of `particles` need not be exposed to Ethereum users nor most contract authors, but only to EVM implementers
+
+
+=== EIP-7843 ===
+TITLE: SLOT precompile
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-12-06
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes to add a new precompile that returns the corresponding slot for the current block.
+
+SPECIFICATION:
+If `block.timestamp >= TBD` a new precompiled contract `SLOT` shall be created at address `TBD`. `SLOT` returns as output the current slot number as an 8 byte ulong in big endian encoding. ### Gas Cost The gas cost for `SLOT` is a fixed fee of `2`
+
+MOTIVATION:
+It is currently possible to calculate the slot number from the block timestamp. However, this requires hardcoding the chain slot length into a smart contract. This would require the contract code to be changed in the event of a future change to slot length. A better approach is for
+
+RATIONALE:
+### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than an opcode gives L2s flexibility to decide whether to implement it.
 
 
 === EIP-7610 ===
@@ -5904,6 +5924,26 @@ Although [EIP-1474](./eip-1474.md) outlines a JSON-RPC specification. Ethereum s
 
 RATIONALE:
 ### Why would we do this? Services need to figure out how to talk to each other. If we really want to build the next generation of automation, then having up to date libraries, documented APIs, and modern tools are going to provide easy discovery, on-boarding, and enable end
+
+
+=== EIP-7793 ===
+TITLE: TXINDEX precompile
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-10-17
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes to add a new precompile that returns the index of the transaction being executed within the current block.
+
+SPECIFICATION:
+If `block.timestamp >= TBD` a new precompiled contract `TXINDEX` shall be created at address `TBD`. `TXINDEX` returns as output the transaction index as a 4 byte uint in big endian encoding. ### Gas Cost The gas cost for `TXINDEX` is a fixed fee of `2`
+
+MOTIVATION:
+The new precompile aims to improve support for encrypted mempools. In order to be secure, the validity of encrypted mempool transactions should be tied to the inclusion of all transactions by a proposer in the correct slot, and following the ordering rules. If these rules are not enshrined as
+
+RATIONALE:
+### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than an opcode gives L2s flexibility to decide whether to implement it.
 
 
 === EIP-779 ===

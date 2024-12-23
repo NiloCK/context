@@ -241,7 +241,7 @@ Technically, the cases of L2s and databases are similar; routing to an L2 involv
 === ERC-7746 ===
 TITLE: Composable Security Middleware Hooks
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-07-17
 REQUIRES: 
 
@@ -1466,7 +1466,7 @@ The "offer" and "consideration" structs from Seaport were used to create a simil
 === ERC-7820 ===
 TITLE: Access Control Registry
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-19
 REQUIRES: 
 
