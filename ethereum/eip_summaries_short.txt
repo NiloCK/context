@@ -7750,6 +7750,26 @@ RATIONALE:
 TBD
 
 
+=== EIP-7768 ===
+TITLE: No-Ether transactions with free-for-all tips
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2024-09-14
+REQUIRES: 
+
+SUMMARY:
+A technique is introduced where an externally-owned account having no Ether can send transactions and pay tips using a new "free-for-all" bucket and using
+
+SPECIFICATION:
+### End user process 1. An end user who controls an externally-owned account, say Alice, will prepare transaction(s) she would like to execute and
+
+MOTIVATION:
+There is much interest in third-party-pay transactions on Ethereum and competing networks. Other proposals require changes to the Ethereum client, that transactions be sent
+
+RATIONALE:
+This approach can be useful for end users that do not want to or are not able to add Ether to their account. This
+
+
 === EIP-5133 ===
 TITLE: Delaying Difficulty Bomb to mid-September 2022
 TYPE: Standards Track Core
