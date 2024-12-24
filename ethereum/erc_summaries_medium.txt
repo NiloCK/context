@@ -1051,13 +1051,13 @@ CREATED: 2022-05-08
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
 SUMMARY:
-This ERC introduces the NFT Future Rewards (nFR) extension for [ERC-721](./eip-721.md) tokens (NFTs). nFR allows owners to benefit from future price appreciation even after selling their tokens, without the need for market prediction. This establishes a Provenance Value Amplification (PVA) framework where creators, buyers, and sellers collaborate to collectively
+This proposal introduces the Non-Fungible Future Rewards (nFR) framework, extending [ERC-721](./eip-721.md) tokens (NFTs) features to let token holders benefit from value appreciation after transferring ownership. By integrating cooperative game theory, it aligns stakeholder incentives, addressing inefficiencies in asset transactions. The framework fosters collaboration, transparency, and equitable profit sharing. It
 
 SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. The following is an extension of the [ERC-721](./eip-721.md) standard. [ERC-721](./eip-721.md)-compliant contracts MAY implement this EIP for rewards to provide a
 
 MOTIVATION:
-The current trading landscape is often marred by unfair practices like spoofing, insider trading, and wash trading. These activities disadvantage average traders caught in cycles of fear and greed. However, the rise of NFTs and their inherent transaction tracking capability presents an opportunity to disrupt this unequal value distribution.
+Traditional financial markets are often characterized by inefficiencies, opaque practices, and systemic imbalances, resulting in significant disadvantages for the majority of participants. Although blockchain technology offers transaction transparency, current implementations do not adequately facilitate equitable value sharing or participant alignment. This proposal addresses these gaps by introducing structured collaboration
 
 RATIONALE:
 ### Fixed Percentage to 10^18 Considering Fixed-Point Arithmetic is to be enforced, it is logical to have 1e18 represent 100% and 1e16 represent 1% for Fixed-Point operations. This method of handling percents is also commonly seen in many Solidity libraries for Fixed-Point operations. ### Emitting Event for Payment Since
@@ -3828,7 +3828,7 @@ The main challenge with a purely smart contract wallet-based account abstraction
 === ERC-7734 ===
 TITLE: Decentralized Identity Verification (DID)
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-06-26
 REQUIRES: 
 

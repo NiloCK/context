@@ -1051,13 +1051,13 @@ CREATED: 2022-05-08
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
 SUMMARY:
-This ERC introduces the NFT Future Rewards (nFR) extension for [ERC-721](./eip-721.md) tokens (NFTs). nFR allows owners to benefit from future price appreciation even after
+This proposal introduces the Non-Fungible Future Rewards (nFR) framework, extending [ERC-721](./eip-721.md) tokens (NFTs) features to let token holders benefit from value appreciation after transferring
 
 SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
 
 MOTIVATION:
-The current trading landscape is often marred by unfair practices like spoofing, insider trading, and wash trading. These activities disadvantage average traders caught in
+Traditional financial markets are often characterized by inefficiencies, opaque practices, and systemic imbalances, resulting in significant disadvantages for the majority of participants. Although blockchain
 
 RATIONALE:
 ### Fixed Percentage to 10^18 Considering Fixed-Point Arithmetic is to be enforced, it is logical to have 1e18 represent 100% and 1e16 represent 1%
@@ -3828,7 +3828,7 @@ The main challenge with a purely smart contract wallet-based account abstraction
 === ERC-7734 ===
 TITLE: Decentralized Identity Verification (DID)
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-06-26
 REQUIRES: 
 
