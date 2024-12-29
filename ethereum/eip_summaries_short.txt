@@ -863,7 +863,7 @@ EVM and/or account versioning has been discussed numerous times over the past ye
 === EIP-7577 ===
 TITLE: Versioning Scheme for EIPs
 TYPE: Meta 
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2023-12-13
 REQUIRES: 
 
@@ -3315,7 +3315,7 @@ The core problem in an account abstraction setup is always that miners and netwo
 === EIP-7643 ===
 TITLE: History accumulator for pre-PoS data
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-02-29
 REQUIRES: 
 
