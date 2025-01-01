@@ -649,6 +649,26 @@ RATIONALE:
 TODO
 
 
+=== ERC-7750 ===
+TITLE: Decentralized Employment System
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-08-04
+REQUIRES: 
+
+SUMMARY:
+This ERC proposes a Decentralized Employment System (DES) built on the Ethereum blockchain. The DES facilitates the creation and management of companies, records comprehensive employment histories through unique employee tokens, enables the formation and execution of labor contracts, automates salary payments via an escrow mechanism, incorporates a robust moderation
+
+SPECIFICATION:
+### Solidity Interface To provide a clear and standardized way for developers to interact with the DES, the following Solidity interface outlines the primary functions and events of the system: ```solidity pragma solidity ^0.8.0; /// @title Decentralized Employment System Interface interface IDecentralizedEmploymentSystem { // Events event CompanyRegistered(uint companyId, address
+
+MOTIVATION:
+Traditional employment systems are centralized, opaque, and often lack trust. The DES aims to introduce transparency, immutability, and trust into the employment process by leveraging blockchain technology. By recording employment history on-chain, enabling decentralized company creation, automating contract enforcement, and providing mechanisms for dispute resolution, the DES promotes a
+
+RATIONALE:
+1. **Employee Tokenization**: - Utilizing **Soulbound Tokens (SBTs)** to represent employees ensures that each employee has a unique, non-transferable identity on the blockchain. This design choice enhances the integrity of employment records, making them tamper-proof and verifiable. It also allows companies to access a comprehensive employment history before finalizing
+
+
 === ERC-5719 ===
 TITLE: Signature replacement interface
 TYPE: Standards Track ERC
@@ -3346,7 +3366,7 @@ The core mechanism for this proposal is to provide a shared tracking interface f
 === ERC-7208 ===
 TITLE: On-Chain Data Containers
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-06-09
 REQUIRES: 165
 
@@ -8608,10 +8628,30 @@ RATIONALE:
 This standards provides a functionality, to guarantee future payments, which is needed for many business cases where transfers have to be guaranteed. It goes a step further than the ERC-20 `approve` function by ensuring that the held balance will be available when the transfer is done. Something that can
 
 
+=== ERC-7780 ===
+TITLE: Validation Module Extension for ERC-7579
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-10-01
+REQUIRES: 7579
+
+SUMMARY:
+This proposal introduces three new module types on top of the existing modules described in [ERC-7579](./eip-7579). The modules are policy, signer and stateless validator. None of these modules are required to be implemented by accounts, but accounts can choose to implement them or other modules can choose to make
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. This standard introduces three new module types on top of the existing modules introduced by
+
+MOTIVATION:
+The modules introduced by this proposal aim to create more composability around signature and permission verification. Policy and signer modules allow an account to make direct use of such a permissioning logic rather than relying on external modules to handle this. This has the upside of lower gas cost
+
+RATIONALE:
+TBD <!-- TODO -->
+
+
 === ERC-7578 ===
 TITLE: Physical Asset Redemption
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-08-01
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 

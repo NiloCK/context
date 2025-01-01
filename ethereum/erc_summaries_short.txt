@@ -649,6 +649,26 @@ RATIONALE:
 TODO
 
 
+=== ERC-7750 ===
+TITLE: Decentralized Employment System
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-08-04
+REQUIRES: 
+
+SUMMARY:
+This ERC proposes a Decentralized Employment System (DES) built on the Ethereum blockchain. The DES facilitates the creation and management of companies, records comprehensive
+
+SPECIFICATION:
+### Solidity Interface To provide a clear and standardized way for developers to interact with the DES, the following Solidity interface outlines the primary
+
+MOTIVATION:
+Traditional employment systems are centralized, opaque, and often lack trust. The DES aims to introduce transparency, immutability, and trust into the employment process by
+
+RATIONALE:
+1. **Employee Tokenization**: - Utilizing **Soulbound Tokens (SBTs)** to represent employees ensures that each employee has a unique, non-transferable identity on the blockchain. This
+
+
 === ERC-5719 ===
 TITLE: Signature replacement interface
 TYPE: Standards Track ERC
@@ -3346,7 +3366,7 @@ The core mechanism for this proposal is to provide a shared tracking interface f
 === ERC-7208 ===
 TITLE: On-Chain Data Containers
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-06-09
 REQUIRES: 165
 
@@ -8608,10 +8628,30 @@ RATIONALE:
 This standards provides a functionality, to guarantee future payments, which is needed for many business cases where transfers have to be guaranteed. It goes
 
 
+=== ERC-7780 ===
+TITLE: Validation Module Extension for ERC-7579
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-10-01
+REQUIRES: 7579
+
+SUMMARY:
+This proposal introduces three new module types on top of the existing modules described in [ERC-7579](./eip-7579). The modules are policy, signer and stateless validator.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The modules introduced by this proposal aim to create more composability around signature and permission verification. Policy and signer modules allow an account to
+
+RATIONALE:
+TBD <!-- TODO -->
+
+
 === ERC-7578 ===
 TITLE: Physical Asset Redemption
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-08-01
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
