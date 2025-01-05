@@ -1515,7 +1515,7 @@ Formalizing the `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled
 === EIP-5806 ===
 TITLE: Delegate transaction
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2022-10-20
 REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 3, 0
 
@@ -2382,7 +2382,7 @@ TODO: Add rationale TODO: Add rationale for gas cost e.g. benchmark and computat
 === EIP-7591 ===
 TITLE: BLS signed transactions
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-01-10
 REQUIRES: 
 
