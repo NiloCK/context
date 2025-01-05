@@ -5846,6 +5846,26 @@ RATIONALE:
 ### AUTHCALL (`0xf7`) Interaction The [EIP-3074](./eip-3074.md) introduced a new call instruction called `AUTHCALL` (`0xf7`) that will replace a transaction's `ORIGIN` (`0x32`) with the context variable `authorized`. The intention of `AUTHCALL` is to prevent discrimination between smart contracts and EOAs which `ORIGIN` initially facilitated. The `ENTRYPOINT` opcode by itself re-introduces
 
 
+=== EIP-7851 ===
+TITLE: Deactivate/Reactivate a Delegated EOA's Key
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-12-27
+REQUIRES: 7702
+
+SUMMARY:
+This EIP introduces a precompiled contract that enables Externally Owned Accounts (EOAs) with delegated control to smart contracts via [EIP-7702](./eip-7702) to deactivate or reactivate their private keys. This design does not require additional storage fields or account state changes. By leveraging delegated code, reactivation can be performed securely through
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | |-----------------------------------|----------------------| | `PRECOMPILE_ADDRESS` | `0xTBD` | | `PRECOMPILE_GAS_COST`
+
+MOTIVATION:
+[EIP-7702](./eip-7702) enables EOAs to gain smart contract capabilities, but the private key of the EOA still retains full control over the account. With this EIP, EOAs can fully migrate to smart contract wallets, while retaining private key recovery options with reactivation. The flexible deactivate and reactivate design also paves
+
+RATIONALE:
+### Using a precompiled contract Alternative methods for implementing this feature include: - Adding a new transaction type: Introducing a new transaction type could provide a mechanism to deactivate and reactivate EOA private keys. However, reactivating the private key would rely on a delegated contract as the authorizer, which
+
+
 === EIP-7495 ===
 TITLE: SSZ StableContainer
 TYPE: Standards Track Core

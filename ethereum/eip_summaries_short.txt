@@ -5846,6 +5846,26 @@ RATIONALE:
 ### AUTHCALL (`0xf7`) Interaction The [EIP-3074](./eip-3074.md) introduced a new call instruction called `AUTHCALL` (`0xf7`) that will replace a transaction's `ORIGIN` (`0x32`) with the context
 
 
+=== EIP-7851 ===
+TITLE: Deactivate/Reactivate a Delegated EOA's Key
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-12-27
+REQUIRES: 7702
+
+SUMMARY:
+This EIP introduces a precompiled contract that enables Externally Owned Accounts (EOAs) with delegated control to smart contracts via [EIP-7702](./eip-7702) to deactivate or reactivate
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[EIP-7702](./eip-7702) enables EOAs to gain smart contract capabilities, but the private key of the EOA still retains full control over the account. With this
+
+RATIONALE:
+### Using a precompiled contract Alternative methods for implementing this feature include: - Adding a new transaction type: Introducing a new transaction type could
+
+
 === EIP-7495 ===
 TITLE: SSZ StableContainer
 TYPE: Standards Track Core
