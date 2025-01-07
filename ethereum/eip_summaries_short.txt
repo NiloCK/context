@@ -2612,7 +2612,7 @@ CREATED: 2024-12-06
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes to add a new precompile that returns the corresponding slot for the current block.
+This EIP proposes to add a new precompile that returns the corresponding slot number for the current block.
 
 SPECIFICATION:
 If `block.timestamp >= TBD` a new precompiled contract `SLOT` shall be created at address `TBD`. `SLOT` returns as output the current slot number as

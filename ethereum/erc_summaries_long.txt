@@ -1486,7 +1486,7 @@ The "offer" and "consideration" structs from Seaport were used to create a simil
 === ERC-7820 ===
 TITLE: Access Control Registry
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-11-19
 REQUIRES: 
 
@@ -3848,7 +3848,7 @@ The main challenge with a purely smart contract wallet-based account abstraction
 === ERC-7734 ===
 TITLE: Decentralized Identity Verification (DID)
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-06-26
 REQUIRES: 
 
@@ -5357,21 +5357,21 @@ This standard complements [ERC-4907](./eip-4907.md) to support multi-user featur
 === ERC-7777 ===
 TITLE: Governance for Human Robot Societies
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-09-29
 REQUIRES: 
 
 SUMMARY:
-This proposal defines two core interfaces: `IUniversalIdentity` and `IUniversalCharter`, providing mechanisms for humans, and robots to establish their identities and to create decentralized communities governed by specific rule sets. The `IUniversalIdentity` interface establishes the fair and equitable treatment of sentient computer architectures other than the human brain, enabling robots to acquire on-chain identities, and thereby interact and transact with humans. The `IUniversalCharter` enables humans and robots to create, join (“register”), maintain (“update”), leave, and terminate self-regulated societies based on predefined rule sets, providing a framework for collaboration and prosperity for mixed societies of humans and robots. These interfaces
+This proposal defines two core interfaces: `IUniversalIdentity` and `IUniversalCharter`, providing mechanisms for humans, and robots to establish their identities and to create decentralized communities governed by specific rule sets. The `IUniversalIdentity` interface establishes the fair and equitable treatment of sentient computer architectures other than the human brain, enabling robots to acquire on-chain identities, and thereby interact and transact with humans. Additionally the `IUniversalIdentity` interface also includes support for hardware-backed identity verification, enabling physical robots to prove their identity through cryptographic signatures derived from secure hardware elements and a challenge-response scheme. The `IUniversalCharter` enables humans and robots to create,
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ```solidity interface IUniversalIdentity { /// @notice Adds a rule to the robot's identity, showing that the robot agrees to follow the rule. /// @param rule The dynamic byte array representing the rule that the robot agrees to follow. Each rule is a textual string encoded into a dynamic byte array. For example: 'A robot must keep a 1m distance from humans.' /// @dev The
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ```solidity interface IUniversalIdentity { /// @notice Structure for hardware identity struct HardwareIdentity { bytes32 publicKey; // Hardware-bound public key uniquely tied to this robot string manufacturer; // Identifier for the robot's manufacturer string operator; // Identifier for the robot's operator string model; // Model identifier of the robot string serialNumber; // Unique serial number for the robot bytes32 initialHashSignature; // Signature of the initial
 
 MOTIVATION:
 The human brain is a wet, massively parallel electrochemical computer. Recent hardware and software advances make it likely that soon, human societies will need tools for interacting with sentient, non-human computers, such as robots. Our current forms of government, where citizens are auto-enrolled into specific rule sets depending on where they were born, do not gracefully map onto robots without a traditional birthplace or birthtime. Among many difficulties being experienced by robots, they are (currently) unable to obtain standard forms of ID (such as passports), it is not clear which rule sets apply to them (since in general
 
 RATIONALE:
-**IUniversalIdentity** `addRule(bytes memory rule)` This function allows a robot to flexibly adopt new compliance requirements in order join different `IUniversalCharter` contracts. `removeRule(bytes memory rule)` This function allows a robot to dynamically manage and maintain its rules, ensuring that its rule set remains up-to-date. `checkCompliance(bytes memory rule)` This function ensures that a robot is adhering to rules by performing decentralised checks on its compliance. `Events (RuleAdded, RuleRemoved)` These events provide transparency and traceability, making it easier to track compliance status. **IUniversalCharter** `enum UserType { Human, Robot }` The UserType enum makes it easier for contracts to handle different user
+**IUniversalIdentity** `struct HardwareIdentity` The HardwareIdentity structure provides essential information about a robot, including a challenge-response public key, manufacturer, operator, model, manufacturer serial number `generateChallenge()` This function enables secure identity verification through a challenge-response authentication. `verifyChallenge(bytes32 challenge, bytes memory signature)` This function verifies that a signature was genuinely created by the robot's secure hardware in response to a specific challenge. `addRule(bytes memory rule)` This function allows a robot to flexibly adopt new compliance requirements in order join different `IUniversalCharter` contracts. `removeRule(bytes memory rule)` This function allows a robot to dynamically manage and maintain its rules, ensuring that its rule
 
 
 === ERC-5850 ===
@@ -8471,7 +8471,7 @@ RATIONALE:
 === ERC-7818 ===
 TITLE: Expirable ERC-20
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-13
 REQUIRES: 20
 
@@ -8479,7 +8479,7 @@ SUMMARY:
 Introduces an extension for [ERC-20](./eip-20.md) tokens, which facilitates the implementation of an expiration mechanism. Through this extension, tokens have a predetermined validity period, after which they become invalid and can no longer be transferred or used. This functionality proves beneficial in scenarios such as time-limited bonds, loyalty rewards, or game tokens necessitating automatic invalidation after a specific duration. The extension is crafted to seamlessly align with the existing [ERC-20](./eip-20.md) standard, ensuring smooth integration with the prevailing token smart contract while introducing the capability to govern and enforce token expiration at the contract level.
 
 SPECIFICATION:
-The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ### Epoch Mechanism **Epochs** represent a specific period or block range during which certain tokens are valid. They can be categorized into two types - **block-based** Defined by a specific number of blocks (e.g., 1000 `blocks`). - **time-based** Defined by a specific duration in seconds (e.g., 1000 `seconds`). Tokens linked to an `epoch` remain valid as long as the `epoch` is active. Once the specified number of `blocks` or the
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Epoch Mechanism **Epochs** represent a specific period or block range during which certain tokens are valid. They can be categorized into two types - **block-based** Defined by a specific number of blocks (e.g., 1000 `blocks`). - **time-based** Defined by a specific duration in seconds (e.g., 1000 `seconds`). Tokens linked to an `epoch` remain valid as long as the `epoch` is active. Once the
 
 MOTIVATION:
 This extension facilitates the development of [ERC-20](./eip-20.md) standard compatible tokens featuring expiration dates. This capability broadens the scope of potential applications, particularly those involving time-sensitive assets. Expirable tokens are well-suited for scenarios necessitating temporary validity, including: - Bonds or financial instruments with defined maturity dates - Time-constrained assets within gaming ecosystems - Next-gen loyalty programs incorporating expiring rewards or points - Prepaid credits for utilities or services (e.g., cashback, data packages, fuel, computing resources) that expire if not used within a specified time frame - Postpaid telecom data package allocations that expire at the end of the billing
@@ -8591,7 +8591,7 @@ Designing the proposal, we considered the following questions: 1. **Does the pro
 === ERC-7751 ===
 TITLE: Wrapping of bubbled up reverts
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-08-06
 REQUIRES: 
 

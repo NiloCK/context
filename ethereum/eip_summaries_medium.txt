@@ -2612,16 +2612,16 @@ CREATED: 2024-12-06
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes to add a new precompile that returns the corresponding slot for the current block.
+This EIP proposes to add a new precompile that returns the corresponding slot number for the current block.
 
 SPECIFICATION:
-If `block.timestamp >= TBD` a new precompiled contract `SLOT` shall be created at address `TBD`. `SLOT` returns as output the current slot number as an 8 byte ulong in big endian encoding. ### Gas Cost The gas cost for `SLOT` is a fixed fee of `2`
+If `block.timestamp >= TBD` a new precompiled contract `SLOT` shall be created at address `TBD`. `SLOT` returns as output the current slot number as an 8 byte ulong in big endian encoding. ### Gas Cost The gas cost for `SLOT` is a fixed fee of `2`. ### RPC changes
 
 MOTIVATION:
 It is currently possible to calculate the slot number from the block timestamp. However, this requires hardcoding the chain slot length into a smart contract. This would require the contract code to be changed in the event of a future change to slot length. A better approach is for
 
 RATIONALE:
-### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than an opcode gives L2s flexibility to decide whether to implement it.
+### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than an opcode gives L2s flexibility to decide whether to implement it. ### Calculation in consensus layer The slot number could alternatively be calculated in the
 
 
 === EIP-7610 ===
