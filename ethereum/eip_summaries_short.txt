@@ -4702,6 +4702,26 @@ RATIONALE:
 The `wallet_signIntendedValidatorData` method aims to bridge the gap between the simplicity of ERC-191 version 0x45 and the structured approach of EIP-712. By specifying the
 
 
+=== EIP-7840 ===
+TITLE: Add blob schedule to EL config files
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2024-12-12
+REQUIRES: 
+
+SUMMARY:
+Add a new object to client configuration files `blobSchedule` which lists the target blob count per block and max blob count per block for
+
+SPECIFICATION:
+Extend the client configuration files with the object `blobSchedule` with the following shape: ```json "blobSchedule": { "cancun": { "target": 3, "max": 6 }, "prague":
+
+MOTIVATION:
+- ensure there is a way to dynamically adjust the target and max blob counts per block - avoid complex handshake over engine API
+
+RATIONALE:
+Although maintaining the target and max blob only in the consensus client is desirable, we acknowledge the reality that execution clients need these values
+
+
 === EIP-2718 ===
 TITLE: Typed Transaction Envelope
 TYPE: Standards Track Core
