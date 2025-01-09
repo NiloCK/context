@@ -7034,7 +7034,7 @@ SUMMARY:
 Store last `HISTORY_SERVE_WINDOW` historical block hashes in the storage of a system contract as part of the block processing logic. Furthermore this EIP has
 
 SPECIFICATION:
-| Parameter | Value | | - | - | | `BLOCKHASH_SERVE_WINDOW` | `256` | | `HISTORY_SERVE_WINDOW` | `8192` | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe`
+| Parameter | Value | | - | - | | `BLOCKHASH_SERVE_WINDOW` | `256` | | `HISTORY_SERVE_WINDOW` | `8191` | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe`
 
 MOTIVATION:
 EVM implicitly assumes the client has the recent block (hashes) at hand. This assumption is not future-proof given the prospect of stateless clients. Including

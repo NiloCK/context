@@ -7034,7 +7034,7 @@ SUMMARY:
 Store last `HISTORY_SERVE_WINDOW` historical block hashes in the storage of a system contract as part of the block processing logic. Furthermore this EIP has no impact on `BLOCKHASH` resolution mechanism (and hence its range/costs etc).
 
 SPECIFICATION:
-| Parameter | Value | | - | - | | `BLOCKHASH_SERVE_WINDOW` | `256` | | `HISTORY_SERVE_WINDOW` | `8192` | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | | `HISTORY_STORAGE_ADDRESS` | `0x0aae40965e6800cd9b1f4b05ff21581047e3f91e`| This EIP specifies for storing last `HISTORY_SERVE_WINDOW` block hashes in a ring buffer storage of `HISTORY_SERVE_WINDOW` length. Note that `HISTORY_SERVE_WINDOW`
+| Parameter | Value | | - | - | | `BLOCKHASH_SERVE_WINDOW` | `256` | | `HISTORY_SERVE_WINDOW` | `8191` | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | | `HISTORY_STORAGE_ADDRESS` | `0x0F792be4B0c0cb4DAE440Ef133E90C0eCD48CCCC` | This EIP specifies for storing last `HISTORY_SERVE_WINDOW` block hashes in a ring buffer storage of `HISTORY_SERVE_WINDOW` length. Note that
 
 MOTIVATION:
 EVM implicitly assumes the client has the recent block (hashes) at hand. This assumption is not future-proof given the prospect of stateless clients. Including the block hashes in the state will allow bundling these hashes in the witness provided to a stateless client. This is already possible in the
