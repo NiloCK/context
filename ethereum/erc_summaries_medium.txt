@@ -8436,13 +8436,13 @@ CREATED: 2024-11-21
 REQUIRES: 7579
 
 SUMMARY:
-This proposal defines a minimal batch executor interface for delegations. A delegation is a smart contract that implements logic which other smart contracts can delegate to. This allows batched executions to be prepared in a standardized way.
+This proposal defines a minimal batch executor interface for delegations. A delegation is a smart contract that implements logic which other smart contracts can delegate to. This allows atomic batched executions to be prepared in a standardized way.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview The minimal batch executor interface is defined as follows: ```solidity /// @dev Interface
 
 MOTIVATION:
-With the advent of [EIP-7702](./eip-7702), it is possible for Externally Owned Accounts (EOAs) to perform atomic batched executions. We anticipate that there will be multiple EIP-7702 delegations from multiple major vendors. To enable frontends to detect and prepare a vendor-agnostic batched transaction, we will need a standardized interface for
+With the advent of [EIP-7702](./eip-7702), it is possible for Externally Owned Accounts (EOAs) to perform atomic batched executions. We anticipate that there will be multiple EIP-7702 delegations from multiple major vendors. A standard for the execution interface will enable better interoperability. EIP-7702 delegation is a risky procedure which should
 
 RATIONALE:
 We aim for radical minimalism to keep the standard as left-curved as possible. Simplicity is the key to adoption. Our North Star is to get every decentralized exchange to support the approve + swap workflow for EOAs with delegations as soon as possible. ### `execute` and `supportsExecutionMode` We have
