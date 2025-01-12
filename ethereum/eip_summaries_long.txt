@@ -1592,7 +1592,7 @@ In [EIP-2200](./eip-2200.md#specification), three cases for refunds were introdu
 === EIP-7716 ===
 TITLE: Anti-correlation attestation penalties
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-05-25
 REQUIRES: 
 
@@ -1752,7 +1752,7 @@ The changes proposed are as minimal and non-disruptive to the existing EVM and t
 === EIP-7549 ===
 TITLE: Move committee index outside Attestation
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2023-11-01
 REQUIRES: 
 
@@ -3031,7 +3031,7 @@ We note that it was always the expected that a contract account's behaviour is c
 === EIP-7692 ===
 TITLE: EVM Object Format (EOFv1) Meta
 TYPE: Meta 
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-04-17
 REQUIRES: 6, 6, 3, ,,  , 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 4, 2, 0, 0, ,,  , 4, 7, 5, 0, ,,  , 5, 4, 5, 0, ,,  , 6, 2, 0, 6, ,,  , 7, 0, 6, 9, ,,  , 7, 4, 8, 0, ,,  , 7, 6, 2, 0, ,,  , 7, 6, 9, 8
 
@@ -4625,7 +4625,7 @@ SPECIFICATION:
 === EIP-7547 ===
 TITLE: Inclusion lists
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2023-10-24
 REQUIRES: 
 
@@ -6499,7 +6499,7 @@ This approach has the benefit of simplicity, over previous proposals for state e
 === EIP-7594 ===
 TITLE: PeerDAS - Peer Data Availability Sampling
 TYPE: Standards Track Networking
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-01-12
 REQUIRES: 4844
 
