@@ -5883,7 +5883,7 @@ MOTIVATION:
 [EIP-7702](./eip-7702) enables EOAs to gain smart contract capabilities, but the private key of the EOA still retains full control over the account. With this
 
 RATIONALE:
-### Using a precompiled contract Alternative methods for implementing this feature include: - Adding a new transaction type: Introducing a new transaction type could
+### Using a precompiled contract Alternative methods for deactivating and reactivating EOA private keys include: - Adding a new transaction type: Introducing a new
 
 
 === EIP-7495 ===
