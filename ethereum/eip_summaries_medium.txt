@@ -1500,16 +1500,16 @@ CREATED: 2024-06-12
 REQUIRES: 
 
 SUMMARY:
-Define the stages that Core EIPs go through in the process of planning network upgrades: `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`, `Declined for Inclusion` and `Included`.
+Define the stages that EIPs go through in the process of planning network upgrades: `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`, `Declined for Inclusion` and `Included`.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. All EIP statuses defined in this EIP only apply within the context of a single
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. All EIP statuses apply to a single network upgrade. EIPs must be `Proposed`, `Considered`, `Declined`
 
 MOTIVATION:
-This EIP proposes definitions for the various stages EIPs go through when planning network upgrades. Specifically, these are: `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`, `Declined for Inclusion` and `Included`. It also provides context and guidelines around when and how EIPs should be moved from one stage
+This EIP proposes definitions for the various stages EIPs go through when planning network upgrades. It also provides context and guidelines around when and how EIPs should be moved from one stage to the next.
 
 RATIONALE:
-Formalizing the `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`, `Declined for Inclusion` and `Included` stages provides better legibility to both Ethereum protocol maintainers and the community at large. The specification tries to minimize steps which **MUST** be followed to align with Ethereum's "rough consensus" governance model. Assuming
+Formalizing the `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`, `Declined for Inclusion` and `Included` stages provides better legibility to both protocol maintainers and the broader Ethereum community. The specification tries to minimize steps which **MUST** be followed to align with Ethereum's "rough consensus" governance model. Assuming it
 
 
 === EIP-5806 ===

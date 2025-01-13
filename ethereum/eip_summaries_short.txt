@@ -1500,16 +1500,16 @@ CREATED: 2024-06-12
 REQUIRES: 
 
 SUMMARY:
-Define the stages that Core EIPs go through in the process of planning network upgrades: `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`,
+Define the stages that EIPs go through in the process of planning network upgrades: `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`, `Declined
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-This EIP proposes definitions for the various stages EIPs go through when planning network upgrades. Specifically, these are: `Proposed for Inclusion`, `Considered for Inclusion`,
+This EIP proposes definitions for the various stages EIPs go through when planning network upgrades. It also provides context and guidelines around when and
 
 RATIONALE:
-Formalizing the `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`, `Declined for Inclusion` and `Included` stages provides better legibility to both Ethereum protocol
+Formalizing the `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`, `Declined for Inclusion` and `Included` stages provides better legibility to both protocol maintainers
 
 
 === EIP-5806 ===
