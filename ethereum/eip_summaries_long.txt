@@ -3811,7 +3811,7 @@ We believe the proposed mechanism represents the simplest way to reduce storage 
 === EIP-7549 ===
 TITLE: Move committee index outside Attestation
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2023-11-01
 REQUIRES: 
 
@@ -4523,7 +4523,7 @@ SUMMARY:
 This EIP introduces changes in the gas schedule to reflect the costs of creating a witness. It requires clients to update their database layout to match this, so as to avoid potential DoS attacks.
 
 SPECIFICATION:
-### Helper functions ```python def get_storage_slot_tree_keys(storage_key: int) -> [int, int]: if storage_key < (CODE_OFFSET - HEADER_STORAGE_OFFSET): pos = HEADER_STORAGE_OFFSET + storage_key else: pos = MAIN_STORAGE_OFFSET + storage_key return ( pos // 256, pos % 256 ) ``` ### Access events Whenever the state is read, one or more of the access events of the form`(address, sub_key, leaf_key)` take place, determining what data is being accessed. We define access events as follows: #### Access events for account headers When: 1. a non-precompile which is also not a system contract is the target of a `*CALL`, `SELFDESTRUCT`, `EXTCODESIZE`, or `EXTCODECOPY`
+### Helper functions ```python def get_storage_slot_tree_keys(storage_key: int) -> [int, int]: if storage_key < (CODE_OFFSET - HEADER_STORAGE_OFFSET): pos = HEADER_STORAGE_OFFSET + storage_key else: pos = MAIN_STORAGE_OFFSET + storage_key return ( pos // 256, pos % 256 ) ``` ### Access events Whenever the state is read, one or more of the access events of the form`(address, sub_key, leaf_key)` take place, determining what data is being accessed. We define access events as follows: #### Access events for account headers When: 1. a non-precompile which is also not a system contract is the target of a `*CALL`, `CALLCODE`, `SELFDESTRUCT`, `EXTCODESIZE`, or
 
 MOTIVATION:
 The introduction of Verkle trees into Ethereum requires fundamental changes and as a preparation, this EIP is targeting the fork coming right before the verkle tree fork, in order to incentivize Dapp developers to adopt the new storage model, and ample time to adjust to it. It also incentivizes client developers to migrate their database format ahead of the verkle fork.
@@ -6013,7 +6013,7 @@ The rational for increasing the ``Gcallstipend`` gas parameter by ``1,200`` gas 
 === EIP-7692 ===
 TITLE: EVM Object Format (EOFv1) Meta
 TYPE: Meta 
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2024-04-17
 REQUIRES: 6, 6, 3, ,,  , 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 4, 2, 0, 0, ,,  , 4, 7, 5, 0, ,,  , 5, 4, 5, 0, ,,  , 6, 2, 0, 6, ,,  , 7, 0, 6, 9, ,,  , 7, 4, 8, 0, ,,  , 7, 6, 2, 0, ,,  , 7, 6, 9, 8
 
@@ -7793,7 +7793,7 @@ We consider a few design decisions present in this EIP. 1. `ReducedSummary` vers
 === EIP-7519 ===
 TITLE: Atomic Storage Operations SCREDIT and SDEBIT
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2023-09-16
 REQUIRES: 2, 2, 0, 0, ,,  , 2, 9, 2, 9
 

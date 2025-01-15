@@ -3811,7 +3811,7 @@ We believe the proposed mechanism represents the simplest way to reduce storage 
 === EIP-7549 ===
 TITLE: Move committee index outside Attestation
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2023-11-01
 REQUIRES: 
 
@@ -6013,7 +6013,7 @@ The rational for increasing the ``Gcallstipend`` gas parameter by ``1,200`` gas 
 === EIP-7692 ===
 TITLE: EVM Object Format (EOFv1) Meta
 TYPE: Meta 
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2024-04-17
 REQUIRES: 6, 6, 3, ,,  , 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 4, 2, 0, 0, ,,  , 4, 7, 5, 0, ,,  , 5, 4, 5, 0, ,,  , 6, 2, 0, 6, ,,  , 7, 0, 6, 9, ,,  , 7, 4, 8, 0, ,,  , 7, 6, 2, 0, ,,  , 7, 6, 9, 8
 
@@ -7793,7 +7793,7 @@ We consider a few design decisions present in this EIP. 1. `ReducedSummary` vers
 === EIP-7519 ===
 TITLE: Atomic Storage Operations SCREDIT and SDEBIT
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2023-09-16
 REQUIRES: 2, 2, 0, 0, ,,  , 2, 9, 2, 9
 
