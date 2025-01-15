@@ -1458,7 +1458,7 @@ RATIONALE:
 === EIP-7840 ===
 TITLE: Add blob schedule to EL config files
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-12-12
 REQUIRES: 
 
@@ -3095,7 +3095,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Prague/Electra network upgrade.
 
 SPECIFICATION:
-A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits * [EIP-7251](./eip-7251.md): Increase the MAX_EFFECTIVE_BALANCE * [EIP-7549](./eip-7549.md): Move committee index outside Attestation * [EIP-7623](./eip-7623.md): Increase calldata cost * [EIP-7685](./eip-7685.md): General purpose execution layer requests * [EIP-7691](./eip-7691.md): Blob throughput increase * [EIP-7702](./eip-7702.md): Set EOA account code ### Full Specifications #### Consensus Layer EIP-6110, EIP-7002 EIP-7251, EIP-7549 and EIP-7691 require changes to Ethereum's consensus layer.
+A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits * [EIP-7251](./eip-7251.md): Increase the MAX_EFFECTIVE_BALANCE * [EIP-7549](./eip-7549.md): Move committee index outside Attestation * [EIP-7623](./eip-7623.md): Increase calldata cost * [EIP-7685](./eip-7685.md): General purpose execution layer requests * [EIP-7691](./eip-7691.md): Blob throughput increase * [EIP-7702](./eip-7702.md): Set EOA account code * [EIP-7840](./eip-7840.md): Add blob schedule to EL config files ### Full Specifications #### Consensus Layer EIP-6110, EIP-7002 EIP-7251,
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Prague/Electra network upgrade, as well as links to full specification.
@@ -4802,7 +4802,7 @@ SUMMARY:
 Increases max attestation inclusion slot from `attestation.slot + SLOTS_PER_EPOCH` to the last slot of epoch `N+1` where `N` is the epoch containing the attestation slot. This increase is critical to the current LMD-GHOST security analysis as well as the confirmation rule.
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | | - | - | - | |`FORK_TIMESTAMP` | *TBD* | Mainnet | ### Execution layer This requires no changes to the Execution Layer. ### Consensus layer Specification changes are built into the Consensus Specs Deneb upgrade. The specification makes two minor changes to the state transition function: * Modify [`process_attestation`](https://github.com/ethereum/consensus-specs/blob/95f36d99cf4aa59974da06af24ef9a7c12d3c301/specs/deneb/beacon-chain.md#modified-process_attestation) to not have an upper bound on the slot check and instead define the inclusion range via the minimum slot as well as the target epoch being in either current or previous epoch. * Modify [`get_attestation_participation_flag_indices`](https://github.com/ethereum/consensus-specs/blob/95f36d99cf4aa59974da06af24ef9a7c12d3c301/specs/deneb/beacon-chain.md#modified-get_attestation_participation_flag_indices) to set
+### Constants | Name | Value | Comment | | - | - | - | |`FORK_TIMESTAMP` | `1710338135` | Mainnet | ### Execution layer This requires no changes to the Execution Layer. ### Consensus layer Specification changes are built into the Consensus Specs Deneb upgrade. The specification makes two minor changes to the state transition function: * Modify [`process_attestation`](https://github.com/ethereum/consensus-specs/blob/95f36d99cf4aa59974da06af24ef9a7c12d3c301/specs/deneb/beacon-chain.md#modified-process_attestation) to not have an upper bound on the slot check and instead define the inclusion range via the minimum slot as well as the target epoch being in either current or previous epoch. * Modify [`get_attestation_participation_flag_indices`](https://github.com/ethereum/consensus-specs/blob/95f36d99cf4aa59974da06af24ef9a7c12d3c301/specs/deneb/beacon-chain.md#modified-get_attestation_participation_flag_indices) to set
 
 MOTIVATION:
 Attestations can currently be included after some minimum delay (`1` slot on mainnet) up until `SLOTS_PER_EPOCH` slots after the slot the attestation was created in. This rolling window of one epoch was decided upon during Phase 0 because the equal inclusion window for any attestation was assessed as "fair". The alternative considered path was to allow inclusion during the current and next epoch which means attestations created during the start of an epoch have more potential slots of inclusion than those at the end of the epoch. Since this decision, it has become apparent that the alternative design
@@ -4919,7 +4919,7 @@ SUMMARY:
 Add functionality to efficiently perform operations over the BLS12-381 curve, including those for BLS signature verification. Along with the curve arithmetic, multi-scalar-multiplication operations are included to efficiently aggregate public keys or individual signer's signatures during BLS signature verification.
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | |---------------------|-------|--------------------| | BLS12_G1ADD | 0x0b | precompile address | | BLS12_G1MSM | 0x0c | precompile address | | BLS12_G2ADD | 0x0d | precompile address | | BLS12_G2MSM | 0x0e | precompile address | | BLS12_PAIRING_CHECK | 0x0f | precompile address | | BLS12_MAP_FP_TO_G1 | 0x10 | precompile address | | BLS12_MAP_FP2_TO_G2 | 0x11 | precompile address | We introduce *seven* separate precompiles to perform the following operations: - BLS12_G1ADD - to perform point addition in G1 (curve over base prime field) with a gas cost of `500` gas -
+### Constants | Name | Value | Comment | |---------------------|-------|--------------------| | BLS12_G1ADD | 0x0b | precompile address | | BLS12_G1MSM | 0x0c | precompile address | | BLS12_G2ADD | 0x0d | precompile address | | BLS12_G2MSM | 0x0e | precompile address | | BLS12_PAIRING_CHECK | 0x0f | precompile address | | BLS12_MAP_FP_TO_G1 | 0x10 | precompile address | | BLS12_MAP_FP2_TO_G2 | 0x11 | precompile address | We introduce *seven* separate precompiles to perform the following operations: - BLS12_G1ADD - to perform point addition in G1 (curve over base prime field) with a gas cost of `375` gas -
 
 MOTIVATION:
 The motivation of this precompile is to add a cryptographic primitive that allows to get 120+ bits of security for operations over pairing friendly curve compared to the existing BN254 precompile that only provides 80 bits of security.

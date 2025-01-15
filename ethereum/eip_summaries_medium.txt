@@ -1458,7 +1458,7 @@ RATIONALE:
 === EIP-7840 ===
 TITLE: Add blob schedule to EL config files
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-12-12
 REQUIRES: 
 
@@ -4802,7 +4802,7 @@ SUMMARY:
 Increases max attestation inclusion slot from `attestation.slot + SLOTS_PER_EPOCH` to the last slot of epoch `N+1` where `N` is the epoch containing the attestation slot. This increase is critical to the current LMD-GHOST security analysis as well as the confirmation rule.
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | | - | - | - | |`FORK_TIMESTAMP` | *TBD* | Mainnet | ### Execution layer This requires no changes to the Execution Layer. ### Consensus layer Specification changes are built into the Consensus Specs Deneb upgrade. The specification makes
+### Constants | Name | Value | Comment | | - | - | - | |`FORK_TIMESTAMP` | `1710338135` | Mainnet | ### Execution layer This requires no changes to the Execution Layer. ### Consensus layer Specification changes are built into the Consensus Specs Deneb upgrade. The specification makes
 
 MOTIVATION:
 Attestations can currently be included after some minimum delay (`1` slot on mainnet) up until `SLOTS_PER_EPOCH` slots after the slot the attestation was created in. This rolling window of one epoch was decided upon during Phase 0 because the equal inclusion window for any attestation was assessed as "fair".
