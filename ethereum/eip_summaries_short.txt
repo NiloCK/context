@@ -676,7 +676,7 @@ SPECIFICATION:
 The transaction-type (as specified in [EIP-2718](./eip-2718)) range from `0x40` to `0x7f` (inclusive of both) is reserved for use by the RIP process.
 
 MOTIVATION:
-For L2s to use new transactrion types, it is necessary to reserve an transaction-type range for use by the RIP process so as to
+For L2s to use new transactrion types, it is necessary to reserve a transaction-type range for use by the RIP process so as to
 
 RATIONALE:
 By reserving a transaction-type range for RIPs, it allows the RIP process to maintain its own registry of transaction types that are not (necessarily)

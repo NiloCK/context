@@ -676,7 +676,7 @@ SPECIFICATION:
 The transaction-type (as specified in [EIP-2718](./eip-2718)) range from `0x40` to `0x7f` (inclusive of both) is reserved for use by the RIP process.
 
 MOTIVATION:
-For L2s to use new transactrion types, it is necessary to reserve an transaction-type range for use by the RIP process so as to ensure there are no conflicts between transaction types used by RIPs and EIPs.
+For L2s to use new transactrion types, it is necessary to reserve a transaction-type range for use by the RIP process so as to ensure there are no conflicts between transaction types used by RIPs and EIPs.
 
 RATIONALE:
 By reserving a transaction-type range for RIPs, it allows the RIP process to maintain its own registry of transaction types that are not (necessarily) in use on L1 mainnet, the EIP process is then freed from having to maintain a registry of RIP tx-types while still having 64 tx-types
@@ -3402,7 +3402,7 @@ CREATED: 2020-01-19
 REQUIRES: 
 
 SUMMARY:
-_In proof-of-work blockchains, validators are known as miners._ The validator might want to execute functions directly, without having to sign a transaction. Some examples might be presenting a proof in a contract for an change which also benefits the validator. A notable example would be when a validator want
+_In proof-of-work blockchains, validators are known as miners._ The validator might want to execute functions directly, without having to sign a transaction. Some examples might be presenting a proof in a contract for a change which also benefits the validator. A notable example would be when a validator want
 
 SPECIFICATION:
 The calls to be executed by `block.coinbase` would be included first at block, and would consume normally the gas of block, however they won't pay/cost gas, instead the call logic would pay the validator in other form. Would be valid to execute any calls without a transaction by the
