@@ -8645,6 +8645,26 @@ RATIONALE:
 The rationale for the gas stations network design is a combination of two sets of requirements: Easy adoption, and robustness. For easy adoption, the
 
 
+=== ERC-7765 ===
+TITLE: Privileged Non-Fungible Tokens Tied To RWA
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-08-20
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This EIP defines an interface to carry a real world asset with some privileges that can be exercised by the holder of the corresponding
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+NFTs bound to real-world assets sometimes need to carry certain privileges that can be exercised by the holder. Users can initiate transactions onchain to
+
+RATIONALE:
+1. With the `PrivilegeExercised` event emitted onchain, we can determine that the user has confirmed the exercise of this privilege, so as to implement
+
+
 === ERC-7092 ===
 TITLE: Financial Bonds
 TYPE: Standards Track ERC

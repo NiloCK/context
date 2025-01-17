@@ -8645,6 +8645,26 @@ RATIONALE:
 The rationale for the gas stations network design is a combination of two sets of requirements: Easy adoption, and robustness. For easy adoption, the design goals are: * No network changes. * Minimal changes to contracts, apps and frameworks. The robustness requirement translates to decentralization and attack resistance. The gas stations network is decentralized, and we have to assume that any entity may attack other entities in the system. Specifically we've considered the following types of attacks: * Denial-of-service attacks against individual senders, i.e. transactions censorship. * Denial-of-service and financial attacks against individual relays. * Denial-of-service and financial
 
 
+=== ERC-7765 ===
+TITLE: Privileged Non-Fungible Tokens Tied To RWA
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-08-20
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This EIP defines an interface to carry a real world asset with some privileges that can be exercised by the holder of the corresponding NFT. The EIP standardizes the interface for non-fungible tokens representing real world assets with privileges to be exercised, such as products sold onchain which can be redeemed in the real world. And the privileges we describe here specifically refer to the rights and interests bound to the RWA NFT that can be executed by the holder in the real world.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. This standard inherits the [ERC-721](./eip-721.md) NFT token standard for all transfer and approval logic. All transfer and approval functions are inherited from this token standard without changes. Additionally, this standard also inherits the ERC-721 Metadata standards for name, symbol, and metadata URI lookup. Any compliant contract following this EIP **MUST** implement the following interface: ``` pragma solidity >=0.7.0 <0.9.0; /// @title ERC-7765 Privileged Non-Fungible
+
+MOTIVATION:
+NFTs bound to real-world assets sometimes need to carry certain privileges that can be exercised by the holder. Users can initiate transactions onchain to specify the exercise of a certain privilege, thereby achieving real-world privileges that directly map the onchain privilege through subsequent operations. For example, if a certain product such as a pair of shoes is sold onchain in the representation of NFT, the NFT holder can exercise the privilege of exchanging physical shoes offchain, to achieve the purpose of interoperability between the blockchain and the real world. Having a standard interface enables interoperability for services, clients,
+
+RATIONALE:
+1. With the `PrivilegeExercised` event emitted onchain, we can determine that the user has confirmed the exercise of this privilege, so as to implement the privilege in the real world. 2. We choose to include an address `_to` for functions `exercisePrivilege`, `isExercisable` and `isExercised` so that a specific privilege of an NFT MAY be exercised for someone who will benefit from it other than the NFT holder nor the transaction initiator. And This EIP doesn't assume who has the power to perform this action, it's totally decided by the developers who are using this standard. 3. We choose
+
+
 === ERC-7092 ===
 TITLE: Financial Bonds
 TYPE: Standards Track ERC
