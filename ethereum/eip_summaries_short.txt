@@ -1498,7 +1498,7 @@ This approach doesn't convert the state, which is left to a subsequent EIP. This
 === EIP-7713 ===
 TITLE: Box type for EIP-712 messages
 TYPE: Standards Track Interface
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-05-23
 REQUIRES: 712
 
