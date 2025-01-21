@@ -286,6 +286,26 @@ RATIONALE:
 This allows contracts to make calls that are clearly non-state-changing, reassuring developers and reviewers that re-entrancy bugs or other problems cannot possibly arise from
 
 
+=== EIP-7863 ===
+TITLE: Block-level Warming
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-01-15
+REQUIRES: 
+
+SUMMARY:
+This proposal introduces block-level address and storage key warming, allowing accessed addresses and storage keys to maintain their "warm" status throughout an entire block's
+
+SPECIFICATION:
+### Mechanics When a storage slot is accessed within a block: 1. The first access to a slot in a block incurs the cold
+
+MOTIVATION:
+Currently, the EVM's storage slot warming mechanism operates at the transaction level, requiring each transaction to "warm up" slots independently, even when accessing the
+
+RATIONALE:
+The proposal builds on several key observations: 1. **Caching Efficiency**: Modern Ethereum clients already implement sophisticated caching mechanisms at the block level. Extending address
+
+
 === EIP-7329 ===
 TITLE: ERC/EIP Repository split
 TYPE: Meta 
