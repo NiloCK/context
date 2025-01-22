@@ -1506,10 +1506,10 @@ SUMMARY:
 Add a new object to client configuration files `blobSchedule` which lists the target blob count per block and max blob count per block for each fork.
 
 SPECIFICATION:
-Extend the client configuration files with the object `blobSchedule` with the following shape: ```json "blobSchedule": { "cancun": { "target": 3, "max": 6 }, "prague": { "target": 6, "max": 9 } } ``` When there is no explicit configuration for the current fork, use the last specified fork value. If
+Extend client configuration files with the object `blobSchedule`, which has the following shape: ```json "blobSchedule": { "cancun": { "target": 3, "max": 6, "baseFeeUpdateFraction": 3338477 }, "prague": { "target": 6, "max": 9, "baseFeeUpdateFraction": 5007716 } } ``` Clients must configure the target, max and baseFeeUpdateFraction per-fork. The behavior when the
 
 MOTIVATION:
-- ensure there is a way to dynamically adjust the target and max blob counts per block - avoid complex handshake over engine API
+- ensure there is a way to dynamically adjust the target and max blob counts per block - ensure there is a way to dynamically adjust the blob base fee update fraction - avoid complex handshake over engine API
 
 RATIONALE:
 Although maintaining the target and max blob only in the consensus client is desirable, we acknowledge the reality that execution clients need these values for various activities. For example, the `eth_feeHistory` RPC method returns a field `blobGasUsedRatio` that does require the max, even though the core protocol doesn't specifically

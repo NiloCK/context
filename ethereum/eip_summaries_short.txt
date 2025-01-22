@@ -1506,10 +1506,10 @@ SUMMARY:
 Add a new object to client configuration files `blobSchedule` which lists the target blob count per block and max blob count per block for
 
 SPECIFICATION:
-Extend the client configuration files with the object `blobSchedule` with the following shape: ```json "blobSchedule": { "cancun": { "target": 3, "max": 6 }, "prague":
+Extend client configuration files with the object `blobSchedule`, which has the following shape: ```json "blobSchedule": { "cancun": { "target": 3, "max": 6, "baseFeeUpdateFraction": 3338477
 
 MOTIVATION:
-- ensure there is a way to dynamically adjust the target and max blob counts per block - avoid complex handshake over engine API
+- ensure there is a way to dynamically adjust the target and max blob counts per block - ensure there is a way to
 
 RATIONALE:
 Although maintaining the target and max blob only in the consensus client is desirable, we acknowledge the reality that execution clients need these values

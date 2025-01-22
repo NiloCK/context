@@ -1506,13 +1506,13 @@ SUMMARY:
 Add a new object to client configuration files `blobSchedule` which lists the target blob count per block and max blob count per block for each fork.
 
 SPECIFICATION:
-Extend the client configuration files with the object `blobSchedule` with the following shape: ```json "blobSchedule": { "cancun": { "target": 3, "max": 6 }, "prague": { "target": 6, "max": 9 } } ``` When there is no explicit configuration for the current fork, use the last specified fork value. If no last value is specified, set both to zero.
+Extend client configuration files with the object `blobSchedule`, which has the following shape: ```json "blobSchedule": { "cancun": { "target": 3, "max": 6, "baseFeeUpdateFraction": 3338477 }, "prague": { "target": 6, "max": 9, "baseFeeUpdateFraction": 5007716 } } ``` Clients must configure the target, max and baseFeeUpdateFraction per-fork. The behavior when the configuration is missing or incomplete for a fork is undefined. Clients are free to choose how to handle this situation.
 
 MOTIVATION:
-- ensure there is a way to dynamically adjust the target and max blob counts per block - avoid complex handshake over engine API
+- ensure there is a way to dynamically adjust the target and max blob counts per block - ensure there is a way to dynamically adjust the blob base fee update fraction - avoid complex handshake over engine API
 
 RATIONALE:
-Although maintaining the target and max blob only in the consensus client is desirable, we acknowledge the reality that execution clients need these values for various activities. For example, the `eth_feeHistory` RPC method returns a field `blobGasUsedRatio` that does require the max, even though the core protocol doesn't specifically need such value. Passing this value over the engine API every block seem overkill so we believe a configuration value is a good middle ground.
+Although maintaining the target and max blob only in the consensus client is desirable, we acknowledge the reality that execution clients need these values for various activities. For example, the `eth_feeHistory` RPC method returns a field `blobGasUsedRatio` that does require the max, even though the core protocol doesn't specifically need such value. Passing this value over the engine API every block seem overkill so we believe a configuration value is a good middle ground. Additionally, the `baseFeeUpdateFraction` parameter was added to adjust the responsiveness of blob gas pricing per fork.
 
 
 === EIP-7612 ===
@@ -2702,7 +2702,7 @@ SUMMARY:
 Increases the number of blobs in a block to provide more scale to Ethereum via L2 solution that rely on L1 data capacity.
 
 SPECIFICATION:
-### Parameters | Constant | Value | |------------------------------------------|---------------------| | `MAX_BLOBS_PER_BLOCK_ELECTRA` | `9` | | `TARGET_BLOBS_PER_BLOCK_ELECTRA` | `6` | | `MAX_BLOB_GAS_PER_BLOCK` | `1179648` | | `TARGET_BLOB_GAS_PER_BLOCK` | `786432` | | `BLOB_BASE_FEE_UPDATE_FRACTION_PRAGUE` | `5007716` | `MAX_BLOBS_PER_BLOCK_ELECTRA` and `TARGET_BLOBS_PER_BLOCK_ELECTRA` are consumed by the consensus layer clients, and starting at `PECTRA_FORK_EPOCH` replace the respective old max and target values. `MAX_BLOB_GAS_PER_BLOCK`, `TARGET_BLOB_GAS_PER_BLOCK` and `BLOB_BASE_FEE_UPDATE_FRACTION_PRAGUE` are consumed by the execution layer clients, and starting at the epoch when this EIP is activated, replace the old max, target and update fraction values.
+### Parameters | Constant | Value | |------------------------------------------|---------------------| | `MAX_BLOBS_PER_BLOCK_ELECTRA` | `9` | | `TARGET_BLOBS_PER_BLOCK_ELECTRA` | `6` | | `MAX_BLOB_GAS_PER_BLOCK` | `1179648` | | `TARGET_BLOB_GAS_PER_BLOCK` | `786432` | | `BLOB_BASE_FEE_UPDATE_FRACTION_PRAGUE` | `5007716` | `MAX_BLOBS_PER_BLOCK_ELECTRA` and `TARGET_BLOBS_PER_BLOCK_ELECTRA` are consumed by the consensus layer clients, and starting at `PECTRA_FORK_EPOCH` replace the respective old max and target values. `MAX_BLOB_GAS_PER_BLOCK`, `TARGET_BLOB_GAS_PER_BLOCK` and `BLOB_BASE_FEE_UPDATE_FRACTION_PRAGUE` are consumed by the execution layer clients, and starting at the epoch when this EIP is activated, replace the old max, target and update fraction values. Any references to `MAX_BLOB_GAS_PER_BLOCK` and `TARGET_BLOB_GAS_PER_BLOCK` in [EIP-4844](./eip-4844.md) should be updated to the
 
 MOTIVATION:
 Ethereum, with its rollup centric roadmap, scales by relying on L2. Since the Dencun fork, the blob gas target and maximum was set to 3/6 respectively. The blob gas limit was arrived at based on a series of big block tests performed on the Ethereum mainnet network as well as a series of testnets. The values were chosen cautiously, as it's extremely hard to predict the exact p2p behaviour of Ethereum mainnet. As we now have the Dencun upgrade live, we are able to use monitoring tools to check the network health. Initial monitoring indicates that we have
