@@ -4024,20 +4024,20 @@ I want to address the rationale for the intention of the Iceage and the implemen
 
 
 === EIP-7761 ===
-TITLE: HASCODE instruction
+TITLE: EXTCODETYPE instruction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-09-01
 REQUIRES: 3, 5, 4, 0, ,,  , 7, 6, 9, 2
 
 SUMMARY:
-Allow EOF contracts to discriminate between EOAs (Externally Owned Accounts) and contract accounts by introducing an `HASCODE` instruction.
+Allow EOF contracts to discriminate between EOAs (Externally Owned Accounts) and contract accounts by introducing an `EXTCODETYPE` instruction.
 
 SPECIFICATION:
-### Parameters | Constant | Value | | - | - | | `FORK_BLKNUM` | tbd | | `GAS_COLD_ACCOUNT_ACCESS` | Defined as `2600` in
+### Parameters | Constant | Value | |---------------------------|--------------------------------------------------------------------| | `FORK_BLKNUM` | tbd | | `GAS_COLD_ACCOUNT_ACCESS` | Defined as `2600` in the [Ethereum Execution Layer
 
 MOTIVATION:
-EOFv1 as scoped in [EIP-7692](./eip-7692.md) removes code introspection capabilities from the EVM, including the `EXTCODESIZE` instruction (in [EIP-3540](./eip-3540.md)). This makes it hard for [ERC-721](./eip-721.md)
+EOFv1 as scoped in [EIP-7692] removes code introspection capabilities from the EVM, including the `EXTCODESIZE` instruction (in [EIP-3540]). This makes it hard for [ERC-721]
 
 RATIONALE:
 ### Alternative solutions There have been other solutions proposed to alleviate the problems related to lack of code introspection required for ERC-721 and ERC-1155

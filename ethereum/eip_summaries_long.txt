@@ -4024,23 +4024,23 @@ I want to address the rationale for the intention of the Iceage and the implemen
 
 
 === EIP-7761 ===
-TITLE: HASCODE instruction
+TITLE: EXTCODETYPE instruction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-09-01
 REQUIRES: 3, 5, 4, 0, ,,  , 7, 6, 9, 2
 
 SUMMARY:
-Allow EOF contracts to discriminate between EOAs (Externally Owned Accounts) and contract accounts by introducing an `HASCODE` instruction.
+Allow EOF contracts to discriminate between EOAs (Externally Owned Accounts) and contract accounts by introducing an `EXTCODETYPE` instruction.
 
 SPECIFICATION:
-### Parameters | Constant | Value | | - | - | | `FORK_BLKNUM` | tbd | | `GAS_COLD_ACCOUNT_ACCESS` | Defined as `2600` in the [Ethereum Execution Layer Specs](https://github.com/ethereum/execution-specs/blob/fcd12750edd4443a91f138728689a1d0a503a7c1/src/ethereum/cancun/vm/gas.py#L64) | | `GAS_WARM_ACCESS` | Defined as `100` in the [Ethereum Execution Layer Specs](https://github.com/ethereum/execution-specs/blob/fcd12750edd4443a91f138728689a1d0a503a7c1/src/ethereum/cancun/vm/gas.py#L65) | We introduce a new EOFv1 instruction on the block number `FORK_BLKNUM`: `HASCODE` (`0xe9`) EOF code which contains this instruction before `FORK_BLKNUM` is considered invalid. Beginning with block `FORK_BLKNUM` `0xe9` is added to the set of valid EOFv1 instructions. ### Execution Semantics #### `HASCODE` - deduct `GAS_WARM_ACCESS` gas - pop 1 argument `target_address` from the stack
+### Parameters | Constant | Value | |---------------------------|--------------------------------------------------------------------| | `FORK_BLKNUM` | tbd | | `GAS_COLD_ACCOUNT_ACCESS` | Defined as `2600` in the [Ethereum Execution Layer Spec Constants] | | `GAS_WARM_ACCESS` | Defined as `100` in the [Ethereum Execution Layer Spec Constants] | | `TYPE_NONE` | 0 | | `TYPE_LEGACY_CONTRACT` | 1 | | `TYPE_EOF_CONTRACT` | 2 | We introduce a new EOFv1 instruction on the block number `FORK_BLKNUM`: `EXTCODETYPE` (`0xe9`) EOF code which contains this instruction before `FORK_BLKNUM` is considered invalid. Beginning with block `FORK_BLKNUM` `0xe9` is added to the set of valid EOFv1 instructions. ### Execution Semantics ####
 
 MOTIVATION:
-EOFv1 as scoped in [EIP-7692](./eip-7692.md) removes code introspection capabilities from the EVM, including the `EXTCODESIZE` instruction (in [EIP-3540](./eip-3540.md)). This makes it hard for [ERC-721](./eip-721.md) and [ERC-1155](./eip-1155.md) standard contracts to be implemented, as they rely on discovering whether a token's `safeTransfer` call target was an EOA or a contract account: - `safeTransfers` to EOAs succeed - `safeTransfers` to contract accounts call an `onERC721Received` (`onERC1155Received`) on them and expect to get a special magic return value, otherwise the transfer reverts (on the assumption that such a receipient may not be able to interact with the token) `HASCODE` is aimed to
+EOFv1 as scoped in [EIP-7692] removes code introspection capabilities from the EVM, including the `EXTCODESIZE` instruction (in [EIP-3540]). This makes it hard for [ERC-721] and [ERC-1155] standard contracts to be implemented, as they rely on discovering whether a token's `safeTransfer` call target was an EOA or a contract account: - `safeTransfers` to EOAs succeed - `safeTransfers` to contract accounts call an `onERC721Received` (`onERC1155Received`) on them and expect to get a special magic return value, otherwise the transfer reverts (on the assumption that such a recipient may not be able to interact with the token) Application and library developers
 
 RATIONALE:
-### Alternative solutions There have been other solutions proposed to alleviate the problems related to lack of code introspection required for ERC-721 and ERC-1155 standards: 1. Extra status code for `EXT*CALL` instruction - allowing to discriminate a result coming from calling an EOA 2. Extra argument for `EXT*CALL` (a "fail if EOA" flag) 3. Two return values from `EXT*CALL` (status code + whether it was EOA) 4. `EXT*CALL` setting a new `callstatus` register (+ a new `CALLSTATUS` instruction) 5. Reenable `EXTCODESIZE` in EOF, keeping its behavior same as in legacy `HASCODE` has been chosen as the most elegant
+### Alternative solutions There have been other solutions proposed to alleviate the problems related to lack of code introspection required for ERC-721 and ERC-1155 standards: 1. Extra status code for `EXT*CALL` instruction - allowing to discriminate a result coming from calling an EOA 2. Extra argument for `EXT*CALL` (a "fail if EOA" flag) 3. Two return values from `EXT*CALL` (status code + whether it was EOA) 4. `EXT*CALL` setting a new `callstatus` register (+ a new `CALLSTATUS` instruction) 5. Re-enable `EXTCODESIZE` in EOF, keeping its behavior same as in legacy `EXTCODETYPE` has been chosen as the most elegant
 
 
 === EIP-2937 ===
