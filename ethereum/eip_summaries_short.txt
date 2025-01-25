@@ -5246,7 +5246,7 @@ SUMMARY:
 Move the committee `index` field outside of the signed Attestation message to allow aggregation of equal consensus votes.
 
 SPECIFICATION:
-### Execution layer This requires no changes to the Execution Layer. ### Consensus layer - Set `index` field from `AttestationData` to fixed value of
+### Execution layer This requires no changes to the Execution Layer. ### Consensus layer - Set `index` field from `AttestationData` to a fixed value
 
 MOTIVATION:
 This proposal aims to make Casper FFG clients more efficient by reducing the average number of pairings needed to verify consensus rules. While all

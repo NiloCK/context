@@ -5246,13 +5246,13 @@ SUMMARY:
 Move the committee `index` field outside of the signed Attestation message to allow aggregation of equal consensus votes.
 
 SPECIFICATION:
-### Execution layer This requires no changes to the Execution Layer. ### Consensus layer - Set `index` field from `AttestationData` to fixed value of zero - Move committee indexing data to the outter `Attestation` container with `committee_bits` - Increase the capacity of `aggregation_bits` to all committees in a slot
+### Execution layer This requires no changes to the Execution Layer. ### Consensus layer - Set `index` field from `AttestationData` to a fixed value of zero - Move committee indexing data to the outer `Attestation` container with `committee_bits` - Increase the capacity of `aggregation_bits` to all committees in a
 
 MOTIVATION:
 This proposal aims to make Casper FFG clients more efficient by reducing the average number of pairings needed to verify consensus rules. While all types of clients can benefit from this EIP, ZK circuits proving Casper FFG consensus are likely to have the most impact. On a beacon chain
 
 RATIONALE:
-### Deprecation strategy The `index` field in `AttestationData` can be deprecated by: 1. Removing the field 2. Preserving the field and setting it to be zero 3. Changing the field type to Optional (from [EIP-7495](./eip-7495.md) StableContainer) This EIP chooses the second option to not complicate the inclusion of `AttesterSlashing`
+### Deprecation strategy The `index` field in `AttestationData` can be deprecated by: 1. Removing the field 2. Preserving the field and setting it to zero 3. Changing the field type to Optional (from [EIP-7495](./eip-7495.md) StableContainer) This EIP chooses the second option to not complicate the inclusion of `AttesterSlashing` objects.
 
 
 === EIP-7790 ===
