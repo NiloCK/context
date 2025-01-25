@@ -2371,7 +2371,7 @@ RATIONALE:
 === EIP-1898 ===
 TITLE: Add `blockHash` to defaultBlock methods
 TYPE: Standards Track Interface
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2019-04-01
 REQUIRES: 234
 
