@@ -940,7 +940,7 @@ This interface is designed to be extremely lightweight and compatible with any e
 === ERC-7818 ===
 TITLE: Expirable ERC-20
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-11-13
 REQUIRES: 20
 
@@ -2462,7 +2462,7 @@ RATIONALE:
 === ERC-7734 ===
 TITLE: Decentralized Identity Verification (DID)
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-06-26
 REQUIRES: 
 
@@ -3363,7 +3363,7 @@ RATIONALE:
 === ERC-7820 ===
 TITLE: Access Control Registry
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-11-19
 REQUIRES: 
 
@@ -5618,7 +5618,7 @@ This model is intended to facilitate easy implementation. Here are some of the p
 === ERC-7578 ===
 TITLE: Physical Asset Redemption
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-08-01
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
@@ -6531,7 +6531,7 @@ The intent from individual technical decisions made during the development of **
 === ERC-7208 ===
 TITLE: On-Chain Data Containers
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-06-09
 REQUIRES: 165
 
@@ -9191,7 +9191,7 @@ This standard seeks to optimize gas consumption by minimizing the frequency of e
 === ERC-7744 ===
 TITLE: Code Index
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-07-16
 REQUIRES: 
 

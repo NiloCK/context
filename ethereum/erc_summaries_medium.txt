@@ -940,7 +940,7 @@ This interface is designed to be extremely lightweight and compatible with any e
 === ERC-7818 ===
 TITLE: Expirable ERC-20
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-11-13
 REQUIRES: 20
 
@@ -2462,7 +2462,7 @@ RATIONALE:
 === ERC-7734 ===
 TITLE: Decentralized Identity Verification (DID)
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-06-26
 REQUIRES: 
 
@@ -3363,7 +3363,7 @@ RATIONALE:
 === ERC-7820 ===
 TITLE: Access Control Registry
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-11-19
 REQUIRES: 
 
@@ -5618,7 +5618,7 @@ This model is intended to facilitate easy implementation. Here are some of the p
 === ERC-7578 ===
 TITLE: Physical Asset Redemption
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-08-01
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
@@ -6531,7 +6531,7 @@ The intent from individual technical decisions made during the development of **
 === ERC-7208 ===
 TITLE: On-Chain Data Containers
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-06-09
 REQUIRES: 165
 
@@ -9191,7 +9191,7 @@ This standard seeks to optimize gas consumption by minimizing the frequency of e
 === ERC-7744 ===
 TITLE: Code Index
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-07-16
 REQUIRES: 
 
@@ -9199,7 +9199,7 @@ SUMMARY:
 This EIP defines a standard interface for indexing smart contracts on Ethereum by their bytecode hash. This enables trustless discovery and verification of contract code, facilitating use cases like bytecode signing, whitelisting, and decentralized distribution mechanisms.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity =0.8.20; interface ICodeIndex { event Indexed(address indexed container, bytes32
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity 0.8.28; interface IERC7744 { event Indexed(address indexed container, bytes32
 
 MOTIVATION:
 Existing contract discovery relies on addresses, which are non-deterministic and can be obfuscated through proxies. Indexing by bytecode hash provides a deterministic and tamper-proof way to identify and verify contract code, enhancing security and trust in the Ethereum ecosystem. Consider a security auditor who wants to attest to the
