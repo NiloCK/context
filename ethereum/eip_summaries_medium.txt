@@ -1934,7 +1934,7 @@ These limits have been: - proposed by [EVMC] - implemented partially by certain 
 === EIP-4750 ===
 TITLE: EOF - Functions
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2022-01-10
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 5, 4, 5, 0
 
@@ -2134,7 +2134,7 @@ RATIONALE:
 === EIP-7707 ===
 TITLE: Incentivize Access List Provisioning
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-05-12
 REQUIRES: 2930
 
