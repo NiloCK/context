@@ -2468,7 +2468,7 @@ The rationale at EIP-1959 applies here as well too : - An opcode is better than 
 === EIP-7830 ===
 TITLE: Contract size limit increase for EOF
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-29
 REQUIRES: 1, 7, 0, ,,  , 3, 5, 4, 0, ,,  , 3, 8, 6, 0
 
@@ -2476,7 +2476,7 @@ SUMMARY:
 Revise the contract size limit for EOF contracts to be 64 KiB instead of the existing 24 KiB limit. Legacy contracts are unaffected.
 
 SPECIFICATION:
-[EIP-170](./eip-170.md) specifies `MAX_CODE_SIZE` as 24576 bytes, and [EIP-3860](./eip-3860.md) specifies `MAX_INITCODE_SIZE` as `2 * MAX_CODE_SIZE` (49152 bytes). <!-- TODO: if profiling analysis shows we need to charge more for EOF analysis, this is where we can specify it. Either globally or for 0xef00 contracs --> Starting `FORK_BLOCK`, for EOF initcode/code
+[EIP-170](./eip-170.md) specifies `MAX_CODE_SIZE` as 24576 bytes, and [EIP-3860](./eip-3860.md) specifies `MAX_INITCODE_SIZE` as `2 * MAX_CODE_SIZE` (49152 bytes). Starting `FORK_BLOCK`, for EOF initcode/code (code starting with the `0xEF 0x00` bytes) the limit is changed:`MAX_CODE_SIZE` is set to 65536 bytes (64 KiB). This means `MAX_INITCODE_SIZE` becomes 131072 bytes (128 KiB).
 
 MOTIVATION:
 The contract size limit was introduced as a measure against DoS attacks. `JUMPDEST`-analysis is required for legacy contracts, and many of the algorithms performing it are not linear and/or have unknown unknowns. This is one of the reasons for the hesitance of a limit increase. For contract developers the
@@ -4706,6 +4706,26 @@ Many instructions expect offsets as inputs, which in a number of cases are zero.
 
 RATIONALE:
 ### Gas cost The `base` gas cost is used for instructions which place constant values onto the stack, such as `ADDRESS`, `ORIGIN`, and so forth. ### Opcode `0x5f` means it is in a "contiguous" space with the rest of the `PUSH` implementations and potentially could share the implementation.
+
+
+=== EIP-7862 ===
+TITLE: Delayed Execution Layer State Root
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-12-23
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes that, for each block `n`, the `state_root` in block `n`'s `ExecutionPayload` references the **post-state of block `n-1`**. As a result, block `n` no longer needs to compute & include or verify the post state root for block `n`. This removes the expensive state root computation from
+
+SPECIFICATION:
+### Execution Layer Changes 1. **`ExecutionPayload` State Root Field** - **Before** (in the current post-Merge design): ```solidity struct ExecutionPayload { uint256 blockNumber; uint256 timestamp; bytes32 parentHash; address feeRecipient; bytes32 stateRoot; // references the post-state root of *this* block's transactions } ``` - **After** (conceptual): ```solidity struct ExecutionPayload { uint256
+
+MOTIVATION:
+Currently, every Ethereum block includes two `state_root`. The consensus layer (CL) `state_root` contained within the `BeaconBlock` tracks CL state (e.g., validator entries and exits). The execution layer (EL) `state_root` contained within the `ExecutionPayload` tracks the effect of transaction execution (e.g., account balances, code, etc.). The EL `state_root` must be
+
+RATIONALE:
+1. **Reduce Latency at the Tip** - Proposers and builders no longer must compute and finalize the new state root within the same slot. - This speeds up block validation, as validators can sign after checking the execution of the block and that its pre-state root matches their pre-computed
 
 
 === EIP-3529 ===
