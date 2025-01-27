@@ -2821,7 +2821,7 @@ MOTIVATION:
 The new precompile aims to improve support for encrypted mempools. In order to be secure, the validity of encrypted mempool transactions should be tied to the inclusion of all transactions by a proposer in the correct slot, and following the ordering rules. If these rules are not enshrined as
 
 RATIONALE:
-### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than an opcode gives L2s flexibility to decide whether to implement it.
+### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than an opcode gives L2s flexibility to decide whether to implement it. ### ZK-VM proving The TXINDEX precompile should not increase the complexity of proving EVM
 
 
 === EIP-7642 ===
