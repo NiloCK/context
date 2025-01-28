@@ -2622,7 +2622,7 @@ It was considered that two prefix bytes rather than one would be adequate for re
 === EIP-7823 ===
 TITLE: Set upper bounds for MODEXP
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-11
 REQUIRES: 198
 
