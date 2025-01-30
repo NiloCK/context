@@ -3311,7 +3311,7 @@ SUMMARY:
 Increases the constant `MAX_EFFECTIVE_BALANCE`, while keeping the minimum staking balance `32 ETH`. This permits large node operators to consolidate into fewer validators while also allowing solo-stakers to earn compounding rewards and stake in more flexible increments.
 
 SPECIFICATION:
-### Constants #### Execution layer | Name | Value | Comment | | - | - | - | | `CONSOLIDATION_REQUEST_TYPE` | `0x02` | The [EIP-7685](./eip-7685.md) type prefix for consolidation request | | `CONSOLIDATION_REQUEST_PREDEPLOY_ADDRESS` | `0x00431F263cE400f4455c2dCf564e53007Ca4bbBb` | Where to call and store relevant details about consolidation request mechanism |
+### Constants #### Execution layer | Name | Value | Comment | | - | - | - | | `CONSOLIDATION_REQUEST_TYPE` | `0x02` | The [EIP-7685](./eip-7685.md) type prefix for consolidation request | | `CONSOLIDATION_REQUEST_PREDEPLOY_ADDRESS` | `0x0000BBdDc7CE488642fb579F8B00f3a590007251` | Where to call and store relevant details about consolidation request mechanism |
 
 MOTIVATION:
 As of October 3, 2023, there are currently over 830,000 validators participating in the consensus layer. The size of this set continues to grow due, in part, to the `MAX_EFFECTIVE_BALANCE`, which limits the stake of a single validator to `32 ETH`. This leads to large amounts of "redundant validators",
@@ -4079,7 +4079,7 @@ SUMMARY:
 Store last `HISTORY_SERVE_WINDOW` historical block hashes in the storage of a system contract as part of the block processing logic. Furthermore this EIP has no impact on `BLOCKHASH` resolution mechanism (and hence its range/costs etc).
 
 SPECIFICATION:
-| Parameter | Value | | - | - | | `BLOCKHASH_SERVE_WINDOW` | `256` | | `HISTORY_SERVE_WINDOW` | `8191` | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | | `HISTORY_STORAGE_ADDRESS` | `0x0F792be4B0c0cb4DAE440Ef133E90C0eCD48CCCC` | This EIP specifies for storing last `HISTORY_SERVE_WINDOW` block hashes in a ring buffer storage of `HISTORY_SERVE_WINDOW` length. Note that
+| Parameter | Value | | - | - | | `BLOCKHASH_SERVE_WINDOW` | `256` | | `HISTORY_SERVE_WINDOW` | `8191` | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | | `HISTORY_STORAGE_ADDRESS` | `0x0000F90827F1C53a10cb7A02335B175320002935` | This EIP specifies for storing last `HISTORY_SERVE_WINDOW` block hashes in a ring buffer storage of `HISTORY_SERVE_WINDOW` length. Note that
 
 MOTIVATION:
 EVM implicitly assumes the client has the recent block (hashes) at hand. This assumption is not future-proof given the prospect of stateless clients. Including the block hashes in the state will allow bundling these hashes in the witness provided to a stateless client. This is already possible in the
@@ -7821,7 +7821,7 @@ SUMMARY:
 Adds a new mechanism to allow validators to trigger withdrawals and exits from their execution layer (0x01) withdrawal credentials. These new execution layer exit messages are appended to the execution layer block and then processed by the consensus layer.
 
 SPECIFICATION:
-### Configuration | Name | Value | Comment | | - | - | - | | `WITHDRAWAL_REQUEST_PREDEPLOY_ADDRESS` | `0x0c15F14308530b7CDB8460094BbB9cC28b9AaaAA` | Where to call and store relevant details about exit / partial withdrawal mechanism | | `WITHDRAWAL_REQUEST_TYPE` | `0x01` | The [EIP-7685](./eip-7685.md) type prefix for withdrawal request | |
+### Configuration | Name | Value | Comment | | - | - | - | | `WITHDRAWAL_REQUEST_PREDEPLOY_ADDRESS` | `0x00000961Ef480Eb55e80D19ad83579A64c007002` | Where to call and store relevant details about exit / partial withdrawal mechanism | | `WITHDRAWAL_REQUEST_TYPE` | `0x01` | The [EIP-7685](./eip-7685.md) type prefix for withdrawal request | |
 
 MOTIVATION:
 Validators have two keys -- an active key and a withdrawal credential. The active key takes the form of a BLS key, whereas the withdrawal credential can either be a BLS key (0x00) or an execution layer address (0x01). The active key is "hot", actively signing and performing validator
