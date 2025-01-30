@@ -9365,6 +9365,26 @@ RATIONALE:
 If all tokens in a contract are soulbound by default, `isSoulbound(uint256 id)` should return true by default during implementation.
 
 
+=== ERC-7795 ===
+TITLE: Wallet Call Token Capabilities
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-10-22
+REQUIRES: 2, 0, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 5, 7, 9, 2
+
+SUMMARY:
+This ERC extends [EIP-5792](./eip-5792.md) by defining capabilities that allow dApps to specify common token prerequisites for transactions, such as having certain [ERC-20](./eip-20.md), [ERC-721](./eip-721.md), or
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+It is fairly common for dApps to reside only on one network, but this comes at the cost of shrinking the direct liquidity that
+
+RATIONALE:
+This ERC extends [EIP-5792](./eip-5792.md) rather than defining new RPC methods because: 1. **Consistency**: Leverages existing capability discovery mechanism 2. **Composability**: Requirements can be combined
+
+
 === ERC-3475 ===
 TITLE: Abstract Storage Bonds
 TYPE: Standards Track ERC
