@@ -7893,7 +7893,7 @@ RATIONALE:
 === EIP-7727 ===
 TITLE: EVM Transaction Bundles
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-06-24
 REQUIRES: 2718
 
