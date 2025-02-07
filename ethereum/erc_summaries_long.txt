@@ -2710,6 +2710,26 @@ RATIONALE:
 To achieve a one-to-one mapping from the name to the NOA, where each NOA's address is derived from the name node, we must include the name node information in each NOA to reflect its name node ownership. The "name()" function can be used to retrieve this property of each NOA and enable reverse tracking to its name node. The "nameService()" function can get the name service contract address where the name is registered, to perform behaviors such as validation checks. Through these two methods, the NOA has the ability to track back to its actual owner who owns
 
 
+=== ERC-7812 ===
+TITLE: ZK Identity Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-08
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces an on-chain registry system for storing and proving abstract statements. Users may utilize the system to store commitments to their private data to later prove its validity and authenticity via zero knowledge, without disclosing anything about the data itself. Moreover, developers may use the singleton `EvidenceRegistry` contract available at `0x<TODO>` <!-- TODO --> to integrate custom business-specific registrars for managing and processing particular statements.
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Definitions - A "Sparse Merkle Tree (SMT)" is a special Merkle tree that works by deterministically and idempotently storing key/value pairs in the given locations leveraging a hash function. The Poseidon hash function is often used to optimize the compatibility with ZK. - A "statement" is an accepted structured representation of some abstract evidence. A statement can range from a simple `string` to a Merkle root of some SMT.
+
+MOTIVATION:
+This EIP stemmed from the need to localize and unravel the storage and issuance of provable statements so that future protocols can anchor to the standardized singleton on-chain registry and benefit from cross-reuse. The aggregation of provable statements significantly improves reusability, portability, and security of the abundance of zero knowledge privacy-oriented solutions. The abstract specification of the registry allows custom indentity-based, reputation-based, proof-of-attendance-based, etc., protocols to be implemented with little to minimal constraints. The given proposal lays the important foundation for specific solution to build upon. The more concrete specifications of statements and commitments structures are expected to
+
+RATIONALE:
+During the EIP specification we have considered two approaches: where every protocol has its own registry and where all protocols are united under a singleton registry. We have decided to go with the latter as this approach provides the following benefits: 1. Cross-chain portability. Only a single `bytes32` value (the SMT root) has to be sent cross-chain to be able to prove the state of the registry. 2. Centralization of trust. Users only need to trust a single, permissionaless, immutable smart contract. 3. Integration streamline. The singleton design formalizes the system interface, the hash function, and the overall
+
+
 === ERC-1386 ===
 TITLE: Attestation management contract
 TYPE: Standards Track ERC

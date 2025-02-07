@@ -2710,6 +2710,26 @@ RATIONALE:
 To achieve a one-to-one mapping from the name to the NOA, where each NOA's address is derived from the name node, we must include
 
 
+=== ERC-7812 ===
+TITLE: ZK Identity Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-08
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces an on-chain registry system for storing and proving abstract statements. Users may utilize the system to store commitments to their private
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as
+
+MOTIVATION:
+This EIP stemmed from the need to localize and unravel the storage and issuance of provable statements so that future protocols can anchor to
+
+RATIONALE:
+During the EIP specification we have considered two approaches: where every protocol has its own registry and where all protocols are united under a
+
+
 === ERC-1386 ===
 TITLE: Attestation management contract
 TYPE: Standards Track ERC

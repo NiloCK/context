@@ -2710,6 +2710,26 @@ RATIONALE:
 To achieve a one-to-one mapping from the name to the NOA, where each NOA's address is derived from the name node, we must include the name node information in each NOA to reflect its name node ownership. The "name()" function can be used to retrieve this property of each
 
 
+=== ERC-7812 ===
+TITLE: ZK Identity Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-08
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces an on-chain registry system for storing and proving abstract statements. Users may utilize the system to store commitments to their private data to later prove its validity and authenticity via zero knowledge, without disclosing anything about the data itself. Moreover, developers may use the singleton `EvidenceRegistry`
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Definitions - A "Sparse Merkle Tree (SMT)" is a special Merkle tree that works by deterministically and idempotently storing key/value
+
+MOTIVATION:
+This EIP stemmed from the need to localize and unravel the storage and issuance of provable statements so that future protocols can anchor to the standardized singleton on-chain registry and benefit from cross-reuse. The aggregation of provable statements significantly improves reusability, portability, and security of the abundance of zero
+
+RATIONALE:
+During the EIP specification we have considered two approaches: where every protocol has its own registry and where all protocols are united under a singleton registry. We have decided to go with the latter as this approach provides the following benefits: 1. Cross-chain portability. Only a single `bytes32` value
+
+
 === ERC-1386 ===
 TITLE: Attestation management contract
 TYPE: Standards Track ERC
