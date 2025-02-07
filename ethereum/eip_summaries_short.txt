@@ -3097,7 +3097,7 @@ MOTIVATION:
 Validator deposits are a core component of the proof-of-stake consensus mechanism. This EIP allows for an in-protocol mechanism of deposit processing on the Consensus
 
 RATIONALE:
-### `index` field The `index` field may appear unnecessary but it is important information for deposit processing flow on the Consensus Layer. ### Not
+### `index` field Deposit `index` is required to initialize `deposit_requests_start_index` in the `BeaconState`. ### Not limiting the size of deposit operations list The list
 
 
 === EIP-6963 ===
