@@ -632,7 +632,7 @@ RATIONALE:
 === ERC-7627 ===
 TITLE: Secure Messaging Protocol
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-02-19
 REQUIRES: 
 
