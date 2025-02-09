@@ -2653,6 +2653,26 @@ RATIONALE:
 This standard differs from [ERC-6150](./eip-6150.md) in mainly two aspects: supporting cross-contract token reference, and allowing multiple parents. But we try to keep the naming consistent overall. In addition, we didn't include `child` relation in the interface. An original NFT exists before its derivative NFTs. Therefore we know what parent tokens to include when minting derivative NFTs, but we wouldn't know the children tokens when minting the original NFT. If we have to record the children, that means whenever we mint a derivative NFT, we need to call on its original NFT to add it as a child. However,
 
 
+=== ERC-7837 ===
+TITLE: Diffusive Tokens
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-12-07
+REQUIRES: 
+
+SUMMARY:
+This ERC proposes a standard for a new type of fungible token, called **Diffusive Tokens (DIFF)**. Unlike traditional [ERC-20](./eip-20.md) tokens, transferring DIFF tokens does not decrease the sender’s balance. Instead, it *mints* new tokens directly to the recipient, increasing the total supply on every transfer action. A fixed native currency fee is charged per token transferred, and this fee is paid by the sender to the contract owner. The supply growth is limited by a maximum supply set by the owner. Token holders can also burn their tokens to reduce the total supply. These features enable a controlled,
+
+SPECIFICATION:
+### Terminology - **Diffusive Token**: A fungible token unit that is minted on transfers. - **Max Supply**: The maximum total supply the token can reach. - **Transfer Fee**: A fee in native blockchain currency (e.g., ETH) that must be paid by the sender for each token transferred. The total fee = `transferFee * amount`. - **Burn**: The action of destroying tokens, reducing both the holder’s balance and the total supply. ### Data Structures - **Total Supply and Max Supply**: ```solidity uint256 public totalSupply; uint256 public maxSupply; ``` - **Transfer Fee**: ```solidity uint256 public transferFee; // fee per token
+
+MOTIVATION:
+Traditional [ERC-20](./eip-20.md) tokens maintain a constant total supply and simply redistribute balances on transfers. While this model is widespread, certain use cases benefit from a token design that continuously expands supply during transfers, simulating a controlled "diffusion" of value. The Diffusive Token model may be suitable for representing claims on real-world goods (e.g., a product batch like iPhone 15 units), digital goods, or controlled asset distributions where initial token distribution and ongoing availability need to be managed differently. This model also includes a native currency fee per token transferred, incentivizing careful, value-driven transfers and providing a revenue stream
+
+RATIONALE:
+**Design Decisions**: - **Unlimited Minting vs. Max Supply**: Allowing minting on every transfer provides a “diffusive” spread of tokens. The `maxSupply` prevents uncontrolled inflation. - **Burn Mechanism**: Enables redemption or deflation as tokens are taken out of circulation. - **Owner Controls**: The owner (e.g., issuer) can adjust fees and max supply, maintaining flexibility as market conditions change.
+
+
 === ERC-5334 ===
 TITLE: EIP-721 User And Expires And Level Extension
 TYPE: Standards Track ERC
@@ -8181,7 +8201,7 @@ The specs are currently very similar to what is implemented by ChainLink (which 
 === ERC-7743 ===
 TITLE: Multi-Owner Non-Fungible Tokens (MO-NFT)
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-07-13
 REQUIRES: 
 
@@ -8189,7 +8209,7 @@ SUMMARY:
 This ERC proposes a new standard for non-fungible tokens (NFTs) that supports multiple owners. The MO-NFT standard allows a single NFT to have multiple owners, reflecting the shared and distributable nature of digital assets. This model incorporates mechanisms for provider-defined transfer fees and ownership burning, enabling flexible and collaborative ownership structures. It maintains compatibility with the existing [ERC-721](./eip-721.md) standard to ensure interoperability with current tools and platforms.
 
 SPECIFICATION:
-### Data Structures - **Owners Mapping**: A mapping from `tokenId` to an enumerable set of owner addresses. ```solidity mapping(uint256 => EnumerableSet.AddressSet) internal _owners; ``` - **Balances Mapping**: A mapping from owner addresses to the number of tokens they own. ```solidity mapping(address => uint256) private _balances; ``` - **Providers Mapping**: A mapping from `tokenId` to the provider's address. ```solidity mapping(uint256 => address) private _providers; ``` - **Transfer Values Mapping**: A mapping from `tokenId` to the `transferValue` fee. ```solidity mapping(uint256 => uint256) private _transferValues; ``` ### Token Creation and Ownership Model 1. **Minting**: - The function `mintToken()` allows the creation
+### Token Creation and Ownership Model 1. **Minting**: - The function `mintToken()` allows the creation of a new MO-NFT. The caller becomes both the initial owner and the provider of the token. ```solidity function mintToken() public onlyOwner returns (uint256); ``` - A new `tokenId` is generated, and the caller is added to the owners set and recorded as the provider. The `balanceOf` the caller is incremented. 2. **Ownership List**: - The MO-NFT maintains a list of owners for each token. Owners are stored in an enumerable set to prevent duplicates and allow efficient lookup. 3. **Provider Role**: -
 
 MOTIVATION:
 Traditional NFTs enforce a single-ownership model, which does not align with the inherent duplicability and collaborative potential of digital assets. MO-NFTs allow for shared ownership, promoting wider distribution and collaboration while maintaining secure access control. The inclusion of provider fees and ownership burning enhances the utility and flexibility of NFTs in representing digital assets and services.
@@ -8486,7 +8506,7 @@ We are now thinking about a building block as a smart contract with an encapsula
 === ERC-7750 ===
 TITLE: Decentralized Employment System
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-08-04
 REQUIRES: 
 

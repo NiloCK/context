@@ -2653,6 +2653,26 @@ RATIONALE:
 This standard differs from [ERC-6150](./eip-6150.md) in mainly two aspects: supporting cross-contract token reference, and allowing multiple parents. But we try to keep the naming
 
 
+=== ERC-7837 ===
+TITLE: Diffusive Tokens
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-12-07
+REQUIRES: 
+
+SUMMARY:
+This ERC proposes a standard for a new type of fungible token, called **Diffusive Tokens (DIFF)**. Unlike traditional [ERC-20](./eip-20.md) tokens, transferring DIFF tokens does
+
+SPECIFICATION:
+### Terminology - **Diffusive Token**: A fungible token unit that is minted on transfers. - **Max Supply**: The maximum total supply the token can
+
+MOTIVATION:
+Traditional [ERC-20](./eip-20.md) tokens maintain a constant total supply and simply redistribute balances on transfers. While this model is widespread, certain use cases benefit from
+
+RATIONALE:
+**Design Decisions**: - **Unlimited Minting vs. Max Supply**: Allowing minting on every transfer provides a “diffusive” spread of tokens. The `maxSupply` prevents uncontrolled inflation.
+
+
 === ERC-5334 ===
 TITLE: EIP-721 User And Expires And Level Extension
 TYPE: Standards Track ERC
@@ -8181,7 +8201,7 @@ The specs are currently very similar to what is implemented by ChainLink (which 
 === ERC-7743 ===
 TITLE: Multi-Owner Non-Fungible Tokens (MO-NFT)
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-07-13
 REQUIRES: 
 
@@ -8189,7 +8209,7 @@ SUMMARY:
 This ERC proposes a new standard for non-fungible tokens (NFTs) that supports multiple owners. The MO-NFT standard allows a single NFT to have multiple
 
 SPECIFICATION:
-### Data Structures - **Owners Mapping**: A mapping from `tokenId` to an enumerable set of owner addresses. ```solidity mapping(uint256 => EnumerableSet.AddressSet) internal _owners; ```
+### Token Creation and Ownership Model 1. **Minting**: - The function `mintToken()` allows the creation of a new MO-NFT. The caller becomes both the
 
 MOTIVATION:
 Traditional NFTs enforce a single-ownership model, which does not align with the inherent duplicability and collaborative potential of digital assets. MO-NFTs allow for shared
@@ -8486,7 +8506,7 @@ We are now thinking about a building block as a smart contract with an encapsula
 === ERC-7750 ===
 TITLE: Decentralized Employment System
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-08-04
 REQUIRES: 
 
