@@ -2960,7 +2960,7 @@ CREATED: 2023-02-08
 REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) receipts to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md)
+This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) receipts to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md)
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -3488,7 +3488,7 @@ CREATED: 2023-02-24
 REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 6
 
 SUMMARY:
-This EIP defines a signature scheme for native [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md) encoded transactions.
+This EIP defines a signature scheme for native [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) encoded transactions.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -3514,7 +3514,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Ethereum's consensus data structures make heavy use of [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md) `Container`, which defines how they are serialized and merkleized. The merkleization scheme allows
+Ethereum's consensus data structures make heavy use of [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) `Container`, which defines how they are serialized and merkleized. The merkleization scheme allows
 
 RATIONALE:
 ### Best timing? Applying this EIP breaks `hash_tree_root` and Merkle tree verifiers a single time, while promising forward compatibility from the fork going forward.
@@ -4283,7 +4283,7 @@ CREATED: 2023-08-18
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces two new [Simple Serialize (SSZ) types](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/ssz/simple-serialize.md) to enable forward-compatible containers. A `StableContainer[N]` extends an SSZ `Container` with stable merkleization and forward-compatible
+This EIP introduces two new [Simple Serialize (SSZ) types](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) to enable forward-compatible containers. A `StableContainer[N]` extends an SSZ `Container` with stable merkleization and forward-compatible
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -7698,7 +7698,7 @@ CREATED: 2023-02-08
 REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 0, 4
 
 SUMMARY:
-This EIP defines a migration process of the existing Merkle-Patricia Trie (MPT) commitment for withdrawals to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md).
+This EIP defines a migration process of the existing Merkle-Patricia Trie (MPT) commitment for withdrawals to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -7718,7 +7718,7 @@ CREATED: 2023-01-30
 REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 5, 7, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) transactions to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md).
+This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) transactions to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to

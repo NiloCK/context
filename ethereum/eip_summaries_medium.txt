@@ -2960,7 +2960,7 @@ CREATED: 2023-02-08
 REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) receipts to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md)
+This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) receipts to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md)
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Existing definitions Definitions from existing specifications that are used throughout this document are replicated
@@ -3488,7 +3488,7 @@ CREATED: 2023-02-24
 REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 6
 
 SUMMARY:
-This EIP defines a signature scheme for native [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md) encoded transactions.
+This EIP defines a signature scheme for native [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) encoded transactions.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Transaction signature scheme Native SSZ transactions are based on the `TransactionPayload` and `Transaction` types
@@ -3514,7 +3514,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Conversion procedure For each converted data structure, a new fork agnostic `StableContainer` type `B`
 
 MOTIVATION:
-Ethereum's consensus data structures make heavy use of [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md) `Container`, which defines how they are serialized and merkleized. The merkleization scheme allows application implementations to verify that individual fields (and partial fields) have not been tampered with. This is useful, for example, in smart contracts of decentralized
+Ethereum's consensus data structures make heavy use of [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) `Container`, which defines how they are serialized and merkleized. The merkleization scheme allows application implementations to verify that individual fields (and partial fields) have not been tampered with. This is useful, for example, in smart contracts of decentralized
 
 RATIONALE:
 ### Best timing? Applying this EIP breaks `hash_tree_root` and Merkle tree verifiers a single time, while promising forward compatibility from the fork going forward. It is best to apply it before merkleization would be broken by different changes. Merkleization is broken by a `Container` reaching a new power of
@@ -3611,7 +3611,7 @@ SUMMARY:
 The current calldata pricing permits EL payloads of up to 7.15 MB, while the average size is much smaller at around 100 KB. This EIP proposes adjusting the calldata cost to reduce the maximum possible block size and its variance without negatively impacting regular users. This is achieved by
 
 SPECIFICATION:
-| Parameter | Value | |------------------------------|-------| | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `10` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`. Let `isContractCreation` be a boolean indicating the respective event. Let `execution_gas_used` be the gas used for EVM execution with the gas refund subtracted. The current
+| Parameter | Value | |------------------------------|-------| | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `10` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`. Let `isContractCreation` be a boolean indicating the respective event. Let `execution_gas_used` be the gas used for EVM execution with the gas refund subtracted. Let `INITCODE_WORD_COST`
 
 MOTIVATION:
 The block gas limit has not been increased since [EIP-1559](./eip-1559.md), while the average size of blocks has continuously increased due to the growing number of rollups posting data to Ethereum. Moreover, calldata costs have remained unchanged since [EIP-2028](./eip-2028). [EIP-4844](./eip-4844.md) introduces blobs as a preferred method for data availability (DA).
@@ -4283,7 +4283,7 @@ CREATED: 2023-08-18
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces two new [Simple Serialize (SSZ) types](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/ssz/simple-serialize.md) to enable forward-compatible containers. A `StableContainer[N]` extends an SSZ `Container` with stable merkleization and forward-compatible serialization even when individual fields are deprecated or new fields are introduced in the future. Furthermore, `Profile[B]` is introduced to support specialized sub-types of `StableContainer[N]`
+This EIP introduces two new [Simple Serialize (SSZ) types](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) to enable forward-compatible containers. A `StableContainer[N]` extends an SSZ `Container` with stable merkleization and forward-compatible serialization even when individual fields are deprecated or new fields are introduced in the future. Furthermore, `Profile[B]` is introduced to support specialized sub-types of `StableContainer[N]`
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. **Note:** In this document, `Optional[T]` exclusively refers to Python's `typing.Optional`. Specifically, `Optional[T]` is NOT an
@@ -7698,7 +7698,7 @@ CREATED: 2023-02-08
 REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 0, 4
 
 SUMMARY:
-This EIP defines a migration process of the existing Merkle-Patricia Trie (MPT) commitment for withdrawals to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md).
+This EIP defines a migration process of the existing Merkle-Patricia Trie (MPT) commitment for withdrawals to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Existing definitions Definitions from existing specifications that are used throughout this document are replicated
@@ -7718,7 +7718,7 @@ CREATED: 2023-01-30
 REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 5, 7, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) transactions to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md).
+This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) transactions to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Existing definitions Definitions from existing specifications that are used throughout this document are replicated
