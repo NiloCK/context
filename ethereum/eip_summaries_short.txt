@@ -4842,7 +4842,7 @@ MOTIVATION:
 [EIP-7702](./eip-7702) enables EOAs to gain smart contract capabilities, but the private key of the EOA still retains full control over the account. With this
 
 RATIONALE:
-### Using a precompiled contract Alternative methods for deactivating and reactivating EOA private keys include: - Adding a new transaction type: Introducing a new
+### Cost of Precompiled Contract The `PRECOMPILE_GAS_COST` represents the gas required to validate and potentially update an account's code. A fair cost for calling
 
 
 === EIP-3143 ===
