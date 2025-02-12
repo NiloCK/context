@@ -4071,7 +4071,7 @@ REQUIRES:
 === EIP-2935 ===
 TITLE: Serve historical block hashes from state
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2020-09-03
 REQUIRES: 
 
