@@ -3335,7 +3335,7 @@ SUMMARY:
 This EIP proposes to add a new precompile that returns the corresponding slot number for the current block.
 
 SPECIFICATION:
-If `block.timestamp >= TBD` a new precompiled contract `SLOT` shall be created at address `TBD`. `SLOT` returns as output the current slot number as an 8 byte ulong in big endian encoding. ### Gas Cost The gas cost for `SLOT` is a fixed fee of `2`. ### RPC changes
+If `block.timestamp >= TBD` a new precompiled contract `SLOT` shall be created at address `TBD`. `SLOT` returns as output the current slot number as an 8-byte uint64 in big-endian encoding. ### Gas Cost The gas cost for `SLOT` is a fixed fee of `2`. ### RPC changes The slot
 
 MOTIVATION:
 It is currently possible to calculate the slot number from the block timestamp. However, this requires hardcoding the chain slot length into a smart contract. This would require the contract code to be changed in the event of a future change to slot length. A better approach is for
