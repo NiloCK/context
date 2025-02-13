@@ -72,6 +72,26 @@ RATIONALE:
 This would provide a way to send transactions that work on Ethereum without working on ETC or the Morden testnet. ETC is encouraged to adopt this EIP but replacing `CHAIN_ID` with a different value, and all future testnets, consortium chains and alt-etherea are encouraged to adopt this EIP replacing
 
 
+=== EIP-7877 ===
+TITLE: Enhanced RETURN opcodes
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-01-31
+REQUIRES: 6, ,,  , 1, 1, 5, 3, ,,  , 3, 8, 5, 5
+
+SUMMARY:
+This EIP specifies a series of new `RETURN` opcodes which allow the user to specify which data location to return from instead of defaulting to returning from memory.
+
+SPECIFICATION:
+This EIP introduces 3 new opcodes as well as renaming/aliasing an existing one. ``` SRETURN (0xf6) TRETURN (0xf7) RRETURN (0xf8) RETURN -> MRETURN (0xf3) ``` The `MRETURN` opcode is a rename of `RETURN`, whereby sequential bytes in memory are returned. It will operate exactly as it currenty does as
+
+MOTIVATION:
+With the introduction of transient storage, many smart contracts have begun to store data using the new transient opcodes to optimize for gas usage, whereby a callback involves returning the data previously stored transiently. However, the current `RETURN` opcode only allows for returning sequential bytes in memory. This requires
+
+RATIONALE:
+Allowing for more targeted return opcodes allows for saving gas at all levels of smart contract optimization by eliminating the intermediate steps of first writing any data to memory before returning. In events where this data may be large, this can result in significant gas savings. These opcodes can
+
+
 === EIP-234 ===
 TITLE: Add `blockHash` to JSON-RPC filter options.
 TYPE: Standards Track Interface
@@ -1465,7 +1485,7 @@ Even if `IMPERSONATECALL` requires hashing 3 words, implying an additional cost 
 === EIP-7723 ===
 TITLE: Network Upgrade Inclusion Stages
 TYPE: Meta 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-06-12
 REQUIRES: 
 
@@ -2094,7 +2114,7 @@ This will delay the ice age by 29 million seconds (approximately 12 months), so 
 === EIP-2537 ===
 TITLE: Precompile for BLS12-381 curve operations
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2020-02-21
 REQUIRES: 
 
@@ -4566,7 +4586,7 @@ RATIONALE:
 === EIP-7691 ===
 TITLE: Blob throughput increase
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-04-17
 REQUIRES: 
 
@@ -5575,7 +5595,7 @@ RATIONALE:
 === EIP-7623 ===
 TITLE: Increase calldata cost
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-02-13
 REQUIRES: 
 
