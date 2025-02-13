@@ -886,6 +886,26 @@ RATIONALE:
 ### `MAX_PER_EPOCH_CHURN_LIMIT` value Depending on the specific constant selection the churn can _decrease_ at the activation fork epoch. The Beacon chain spec can handle this without issues. During 2023 Q4 (projected Dencun activation) the churn value will range 14-16. The table below compares the projected validator set assuming a continuous full deposit queue. #### `MAX_PER_EPOCH_CHURN_LIMIT` activation date: Dec 01, 2023 | Max Churn Limit | 50% ETH staked | 75% ETH staked | 100% ETH staked | |------------------:|:-----------------|:-----------------|:------------------| | inf | May 28, 2024 | Sep 25, 2024 | Dec 18, 2024 | | 16 | Jul 23,
 
 
+=== EIP-7873 ===
+TITLE: EOF - TXCREATE and InitcodeTransaction type
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-01-31
+REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 3, 8, 6, 0, ,,  , 7, 6, 2, 0
+
+SUMMARY:
+EVM Object Format (EOF) removes the possibility to create contracts using creation transactions (with an empty `to` field), `CREATE` or `CREATE2` instructions. We introduce a new instruction: `TXCREATE`, as well as a new transaction type (`InitcodeTransaction`), to provide a way to create contracts using EOF containers in transaction data.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | | - | - | | `INITCODE_TX_TYPE` | `Bytes1(0x05)` | | `MAX_INITCODE_COUNT` | `256` | | `CREATOR_CONTRACT_ADDRESS` | tbd | | `CREATOR_CONTRACT_BYTECODE` | tbd | | `TX_CREATE_COST` | Defined as `32000` in the [Ethereum Execution Layer Specs](https://github.com/ethereum/execution-specs/blob/0f9e4345b60d36c23fffaa69f70cf9cdb975f4ba/src/ethereum/shanghai/fork_types.py#L42) | | `STACK_DEPTH_LIMIT` | Defined as `1024` in the [Ethereum Execution Layer Specs](https://github.com/ethereum/execution-specs/blob/0f9e4345b60d36c23fffaa69f70cf9cdb975f4ba/src/ethereum/shanghai/vm/interpreter.py#L60) | | `GAS_CODE_DEPOSIT` | Defined as `200`
+
+MOTIVATION:
+This EIP uses terminology from the [EIP-3540](./eip-3540.md) which introduces the EOF format. Creation transaction and creation instructions `CREATE` and `CREATE2` are means provided by legacy EVM to deploy new code, but per requirement of removing code observability, they are not allowed to deploy EOF code. To allow Externally Owned Accounts (EOAs) to deploy EOF contrats, there must be a way to create EOF contracts using bytecode delivered in transaction data. Additionally, the new instruction and transaction type introduced in this EIP enable contracts to create other contracts using initcode from the transaction data, which in legacy EVM is
+
+RATIONALE:
+### `TXCREATE` failure modes `TXCREATE` has two "light" failure modes in case the initcontainer is not present and in case the EOF validation is unsuccessful. An alternative design where both cases led to a "hard" failure (consuming the entire gas available) was considered. We decided to have the more granular and forgiving failure modes in order to align the gas costs incurred to the actual work the EVM performs. ### Creator Contract EOF contract creation requires a predeployed Creator Contract to be introduced, because neither legacy contracts nor create transactions can deploy EOF code to bootstrap. The alternative
+
+
 === EIP-7793 ===
 TITLE: TXINDEX precompile
 TYPE: Standards Track Core
@@ -2476,7 +2496,7 @@ The curve has 80 bits of security (whereas MNT6 has 120 bits) which might not be
 === EIP-6110 ===
 TITLE: Supply validator deposits on chain
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2022-12-09
 REQUIRES: 7685
 
@@ -2490,7 +2510,7 @@ MOTIVATION:
 Validator deposits are a core component of the proof-of-stake consensus mechanism. This EIP allows for an in-protocol mechanism of deposit processing on the Consensus Layer and eliminates the proposer voting mechanism utilized currently. This proposed mechanism relaxes safety assumptions and reduces complexity of client software design, contributing to the security of the deposits flow. It also improves validator UX. Advantages of in-protocol deposit processing consist of but are not limit to the following: * Significant increase of deposits security by supplanting proposer voting. With the proposed in-protocol mechanism, an honest online node can't be convinced to process fake
 
 RATIONALE:
-### `index` field Deposit `index` is required to initialize `deposit_requests_start_index` in the `BeaconState`. ### Not limiting the size of deposit operations list The list is unbounded because of negligible data complexity and absence of potential DoS vectors. See [Security Considerations](#security-considerations) for more details. ### Filtering events only by `DEPOSIT_CONTRACT_ADDRESS` Deposit contract does not emit any events except for `DepositEvent`, thus additional filtering is unnecessary.
+### `index` field Deposit `index` is used to deteministically initialize `deposit_requests_start_index` in the `BeaconState`, this prevents same deposit from being applied twice during `Eth1Data` poll deprecation. ### Not limiting the size of deposit operations list The list is unbounded because of negligible data complexity and absence of potential DoS vectors. See [Security Considerations](#security-considerations) for more details. ### Filtering events only by `DEPOSIT_CONTRACT_ADDRESS` Deposit contract does not emit any events except for `DepositEvent`, thus additional filtering is unnecessary.
 
 
 === EIP-2936 ===
@@ -7408,7 +7428,7 @@ RATIONALE:
 === EIP-7002 ===
 TITLE: Execution layer triggerable withdrawals
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-05-09
 REQUIRES: 7685
 
@@ -7422,7 +7442,7 @@ MOTIVATION:
 Validators have two keys -- an active key and a withdrawal credential. The active key takes the form of a BLS key, whereas the withdrawal credential can either be a BLS key (0x00) or an execution layer address (0x01). The active key is "hot", actively signing and performing validator duties, whereas the withdrawal credential can remain "cold", only performing limited operations in relation to withdrawing and ownership of the staked ETH. Due to this security relationship, the withdrawal credential ultimately is the key that owns the staked ETH and any rewards. As currently specified, only the active key
 
 RATIONALE:
-### `validator_pubkey` field Multiple validators can utilize the same execution layer withdrawal credential, thus the `validator_pubkey` field is utilized to disambiguate which validator is being exited. Note, `validator_index` also disambiguates validators. ### Message queue The contract maintains and in-state queue of withdrawal request messages to be dequeued each block into the block and thus into the execution layer. The number of withdrawal requests that can be passed into the consensus layer are bound by `MAX_WITHDRAWAL_REQUESTS_PER_BLOCK` to bound the load both on the block size as well as on the consensus layer processing. `16` has been chosen for `MAX_WITHDRAWAL_REQUESTS_PER_BLOCK`
+### `validator_pubkey` field Multiple validators can utilize the same execution layer withdrawal credential, thus the `validator_pubkey` field is utilized to disambiguate which validator is being exited. Note, `validator_index` also disambiguates validators. The problem is that smart contracts of some staking pools are not aware of the indices, because the index becomes known only after validator has been created on the beacon chain, while the pubkey is available in advance. ### Message queue The contract maintains an in-state queue of withdrawal request messages to be dequeued each block into the block and thus into the execution layer. The number
 
 
 === EIP-7709 ===
@@ -7833,7 +7853,7 @@ This proposal is intended to protect legitimate validator mnemonic holders where
 === EIP-7685 ===
 TITLE: General purpose execution layer requests
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-04-14
 REQUIRES: 
 
@@ -7841,7 +7861,7 @@ SUMMARY:
 This proposal defines a general purpose framework for storing contract-triggered requests. It extends the execution header with a single field to store the request information. Requests are later on exposed to the consensus layer, which then processes each one.
 
 SPECIFICATION:
-### Execution Layer #### Requests A `requests` object consists of a `request_type` prepended to an opaque byte array `request_data`. The `request_data` contains zero or more encoded request objects. ``` requests = request_type ++ request_data ``` Each request type will defines its own `requests` object with its own `request_data` format. #### Block Header Extend the header with a new 32 byte commitment value `requests_hash`. While processing a block, multiple `requests` objects with different `request_type`s will be produced by the system, and accumulated in the block requests list. In order to compute the commitment, an intermediate hash list is first
+### Execution Layer #### Requests A `requests` object consists of a `request_type` byte prepended to an opaque byte array `request_data`. The `request_data` contains zero or more encoded request objects. ``` requests = request_type ++ request_data ``` Each request type will define its own `requests` object with its own `request_data` format. #### Block Header Extend the header with a new 32 byte commitment value `requests_hash`. While processing a block, multiple `requests` objects with different `request_type`s will be produced by the system, and accumulated in the block requests list. In order to compute the commitment, an intermediate hash list is
 
 MOTIVATION:
 The proliferation of smart contract controlled validators has caused there to be a demand for additional EL triggered behaviors. By allowing these systems to delegate administrative operations to their governing smart contracts, they can avoid intermediaries needing to step in and ensure certain operations occur. This creates a safer system for end users. By abstracting each individual request details from the EL, adding new request types is simpler and does not require an update on the execution block structure.

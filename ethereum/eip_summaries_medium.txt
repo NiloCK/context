@@ -886,6 +886,26 @@ RATIONALE:
 ### `MAX_PER_EPOCH_CHURN_LIMIT` value Depending on the specific constant selection the churn can _decrease_ at the activation fork epoch. The Beacon chain spec can handle this without issues. During 2023 Q4 (projected Dencun activation) the churn value will range 14-16. The table below compares the projected validator set assuming a
 
 
+=== EIP-7873 ===
+TITLE: EOF - TXCREATE and InitcodeTransaction type
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-01-31
+REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 3, 8, 6, 0, ,,  , 7, 6, 2, 0
+
+SUMMARY:
+EVM Object Format (EOF) removes the possibility to create contracts using creation transactions (with an empty `to` field), `CREATE` or `CREATE2` instructions. We introduce a new instruction: `TXCREATE`, as well as a new transaction type (`InitcodeTransaction`), to provide a way to create contracts using EOF containers in transaction data.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | | - | - | | `INITCODE_TX_TYPE` |
+
+MOTIVATION:
+This EIP uses terminology from the [EIP-3540](./eip-3540.md) which introduces the EOF format. Creation transaction and creation instructions `CREATE` and `CREATE2` are means provided by legacy EVM to deploy new code, but per requirement of removing code observability, they are not allowed to deploy EOF code. To allow Externally Owned
+
+RATIONALE:
+### `TXCREATE` failure modes `TXCREATE` has two "light" failure modes in case the initcontainer is not present and in case the EOF validation is unsuccessful. An alternative design where both cases led to a "hard" failure (consuming the entire gas available) was considered. We decided to have the more
+
+
 === EIP-7793 ===
 TITLE: TXINDEX precompile
 TYPE: Standards Track Core
@@ -2476,7 +2496,7 @@ The curve has 80 bits of security (whereas MNT6 has 120 bits) which might not be
 === EIP-6110 ===
 TITLE: Supply validator deposits on chain
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2022-12-09
 REQUIRES: 7685
 
@@ -2490,7 +2510,7 @@ MOTIVATION:
 Validator deposits are a core component of the proof-of-stake consensus mechanism. This EIP allows for an in-protocol mechanism of deposit processing on the Consensus Layer and eliminates the proposer voting mechanism utilized currently. This proposed mechanism relaxes safety assumptions and reduces complexity of client software design, contributing to the
 
 RATIONALE:
-### `index` field Deposit `index` is required to initialize `deposit_requests_start_index` in the `BeaconState`. ### Not limiting the size of deposit operations list The list is unbounded because of negligible data complexity and absence of potential DoS vectors. See [Security Considerations](#security-considerations) for more details. ### Filtering events only by `DEPOSIT_CONTRACT_ADDRESS`
+### `index` field Deposit `index` is used to deteministically initialize `deposit_requests_start_index` in the `BeaconState`, this prevents same deposit from being applied twice during `Eth1Data` poll deprecation. ### Not limiting the size of deposit operations list The list is unbounded because of negligible data complexity and absence of potential DoS
 
 
 === EIP-2936 ===
@@ -7408,7 +7428,7 @@ RATIONALE:
 === EIP-7002 ===
 TITLE: Execution layer triggerable withdrawals
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-05-09
 REQUIRES: 7685
 
@@ -7422,7 +7442,7 @@ MOTIVATION:
 Validators have two keys -- an active key and a withdrawal credential. The active key takes the form of a BLS key, whereas the withdrawal credential can either be a BLS key (0x00) or an execution layer address (0x01). The active key is "hot", actively signing and performing validator
 
 RATIONALE:
-### `validator_pubkey` field Multiple validators can utilize the same execution layer withdrawal credential, thus the `validator_pubkey` field is utilized to disambiguate which validator is being exited. Note, `validator_index` also disambiguates validators. ### Message queue The contract maintains and in-state queue of withdrawal request messages to be dequeued each block
+### `validator_pubkey` field Multiple validators can utilize the same execution layer withdrawal credential, thus the `validator_pubkey` field is utilized to disambiguate which validator is being exited. Note, `validator_index` also disambiguates validators. The problem is that smart contracts of some staking pools are not aware of the indices, because the
 
 
 === EIP-7709 ===
@@ -7833,7 +7853,7 @@ This proposal is intended to protect legitimate validator mnemonic holders where
 === EIP-7685 ===
 TITLE: General purpose execution layer requests
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-04-14
 REQUIRES: 
 
@@ -7841,7 +7861,7 @@ SUMMARY:
 This proposal defines a general purpose framework for storing contract-triggered requests. It extends the execution header with a single field to store the request information. Requests are later on exposed to the consensus layer, which then processes each one.
 
 SPECIFICATION:
-### Execution Layer #### Requests A `requests` object consists of a `request_type` prepended to an opaque byte array `request_data`. The `request_data` contains zero or more encoded request objects. ``` requests = request_type ++ request_data ``` Each request type will defines its own `requests` object with its own `request_data` format.
+### Execution Layer #### Requests A `requests` object consists of a `request_type` byte prepended to an opaque byte array `request_data`. The `request_data` contains zero or more encoded request objects. ``` requests = request_type ++ request_data ``` Each request type will define its own `requests` object with its own `request_data`
 
 MOTIVATION:
 The proliferation of smart contract controlled validators has caused there to be a demand for additional EL triggered behaviors. By allowing these systems to delegate administrative operations to their governing smart contracts, they can avoid intermediaries needing to step in and ensure certain operations occur. This creates a safer

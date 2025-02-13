@@ -886,6 +886,26 @@ RATIONALE:
 ### `MAX_PER_EPOCH_CHURN_LIMIT` value Depending on the specific constant selection the churn can _decrease_ at the activation fork epoch. The Beacon chain spec can handle
 
 
+=== EIP-7873 ===
+TITLE: EOF - TXCREATE and InitcodeTransaction type
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-01-31
+REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 3, 8, 6, 0, ,,  , 7, 6, 2, 0
+
+SUMMARY:
+EVM Object Format (EOF) removes the possibility to create contracts using creation transactions (with an empty `to` field), `CREATE` or `CREATE2` instructions. We introduce
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+This EIP uses terminology from the [EIP-3540](./eip-3540.md) which introduces the EOF format. Creation transaction and creation instructions `CREATE` and `CREATE2` are means provided by
+
+RATIONALE:
+### `TXCREATE` failure modes `TXCREATE` has two "light" failure modes in case the initcontainer is not present and in case the EOF validation is
+
+
 === EIP-7793 ===
 TITLE: TXINDEX precompile
 TYPE: Standards Track Core
@@ -2476,7 +2496,7 @@ The curve has 80 bits of security (whereas MNT6 has 120 bits) which might not be
 === EIP-6110 ===
 TITLE: Supply validator deposits on chain
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2022-12-09
 REQUIRES: 7685
 
@@ -2490,7 +2510,7 @@ MOTIVATION:
 Validator deposits are a core component of the proof-of-stake consensus mechanism. This EIP allows for an in-protocol mechanism of deposit processing on the Consensus
 
 RATIONALE:
-### `index` field Deposit `index` is required to initialize `deposit_requests_start_index` in the `BeaconState`. ### Not limiting the size of deposit operations list The list
+### `index` field Deposit `index` is used to deteministically initialize `deposit_requests_start_index` in the `BeaconState`, this prevents same deposit from being applied twice during `Eth1Data`
 
 
 === EIP-2936 ===
@@ -7408,7 +7428,7 @@ RATIONALE:
 === EIP-7002 ===
 TITLE: Execution layer triggerable withdrawals
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-05-09
 REQUIRES: 7685
 
@@ -7833,7 +7853,7 @@ This proposal is intended to protect legitimate validator mnemonic holders where
 === EIP-7685 ===
 TITLE: General purpose execution layer requests
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-04-14
 REQUIRES: 
 
@@ -7841,7 +7861,7 @@ SUMMARY:
 This proposal defines a general purpose framework for storing contract-triggered requests. It extends the execution header with a single field to store the request
 
 SPECIFICATION:
-### Execution Layer #### Requests A `requests` object consists of a `request_type` prepended to an opaque byte array `request_data`. The `request_data` contains zero or
+### Execution Layer #### Requests A `requests` object consists of a `request_type` byte prepended to an opaque byte array `request_data`. The `request_data` contains zero
 
 MOTIVATION:
 The proliferation of smart contract controlled validators has caused there to be a demand for additional EL triggered behaviors. By allowing these systems to
