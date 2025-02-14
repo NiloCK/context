@@ -132,7 +132,7 @@ RATIONALE:
 === EIP-7251 ===
 TITLE: Increase the MAX_EFFECTIVE_BALANCE
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-06-28
 REQUIRES: 7, 0, 0, 2, ,,  , 7, 6, 8, 5
 
@@ -146,7 +146,7 @@ MOTIVATION:
 As of October 3, 2023, there are currently over 830,000 validators participating in the consensus layer. The size of this set continues to grow due, in part, to the `MAX_EFFECTIVE_BALANCE`, which limits the stake of a single validator to `32 ETH`. This leads to large amounts of "redundant validators", which are controlled by a single entity, possibly running on the same beacon node, but with distinct BLS signing keys. The limit on the `MAX_EFFECTIVE_BALANCE` is technical debt from the original sharding design, in which subcommittees (not the attesting committee but the committee calculated in `is_aggregator`) needed to be
 
 RATIONALE:
-This EIP aims to reduce the total number of validators without changing anything about the economic security of the protocol. It provides a mechanism by which large node operators who control significant amounts of stake can consolidate into fewer validators. We analyze the reasoning behind each of the core features. 1. ***Increasing the `MAX_EFFECTIVE_BALANCE`, while creating a `MIN_ACTIVATION_BALANCE`.*** * *While increasing the `MAX_EFFECTIVE_BALANCE` to allow larger-stake validators, it is important to keep the lower bound of `32 ETH` (by introducing a new constant – `MIN_ACTIVATION_BALANCE`) to encourage solo-staking.* 2. ***Allowing for multiple validator indices to be combined through
+This EIP aims to reduce the total number of validators without changing anything about the economic security of the protocol. It provides a mechanism by which large node operators who control significant amounts of stake can consolidate into fewer validators. We analyze the reasoning behind each of the core features. ### Increasing the `MAX_EFFECTIVE_BALANCE`, while creating a `MIN_ACTIVATION_BALANCE` While increasing the `MAX_EFFECTIVE_BALANCE` to allow larger-stake validators, it is important to keep the lower bound of `32 ETH` (by introducing a new constant – `MIN_ACTIVATION_BALANCE`) to encourage solo-staking. ### Allowing for multiple validator indices to be combined through the
 
 
 === EIP-1959 ===

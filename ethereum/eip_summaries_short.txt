@@ -132,7 +132,7 @@ RATIONALE:
 === EIP-7251 ===
 TITLE: Increase the MAX_EFFECTIVE_BALANCE
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-06-28
 REQUIRES: 7, 0, 0, 2, ,,  , 7, 6, 8, 5
 
