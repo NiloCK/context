@@ -7380,7 +7380,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Registry Interface The interface `IERC7656Registry` is defined as follows: ```solidity // interfaceId 0xc6bdc908 interface
 
 MOTIVATION:
-Existing proposals aim to bind smart accounts to tokens, allowing their registries to deploy accounts owned by specific token IDs. The issue we attempt to address with this new proposal is that these proposals often explicitly require any contract deployed via their registries to implement specific interfaces to handle
+Existing proposals (like the one by TokenBound, numbered as 6551, not directly linkable here because not finalized yet) aim to bind smart accounts to tokens, allowing their registries to deploy accounts owned by specific token IDs. The issue we attempt to address with this new proposal is that these
 
 RATIONALE:
 The technical foundation of [ERC-7656](./eip-7656.md) centers on the extension and generalization of contract types that can be associated with NFTs. This approach was chosen to address specific limitations and opportunities identified in the design and application of NFT-linked contracts. Key technical decisions in this proposal include: - **Addressing ERC
