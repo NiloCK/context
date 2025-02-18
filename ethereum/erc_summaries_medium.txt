@@ -4596,7 +4596,7 @@ This EIP aims to allow tracing all licenses to an NFT to facilitate right manage
 === ERC-7818 ===
 TITLE: Expirable ERC-20
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-11-13
 REQUIRES: 20
 
