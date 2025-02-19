@@ -8424,6 +8424,26 @@ RATIONALE:
 The addition of the `getHoldingInfo` function to an extension of the ERC-721 standard enables developers to implement NFT-based applications that require holding time information. This extension maintains compatibility with existing ERC-721 implementations while offering additional functionality for new use cases. The `getHoldingInfo` function provides a straightforward method for retrieving the holding time and holder address of an NFT. By using seconds as the unit of time for holding duration, it ensures precision and compatibility with other time-based functions in smart contracts. `getHoldingInfo` returns both `holder` and `holdingTime` so that some token owners (as decided by the implementation) can
 
 
+=== ERC-7715 ===
+TITLE: Grant Permissions from Wallets
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-05-24
+REQUIRES: 4, 3, 3, 7, ,,  , 5, 7, 9, 2, ,,  , 7, 6, 7, 9, ,,  , 7, 7, 1, 0
+
+SUMMARY:
+We define a new JSON-RPC method `wallet_grantPermissions` for DApp to request a Wallet to grant permissions in order to execute transactions on the user’s behalf. This enables two use cases: - Executing transactions for users without a wallet connection. - Executing transactions for users with a wallet connection that is scoped with permissions.
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ### `wallet_grantPermissions` We introduce a `wallet_grantPermissions` method for the DApp to request the Wallet to grant permissions. #### Permission schema ```tsx type PermissionRequest = { chainId: Hex; // hex-encoding of uint256 address?: Address; expiry: number; // unix timestamp signer: { type: string; // enum defined by ERCs data: Record<string, any>; }; permissions: { type: string; // enum defined by ERCs data: Record<string, any>; }[]; }[]; ``` `chainId` defines the
+
+MOTIVATION:
+Currently most DApps implement a flow similar to the following: ```mermaid sequenceDiagram User ->>+ DApp: Establish Connection loop For each call DApp ->> User: Propose Call <br> (Transaction) User ->> DApp: Approve Call end ``` Each interaction requires the user to sign a transaction with their wallet. The problems are: - It can get tedious for the user to manually approve every transaction, especially in highly-interactive applications such as games. - It’s impossible to send transactions for users without an active wallet connection. This invalidates use cases such as subscriptions, passive investments, limit orders, and more. In the
+
+RATIONALE:
+The typical transaction flow of `suggesting transactions => approving transactions => sending transactions` is deeply limiting in several ways: - Users must be online to send transactions. DApps cannot send transactions for users when they are offline, which makes use cases such as subscriptions or automated trading impossible. - Users must manually approve every transaction, interrupting what could otherwise be a smooth user experience. With this ERC, DApps can request Wallets to grant permissions and execute transactions on the user's behalf, therefore circumventing the issues above. ### `permissionsContext` Since this ERC only specifies the interaction between the wallet
+
+
 === ERC-6538 ===
 TITLE: Stealth Meta-Address Registry
 TYPE: Standards Track ERC
