@@ -1510,7 +1510,7 @@ TITLE: Account Abstraction Using Alt Mempool
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2021-09-29
-REQUIRES: 7562
+REQUIRES: 7, 1, 2, ,,  , 7, 5, 6, 2, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 6, 9
 
 SUMMARY:
 An account abstraction proposal which completely avoids the need for consensus-layer protocol changes. Instead of adding new protocol features and changing the bottom-layer transaction
@@ -8689,7 +8689,7 @@ TITLE: ETH (Native Asset) Address Convention
 TYPE: Standards Track ERC
 STATUS: Final
 CREATED: 2023-10-03
-REQUIRES: 2, 0, ,,  , 1, 5, 5, ,,  , 4, 6, 2, 6
+REQUIRES: 2, 0, ,,  , 5, 5, ,,  , 4, 6, 2, 6
 
 SUMMARY:
 The following standard proposes a convention for using the address `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` in all contexts where an address is used to represent ETH in the
