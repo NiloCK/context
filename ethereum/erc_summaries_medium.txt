@@ -8438,7 +8438,7 @@ SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ### `wallet_grantPermissions` We introduce a `wallet_grantPermissions` method for the DApp to request the Wallet to grant permissions. #### Permission schema
 
 MOTIVATION:
-Currently most DApps implement a flow similar to the following: ```mermaid sequenceDiagram User ->>+ DApp: Establish Connection loop For each call DApp ->> User: Propose Call <br> (Transaction) User ->> DApp: Approve Call end ``` Each interaction requires the user to sign a transaction with their wallet. The problems
+Currently most DApps implement a flow similar to the following: ![Wallet Approve Flow](../assets/eip-7715/approve-flow.svg) Each interaction requires the user to sign a transaction with their wallet. The problems are: - It can get tedious for the user to manually approve every transaction, especially in highly-interactive applications such as games. -
 
 RATIONALE:
 The typical transaction flow of `suggesting transactions => approving transactions => sending transactions` is deeply limiting in several ways: - Users must be online to send transactions. DApps cannot send transactions for users when they are offline, which makes use cases such as subscriptions or automated trading impossible. -
