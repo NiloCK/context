@@ -3819,13 +3819,13 @@ TITLE: Composable SVG NFT
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2022-03-08
-REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+REQUIRES: 721
 
 SUMMARY:
 Compose an SVG (Scalable Vector Graphics) NFT by concatenating the SVG with the SVG of another NFT rendered as a string for a specific token ID.
 
 SPECIFICATION:
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ```solidity /// @title EIP-4883 Non-Fungible Token Standard interface IERC4883 is IERC165 { function renderTokenById(uint256 id) external view returns (string memory);
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ```solidity /// @title EIP-4883 Non-Fungible Token Standard interface IERC4883 { function renderTokenById(uint256 id) external view returns (string memory); } ```
 
 MOTIVATION:
 Onchain SVG NFTs allow for NFTs to be entirely onchain by returning artwork as SVG in a data URI of the `tokenUri` function. Composability allows onchain SVG NFTs to be crafted. e.g. adding glasses & hat NFTs to a profile pic NFT or a fish NFT to a fish

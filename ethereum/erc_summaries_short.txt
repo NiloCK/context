@@ -3819,7 +3819,7 @@ TITLE: Composable SVG NFT
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2022-03-08
-REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+REQUIRES: 721
 
 SUMMARY:
 Compose an SVG (Scalable Vector Graphics) NFT by concatenating the SVG with the SVG of another NFT rendered as a string for a specific
