@@ -476,7 +476,7 @@ A natural alternative proposal is to decrease `NEW_CALLDATA_GAS_COST` without ad
 === EIP-7698 ===
 TITLE: EOF - Creation transaction
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-04-24
 REQUIRES: 3540
 
@@ -1160,7 +1160,7 @@ RATIONALE:
 === EIP-7736 ===
 TITLE: Leaf-level state expiry in verkle trees
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-07-05
 REQUIRES: 6800
 
