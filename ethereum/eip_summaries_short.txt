@@ -5789,6 +5789,26 @@ RATIONALE:
 - Without this EIP, a contract can still opt-in to make their entire state public, by having a method that simply SLOADs and returns
 
 
+=== EIP-7880 ===
+TITLE: EOF - EXTCODEADDRESS instruction
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-02-08
+REQUIRES: 7, 6, 9, 2, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 6, 1
+
+SUMMARY:
+Add an instruction to EOF that reads code delegation designations from an account without requiring code introspection.
+
+SPECIFICATION:
+### Parameters | Constant | Value | |---------------------------|--------------------------------------------------------------------| | `GAS_COLD_ACCOUNT_ACCESS` | Defined as `2600` in the [Ethereum Execution Layer Spec Constants] | | `GAS_WARM_ACCESS`
+
+MOTIVATION:
+EOFv1 as scoped in [EIP-7692] removes code introspection capabilities from the EVM, preventing EOF from reading raw code values such as code delegation designations
+
+RATIONALE:
+This EIP is very similar to [EIP-7761], which introduces account type introspection. Its rationale is included by reference as they all apply to this
+
+
 === EIP-2803 ===
 TITLE: Rich Transactions
 TYPE: Standards Track Core
