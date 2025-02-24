@@ -1510,7 +1510,7 @@ TITLE: Account Abstraction Using Alt Mempool
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2021-09-29
-REQUIRES: 7, 1, 2, ,,  , 7, 5, 6, 2, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 6, 9
+REQUIRES: 712
 
 SUMMARY:
 An account abstraction proposal which completely avoids the need for consensus-layer protocol changes. Instead of adding new protocol features and changing the bottom-layer transaction type, this proposal instead introduces a higher-layer pseudo-transaction object called a `UserOperation`. Users send `UserOperation` objects into a separate mempool. A special class of actor

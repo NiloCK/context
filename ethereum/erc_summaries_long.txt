@@ -1510,7 +1510,7 @@ TITLE: Account Abstraction Using Alt Mempool
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2021-09-29
-REQUIRES: 7, 1, 2, ,,  , 7, 5, 6, 2, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 6, 9
+REQUIRES: 712
 
 SUMMARY:
 An account abstraction proposal which completely avoids the need for consensus-layer protocol changes. Instead of adding new protocol features and changing the bottom-layer transaction type, this proposal instead introduces a higher-layer pseudo-transaction object called a `UserOperation`. Users send `UserOperation` objects into a separate mempool. A special class of actor called bundlers package up a set of these objects into a transaction making a `handleOps` call to a special contract, and that transaction then gets included in a block.
@@ -1519,7 +1519,7 @@ SPECIFICATION:
 ### Definitions * **UserOperation** - a structure that describes a transaction to be sent on behalf of a user. To avoid confusion, it is not named "transaction". * Like a transaction, it contains "sender", "to", "calldata", "maxFeePerGas", "maxPriorityFee", "signature", "nonce" * unlike a transaction, it contains several other fields, described below * also, the "signature" field usage is not defined by the protocol, but by each account implementation * **Sender** - the account contract sending a user operation. * **EntryPoint** - a singleton contract to execute bundles of UserOperations. Bundlers/Clients whitelist the supported entrypoint. * **Bundler** - a
 
 MOTIVATION:
-See also `https://ethereum-magicians.org/t/implementing-account-abstraction-as-part-of-eth1-x/4020` and the links therein for historical work and motivation, and [EIP-2938](./eip-2938.md) for a consensus layer proposal for implementing the same goal. This proposal takes a different approach, avoiding any adjustments to the consensus layer. It seeks to achieve the following goals: * **Achieve the key goal of account abstraction**: allow users to use smart contract wallets containing arbitrary verification logic instead of EOAs as their primary account. Completely remove any need at all for users to also have EOAs (as status quo SC wallets and [EIP-3074](./eip-3074.md) both require) * **Decentralization** * Allow any bundler (think:
+See also `https://ethereum-magicians.org/t/implementing-account-abstraction-as-part-of-eth1-x/4020` and the links therein for historical work and motivation, and [EIP-2938](./eip-2938.md) for a consensus layer proposal for implementing the same goal. This proposal takes a different approach, avoiding any adjustments to the consensus layer. It seeks to achieve the following goals: * **Achieve the key goal of account abstraction**: allow users to use smart contract wallets containing arbitrary verification logic instead of EOAs as their primary account. Completely remove any need at all for users to also have EOAs, as required by both status quo Smart Contract Wallets and [EIP-7702](./eip-7702.md). * **Decentralization** * Allow any
 
 RATIONALE:
 The main challenge with a purely smart contract wallet-based account abstraction system is DoS safety: how can a block builder including an operation make sure that it will actually pay fees, without having to first execute the entire operation? Requiring the block builder to execute the entire operation opens a DoS attack vector, as an attacker could easily send many operations that pretend to pay a fee but then revert at the last moment after a long execution. Similarly, to prevent attackers from cheaply clogging the mempool, nodes in the P2P network need to check if an operation
