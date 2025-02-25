@@ -949,7 +949,7 @@ RATIONALE:
 === EIP-3155 ===
 TITLE: EVM trace specification
 TYPE: Standards Track Interface
-STATUS: Review
+STATUS: Last Call
 CREATED: 2020-12-07
 REQUIRES: 
 
@@ -1719,7 +1719,7 @@ RATIONALE:
 === EIP-3540 ===
 TITLE: EOF - EVM Object Format v1
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2021-03-16
 REQUIRES: 3, 5, 4, 1, ,,  , 3, 8, 6, 0
 
@@ -7007,6 +7007,26 @@ RATIONALE:
 The specific curve `alt_bn128` was chosen because it is particularly well-suited for zkSNARKs, or, more specifically their verification building block of pairing functions. Furthermore,
 
 
+=== EIP-7886 ===
+TITLE: Delayed execution
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-02-18
+REQUIRES: 
+
+SUMMARY:
+This proposal makes (execution) blocks statically verifiable through minimal checks that only require the previous state, but no execution of the block's transactions, allowing
+
+SPECIFICATION:
+### Change to the header structure #### Deferred fields In order to be verifiable before execution, the header cannot commit to any execution output.
+
+MOTIVATION:
+A key advantage of this proposal is that it enables **asynchronous block validation**. Currently, blocks must be fully executed before validators can attest to
+
+RATIONALE:
+### Overview Enabling delayed execution by making the block's validity statically verifiable requires two things: 1. **Deferred execution outputs**: all header fields that commit
+
+
 === EIP-7378 ===
 TITLE: Add time-weighted averaging to the base fee
 TYPE: Standards Track Core
@@ -7246,6 +7266,26 @@ Currently existing contracts require no validation of correctness, but every tim
 
 RATIONALE:
 ### Jumpdests section is bounded The length of the `jumpdests` section is bounded by the EOF maximum section size value 0xffff. Moreover, for deployed
+
+
+=== EIP-7872 ===
+TITLE: Max blob flag for local builders
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2025-01-30
+REQUIRES: 
+
+SUMMARY:
+This EIP adds a flag to the block builder in order to allow them to include a client configured maximum amount of blobs.
+
+SPECIFICATION:
+- Create a parameter in block builder's configuration called `USER_CONFIGURED_MAX_BLOBS_PER_BLOCK` - Take the minimum out of the `MAX_BLOB_GAS_PER_BLOCK` and the `USER_CONFIGURED_MAX_BLOBS_PER_BLOCK` - If the
+
+MOTIVATION:
+Currently a builder will include all blobs in their local mempool, up to the maximum amount that the protocol requires. If a builder has
+
+RATIONALE:
+By adding a flag for the local block builder, they are able to specify how many blobs they can include in a block.
 
 
 === EIP-145 ===

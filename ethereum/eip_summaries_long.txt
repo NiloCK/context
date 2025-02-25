@@ -949,7 +949,7 @@ RATIONALE:
 === EIP-3155 ===
 TITLE: EVM trace specification
 TYPE: Standards Track Interface
-STATUS: Review
+STATUS: Last Call
 CREATED: 2020-12-07
 REQUIRES: 
 
@@ -1719,7 +1719,7 @@ RATIONALE:
 === EIP-3540 ===
 TITLE: EOF - EVM Object Format v1
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2021-03-16
 REQUIRES: 3, 5, 4, 1, ,,  , 3, 8, 6, 0
 
@@ -7007,6 +7007,26 @@ RATIONALE:
 The specific curve `alt_bn128` was chosen because it is particularly well-suited for zkSNARKs, or, more specifically their verification building block of pairing functions. Furthermore, by choosing this curve, we can use synergy effects with ZCash and re-use some of their components and artifacts. The feature of adding curve and field parameters to the inputs was considered but ultimately rejected since it complicates the specification: The gas costs are much harder to determine and it would be possible to call the contracts on something which is not an actual elliptic curve. A non-compact point encoding was chosen since it
 
 
+=== EIP-7886 ===
+TITLE: Delayed execution
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-02-18
+REQUIRES: 
+
+SUMMARY:
+This proposal makes (execution) blocks statically verifiable through minimal checks that only require the previous state, but no execution of the block's transactions, allowing validators attest to a block's validity without completing its execution. We allow transactions to be skipped when invalid at execution time, without invalidating the whole block. To ensure that even skipped transactions pay for their resources, the `COINBASE` pays for all inclusion costs upfront (base cost, calldata and blobs), and recovers the costs only when transactions are successfully executed.
+
+SPECIFICATION:
+### Change to the header structure #### Deferred fields In order to be verifiable before execution, the header cannot commit to any execution output. In particular, we need to defer these fields: `state_root, receipt_root, bloom, gas_used, requests_hash`. We replace them with the equivalent execution outputs from the parent block. #### Coinbase signature over the header We include a signature from `COINBASE` over the rest of the header in the header , so that the `COINBASE` address can authorize the upfront payment of inclusion costs. The final header structure then is: ```python class Header: parent_hash: Hash32 ommers_hash: Hash32 coinbase:
+
+MOTIVATION:
+A key advantage of this proposal is that it enables **asynchronous block validation**. Currently, blocks must be fully executed before validators can attest to their validity. This requirement creates a bottleneck in the consensus process, as attestors must wait for execution results before committing their votes. By introducing a mechanism where invalid transactions are skipped rather than invalidating the entire block, execution is no longer an immediate requirement for validation. Instead, a block’s validity can be determined based on its structural correctness and the upfront payment of inclusion costs by the `COINBASE`. This allows attestation to happen earlier,
+
+RATIONALE:
+### Overview Enabling delayed execution by making the block's validity statically verifiable requires two things: 1. **Deferred execution outputs**: all header fields that commit to execution outputs are deferred by one slot. For example `state_root` and `receipt_root` become `pre_state_root`, `parent_receipt_root` the root of the state and receipt trie obtained after executing the block's parent. The same applies to the General Purpose Execution Layer Requests from [EIP-7685](./eip-7685.md): the requests are deferred by one slot and the requests in the CL must correspond to the `parent_requests_hash` in the EL header. However, this alone would only defer the computation of these
+
+
 === EIP-7378 ===
 TITLE: Add time-weighted averaging to the base fee
 TYPE: Standards Track Core
@@ -7246,6 +7266,26 @@ Currently existing contracts require no validation of correctness, but every tim
 
 RATIONALE:
 ### Jumpdests section is bounded The length of the `jumpdests` section is bounded by the EOF maximum section size value 0xffff. Moreover, for deployed code this additionally limited by the max bytecode size 0x6000. Then any valid `jumpdests` section may not be more larger than 0x3000. ### Delta encoding Delta-encoding is very efficient for this job. From a quick analysis of a small set of contracts `JUMPDEST` opcodes are relatively close to each other. In the delta-encoding the values almost never exceed 128. Combined with any form of variable-length quantity (VLQ) where values < 128 occupy one byte,
+
+
+=== EIP-7872 ===
+TITLE: Max blob flag for local builders
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2025-01-30
+REQUIRES: 
+
+SUMMARY:
+This EIP adds a flag to the block builder in order to allow them to include a client configured maximum amount of blobs.
+
+SPECIFICATION:
+- Create a parameter in block builder's configuration called `USER_CONFIGURED_MAX_BLOBS_PER_BLOCK` - Take the minimum out of the `MAX_BLOB_GAS_PER_BLOCK` and the `USER_CONFIGURED_MAX_BLOBS_PER_BLOCK` - If the minimum is zero, set the minimum to one. - Use the minimum to decide how many blobs to include in the block Note: By default `USER_CONFIGURED_MAX_BLOBS_PER_BLOCK` may be set to the maximum in the current fork.
+
+MOTIVATION:
+Currently a builder will include all blobs in their local mempool, up to the maximum amount that the protocol requires. If a builder has low bandwidth, they may include too many blobs and subsequently end up not being able to convince the network that the blobs are available.
+
+RATIONALE:
+By adding a flag for the local block builder, they are able to specify how many blobs they can include in a block.
 
 
 === EIP-145 ===
