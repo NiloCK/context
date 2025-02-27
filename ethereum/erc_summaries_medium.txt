@@ -5134,10 +5134,10 @@ CREATED: 2023-09-01
 REQUIRES: 
 
 SUMMARY:
-This document describes the rules we impose on the validation context of Account Abstraction transactions, such as [ERC-4337](./eip-4337) `UserOperation` or RIP-7560 (Native Account Abstraction), which are enforced off-chain by a block builder or a standalone bundler, and the rationale behind each one of them.
+This document describes the rules Account Abstraction protocols should follow, during the validation phase of Account Abstraction transactions, such as [ERC-4337](./eip-4337) `UserOperation` or RIP-7560 (Native Account Abstraction), which are enforced off-chain by a block builder or a standalone bundler, and the rationale behind each one of them.
 
 SPECIFICATION:
-### Rule Types There are two types of rules: - **Network-wide rules** rules that MUST be applied to each UserOperation before accepting it into the local mempool and propagating it. These rules include the opcode and storage rules. - Failing these validation rules SHOULD drop the UserOperation - Failing
+### Validation Rules Types We define two types of validation rules: **network-wide rules** and **local rules**. A violation of any validation rule by a UserOperation results in the UserOperation being dropped from the mempool and excluded from a bundle. **Network-wide rule** is a rule, that its violation by a
 
 MOTIVATION:
 With Account-Abstraction, instead of hard-coded logic for processing a transaction (validation, gas-payment, and execution), this logic is executed by EVM code. The benefits for the account are countless - - abstracting the validation allows the contract to use different signature schemes, multisig configuration, custom recovery, and more. - abstracting
@@ -7996,13 +7996,13 @@ TITLE: Account Abstraction Using Alt Mempool
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2021-09-29
-REQUIRES: 712
+REQUIRES: 7, 1, 2, ,,  , 7, 5, 6, 2
 
 SUMMARY:
 An account abstraction proposal which completely avoids the need for consensus-layer protocol changes. Instead of adding new protocol features and changing the bottom-layer transaction type, this proposal instead introduces a higher-layer pseudo-transaction object called a `UserOperation`. Users send `UserOperation` objects into a separate mempool. A special class of actor
 
 SPECIFICATION:
-### Definitions * **UserOperation** - a structure that describes a transaction to be sent on behalf of a user. To avoid confusion, it is not named "transaction". * Like a transaction, it contains "sender", "to", "calldata", "maxFeePerGas", "maxPriorityFee", "signature", "nonce" * unlike a transaction, it contains several other fields,
+### Definitions * **UserOperation** - a structure that describes a transaction to be sent on behalf of a user. To avoid confusion, it is not named "transaction". * Like a transaction, it contains `to`, `calldata`, `maxFeePerGas`, `maxPriorityFeePerGas`, `nonce`, `signature`. * Unlike a transaction, it contains several other fields, described
 
 MOTIVATION:
 See also `https://ethereum-magicians.org/t/implementing-account-abstraction-as-part-of-eth1-x/4020` and the links therein for historical work and motivation, and [EIP-2938](./eip-2938.md) for a consensus layer proposal for implementing the same goal. This proposal takes a different approach, avoiding any adjustments to the consensus layer. It seeks to achieve the following goals: * **Achieve the key goal

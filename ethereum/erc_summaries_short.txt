@@ -5134,10 +5134,10 @@ CREATED: 2023-09-01
 REQUIRES: 
 
 SUMMARY:
-This document describes the rules we impose on the validation context of Account Abstraction transactions, such as [ERC-4337](./eip-4337) `UserOperation` or RIP-7560 (Native Account Abstraction),
+This document describes the rules Account Abstraction protocols should follow, during the validation phase of Account Abstraction transactions, such as [ERC-4337](./eip-4337) `UserOperation` or RIP-7560
 
 SPECIFICATION:
-### Rule Types There are two types of rules: - **Network-wide rules** rules that MUST be applied to each UserOperation before accepting it into
+### Validation Rules Types We define two types of validation rules: **network-wide rules** and **local rules**. A violation of any validation rule by a
 
 MOTIVATION:
 With Account-Abstraction, instead of hard-coded logic for processing a transaction (validation, gas-payment, and execution), this logic is executed by EVM code. The benefits for
@@ -7996,7 +7996,7 @@ TITLE: Account Abstraction Using Alt Mempool
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2021-09-29
-REQUIRES: 712
+REQUIRES: 7, 1, 2, ,,  , 7, 5, 6, 2
 
 SUMMARY:
 An account abstraction proposal which completely avoids the need for consensus-layer protocol changes. Instead of adding new protocol features and changing the bottom-layer transaction
