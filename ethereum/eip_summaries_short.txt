@@ -4937,7 +4937,7 @@ SUMMARY:
 Introduce a new binary state tree, intended to replace the hexary patricia trees. Account and storage tries are merged into a single tree with
 
 SPECIFICATION:
-The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
 
 MOTIVATION:
 Ethereum's long-term goal is to allow blocks to be proved with validity proof so that chain verification is as simple and fast as possible.
