@@ -35,7 +35,7 @@ MOTIVATION:
 Currently, to send ether to an address requires you to call into that address, which transfers execution context to that address, which creates several issues: - First of all, it opens a reentrancy attack vector, as the recipient can call back into the sender. More generally, the recipient can
 
 RATIONALE:
-### Argument order The order of arguments mimics that of `CALL`, which pops `addr` before `val`. Beyond consistency, though, this ordering aids validators pattern-matching MEV opportunities, so `PAY` always appears immediately after `COINBASE`.
+### Argument order The order of arguments mimics that of `CALL`, which pops `addr` before `val`. Beyond consistency, though, this ordering aids validators pattern-matching MEV opportunities, so `PAY` always appears immediately after `COINBASE`. ### Halting for invalid address The halting behavior is designed to allow for Address Space Extension.
 
 
 === EIP-747 ===
