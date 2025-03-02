@@ -6950,7 +6950,7 @@ RATIONALE:
 === EIP-2539 ===
 TITLE: BLS12-377 curve operations
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2020-02-26
 REQUIRES: 1, 1, 0, 9, ,,  , 2, 0, 4, 6
 
