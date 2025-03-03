@@ -9137,6 +9137,26 @@ RATIONALE:
 This standard unifies the representation of fractional ownership with the non-fungible token model, aligning closely with [ERC-721](./eip-721.md) principles while enabling the functionality of [ERC-20](./eip-20.md)
 
 
+=== ERC-7802 ===
+TITLE: Crosschain Token Interface
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-10-30
+REQUIRES: 1, 6, 5, ,,  , 5, 6, 7, 9
+
+SUMMARY:
+This standard introduces a minimal interface, `IERC7802`, for tokens to enable standardized cross-chain communication. The interface consists of two functions, `crosschainMint` and `crosschainBurn`, which
+
+SPECIFICATION:
+This ERC introduces the `IERC7802` interface. ### Interface Identification The interface identifier for `IERC7802` is **`0x33331994`**, calculated according to [ERC-165](./eip-165.md) as the XOR of
+
+MOTIVATION:
+All rollups and multiple important sidechains (Gnosis and Polygon PoS, among others) implement canonical bridges that embed their security into some part of the
+
+RATIONALE:
+### Design philosophy The core design decisions behind this minimal interface are - Bridge agnosticism. - Extensibility. **Bridge agnosticism** This interface is designed so
+
+
 === ERC-1967 ===
 TITLE: Proxy Storage Slots
 TYPE: Standards Track ERC
