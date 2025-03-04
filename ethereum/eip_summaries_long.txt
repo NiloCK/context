@@ -3080,7 +3080,7 @@ CREATED: 2024-10-28
 REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 9, 9
 
 SUMMARY:
-This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md).
+This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ExecutionBlockHeader` container Execution blocks are represented as a single, normalized SSZ container. The definition uses the `StableContainer[N]` SSZ type and `Optional[T]` as defined in [EIP-7495](./eip-7495.md). | Name | Value | Description | | - | - | - | | `MAX_EXECUTION_BLOCK_FIELDS` | `uint64(2**6)` (= 64) | Maximum number of fields to which `StableExecutionBlock` can ever grow in the future | ```python class StableGasAmounts(StableContainer[MAX_FEES_PER_GAS_FIELDS]):
@@ -3351,13 +3351,13 @@ CREATED: 2024-10-23
 REQUIRES: 
 
 SUMMARY:
-This EIP explains how to customize [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md#merkleization) to double its performance.
+This EIP explains how to customize [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md#merkleization) to double its performance.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### SHA-256 preprocessing Before SHA-256 hash computation begins, the input message is preprocessed. A single `1` bit is appended to the input message, followed by a varying number of `0` bits, and finally a big endian `uint64` indicating the input message bit length. The number of `0` bits is chosen so that the message size is the smallest possible multiple of 512 bits. In
 
 MOTIVATION:
-Hashing is a dominant performance bottleneck for Consensus Layer implementations. To support large validator counts, it is critical to optimize hashing performance. Consensus Layer hashes are based on [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md#merkleization), a mechanism that splits up the data into chunks and then forms a tree by recursively combining two adjacent chunks and hashing them into a single parent chunk until only a single root chunk remains. For hashing, Secure Hash Algorithm 2 with a digest size of 256 bits is used (SHA-256). This algorithm produces _exactly_ 256 bits of output for a variable-length input message. However, as `hash_tree_root` pads all
+Hashing is a dominant performance bottleneck for Consensus Layer implementations. To support large validator counts, it is critical to optimize hashing performance. Consensus Layer hashes are based on [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md#merkleization), a mechanism that splits up the data into chunks and then forms a tree by recursively combining two adjacent chunks and hashing them into a single parent chunk until only a single root chunk remains. For hashing, Secure Hash Algorithm 2 with a digest size of 256 bits is used (SHA-256). This algorithm produces _exactly_ 256 bits of output for a variable-length input message. However, as `hash_tree_root` pads all
 
 RATIONALE:
 Doubling the throughput of the underlying hash algorithm allows scaling to more validators on the same hardware, or allows using the freed CPU time for other tasks. Even when caching rarely-changed intermediate hashes across computations such as the `validators` list of a `BeaconState`, and employing hardware-accelerated SHA-256 implementations that are further optimized for the tree structure using libraries such as `prysmaticlabs/hashtree`, the state root validation step of the Consensus Layer state transition function can still consume ~25% of CPU time (Holesky test network, ~1.7m validators), mostly dominated by frequently changing per-validator structures such as the `EpochParticipationFlags` lists. If

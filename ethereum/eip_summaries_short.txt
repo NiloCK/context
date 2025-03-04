@@ -3080,7 +3080,7 @@ CREATED: 2024-10-28
 REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 9, 9
 
 SUMMARY:
-This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md).
+This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -3351,7 +3351,7 @@ CREATED: 2024-10-23
 REQUIRES: 
 
 SUMMARY:
-This EIP explains how to customize [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md#merkleization) to double its performance.
+This EIP explains how to customize [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md#merkleization) to double its performance.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to

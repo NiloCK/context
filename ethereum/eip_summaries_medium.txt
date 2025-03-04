@@ -3080,7 +3080,7 @@ CREATED: 2024-10-28
 REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 9, 9
 
 SUMMARY:
-This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md).
+This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ExecutionBlockHeader` container Execution blocks are represented as a single, normalized SSZ container. The definition
@@ -3351,13 +3351,13 @@ CREATED: 2024-10-23
 REQUIRES: 
 
 SUMMARY:
-This EIP explains how to customize [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md#merkleization) to double its performance.
+This EIP explains how to customize [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md#merkleization) to double its performance.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### SHA-256 preprocessing Before SHA-256 hash computation begins, the input message is preprocessed. A single
 
 MOTIVATION:
-Hashing is a dominant performance bottleneck for Consensus Layer implementations. To support large validator counts, it is critical to optimize hashing performance. Consensus Layer hashes are based on [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/ef434e87165e9a4c82a99f54ffd4974ae113f732/ssz/simple-serialize.md#merkleization), a mechanism that splits up the data into chunks and then forms a tree by recursively combining two adjacent chunks
+Hashing is a dominant performance bottleneck for Consensus Layer implementations. To support large validator counts, it is critical to optimize hashing performance. Consensus Layer hashes are based on [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md#merkleization), a mechanism that splits up the data into chunks and then forms a tree by recursively combining two adjacent chunks
 
 RATIONALE:
 Doubling the throughput of the underlying hash algorithm allows scaling to more validators on the same hardware, or allows using the freed CPU time for other tasks. Even when caching rarely-changed intermediate hashes across computations such as the `validators` list of a `BeaconState`, and employing hardware-accelerated SHA-256 implementations that
