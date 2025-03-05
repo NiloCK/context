@@ -8008,7 +8008,7 @@ MOTIVATION:
 See also `https://ethereum-magicians.org/t/implementing-account-abstraction-as-part-of-eth1-x/4020` and the links therein for historical work and motivation, and [EIP-2938](./eip-2938.md) for a consensus layer proposal for implementing the same goal.
 
 RATIONALE:
-The main challenge with a purely smart contract wallet-based account abstraction system is DoS safety: how can a block builder including an operation make
+The main challenge with a purely "Smart Contract Accounts" based Account Abstraction system is DoS safety: how can a block builder including an operation
 
 
 === ERC-1123 ===
