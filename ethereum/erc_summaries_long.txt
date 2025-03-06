@@ -95,6 +95,26 @@ RATIONALE:
 The design of the Deferred Token Transfer contract aims to provide a straightforward and secure method for handling time-locked token transfers. The following considerations were made during its development: **Unlock Time Precision with `uint40`**: We chose a full `uint40` for `_unlockTime` because it provides a sufficiently large range to cover all practical time-lock scenarios. This ensures that the contract can handle deferred payments that require precise timing over long periods, such as vesting schedules or long-term escrows. **Returning `txnId` from `transferFrom`**: The `transferFrom` function returns a unique `txnId` for each transaction. This design choice was made to facilitate
 
 
+=== ERC-7674 ===
+TITLE: Temporary Approval Extension for ERC-20
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-04-02
+REQUIRES: 2, 0, ,,  , 1, 1, 5, 3
+
+SUMMARY:
+This specification defines the minimum interface required to temporarily approve [ERC-20](./eip-20.md) tokens for spending within the same transaction.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Compliant contracts MUST implement 1 new function in addition to [ERC-20](./eip-20.md): ```solidity function temporaryApprove(address spender, uint256 value) public returns (bool success) ``` A call to `temporaryApprove(spender, value)` allows `spender` to withdraw within the same transaction on behalf of `msg.sender` multiple times, such that the total withdrawn is less than or equal to the `value` amount. This temporary allowance is to be considered in addition
+
+MOTIVATION:
+User are often required to set a token approval that will only be used once. It is common to leave unexpected approvals after these interactions. [EIP-1153](./eip-1153.md) introduces `TSTORE`, which can be used to efficiently handle temporarily allowances.
+
+RATIONALE:
+It was decided to make minimal interface extension to allow easier integration of a compliant contract into the existing infrastructure. This affects the backward compatibility of the `allowance` function. However, the required changes to the `transferFrom` function implementation satisfy the requirement to explicitly authorize the spender to transfer tokens.
+
+
 === ERC-6786 ===
 TITLE: Registry for royalties payment for NFTs
 TYPE: Standards Track ERC

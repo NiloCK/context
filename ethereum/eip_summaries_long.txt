@@ -121,7 +121,7 @@ RATIONALE:
 === EIP-7698 ===
 TITLE: EOF - Creation transaction
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2024-04-24
 REQUIRES: 3540
 
@@ -2239,7 +2239,7 @@ This is a minimally disruptive way to remove the need to handle blooms from clie
 === EIP-4750 ===
 TITLE: EOF - Functions
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2022-01-10
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 5, 4, 5, 0
 

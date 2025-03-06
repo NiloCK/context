@@ -95,6 +95,26 @@ RATIONALE:
 The design of the Deferred Token Transfer contract aims to provide a straightforward and secure method for handling time-locked token transfers. The following considerations
 
 
+=== ERC-7674 ===
+TITLE: Temporary Approval Extension for ERC-20
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-04-02
+REQUIRES: 2, 0, ,,  , 1, 1, 5, 3
+
+SUMMARY:
+This specification defines the minimum interface required to temporarily approve [ERC-20](./eip-20.md) tokens for spending within the same transaction.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+User are often required to set a token approval that will only be used once. It is common to leave unexpected approvals after these
+
+RATIONALE:
+It was decided to make minimal interface extension to allow easier integration of a compliant contract into the existing infrastructure. This affects the backward
+
+
 === ERC-6786 ===
 TITLE: Registry for royalties payment for NFTs
 TYPE: Standards Track ERC
