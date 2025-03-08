@@ -2321,7 +2321,7 @@ SUMMARY:
 Update the `BLOCKHASH (0x40)` opcode to read and serve from the system contract storage and charge the **additional** (cold or warm) storage costs.
 
 SPECIFICATION:
-| Parameter | Value | | ------------------------- | ------ | | `FORK_TIMESTAMP` | TBD | | `HISTORY_STORAGE_ADDRESS` | TBD | | `BLOCKHASH_SERVE_WINDOW` | `256`
+| Parameter | Value | | ------------------------- | ------ | | `FORK_TIMESTAMP` | TBD | | `HISTORY_STORAGE_ADDRESS` | `0x0000F90827F1C53a10cb7A02335B175320002935` | | `BLOCKHASH_SERVE_WINDOW` | `256`
 
 MOTIVATION:
 The `BLOCKHASH (0x40)` opcode currently assumes that the client has knowledge of the previous blocks, which in Verkle [EIP-6800](./eip-6800.md) would prevent stateless execution. However
