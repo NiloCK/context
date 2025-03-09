@@ -5611,23 +5611,23 @@ The `wallet_signIntendedValidatorData` method aims to bridge the gap between the
 
 
 === EIP-7745 ===
-TITLE: Two dimensional log filter data structure
+TITLE: Light client and DHT friendly log index
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-07-17
 REQUIRES: 
 
 SUMMARY:
-Replace the fixed 2048 bit log event bloom filters in block headers with a new data structure that can adapt to the changing number of events per block and consistently guarantee a sufficiently low false positive ratio. The proposed structure maps all log entries onto a global linear log index space and hashes them into a Merkle tree based on that index. It also contains a _filter map_ for every fixed length section of the log index space, hashed into the same Merkle tree. These are two dimensional sparse bit maps similar to bloom filters that allow searching
+Replace the fixed 2048 bit log event bloom filters in block headers with a new data structure that can adapt to the changing number of events per block and consistently guarantee a sufficiently low false positive ratio. The proposed structure maps all log entries onto a global linear index space and hashes them into a Merkle tree based on that index. It also contains a _filter map_ for every fixed length section of the index space, hashed into the same Merkle tree. These are two dimensional sparse bit maps that allow searching for log address/topic patterns. Unlike the
 
 SPECIFICATION:
-### Terms and definitions - _log value_: either an _address value_ or a _topic value_. Each `LOG` opcode adds one _address value_ and 0..4 _topic values_. A _log value_ is represented by a 32 byte hash which is calculated as `SHA2(address)` or `SHA2(topic)` - _log index_: values are globally mapped to a linear index space, with a monotonically increasing _log index_ assigned to each added _log value_. The _log values_ are added in the order of EVM execution (_address value_ first, then the _topic values_) so the logs generated in each block and in each transaction of the
+### Terms and definitions - _log value_: either an _address value_ or a _topic value_. Each `LOG` opcode adds one _address value_ and 0..4 _topic values_. A _log value_ is represented by a 32 byte hash which is calculated as `sha2(address)` or `sha2(topic)` - _log value index_: values are globally mapped to a linear index space, with a monotonically increasing _log value index_ assigned to each added _log value_. The _log values_ are added in the order of EVM execution (_address value_ first, then the _topic values_) so the logs generated in each block and in each transaction
 
 MOTIVATION:
-Bloom filters are only useful as long as they are sufficiently sparse. False positive ratio rises rapidly with the number of events per filter and the density of `1` bits in the filter bit vector. In the currently existing bloom filter each log address and topic sets 3 out of a fixed length of 2048 bits which resulted in sufficiently sparse filters in the beginning but with the increase of the block gas limits the false positive ratio soon made the filter practically useless. Mainnet blocks currently add over 1000 log addresses and topics in average and therefore
+Adding logs has a significantly lower gas cost and should accordingly be less resource consuming than writing to the state. The original design of bloom filters in each block achieves this goal as there is no complex data structure like the state to update, the set of logs emitted in each block is all contained within the header and receipts belonging to that block. Logs mostly just have long term storage costs. On the other hand, searching logs in a long range of blocks is very expensive. Bloom filters are only useful as long as they are sufficiently
 
 RATIONALE:
-### Log index space In each block a varying number of _log values_ are emitted. In addition to inefficient search, another drawback of per-block fixed size bloom filters is the varying filter utilization leading to over-utilized filters giving many false positives in some blocks and/or wastefully under-utilized filters in some blocks. Block gas limits also tend to change significantly over the long term so any future-proof solution has to be able to adapt to the varying number of _log values_ per block. Since _filter maps_ of the proposed design are no longer associated with individual blocks but contain
+### Log value index space In each block a varying number of _log values_ are emitted. In addition to inefficient search, another drawback of per-block fixed size bloom filters is the varying filter utilization leading to over-utilized filters giving many false positives in some blocks and/or wastefully under-utilized filters in some blocks. Block gas limits also tend to change significantly over the long term so any future-proof solution has to be able to adapt to the varying number of _log values_ per block. Mapping _log values_ on their own linear index space ensures uniform filter utilization of identically
 
 
 === EIP-2031 ===

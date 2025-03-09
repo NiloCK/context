@@ -5611,7 +5611,7 @@ The `wallet_signIntendedValidatorData` method aims to bridge the gap between the
 
 
 === EIP-7745 ===
-TITLE: Two dimensional log filter data structure
+TITLE: Light client and DHT friendly log index
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-07-17
@@ -5624,10 +5624,10 @@ SPECIFICATION:
 ### Terms and definitions - _log value_: either an _address value_ or a _topic value_. Each `LOG` opcode adds one _address value_ and 0..4
 
 MOTIVATION:
-Bloom filters are only useful as long as they are sufficiently sparse. False positive ratio rises rapidly with the number of events per filter
+Adding logs has a significantly lower gas cost and should accordingly be less resource consuming than writing to the state. The original design of
 
 RATIONALE:
-### Log index space In each block a varying number of _log values_ are emitted. In addition to inefficient search, another drawback of per-block
+### Log value index space In each block a varying number of _log values_ are emitted. In addition to inefficient search, another drawback of
 
 
 === EIP-2031 ===

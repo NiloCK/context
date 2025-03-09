@@ -5611,23 +5611,23 @@ The `wallet_signIntendedValidatorData` method aims to bridge the gap between the
 
 
 === EIP-7745 ===
-TITLE: Two dimensional log filter data structure
+TITLE: Light client and DHT friendly log index
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-07-17
 REQUIRES: 
 
 SUMMARY:
-Replace the fixed 2048 bit log event bloom filters in block headers with a new data structure that can adapt to the changing number of events per block and consistently guarantee a sufficiently low false positive ratio. The proposed structure maps all log entries onto a global linear log
+Replace the fixed 2048 bit log event bloom filters in block headers with a new data structure that can adapt to the changing number of events per block and consistently guarantee a sufficiently low false positive ratio. The proposed structure maps all log entries onto a global linear index
 
 SPECIFICATION:
-### Terms and definitions - _log value_: either an _address value_ or a _topic value_. Each `LOG` opcode adds one _address value_ and 0..4 _topic values_. A _log value_ is represented by a 32 byte hash which is calculated as `SHA2(address)` or `SHA2(topic)` - _log index_: values are globally
+### Terms and definitions - _log value_: either an _address value_ or a _topic value_. Each `LOG` opcode adds one _address value_ and 0..4 _topic values_. A _log value_ is represented by a 32 byte hash which is calculated as `sha2(address)` or `sha2(topic)` - _log value index_: values are
 
 MOTIVATION:
-Bloom filters are only useful as long as they are sufficiently sparse. False positive ratio rises rapidly with the number of events per filter and the density of `1` bits in the filter bit vector. In the currently existing bloom filter each log address and topic sets 3 out
+Adding logs has a significantly lower gas cost and should accordingly be less resource consuming than writing to the state. The original design of bloom filters in each block achieves this goal as there is no complex data structure like the state to update, the set of logs emitted
 
 RATIONALE:
-### Log index space In each block a varying number of _log values_ are emitted. In addition to inefficient search, another drawback of per-block fixed size bloom filters is the varying filter utilization leading to over-utilized filters giving many false positives in some blocks and/or wastefully under-utilized filters in
+### Log value index space In each block a varying number of _log values_ are emitted. In addition to inefficient search, another drawback of per-block fixed size bloom filters is the varying filter utilization leading to over-utilized filters giving many false positives in some blocks and/or wastefully under-utilized filters
 
 
 === EIP-2031 ===
