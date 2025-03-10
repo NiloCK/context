@@ -129,7 +129,7 @@ SUMMARY:
 Creation transactions (i.e. the ones with empty `to`) can be used to deploy EOF contracts by providing EOF initcontainer concatenated with `calldata` for initcontainer execution in transaction's `data`. Initcontainer execution is similar to its execution during `EOFCREATE` instruction, ending with `RETURNCONTRACT` instruction. New account address calculation is based on
 
 SPECIFICATION:
-### Parameters | Constant | Value | | - | - | | `EOF_MAGIC` | Defined as `0xEF00` in [EIP-3540](./eip-3540.md) | | `MAX_CODE_SIZE` | Defined as `24576` in [EIP-170](./eip-170.md) | In case a creation transaction (transaction with empty `to`) has `data` starting with `EOF_MAGIC`, `data` is interpreted as a
+Wherever not explicitly listed, the rules of EOF contract creation should be identical or analogous to those of legacy creation transaction. This includes but is not limited to: - behavior on `accessed_addresses` and address collision ([EIP-684](./eip-684.md) and [EIP-2929](./eip-2929.md)) - EVM execution frame created for the initcode - memory, account
 
 MOTIVATION:
 Creation transaction is one if the three ways alongside creation instructions provided by legacy EVM to deploy new code. Given that legacy creation instructions (`CREATE` and `CREATE2`) are not allowed to deploy EOF code, supporting EOF in creation transactions is the only way to get the first EOF on-chain.
@@ -3197,7 +3197,7 @@ SUMMARY:
 EVM Object Format (EOF) removes the possibility to create contracts using `CREATE` or `CREATE2` instructions. We introduce a new/replacement method in form of pair of instructions : `EOFCREATE` and `RETURNCONTRACT` to provide a way to create contracts using EOF containers.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | | - | - | | `GAS_KECCAK256_WORD` |
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Wherever not explicitly listed, the rules of EOF contract creation, as well as the `EOFCREATE`
 
 MOTIVATION:
 This EIP uses terminology from the [EIP-3540](./eip-3540.md) which introduces the EOF format. EOF aims to remove code observability, which is a prerequisite to legacy EVM contract creation logic using legacy-style create transactions, `CREATE` or `CREATE2`, because both the initcode and code are available to the EVM and can be

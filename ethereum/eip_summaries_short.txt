@@ -129,7 +129,7 @@ SUMMARY:
 Creation transactions (i.e. the ones with empty `to`) can be used to deploy EOF contracts by providing EOF initcontainer concatenated with `calldata` for initcontainer
 
 SPECIFICATION:
-### Parameters | Constant | Value | | - | - | | `EOF_MAGIC` | Defined as `0xEF00` in [EIP-3540](./eip-3540.md) | | `MAX_CODE_SIZE` |
+Wherever not explicitly listed, the rules of EOF contract creation should be identical or analogous to those of legacy creation transaction. This includes but
 
 MOTIVATION:
 Creation transaction is one if the three ways alongside creation instructions provided by legacy EVM to deploy new code. Given that legacy creation instructions
