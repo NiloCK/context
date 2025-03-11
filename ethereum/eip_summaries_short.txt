@@ -132,7 +132,7 @@ SPECIFICATION:
 Wherever not explicitly listed, the rules of EOF contract creation should be identical or analogous to those of legacy creation transaction. This includes but
 
 MOTIVATION:
-Creation transaction is one if the three ways alongside creation instructions provided by legacy EVM to deploy new code. Given that legacy creation instructions
+Creation transaction is one of the three ways alongside creation instructions provided by legacy EVM to deploy new code. Given that legacy creation instructions
 
 RATIONALE:
 ### Irregular state change to deploy Creator Contract Originally it was proposed to deploy the first EOF contract via irregular state change. This contract

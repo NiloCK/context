@@ -126,13 +126,13 @@ CREATED: 2024-04-24
 REQUIRES: 3540
 
 SUMMARY:
-Creation transactions (i.e. the ones with empty `to`) can be used to deploy EOF contracts by providing EOF initcontainer concatenated with `calldata` for initcontainer execution in transaction's `data`. Initcontainer execution is similar to its execution during `EOFCREATE` instruction, ending with `RETURNCONTRACT` instruction. New account address calculation is based on
+Creation transactions (i.e. the ones with empty `to`) can be used to deploy EOF contracts by providing EOF initcontainer concatenated with `calldata` for initcontainer execution in transaction's `data`. Initcontainer execution is similar to its execution during `EOFCREATE` instruction, ending with `RETURNCODE` instruction. New account address calculation is based on
 
 SPECIFICATION:
 Wherever not explicitly listed, the rules of EOF contract creation should be identical or analogous to those of legacy creation transaction. This includes but is not limited to: - behavior on `accessed_addresses` and address collision ([EIP-684](./eip-684.md) and [EIP-2929](./eip-2929.md)) - EVM execution frame created for the initcode - memory, account
 
 MOTIVATION:
-Creation transaction is one if the three ways alongside creation instructions provided by legacy EVM to deploy new code. Given that legacy creation instructions (`CREATE` and `CREATE2`) are not allowed to deploy EOF code, supporting EOF in creation transactions is the only way to get the first EOF on-chain.
+Creation transaction is one of the three ways alongside creation instructions provided by legacy EVM to deploy new code. Given that legacy creation instructions (`CREATE` and `CREATE2`) are not allowed to deploy EOF code, supporting EOF in creation transactions is the only way to get the first EOF on-chain.
 
 RATIONALE:
 ### Irregular state change to deploy Creator Contract Originally it was proposed to deploy the first EOF contract via irregular state change. This contract would execute `TXCREATE` instruction and could be used then as an entry point to deploy any other EOF code. This would also require an introduction
@@ -3194,7 +3194,7 @@ CREATED: 2024-02-12
 REQUIRES: 1, 7, 0, ,,  , 6, 8, 4, ,,  , 2, 9, 2, 9, ,,  , 3, 5, 4, 0, ,,  , 3, 5, 4, 1, ,,  , 3, 6, 7, 0
 
 SUMMARY:
-EVM Object Format (EOF) removes the possibility to create contracts using `CREATE` or `CREATE2` instructions. We introduce a new/replacement method in form of pair of instructions : `EOFCREATE` and `RETURNCONTRACT` to provide a way to create contracts using EOF containers.
+EVM Object Format (EOF) removes the possibility to create contracts using `CREATE` or `CREATE2` instructions. We introduce a new/replacement method in form of pair of instructions : `EOFCREATE` and `RETURNCODE` to provide a way to create contracts using EOF containers.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Wherever not explicitly listed, the rules of EOF contract creation, as well as the `EOFCREATE`
