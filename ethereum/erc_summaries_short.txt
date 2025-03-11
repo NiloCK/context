@@ -6981,6 +6981,26 @@ RATIONALE:
 ### Sharing application keys across domains: While this does not explicit cover cases of sharing these app keys between pages on its own, this
 
 
+=== ERC-7730 ===
+TITLE: Structured Data Clear Signing Format
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-02-07
+REQUIRES: 1, 5, 5, ,,  , 7, 1, 2
+
+SUMMARY:
+This specification defines a JSON format carrying additional information required to correctly display structured data to a human for review on a wallet screen,
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+
+MOTIVATION:
+Properly validating a transaction on a Hardware Wallets screen (also known as Clear Signing) is a key element of good security practices for end
+
+RATIONALE:
+### Human readability It is expected that the main limitation to adoption of ERC-7730 will be the complexity of writing this interface description file
+
+
 === ERC-7540 ===
 TITLE: Asynchronous ERC-4626 Tokenized Vaults
 TYPE: Standards Track ERC

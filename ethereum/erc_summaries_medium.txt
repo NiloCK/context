@@ -6981,6 +6981,26 @@ RATIONALE:
 ### Sharing application keys across domains: While this does not explicit cover cases of sharing these app keys between pages on its own, this need can be met by composition: Since a domain would get a unique key per persona, and because domains can intercommunicate, one domain (app) could
 
 
+=== ERC-7730 ===
+TITLE: Structured Data Clear Signing Format
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-02-07
+REQUIRES: 1, 5, 5, ,,  , 7, 1, 2
+
+SUMMARY:
+This specification defines a JSON format carrying additional information required to correctly display structured data to a human for review on a wallet screen, before signature by the wallet. The [ERC-7730](./eip-7730.md) specification enriches type data contained in the ABIs and schemas of structured messages (structures like the calldata of
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Simple example The following is an example of how to clear sign a `transfer` function
+
+MOTIVATION:
+Properly validating a transaction on a Hardware Wallets screen (also known as Clear Signing) is a key element of good security practices for end users when interacting with any Blockchain. Unfortunately, most data to sign, even enriched with the data structure description (like ABIs or EIP-712 types) are not
+
+RATIONALE:
+### Human readability It is expected that the main limitation to adoption of ERC-7730 will be the complexity of writing this interface description file compared to interest of writing it. This drove a few choices when introducing this ERC specification: * The form of an ERC itself will allow
+
+
 === ERC-7540 ===
 TITLE: Asynchronous ERC-4626 Tokenized Vaults
 TYPE: Standards Track ERC
