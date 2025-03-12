@@ -6995,7 +6995,7 @@ SPECIFICATION:
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Simple example The following is an example of how to clear sign a `transfer` function
 
 MOTIVATION:
-Properly validating a transaction on a Hardware Wallets screen (also known as Clear Signing) is a key element of good security practices for end users when interacting with any Blockchain. Unfortunately, most data to sign, even enriched with the data structure description (like ABIs or EIP-712 types) are not
+Properly validating a transaction on a hardware wallet's screen (also known as Clear Signing) is a key element of good security practices for end users when interacting with any Blockchain. Unfortunately, most data to sign, even enriched with the data structure description (like ABIs or EIP-712 types) are not
 
 RATIONALE:
 ### Human readability It is expected that the main limitation to adoption of ERC-7730 will be the complexity of writing this interface description file compared to interest of writing it. This drove a few choices when introducing this ERC specification: * The form of an ERC itself will allow

@@ -6095,6 +6095,26 @@ CREATED: 2015-11-19
 REQUIRES: 
 
 
+=== EIP-7867 ===
+TITLE: Flow Control Wallet Call Capability
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2025-01-17
+REQUIRES: 5792
+
+SUMMARY:
+This proposal extends [EIP-5792](./eip-5792.md) to allow dapps to downgrade their required atomicity guarantees and control the behaviour after a failed/reverted call. It introduces the
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+While the base EIP-5792 specification works extremely well for smart contract wallets, it does not allow the expression of the full range of flow
+
+RATIONALE:
+<!-- The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate
+
+
 === EIP-7702 ===
 TITLE: Set EOA account code
 TYPE: Standards Track Core

@@ -6095,6 +6095,26 @@ CREATED: 2015-11-19
 REQUIRES: 
 
 
+=== EIP-7867 ===
+TITLE: Flow Control Wallet Call Capability
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2025-01-17
+REQUIRES: 5792
+
+SUMMARY:
+This proposal extends [EIP-5792](./eip-5792.md) to allow dapps to downgrade their required atomicity guarantees and control the behaviour after a failed/reverted call. It introduces the batch-scope concept of `strict` vs. `loose` atomicity, where a `strict` batch remains atomic in the face of chain reorgs and a `loose` batch does not; and the per-call ability to continue after a failed/reverted call (`continue`) or stop processing (`halt`).
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### RPC Interface The following subsections are modifications to the API endpoints from EIP-5792. If a request does not match the schema defined below, the wallet MUST reject the request with an error code of `INVALID_SCHEMA`. #### `wallet_sendCalls` The following JSON Schema SHALL be inserted, in the request object, as values of either the batch-scope or call-scope `capabilities` objects (as appropriate) with a key
+
+MOTIVATION:
+While the base EIP-5792 specification works extremely well for smart contract wallets, it does not allow the expression of the full range of flow control options that wallets can implement. For example, a dapp may only be submitting a batch for gas savings and not care about whether all calls are reverted on failure. A wallet may only be able to offer a limited form of atomicity through block builder backchannels, but that may be sufficient for a trading platform.
+
+RATIONALE:
+<!-- The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages. The current placeholder is acceptable for a draft. TODO: Remove this comment before submitting --> TBD
+
+
 === EIP-7702 ===
 TITLE: Set EOA account code
 TYPE: Standards Track Core
