@@ -5930,6 +5930,26 @@ RATIONALE:
 ### Why not also raise the cost of non-zero to non-zero? Rewriting storage does not affect state growth, which is the main issue this EIP is addressing. Rewriting storage may also be underpriced. Increasing the price of state growth will, at least, incentivize developers to reuse storage instead. ### Why not also increase the gas refund from setting non-zero to zero? More discussion is needed on this. ### Why not a better state solution? Whereas solutions like state rent, or state expiry have been researched for a long time, they will not be ready on the short to
 
 
+=== EIP-7791 ===
+TITLE: GAS2ETH opcode
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-08-13
+REQUIRES: 2929
+
+SUMMARY:
+This EIP introduces a new `GAS2ETH` opcode that enables the direct conversion of gas into ether (ETH).
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. A new opcode is introduced, `GAS2ETH` (`0xFC`), which: - Pops two values from the stack: `addr` then `gas_amount`. If there are fewer than two values on the stack, the calling context should fail with stack underflow. - Deducts `gas_amount` from the current calling context. - Computes `wei_val` by multiplying `gas_amount` by the current transaction context's `gas_price` ([EELS][gasprice]). - Endows the address `addr` with `wei_val`
+
+MOTIVATION:
+This EIP is based on the premise that smart contract authors, compiler teams and public goods projects in general should be compensated for their contributions. Moreover, their compensation should scale with the usage of their contracts. A widely used and popular contract offers significant value to its users through its functionality and to the network by driving demand for blockspace — Ethereum's _raison d'être_. This increased demand also benefits miners and validators, who are rewarded for executing these contracts. Monetizing smart contracts in a scalable manner remains challenging at the time of this writing. This difficulty is evident
+
+RATIONALE:
+- `GAS2ETH` vs. pro-rata: The pro-rata model incentivizes inflating contract gas usage to artificially increase fees. In contrast, this proposal allows contract authors to charge their desired amount directly, eliminating the need for unnecessary gas consumption. - Target address vs. simply increasing balance of the currently executing contract: Using a target address is more flexible, enabling contract authors to write more modular code and separate the concerns of fee collection from contract functionality. For instance, the contract may want to designate a specific recipient for fees without necessarily granting them direct withdrawal access. - Charging gas instead of
+
+
 === EIP-1872 ===
 TITLE: Ethereum Network Upgrade Windows
 TYPE: Meta 
@@ -6634,6 +6654,26 @@ This EIP uses terminology from the [EIP-3540](./eip-3540.md) which introduces th
 
 RATIONALE:
 ### `TXCREATE` failure modes `TXCREATE` has two "light" failure modes in case the initcontainer is not present and in case the EOF validation is unsuccessful. An alternative design where both cases led to a "hard" failure (consuming the entire gas available) was considered. We decided to have the more granular and forgiving failure modes in order to align the gas costs incurred to the actual work the EVM performs. ### Creator Contract EOF contract creation requires a predeployed Creator Contract to be introduced, because neither legacy contracts nor create transactions can deploy EOF code to bootstrap. The alternative
+
+
+=== EIP-7896 ===
+TITLE: ABI attachment in `wallet_sendCalls`
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2025-02-27
+REQUIRES: 5792
+
+SUMMARY:
+This EIP extends [EIP-5792](./eip-5792.md) with a new `interfaces` capability, whereby an application can attach the contract interface specifications (aka. ABIs) that the wallet needs to reliably decode the calldata in the request.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. A new capability called `interfaces` is added to EIP-5792 requests. ### `wallet_sendCalls` When this capability is supported, `wallet_sendCalls` requests MAY include a global `interfaces` field. The `interfaces` field provided by an application MUST map contract addresses to interface specs. These contract addresses SHOULD correspond to those of the `to` fields in the `calls` array of the request, and SHOULD be compared with them case-sensitively.
+
+MOTIVATION:
+The security model of Ethereum accounts relies on a separation of concerns between applications and wallets, the latter being responsible for securing private key material and providing restricted access to it. When an application requests a transaction or a signature, the wallet prompts the user to accept it or reject it. The user is expected to make an assessment about the desirability of the operation, given that it can potentially operate on all account assets, in the extreme case "draining" them all for the benefit of an attacker. The wallet is tasked with providing information about the request
+
+RATIONALE:
+<!-- TODO -->
 
 
 === EIP-2387 ===

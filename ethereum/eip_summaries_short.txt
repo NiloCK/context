@@ -5930,6 +5930,26 @@ RATIONALE:
 ### Why not also raise the cost of non-zero to non-zero? Rewriting storage does not affect state growth, which is the main issue this
 
 
+=== EIP-7791 ===
+TITLE: GAS2ETH opcode
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-08-13
+REQUIRES: 2929
+
+SUMMARY:
+This EIP introduces a new `GAS2ETH` opcode that enables the direct conversion of gas into ether (ETH).
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+This EIP is based on the premise that smart contract authors, compiler teams and public goods projects in general should be compensated for their
+
+RATIONALE:
+- `GAS2ETH` vs. pro-rata: The pro-rata model incentivizes inflating contract gas usage to artificially increase fees. In contrast, this proposal allows contract authors to
+
+
 === EIP-1872 ===
 TITLE: Ethereum Network Upgrade Windows
 TYPE: Meta 
@@ -6634,6 +6654,26 @@ This EIP uses terminology from the [EIP-3540](./eip-3540.md) which introduces th
 
 RATIONALE:
 ### `TXCREATE` failure modes `TXCREATE` has two "light" failure modes in case the initcontainer is not present and in case the EOF validation is
+
+
+=== EIP-7896 ===
+TITLE: ABI attachment in `wallet_sendCalls`
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2025-02-27
+REQUIRES: 5792
+
+SUMMARY:
+This EIP extends [EIP-5792](./eip-5792.md) with a new `interfaces` capability, whereby an application can attach the contract interface specifications (aka. ABIs) that the wallet needs
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The security model of Ethereum accounts relies on a separation of concerns between applications and wallets, the latter being responsible for securing private key
+
+RATIONALE:
+<!-- TODO -->
 
 
 === EIP-2387 ===
