@@ -3417,6 +3417,26 @@ RATIONALE:
 This ERC was explicitly optimized for deployment gas cost and simplicity. It is expected that libraries will eventually be developed that makes this more developer-friendly. [ERC-165](./eip-165.md) is not used, since the interface is simple enough that it can be detected simply by calling the function.
 
 
+=== ERC-7897 ===
+TITLE: Wallet-Linked Services for Smart Accounts
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-04-15
+REQUIRES: 1, 6, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7, ,,  , 6, 5, 5, 1, ,,  , 7, 6, 5, 6
+
+SUMMARY:
+This proposal defines a registry for generic services linked to smart accounts, with a special focus on [ERC-4337](./eip-4337.md) wallets, where services are contracts extending a wallet's functionality, owned by the wallet itself. It leverages [ERC-1167](./eip-1167.md) minimal proxies and deterministic addressing to enable permissionless innovation while maintaining backward compatibility with existing [ERC-4337](./eip-4337.md) wallets. To reach its goal, it takes the concept introduced with [ERC-6551](./eip-6551.md) and [ERC-7656](./eip-7656.md) standards that work for NFTs, and applies it to wallets.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Registry Interface The interface `IERC7897Registry` is defined as follows: ```solidity interface IERC7897Registry { /** * @notice Emitted when a wallet-linked service is successfully deployed. * @param deployedService The address of the deployed contract * @param serviceImplementation The address of the implementation contract * @param salt The salt used for the CREATE2 operation * @param chainId The chain ID where the contract is deployed
+
+MOTIVATION:
+[ERC-4337](./eip-4337.md) (Account Abstraction) introduces programmable smart accounts. Existing proposals to extend wallet functionalities (e.g., [ERC-6900](./eip-6900.md)) focus on internal modules. This proposal generalizes the concept of service binding, allowing any [ERC-4337](./eip-4337.md) wallet to attach external services (e.g., recovery, automation, compliance) without requiring changes to the wallet's core logic. By enabling modular, non-invasive extensions, this standard fosters an open ecosystem of wallet-linked services while ensuring backward compatibility with existing [ERC-4337](./eip-4337.md) wallets.
+
+RATIONALE:
+The technical foundation of [ERC-7897](./eip-7897.md) centers on the extension and generalization of contract types that can be associated with [ERC-4337](./eip-4337.md) wallets. Key decisions include: - Flexibility: Enables any [ERC-4337](./eip-4337.md) wallet to attach external services without modifying its core logic. - Permissionless Innovation: Developers can deploy services for any wallet, fostering an open ecosystem. - Backward Compatibility: Works with existing [ERC-4337](./eip-4337.md) wallets, including Safe, Argent, and Biconomy. - Deterministic Addressing: Uses CREATE2 + salt/chainId/wallet for predictable service deployments.
+
+
 === ERC-4799 ===
 TITLE: Non-Fungible Token Ownership Designation Standard
 TYPE: Standards Track ERC
@@ -8507,6 +8527,26 @@ RATIONALE:
 ### Time Data Type The max value of `uint64` is 18,446,744,073,709,551,615. As a timestamp, 18,446,744,073,709,551,615 is about year 584,942,419,325. `uint256` is too big for C, C++, Java, Go, etc, and `uint64` is natively supported by mainstream programming languages.
 
 
+=== ERC-7829 ===
+TITLE: Data Asset NFT
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-29
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This proposal is an extension of [ERC-721](./eip-721.md). This proposal introduces a new role, Reader, who is granted by the Owner and allows multiple Readers for a single NFT. Additionally, this proposal extends the metadata interface of ERC-721, requiring that metadata should include at least a commitment, size, expire, and uploader's address. This proposal also proposes a storage proof mechanism to ensure the correctness of metadata information.
+
+SPECIFICATION:
+### Terms In this proposal, we divide data assets into three parts: - Storage Metadata: Includes commitment, size, expire, and uploader's address. Stored and maintained by storage contracts on the blockchain. - Permission Metadata: Includes information on ownership and reading rights, as well as which addresses can modify this information. Stored and maintained by permission contracts on the blockchain. - Data Content: Data uploaded by users to the storage system. Data content is stored in off-chain storage nodes. **Every compliant data permission contract must implement the Interface**: The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD
+
+MOTIVATION:
+ERC-721 proposed the NFTs to represent the ownership of digital or physical assets. Currently, the NFT metadata is considered the NFT content, and its scarcity determines the value of the NFT. NFT owners can convert the content value of NFTs into revenue by transferring the ownership of NFTs. However, due to the high transaction fees, storage costs, and other expenses, NFTs are currently only able to represent the ownership of high-value assets, which limits the range of assets that NFTs can represent. This is especially true for Data Assets, which refers to digital products created by creators, such
+
+RATIONALE:
+![arc](../assets/eip-7829/architect.svg) The biggest challenge for data asset NFTs is the visibility but inaccessibility of data content: after establishing access control permissions for NFT data content, i.e., accessing data content requires certain access permissions, how can users without data access permissions ensure that the data content exists when obtaining access permissions? To prevent users from making incorrect operations unknowingly, it is necessary to upload information about the data content to the chain, specifically, the expire of the data content should be uploaded to the chain. Users can access the expire of the data content to judge whether their NFT
+
+
 === ERC-7432 ===
 TITLE: Non-Fungible Token Roles
 TYPE: Standards Track ERC
@@ -8870,6 +8910,26 @@ Tokenized item standards such as [EIP-721](./eip-721.md) and [EIP-1155](./eip-11
 
 RATIONALE:
 The critical features of this interactive token standard are that it 1) creates a common way to define, advertise, and conduct object interaction, 2) enables optional, brokered statefulness with *useful* validity assurances at minimum gas overhead, 3) is easy for developers to implement, and 4) is easy for end-users to use. ### Action Names & Selectors Actions are advertised using human-readable strings, and processed using function selectors (`bytes4(keccack256(action_key))`). Human-readable strings allow end-users to easily interpret functionality, while function selectors allow efficient comparison operations on arbitrarily long action keys. This scheme also allows for simple namespacing and sequence specification.
+
+
+=== ERC-7785 ===
+TITLE: Onchain registration of chain identifiers
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-09-26
+REQUIRES: 2304
+
+SUMMARY:
+This ERC proposes to derive chain identifiers as a digest of their chain name (and other information) and to use ENS to map chain names to identifiers in place of the centralized list on GitHub. A solution to support existing chain identifiers that were not derived following this ERC is also proposed.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Extending chain identifiers Current chain identifiers are usually chosen arbitrarily to be short. While these identifiers are convenient on a small scale, as their number increases it is more desirable to draw them from a larger space. We propose to extend the size of identifiers to 32 bytes and to derive them using a cryptographic hash function. The input to the function MUST
+
+MOTIVATION:
+The mapping between chain names and identifiers, such as `Mainnet -> 0x1`, is currently maintained in a centralized list. However this solution has two main shortcomings: - It does not scale with the growing number of L2s. - The list maintainers are a single point of failure. Desired properties: - the ability to register new chain names and identifiers in a censorship-resistant way - the ability to resolve chain names and identifiers in a trustless way - maintain a unique mapping between names and identifiers ### Chain Identifier Spoofing and Replay Attacks An important property of the centralized
+
+RATIONALE:
+<!-- The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages. The current placeholder is acceptable for a draft. TODO: Remove this comment before submitting --> TBD
 
 
 === ERC-7555 ===

@@ -3417,6 +3417,26 @@ RATIONALE:
 This ERC was explicitly optimized for deployment gas cost and simplicity. It is expected that libraries will eventually be developed that makes this more
 
 
+=== ERC-7897 ===
+TITLE: Wallet-Linked Services for Smart Accounts
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-04-15
+REQUIRES: 1, 6, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7, ,,  , 6, 5, 5, 1, ,,  , 7, 6, 5, 6
+
+SUMMARY:
+This proposal defines a registry for generic services linked to smart accounts, with a special focus on [ERC-4337](./eip-4337.md) wallets, where services are contracts extending
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[ERC-4337](./eip-4337.md) (Account Abstraction) introduces programmable smart accounts. Existing proposals to extend wallet functionalities (e.g., [ERC-6900](./eip-6900.md)) focus on internal modules. This proposal generalizes the concept
+
+RATIONALE:
+The technical foundation of [ERC-7897](./eip-7897.md) centers on the extension and generalization of contract types that can be associated with [ERC-4337](./eip-4337.md) wallets. Key decisions include:
+
+
 === ERC-4799 ===
 TITLE: Non-Fungible Token Ownership Designation Standard
 TYPE: Standards Track ERC
@@ -8507,6 +8527,26 @@ RATIONALE:
 ### Time Data Type The max value of `uint64` is 18,446,744,073,709,551,615. As a timestamp, 18,446,744,073,709,551,615 is about year 584,942,419,325. `uint256` is too big for
 
 
+=== ERC-7829 ===
+TITLE: Data Asset NFT
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-29
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This proposal is an extension of [ERC-721](./eip-721.md). This proposal introduces a new role, Reader, who is granted by the Owner and allows multiple Readers
+
+SPECIFICATION:
+### Terms In this proposal, we divide data assets into three parts: - Storage Metadata: Includes commitment, size, expire, and uploader's address. Stored and
+
+MOTIVATION:
+ERC-721 proposed the NFTs to represent the ownership of digital or physical assets. Currently, the NFT metadata is considered the NFT content, and its
+
+RATIONALE:
+![arc](../assets/eip-7829/architect.svg) The biggest challenge for data asset NFTs is the visibility but inaccessibility of data content: after establishing access control permissions for NFT data
+
+
 === ERC-7432 ===
 TITLE: Non-Fungible Token Roles
 TYPE: Standards Track ERC
@@ -8870,6 +8910,26 @@ Tokenized item standards such as [EIP-721](./eip-721.md) and [EIP-1155](./eip-11
 
 RATIONALE:
 The critical features of this interactive token standard are that it 1) creates a common way to define, advertise, and conduct object interaction, 2)
+
+
+=== ERC-7785 ===
+TITLE: Onchain registration of chain identifiers
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-09-26
+REQUIRES: 2304
+
+SUMMARY:
+This ERC proposes to derive chain identifiers as a digest of their chain name (and other information) and to use ENS to map chain
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The mapping between chain names and identifiers, such as `Mainnet -> 0x1`, is currently maintained in a centralized list. However this solution has two
+
+RATIONALE:
+<!-- The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate
 
 
 === ERC-7555 ===
