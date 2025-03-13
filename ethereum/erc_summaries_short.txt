@@ -5991,7 +5991,7 @@ Protocols can use state fingerprints as a part of a token identifier and support
 === ERC-7656 ===
 TITLE: Generalized Token-Linked Services
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Review
 CREATED: 2024-03-15
 REQUIRES: 1, 6, 5, ,,  , 1, 1, 6, 7, ,,  , 5, 3, 1, 3
 
