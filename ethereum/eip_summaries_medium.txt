@@ -2606,6 +2606,26 @@ RATIONALE:
 Persisted refunds would become worthless before they fall below their activation cost. Once the refunds are worthless, they can be removed by another hard fork without waiting for 0. The rate of diminishing specified would currently require (24000-5000) * 100 = 1,900,000 blocks for `SELFDESTRUCT` and (15000-5000) * 100
 
 
+=== EIP-7870 ===
+TITLE: Hardware and Bandwidth Recommendations
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2025-01-26
+REQUIRES: 
+
+SUMMARY:
+This proposal specifies hardware and bandwidth recommendations for different types of Ethereum nodes: - **Full nodes**: Nodes that follow the tip of the chain without necessarily proposing blocks. - **Validators**: Split into: - **Attesters**: Validators that validate and attest to blocks created by proposers. - **Local block builders** (Proposers):
+
+SPECIFICATION:
+### Roles and Their Recommended Specifications Node operators typically run both an **Execution Layer (EL)** client and a **Consensus Layer (CL)** client on the same machine. The specifications below assume the combined resource usage of both. | Node Type | Storage | Memory | CPU Cores / Threads |
+
+MOTIVATION:
+Clear system specifications are crucial for: - Ensuring meaningful benchmark comparisons across different client implementations. - Enabling informed decision-making about protocol upgrades and their resource usage implications. - Providing clear guidance for node operators to ensure alignment with future network requirements. Without a shared understanding of target hardware specifications:
+
+RATIONALE:
+### Storage - **Recommended**: 4 TB NVMe M.2 drive with: - **Sequential R/W**: 7,000 MB/s - **Random 4K R/W**: Up to 1,000,000 IOPS - **Why NVMe over SATA?** - NVMe drives have significantly higher throughput and lower latency than SATA SSDs. - Drives without DRAM (DRAMless) or with QLC
+
+
 === EIP-2070 ===
 TITLE: Hardfork Meta: Berlin
 TYPE: Meta 
