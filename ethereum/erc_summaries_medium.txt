@@ -5816,16 +5816,16 @@ CREATED: 2023-07-26
 REQUIRES: 
 
 SUMMARY:
-Contracts may require off-chain data during execution. A smart contract function could implement the standard proposed here by reverting with `error OracleDataRequired(address oracleContract, bytes oracleQuery)`. Clients supporting this standard would recognize this error message during a simulation of the request, query the specified decentralized oracle network for signed data,
+Contracts may require off-chain data during execution. A smart contract function could implement the standard proposed here by reverting with `error OracleDataRequired(address oracleContract, bytes oracleQuery, uint256 feeRequired)`. Clients supporting this standard would recognize this error message during a simulation of the request, query the specified decentralized oracle network for
 
 SPECIFICATION:
-A contract implementing this standard MUST revert with the following error whenever off-chain data is required: ```solidity error OracleDataRequired(address oracleContract, bytes oracleQuery) ``` `oracleQuery` specifies the off-chain data that is being required. Valid data formats for this parameter are specific to the oracle ID specified by the oracle contract.
+A contract implementing this standard MUST revert with the following error whenever off-chain data is required: ```solidity error OracleDataRequired(address oracleContract, bytes oracleQuery, uint256 feeRequired) ``` `oracleQuery` specifies the off-chain data that is being required. Valid data formats for this parameter are specific to the oracle ID specified by the
 
 MOTIVATION:
 Ethereum's scaling roadmap involves a series of separate execution contexts for smart contract code (including layer two and layer three scaling solutions). This makes the ability to read data across multiple chains crucial to the construction of scalable applications. Also, for decentralized finance protocols that rely on price data,
 
 RATIONALE:
-This proposal is essentially an alternative to [ERC-3668](./eip-3668.md) with a few important distinctions: - ERC-3668 requires URIs to be encoded on-chain. While this can work well for static assets (such as IPFS hashes for assets related to NFTs and merkle trees), it is not ideal for retrieving data that
+This proposal is essentially an alternative to [ERC-3668](./eip-3668.md) with a couple notable distinctions: - The error is very simple to construct. Developers implementing this standard only need to have awareness of the oracle network they choose to rely on, the form of the query accepted by this network, and
 
 
 === ERC-1319 ===

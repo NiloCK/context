@@ -5819,13 +5819,13 @@ SUMMARY:
 Contracts may require off-chain data during execution. A smart contract function could implement the standard proposed here by reverting with `error OracleDataRequired(address oracleContract, bytes
 
 SPECIFICATION:
-A contract implementing this standard MUST revert with the following error whenever off-chain data is required: ```solidity error OracleDataRequired(address oracleContract, bytes oracleQuery) ``` `oracleQuery`
+A contract implementing this standard MUST revert with the following error whenever off-chain data is required: ```solidity error OracleDataRequired(address oracleContract, bytes oracleQuery, uint256 feeRequired)
 
 MOTIVATION:
 Ethereum's scaling roadmap involves a series of separate execution contexts for smart contract code (including layer two and layer three scaling solutions). This makes
 
 RATIONALE:
-This proposal is essentially an alternative to [ERC-3668](./eip-3668.md) with a few important distinctions: - ERC-3668 requires URIs to be encoded on-chain. While this can
+This proposal is essentially an alternative to [ERC-3668](./eip-3668.md) with a couple notable distinctions: - The error is very simple to construct. Developers implementing this
 
 
 === ERC-1319 ===
