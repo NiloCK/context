@@ -5265,7 +5265,7 @@ The rational for increasing the ``Gcallstipend`` gas parameter by ``1,200`` gas 
 === EIP-7637 ===
 TITLE: Optimize EOA EXTCODEHASH
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-02-26
 REQUIRES: 1052
 
