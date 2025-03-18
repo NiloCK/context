@@ -2329,6 +2329,26 @@ RATIONALE:
 ### Considerations for some local variables The `salePrice` in the `listItem` function cannot be set to zero. Firstly, it is a rare occurrence for
 
 
+=== ERC-7887 ===
+TITLE: Cancelation for ERC-7540 Tokenized Vaults
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-18
+REQUIRES: 1, 6, 5, ,,  , 7, 5, 4, 0
+
+SUMMARY:
+The following standard extends [ERC-7540](./eip-7540.md) by adding support for asynchronous cancelation flows. New methods are added to asynchronously cancel a deposit or redeem Request,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Shares or assets locked for Requests can be stuck in the Pending state. For some use cases, such as redeeming from a pool of
+
+RATIONALE:
+### Blocking Requests during Cancelation When `cancelDepositRequest` is called by a `controller`, new deposit Requests are blocked for this `controller`, and the equivalent applies
+
+
 === ERC-5267 ===
 TITLE: Retrieval of EIP-712 domain
 TYPE: Standards Track ERC

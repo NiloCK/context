@@ -2329,6 +2329,26 @@ RATIONALE:
 ### Considerations for some local variables The `salePrice` in the `listItem` function cannot be set to zero. Firstly, it is a rare occurrence for a caller to set the price to 0, and when it happens, it is often due to an operational error which can result in loss of assets. Secondly, a caller needs to spend gas to call this function, so if he can set the token price to 0, his income would be actually negative at this time, which does not conform to the concept of 'economic man' in economics. Additionally, a token price of
 
 
+=== ERC-7887 ===
+TITLE: Cancelation for ERC-7540 Tokenized Vaults
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-18
+REQUIRES: 1, 6, 5, ,,  , 7, 5, 4, 0
+
+SUMMARY:
+The following standard extends [ERC-7540](./eip-7540.md) by adding support for asynchronous cancelation flows. New methods are added to asynchronously cancel a deposit or redeem Request, view the status of the cancelation Request, and claim the assets or shares as a result of the cancelation Request.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions The existing definitions from [ERC-7540](./eip-7540.md) apply. ### Cancelation Lifecycle After submission, cancelation Requests go through Pending, Claimable, and Claimed stages. An example lifecycle for a deposit cancelation Request is visualized in the table below. | **State** | **User** | **Vault** | |-------------|---------------------------------|-----------| | Pending | `cancelDepositRequest(requestId, controller)` | `pendingCancelDepositRequest[controller] = true` | | Claimable | | *Internal cancelation fulfillment*: `pendingCancelDepositRequest[controller] = false`;
+
+MOTIVATION:
+Shares or assets locked for Requests can be stuck in the Pending state. For some use cases, such as redeeming from a pool of long-dated real-world assets, this can take a considerable amount of time. This standard expands the scope of Asynchronous ERC-7540 Vaults by adding cancelation support.
+
+RATIONALE:
+### Blocking Requests during Cancelation When `cancelDepositRequest` is called by a `controller`, new deposit Requests are blocked for this `controller`, and the equivalent applies to the redeem flow. This requirement simplifies the possible states of vaults implementing asynchronous cancelation flows. The alternative would create possible states where a cancelation is pending and a new deposit Request is triggered, leading to the current state being complex to read for integrators. ### Mandated Support for [ERC-165](./eip-165.md) Implementing support for [ERC-165](./eip-165.md) is mandated because of the optionality of flows as defined in [ERC-7540](./eip-7540.md). Integrations can use the `supportsInterface` method to check
+
+
 === ERC-5267 ===
 TITLE: Retrieval of EIP-712 domain
 TYPE: Standards Track ERC
