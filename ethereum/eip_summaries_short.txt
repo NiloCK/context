@@ -7466,7 +7466,7 @@ SPECIFICATION:
 We declared the following chainID range 1. (1, 2^31 - 1): "Safe Range", the higher bound is decided by Javascript number 2. (1, MAX_CHAIN_ID);
 
 MOTIVATION:
-1. We want chainId to be safe across the different components of the ecosystem such as smart contract, wallet, dApp and JsonPRC etc. 2.
+1. We want chainId to be safe across the different components of the ecosystem such as smart contract, wallet, dApp and JSON-RPC etc. 2.
 
 RATIONALE:
 ### Beyond "Max Range", the EIP-155 will overflow as discussed below The `MAX_CHAIN_ID` is calculated to avoid overflow when performing uint64 math. For reference,
