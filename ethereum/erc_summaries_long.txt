@@ -6125,6 +6125,26 @@ RATIONALE:
 This standard aims to make on-chain subscriptions as simple as possible by adding the minimal required functions and events for implementing on-chain subscriptions. It is important to note that in this interface, the NFT itself represents ownership of a subscription, there is no facilitation of any other fungible or non-fungible tokens. ### Subscription Management Subscriptions represent agreements to make advanced payments in order to receive or participate in something. In order to facilitate these agreements, a user must be able to renew or cancel their subscriptions hence the `renewSubscription` and `cancelSubscription` functions. It also important to know when
 
 
+=== ERC-7856 ===
+TITLE: Chain-Specific Payment Requests
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-01
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes a standardized URI scheme for chain-specific payment requests, enabling users to specify transactions in the form "send me X tokens of type Y on chain Z". The URI format includes essential components such as the recipient's blockchain account, the amount of tokens, the token contract address, and optional success and error callback URLs. This standard aims to eliminate ambiguity in multi-chain payment requests, ensuring clarity and accuracy in peer-to-peer transactions and vendor or dApp requests across different blockchain networks.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The format of the payment request URI is: ```txt cspr://<recipient>/<amount>/<token-address>?on-success=<success-callback-url>&on-error=<error-callback-url> ``` - `cspr://` - [REQUIRED] Short for "Chain-Specific Payment Request". Indicates a blockchain-based payment request. - `<recipient>` - [REQUIRED] The blockchain account requesting the payment (represented as a CAIP-10 account identifier). - `<amount>` - [REQUIRED] The amount of tokens to be sent, specified as an integer or decimal number. - `<token-address>` - [REQUIRED] The
+
+MOTIVATION:
+The ongoing expansion of the Ethereum network into a multi-chain ecosystem has introduced complexities regarding the execution of payment requests. Users and developers currently face a lack of clarity on which chain a payment request should be fulfilled, particularly when similar assets exist across multiple chains. This ambiguity complicates peer-to-peer transactions and vendor or dApp requests, leading to inefficiencies and a higher potential for errors. This standard will ensure that payment requests are clearly understood and correctly executed, regardless of the chain, thus significantly enhancing the user experience in a multi-chain environment.
+
+RATIONALE:
+The design of this URI standard for blockchain-based payment requests addresses the need for a clear and unambiguous method to initiate transactions across multiple Ethereum chains, including mainnet and various Layer 2 networks. The rationale for each component of the URI structure is as follows: - **`cspr://` Prefix:** This prefix explicitly identifies the URI as a blockchain-based payment request, ensuring systems recognize and correctly handle these URIs. It follows the precedent of other protocol-specific URI schemes like `mailto://` for email and `http://` for web links. - **Recipient:** The recipient is specified using a CAIP-10 account identifier, a standardized
+
+
 === ERC-7291 ===
 TITLE: Purpose bound money
 TYPE: Standards Track ERC
@@ -6483,6 +6503,26 @@ Non-fungible tokens are popularized by the [ERC-721](./eip-721.md) NFT standard 
 
 RATIONALE:
 The NFTs defined in the [ERC-721](./eip-721.md) standard are already largely accepted and known as representing ownership of digital assets, and the NFTs by this standard aim to be accepted and known as representing abstract ownership. This is achieved by allowing and encouraging layers of abstract utilities built on top of them. Ownership of such NFTs is equivalent with having the rights to perform functions assigned to such tokens. Transfer of such rights is also made easier because of this tokenization. To further distinguish this standard from [ERC-721](./eip-721.md), data fields and functions related to `URI` are excluded.
+
+
+=== ERC-7858 ===
+TITLE: Expirable NFTs and SBTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-01-04
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+Introduces an extension for [ERC-721](./eip-721.md) Non-Fungible Tokens (NFTs) and Soulbound Tokens (SBTs) that adds an expiration mechanism, allowing tokens to become invalid after a predefined period. This additional layer of functionality ensures that the expiration mechanism does not interfere with existing NFTs or SBTs, preserving transferability for NFTs and compatibility with current DApps such as NFT Marketplace. Expiration can be defined using either block height or timestamp, offering flexibility for various use cases.
+
+SPECIFICATION:
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Interface ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity >=0.8.0 <0.9.0; /** * @title ERC-7858: Expirable NFTs and SBTs * @notice unique/granular expiry */ // import "./IERC721.sol"; // The EIP-165 identifier of this interface is `0x3ebdfa31`. interface IERC7858 /**is IERC721 */ { enum EXPIRY_TYPE { BLOCKS_BASED, // block.number TIME_BASED // block.timestamp } /** * @dev Emitted when the expiration date of a token is set or
+
+MOTIVATION:
+Introduces an extension for [ERC-721](./eip-721.md) Non-Fungible Tokens (NFTs) and Soulbound Tokens (SBTs), which facilitates the implementation of an expiration mechanism. Use cases include: - Access and Authentication - Authentication for Identity and Access Management (IAM) - Membership for Membership Management System (MMS) - Ticket and Press for Meetings, Incentive Travel, Conventions, and Exhibitions (MICE) when using with [ERC-2135](./eip-2135.md) or [ERC-7578](./eip-7578.md). - Subscription-based access for digital platforms. - Digital Certifications, Contracts, Copyrights, Documents, Licenses, Policies, etc. - Loyalty Program voucher or coupon - Governance and Voting Rights - Financial Product - Bonds, Loans, Hedge, and Options Contract
+
+RATIONALE:
+### First, do no harm Introducing expirability as an additional layer of functionality ensures it doesn’t interfere with existing use cases or applications. For non-SBT tokens, transferability remains intact, maintaining compatibility with current systems. Expired tokens are simply flagged as unusable during validity checks, treating expiration as an enhancement rather than a fundamental change. ### Expiry Types Defining expiration by either block height (`block.number`) or block timestamp (`block.timestamp`) offers flexibility for various use cases. Block-based expiration suits applications that rely on network activity and require precise consistency, while time-based expiration is ideal for networks with variable block intervals.
 
 
 === ERC-1337 ===
@@ -9118,6 +9158,26 @@ This standard aims to enhance the end user's experience by granting them confide
 
 RATIONALE:
 The proposed implementation does not modify any of the existing functionalities offered by [EIP-712](./eip-712.md) and [EIP-1193](./eip-1193.md). Its additive nature makes it inherently backward compatible. Its core design is modeled after existing solutions to existing problems (such as DKIM). As a result the proposed specification will be non disruptive, easy to implements for both wallets and dapps, with a predictable threat model.
+
+
+=== ERC-7813 ===
+TITLE: Store, Table-Based Introspectable Storage
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-08
+REQUIRES: 
+
+SUMMARY:
+This standard introduces a flexible on-chain storage pattern that organizes data into structured tables that consist of records with fixed key and value schemas, similar to a traditional database. This storage pattern consists of a unified contract interface for data access, along with a compact binary encoding format for both static and dynamic data types. State changes are tracked through standardized events that enable automatic, schema-aware state replication by off-chain indexers. New tables can be dynamically registered at runtime through a special table that stores schema metadata for all tables, allowing the system to evolve without breaking existing
+
+SPECIFICATION:
+### Definitions #### Store A smart contract that implements the interface proposed by this ERC and organizes data in Tables. It emits events for each data operation so that off-chain components can replicate the state of all tables. #### Table A storage structure that holds **Records** sharing the same **Schema**. - **On-chain Table**: Stores its state on-chain and emits events for off-chain- indexers. - **Off-chain Table**: Does not store state on-chain but emits events for off-chain indexers. #### Record A piece of data stored in a **Table**, addressed by one or more keys. #### `ResourceId` A 32-byte value
+
+MOTIVATION:
+The absence of consistent standards for on-chain data management in smart contracts can lead to rigid implementations, tightly coupled contract logic with off-chain services, and challenges in updating or extending a contract’s data layout without breaking existing integrations. Using the storage mechanism defined in this ERC provides the following benefits: 1. **Automatic Indexing**: By emitting consistent, standardized events during state changes, off-chain services can automatically track on-chain state and provide schema-aware indexer APIs. 2. **Elimination of Custom Getter Functions**: Any contract or off-chain service can read stored data through a consistent interface, decoupling smart contract implementation from specific
+
+RATIONALE:
+### Splice Events While the `Store_SetRecord` event suffices for tracking the data of each record off-chain, including `Splice` events (`Store_SpliceStaticData` and `Store_SpliceDynamicData`) allows for more efficient partial updates. When only a portion of a record changes, emitting a full `SetRecord` event would be inefficient because the entire record data would need to be read from storage and emitted. `Splice` events enable the store to emit only the minimal necessary data for the update, reducing gas consumption. This is particularly important for records with large dynamic fields, as the cost of updating them doesn’t grow with the field’s size.
 
 
 === ERC-7795 ===

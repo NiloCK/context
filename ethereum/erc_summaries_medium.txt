@@ -6125,6 +6125,26 @@ RATIONALE:
 This standard aims to make on-chain subscriptions as simple as possible by adding the minimal required functions and events for implementing on-chain subscriptions. It is important to note that in this interface, the NFT itself represents ownership of a subscription, there is no facilitation of any other fungible or
 
 
+=== ERC-7856 ===
+TITLE: Chain-Specific Payment Requests
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-01
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes a standardized URI scheme for chain-specific payment requests, enabling users to specify transactions in the form "send me X tokens of type Y on chain Z". The URI format includes essential components such as the recipient's blockchain account, the amount of tokens, the token contract address,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The format of the payment request URI is: ```txt cspr://<recipient>/<amount>/<token-address>?on-success=<success-callback-url>&on-error=<error-callback-url> ``` - `cspr://` - [REQUIRED]
+
+MOTIVATION:
+The ongoing expansion of the Ethereum network into a multi-chain ecosystem has introduced complexities regarding the execution of payment requests. Users and developers currently face a lack of clarity on which chain a payment request should be fulfilled, particularly when similar assets exist across multiple chains. This ambiguity complicates
+
+RATIONALE:
+The design of this URI standard for blockchain-based payment requests addresses the need for a clear and unambiguous method to initiate transactions across multiple Ethereum chains, including mainnet and various Layer 2 networks. The rationale for each component of the URI structure is as follows: - **`cspr://` Prefix:** This
+
+
 === ERC-7291 ===
 TITLE: Purpose bound money
 TYPE: Standards Track ERC
@@ -6483,6 +6503,26 @@ Non-fungible tokens are popularized by the [ERC-721](./eip-721.md) NFT standard 
 
 RATIONALE:
 The NFTs defined in the [ERC-721](./eip-721.md) standard are already largely accepted and known as representing ownership of digital assets, and the NFTs by this standard aim to be accepted and known as representing abstract ownership. This is achieved by allowing and encouraging layers of abstract utilities built on top
+
+
+=== ERC-7858 ===
+TITLE: Expirable NFTs and SBTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-01-04
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+Introduces an extension for [ERC-721](./eip-721.md) Non-Fungible Tokens (NFTs) and Soulbound Tokens (SBTs) that adds an expiration mechanism, allowing tokens to become invalid after a predefined period. This additional layer of functionality ensures that the expiration mechanism does not interfere with existing NFTs or SBTs, preserving transferability for NFTs and
+
+SPECIFICATION:
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Interface ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity >=0.8.0 <0.9.0; /** * @title ERC-7858: Expirable NFTs
+
+MOTIVATION:
+Introduces an extension for [ERC-721](./eip-721.md) Non-Fungible Tokens (NFTs) and Soulbound Tokens (SBTs), which facilitates the implementation of an expiration mechanism. Use cases include: - Access and Authentication - Authentication for Identity and Access Management (IAM) - Membership for Membership Management System (MMS) - Ticket and Press for Meetings, Incentive
+
+RATIONALE:
+### First, do no harm Introducing expirability as an additional layer of functionality ensures it doesn’t interfere with existing use cases or applications. For non-SBT tokens, transferability remains intact, maintaining compatibility with current systems. Expired tokens are simply flagged as unusable during validity checks, treating expiration as an enhancement
 
 
 === ERC-1337 ===
@@ -9118,6 +9158,26 @@ This standard aims to enhance the end user's experience by granting them confide
 
 RATIONALE:
 The proposed implementation does not modify any of the existing functionalities offered by [EIP-712](./eip-712.md) and [EIP-1193](./eip-1193.md). Its additive nature makes it inherently backward compatible. Its core design is modeled after existing solutions to existing problems (such as DKIM). As a result the proposed specification will be non disruptive, easy
+
+
+=== ERC-7813 ===
+TITLE: Store, Table-Based Introspectable Storage
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-08
+REQUIRES: 
+
+SUMMARY:
+This standard introduces a flexible on-chain storage pattern that organizes data into structured tables that consist of records with fixed key and value schemas, similar to a traditional database. This storage pattern consists of a unified contract interface for data access, along with a compact binary encoding format for
+
+SPECIFICATION:
+### Definitions #### Store A smart contract that implements the interface proposed by this ERC and organizes data in Tables. It emits events for each data operation so that off-chain components can replicate the state of all tables. #### Table A storage structure that holds **Records** sharing the same
+
+MOTIVATION:
+The absence of consistent standards for on-chain data management in smart contracts can lead to rigid implementations, tightly coupled contract logic with off-chain services, and challenges in updating or extending a contract’s data layout without breaking existing integrations. Using the storage mechanism defined in this ERC provides the following
+
+RATIONALE:
+### Splice Events While the `Store_SetRecord` event suffices for tracking the data of each record off-chain, including `Splice` events (`Store_SpliceStaticData` and `Store_SpliceDynamicData`) allows for more efficient partial updates. When only a portion of a record changes, emitting a full `SetRecord` event would be inefficient because the entire record data
 
 
 === ERC-7795 ===

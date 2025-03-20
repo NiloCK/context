@@ -6125,6 +6125,26 @@ RATIONALE:
 This standard aims to make on-chain subscriptions as simple as possible by adding the minimal required functions and events for implementing on-chain subscriptions. It
 
 
+=== ERC-7856 ===
+TITLE: Chain-Specific Payment Requests
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-01
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes a standardized URI scheme for chain-specific payment requests, enabling users to specify transactions in the form "send me X tokens of
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The ongoing expansion of the Ethereum network into a multi-chain ecosystem has introduced complexities regarding the execution of payment requests. Users and developers currently
+
+RATIONALE:
+The design of this URI standard for blockchain-based payment requests addresses the need for a clear and unambiguous method to initiate transactions across multiple
+
+
 === ERC-7291 ===
 TITLE: Purpose bound money
 TYPE: Standards Track ERC
@@ -6483,6 +6503,26 @@ Non-fungible tokens are popularized by the [ERC-721](./eip-721.md) NFT standard 
 
 RATIONALE:
 The NFTs defined in the [ERC-721](./eip-721.md) standard are already largely accepted and known as representing ownership of digital assets, and the NFTs by this
+
+
+=== ERC-7858 ===
+TITLE: Expirable NFTs and SBTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-01-04
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+Introduces an extension for [ERC-721](./eip-721.md) Non-Fungible Tokens (NFTs) and Soulbound Tokens (SBTs) that adds an expiration mechanism, allowing tokens to become invalid after a
+
+SPECIFICATION:
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be
+
+MOTIVATION:
+Introduces an extension for [ERC-721](./eip-721.md) Non-Fungible Tokens (NFTs) and Soulbound Tokens (SBTs), which facilitates the implementation of an expiration mechanism. Use cases include: -
+
+RATIONALE:
+### First, do no harm Introducing expirability as an additional layer of functionality ensures it doesn’t interfere with existing use cases or applications. For
 
 
 === ERC-1337 ===
@@ -9118,6 +9158,26 @@ This standard aims to enhance the end user's experience by granting them confide
 
 RATIONALE:
 The proposed implementation does not modify any of the existing functionalities offered by [EIP-712](./eip-712.md) and [EIP-1193](./eip-1193.md). Its additive nature makes it inherently backward compatible.
+
+
+=== ERC-7813 ===
+TITLE: Store, Table-Based Introspectable Storage
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-08
+REQUIRES: 
+
+SUMMARY:
+This standard introduces a flexible on-chain storage pattern that organizes data into structured tables that consist of records with fixed key and value schemas,
+
+SPECIFICATION:
+### Definitions #### Store A smart contract that implements the interface proposed by this ERC and organizes data in Tables. It emits events for
+
+MOTIVATION:
+The absence of consistent standards for on-chain data management in smart contracts can lead to rigid implementations, tightly coupled contract logic with off-chain services,
+
+RATIONALE:
+### Splice Events While the `Store_SetRecord` event suffices for tracking the data of each record off-chain, including `Splice` events (`Store_SpliceStaticData` and `Store_SpliceDynamicData`) allows for
 
 
 === ERC-7795 ===

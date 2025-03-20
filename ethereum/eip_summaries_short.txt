@@ -4323,7 +4323,7 @@ ASIC Miners have become a threat to the future of Ethereum and a hard fork is re
 
 
 === EIP-5081 ===
-TITLE: Expirable Trainsaction
+TITLE: Expirable Transaction
 TYPE: Standards Track Core
 STATUS: Stagnant
 CREATED: 2022-05-06
