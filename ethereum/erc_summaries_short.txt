@@ -6009,23 +6009,23 @@ Protocols can use state fingerprints as a part of a token identifier and support
 
 
 === ERC-7656 ===
-TITLE: Generalized Token-Linked Services
+TITLE: Generalized Contract-Linked Services
 TYPE: Standards Track ERC
 STATUS: Review
 CREATED: 2024-03-15
-REQUIRES: 1, 6, 5, ,,  , 1, 1, 6, 7, ,,  , 5, 3, 1, 3
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7, ,,  , 6, 5, 5, 1
 
 SUMMARY:
-This proposal defines a registry for generic services linked to specific non-fungible tokens (NFTs), i.e., contracts extending an NFT, owned by a single NFT
+This proposal defines a factory capable of deploying generic services linked to specific contracts, such as [ERC-4337](./eip-4337.md) accounts or [ERC-721](./eip-721.md) tokens (NFTs). These linked
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+The keywords "MUST," "MUST NOT," "REQUIRED," "SHALL," "SHALL NOT," "SHOULD," "SHOULD NOT," "RECOMMENDED," "NOT RECOMMENDED," "MAY," and "OPTIONAL" in this document are to be
 
 MOTIVATION:
-Existing proposals (like the one by TokenBound, numbered as 6551, not directly linkable here because not finalized yet) aim to bind smart accounts to
+Existing standards like [ERC-6551](./eip-6551.md) successfully bind smart accounts to NFTs, allowing registries to deploy accounts owned by specific token IDs. However, these standards have
 
 RATIONALE:
-The technical foundation of [ERC-7656](./eip-7656.md) centers on the extension and generalization of contract types that can be associated with NFTs. This approach was chosen
+The design of [ERC-7656](./eip-7656.md) is guided by several key principles that address limitations in current contract extension methods: ### Why a Unified Factory? Rather
 
 
 === ERC-7566 ===
