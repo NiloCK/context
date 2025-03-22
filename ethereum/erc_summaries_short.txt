@@ -6013,7 +6013,7 @@ TITLE: Generalized Contract-Linked Services
 TYPE: Standards Track ERC
 STATUS: Review
 CREATED: 2024-03-15
-REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7, ,,  , 6, 5, 5, 1
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7, ,,  , 6, 5, 5, 1
 
 SUMMARY:
 This proposal defines a factory capable of deploying generic services linked to specific contracts, such as [ERC-4337](./eip-4337.md) accounts or [ERC-721](./eip-721.md) tokens (NFTs). These linked
