@@ -3440,12 +3440,12 @@ This ERC was explicitly optimized for deployment gas cost and simplicity. It is 
 === ERC-7897 ===
 TITLE: Wallet-Linked Services for Smart Accounts
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Withdrawn
 CREATED: 2024-04-15
 REQUIRES: 1, 6, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7, ,,  , 6, 5, 5, 1, ,,  , 7, 6, 5, 6
 
 SUMMARY:
-This proposal defines a registry for generic services linked to smart accounts, with a special focus on [ERC-4337](./eip-4337.md) wallets, where services are contracts extending a wallet's functionality, owned by the wallet itself. It leverages [ERC-1167](./eip-1167.md) minimal proxies and deterministic addressing to enable permissionless innovation while maintaining backward compatibility with existing [ERC-4337](./eip-4337.md) wallets. To reach its goal, it takes the concept introduced with [ERC-6551](./eip-6551.md) and [ERC-7656](./eip-7656.md) standards that work for NFTs, and applies it to wallets.
+This proposal defines a registry for generic services linked to smart accounts, with a special focus on [ERC-4337](./eip-4337.md) wallets, where services are contracts extending a wallet's functionality, owned by the wallet itself. It leverages [ERC-1167](./eip-1167.md) minimal proxies and deterministic addressing to enable permissionless innovation while maintaining backward compatibility with existing [ERC-4337](./eip-4337.md) wallets. To reach its goal, it takes the concept introduced with [ERC-6551](./eip-6551.md) and [ERC-7656](./eip-7656.md) standards that work for NFTs, and applies it to wallets. **Note: This proposal is not needed anymore since the same functionality can be achieved using [ERC-7656](./eip-7656.md) standard.**
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Registry Interface The interface `IERC7897Registry` is defined as follows: ```solidity interface IERC7897Registry { /** * @notice Emitted when a wallet-linked service is successfully deployed. * @param deployedService The address of the deployed contract * @param serviceImplementation The address of the implementation contract * @param salt The salt used for the CREATE2 operation * @param chainId The chain ID where the contract is deployed
@@ -6013,7 +6013,7 @@ TITLE: Generalized Contract-Linked Services
 TYPE: Standards Track ERC
 STATUS: Review
 CREATED: 2024-03-15
-REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7, ,,  , 6, 5, 5, 1
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7, ,,  , 6, 5, 5, 1
 
 SUMMARY:
 This proposal defines a factory capable of deploying generic services linked to specific contracts, such as [ERC-4337](./eip-4337.md) accounts or [ERC-721](./eip-721.md) tokens (NFTs). These linked services extend the functionalities of the target contract, operating under the ownership of the contract's or NFT's owner without requiring modifications to the original contract's code. As a secondary effect, this proposal helps fighting the proliferation of ERCs that require changes to the basic standards.
