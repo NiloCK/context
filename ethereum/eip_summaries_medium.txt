@@ -1620,6 +1620,26 @@ RATIONALE:
 The motivation section covers a total motivation to have operations over the BLS12-381 curves available. We also extend a rationale for more specific fine points. ### MSM as a separate call Explicit separate MSM operation that allows one to save execution time (so gas) by both the algorithm used
 
 
+=== EIP-7907 ===
+TITLE: Meter Contract Code Size And Increase Limit
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-14
+REQUIRES: 170
+
+SUMMARY:
+This EIP substantially increases the hard contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 256KB, and adds gas metering. It introduces a gas cost of 2 gas per (32 byte) word for contract code exceeding 24KB, allowing deployment of contracts of any size while preventing
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. 1. Update the EIP-170 contract code size limit of 24KB (`0x6000` bytes) to 256KB (`0x20000`
+
+MOTIVATION:
+EIP-170 introduced a 24KB contract code size limit to prevent potential DoS attacks, as large contract code requires O(n) resource cost in terms of disk reads, VM preprocessing, and Merkle proof sizes, all of which are not directly compensated by gas fees. However, this limit restricts legitimate use cases
+
+RATIONALE:
+The gas cost of 2 per word was chosen in-line with EIP-3860. This accounts for: 1. The additional disk I/O for retrieving larger contract code 2. The increased computational resources for preprocessing larger code for execution (a.k.a. "JUMPDEST analysis"). 3. The growth in Merkle proof sizes for blocks containing
+
+
 === EIP-2657 ===
 TITLE: Ephemeral Testnet Yolo
 TYPE: Meta 
