@@ -1503,7 +1503,7 @@ RATIONALE:
 === EIP-7609 ===
 TITLE: Decrease base cost of TLOAD/TSTORE
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-02-01
 REQUIRES: 1153
 
@@ -6346,7 +6346,7 @@ RATIONALE:
 === EIP-663 ===
 TITLE: SWAPN, DUPN and EXCHANGE instructions
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2017-07-03
 REQUIRES: 3, 5, 4, 0, ,,  , 5, 4, 5, 0
 
@@ -7278,7 +7278,7 @@ SPECIFICATION:
 === EIP-6789 ===
 TITLE: Rename gas to mana
 TYPE: Standards Track Interface
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2023-03-27
 REQUIRES: 
 
