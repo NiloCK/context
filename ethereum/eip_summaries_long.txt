@@ -2646,6 +2646,26 @@ RATIONALE:
 ### Storage - **Recommended**: 4 TB NVMe M.2 drive with: - **Sequential R/W**: 7,000 MB/s - **Random 4K R/W**: Up to 1,000,000 IOPS - **Why NVMe over SATA?** - NVMe drives have significantly higher throughput and lower latency than SATA SSDs. - Drives without DRAM (DRAMless) or with QLC flash are not advised, due to lower endurance and potentially lower sustained performance. - **On Endurance (TBW)** - Running a node involves frequent writes (e.g., database updates, logs). Ensure that the SSD’s Total Bytes Written (TBW) rating is sufficient for multi-year operation. - **Capacity Considerations** - As of January
 
 
+=== EIP-7892 ===
+TITLE: Blob Parameter Only Hardforks
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2025-02-28
+REQUIRES: 7840
+
+SUMMARY:
+This EIP introduces **Blob Parameter Only (BPO) Hardforks**, a lightweight mechanism for incrementally scaling Ethereum’s blob capacity through targeted hard forks that modify only blob-related parameters: `blob target`, `blob limit`, and `baseFeeUpdateFraction`. Unlike traditional hard forks, which require extensive coordination and introduce broader protocol changes, BPO forks enable rapid, low-overhead scaling of blob capacity in response to **real-world demand and network conditions**.
+
+SPECIFICATION:
+BPO forks are a special class of hard fork which **only modifies any of the following** blob-related parameters: - **Blob Target (`blob_target`)**: The expected number of blobs per block. - **Blob Limit (`blob_limit`)**: The maximum number of blobs per block. - **Blob Base Fee Update Fraction (`baseFeeUpdateFraction`)**: Determines how blob gas pricing adjusts per block. To facilitate these changes on the execution layer, the `blobSchedule` object specified in [EIP-7840](./eip-7840.md) is extended to allow for an arbitrary number of block timestamps at which these parameters **MAY** change. ```json "blobSchedule": { "cancun": { "target": 3, "max": 6, "baseFeeUpdateFraction": 3338477 },
+
+MOTIVATION:
+Ethereum's scaling strategy relies on Layer 2 (L2) solutions for transaction execution while using Ethereum as a **data availability (DA) layer**. However, the demand for DA has increased rapidly, and the current approach of only modifying blob parameters in large, infrequent hard forks is **not agile enough** to keep up with L2 growth. The key motivations for BPO forks are: 1. **Continuous Scaling** - L2 DA demand is growing rapidly, leading to saturation of blob capacity. - Large, infrequent blob parameter changes create high costs and inefficiencies. - BPO forks allow for more frequent, safer capacity increases. 2.
+
+RATIONALE:
+### Why not just use regular hardforks? Full hard forks require extensive coordination, testing, and implementation changes beyond parameter adjustments. For example, in Lighthouse, a typical hard fork implementation requires thousands of lines of boilerplate before any protocol changes occur. BPO forks streamline this process by avoiding the need for this boilerplate code. ### Why specify parameters in the node configuration instead of code? Allowing blob parameters to be configured externally enables rapid experimentation, testing, and adjustments without requiring code changes across client implementations. Testing teams can investigate different parameters with minimal involvement from client implementers. ### Why
+
+
 === EIP-2070 ===
 TITLE: Hardfork Meta: Berlin
 TYPE: Meta 

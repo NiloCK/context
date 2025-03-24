@@ -2646,6 +2646,26 @@ RATIONALE:
 ### Storage - **Recommended**: 4 TB NVMe M.2 drive with: - **Sequential R/W**: 7,000 MB/s - **Random 4K R/W**: Up to 1,000,000 IOPS - **Why NVMe over SATA?** - NVMe drives have significantly higher throughput and lower latency than SATA SSDs. - Drives without DRAM (DRAMless) or with QLC
 
 
+=== EIP-7892 ===
+TITLE: Blob Parameter Only Hardforks
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2025-02-28
+REQUIRES: 7840
+
+SUMMARY:
+This EIP introduces **Blob Parameter Only (BPO) Hardforks**, a lightweight mechanism for incrementally scaling Ethereum’s blob capacity through targeted hard forks that modify only blob-related parameters: `blob target`, `blob limit`, and `baseFeeUpdateFraction`. Unlike traditional hard forks, which require extensive coordination and introduce broader protocol changes, BPO forks enable rapid,
+
+SPECIFICATION:
+BPO forks are a special class of hard fork which **only modifies any of the following** blob-related parameters: - **Blob Target (`blob_target`)**: The expected number of blobs per block. - **Blob Limit (`blob_limit`)**: The maximum number of blobs per block. - **Blob Base Fee Update Fraction (`baseFeeUpdateFraction`)**: Determines how
+
+MOTIVATION:
+Ethereum's scaling strategy relies on Layer 2 (L2) solutions for transaction execution while using Ethereum as a **data availability (DA) layer**. However, the demand for DA has increased rapidly, and the current approach of only modifying blob parameters in large, infrequent hard forks is **not agile enough** to keep
+
+RATIONALE:
+### Why not just use regular hardforks? Full hard forks require extensive coordination, testing, and implementation changes beyond parameter adjustments. For example, in Lighthouse, a typical hard fork implementation requires thousands of lines of boilerplate before any protocol changes occur. BPO forks streamline this process by avoiding the need
+
+
 === EIP-2070 ===
 TITLE: Hardfork Meta: Berlin
 TYPE: Meta 
