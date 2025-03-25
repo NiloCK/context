@@ -1363,6 +1363,26 @@ RATIONALE:
 The current MIN_BASE_FEE_PER_BLOB_GAS is 1 wei. This is many orders of magnitude lower than the prevailing price of blobs when blobs enter price discovery.
 
 
+=== EIP-7910 ===
+TITLE: eth_config JSON-RPC Method
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2025-03-18
+REQUIRES: 
+
+SUMMARY:
+This document describes an RPC method that provides node-relevant configuration data for the current and next fork.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Throughout Ethereum's history, there have been multiple instances where a client was not correctly configured for an upcoming hard fork, causing it to fall
+
+RATIONALE:
+### Why Enumerate Precompiles? (And in General, Why Track a Particular Config Item?) The purpose of this specification is to enable nodes to advertise,
+
+
 === EIP-858 ===
 TITLE: Reduce block reward and delay difficulty bomb
 TYPE: Standards Track Core
@@ -1440,6 +1460,26 @@ RATIONALE:
 ### Persist pending withdrawals Rejected deposits from block at slot N can not be withdrawn in block N due to a cyclic dependency. An
 
 
+=== EIP-7917 ===
+TITLE: Deterministic proposer lookahead
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-24
+REQUIRES: 
+
+SUMMARY:
+At the start of each epoch, pre-calculate and store in the `beacon_state` a deterministic `proposer_lookahead` for the next `MIN_SEED_LOOKAHEAD + 1` epochs.
+
+SPECIFICATION:
+The `BeaconState` container is extended with a `proposer_lookahead` field, which is a list of validator indices covering the full visible lookahead period, starting from
+
+MOTIVATION:
+Unlike RANDAO seeds, which have a deterministic lookahead of at least `MIN_SEED_LOOKAHEAD == 1` epochs, the beacon proposer schedule of epoch `N + 1`
+
+RATIONALE:
+### Considered Alternatives An alternative approach would be to cache the effective balances at the start of epoch `N` so it can be used
+
+
 === EIP-4938 ===
 TITLE: eth/67 - Removal of GetNodeData
 TYPE: Standards Track Networking
@@ -1458,6 +1498,26 @@ MOTIVATION:
 
 RATIONALE:
 A replacement for `GetNodeData` is available in the [snap protocol](https://github.com/ethereum/devp2p/blob/40ab248bf7e017e83cc9812a4e048446709623e8/caps/snap.md). Specifically, clients can use the [GetByteCodes](https://github.com/ethereum/devp2p/blob/40ab248bf7e017e83cc9812a4e048446709623e8/caps/snap.md#getbytecodes-0x04) and [GetTrieNodes](https://github.com/ethereum/devp2p/blob/40ab248bf7e017e83cc9812a4e048446709623e8/caps/snap.md#gettrienodes-0x06) messages instead of `GetNodeData`. The snap
+
+
+=== EIP-7903 ===
+TITLE: Remove Initcode Size Limit
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-05
+REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
+
+SUMMARY:
+This EIP proposes the removal of the `initcode` size limit of 49152 bytes introduced in [EIP-3860](./eip-3860). The restriction complicates deploying multiple contracts addressing the
+
+SPECIFICATION:
+Revert the `initcode` size limit introduced in EIP-3860. Specifically: - Remove the 49152-byte cap on `initcode` size during contract creation. - Retain existing gas
+
+MOTIVATION:
+The EIP-3860 `initcode` size limit imposes an unnecessary constraint on deployment patterns, particularly for creation transactions creating large _logical_ contracts composed of multiple _physical
+
+RATIONALE:
+This proposal is driven by the need to restore flexibility in contract deployment patterns, such as factory contracts creating multiple sub-contracts in one transaction.
 
 
 === EIP-6466 ===
@@ -2296,6 +2356,26 @@ RATIONALE:
 Stateless Ethereum relies on proofs using advanced mathematical concepts and tools from a fast-moving area of cryptography. As a result, a soft-fork approach is
 
 
+=== EIP-7889 ===
+TITLE: Emit log on revert
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-02-20
+REQUIRES: 
+
+SUMMARY:
+All calls to the REVERT opcode with non-zero size must emit a log with revert data, making it accessible via standard RPC without the
+
+SPECIFICATION:
+### Parameters <!-- TODO --> * `REVERTTOPIC`: `TBD` * `DATA_LIMIT`: `TBD` ### Functionality Whenever `REVERT` is called with non-zero size, emit a log identical
+
+MOTIVATION:
+Revert messages are currently inaccessible to users as they are not available via standard RPC. Instead, users have to request a node to trace
+
+RATIONALE:
+This is the simplest possible implementation that allows revert messages to be accessible via RPC methods. It does not require any changes to client
+
+
 === EIP-706 ===
 TITLE: DEVp2p snappy compression
 TYPE: Standards Track Networking
@@ -2629,7 +2709,7 @@ Persisted refunds would become worthless before they fall below their activation
 === EIP-7870 ===
 TITLE: Hardware and Bandwidth Recommendations
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-01-26
 REQUIRES: 
 
@@ -4138,6 +4218,23 @@ The lack of request identifiers in the request / response paris of the `eth` pro
 
 RATIONALE:
 **Q: The efficiency gains might encourage clients to flood their peers with too many simultaneous requests** Peers can always throttle or disconnect if they
+
+
+=== EIP-7916 ===
+TITLE: SSZ ProgressiveByteList
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-24
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces a new [Simple Serialize (SSZ) type](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) to make `List[T, N]` with large capacities `N` more efficient in cases where the list
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+RATIONALE:
+`ByteList` definitions sometimes are defined with capacities that exceed their typical practical usage, to avoid limiting design space. For example, the [`Transaction`](https://github.com/ethereum/consensus-specs/blob/3c028dc73f5d93defc9bfd38c44784573a0bc70a/specs/bellatrix/beacon-chain.md#custom-types) type has
 
 
 === EIP-2593 ===
@@ -5675,7 +5772,7 @@ TITLE: Light client and DHT friendly log index
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-07-17
-REQUIRES: 
+REQUIRES: 7916
 
 SUMMARY:
 Replace the fixed 2048 bit log event bloom filters in block headers with a new data structure that can adapt to the changing number
@@ -6366,7 +6463,7 @@ RATIONALE:
 === EIP-663 ===
 TITLE: SWAPN, DUPN and EXCHANGE instructions
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2017-07-03
 REQUIRES: 3, 5, 4, 0, ,,  , 5, 4, 5, 0
 
@@ -6380,7 +6477,7 @@ MOTIVATION:
 While the stack is 1024 items deep, easy access is only possible for the top 16 items. Supporting more local variables is possible via
 
 RATIONALE:
-### EOF-only Since this instruction depends on an immediate argument encoding, it can only be enabled within EOF. In legacy bytecode that encoding could
+### Use of an immediate argument Allowing dynamic selection of the arguments to swap, dup, or exchange could be used to prevent static analysis
 
 
 === EIP-198 ===

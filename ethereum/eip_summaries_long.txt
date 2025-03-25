@@ -1354,13 +1354,33 @@ SUMMARY:
 This EIP proposes an increase to the MIN_BASE_FEE_PER_BLOB_GAS to speed up price discovery on blob space. It also resets the excess blob gas to 0, to avoid a blob basefee spike.
 
 SPECIFICATION:
-### `MIN_BASE_FEE_PER_BLOB_GAS` Increase The main specification change introduced by this EIP is setting MIN_BASE_FEE_PER_BLOB_GAS to 2**25: ```diff + MIN_BASE_FEE_PER_BLOB_GAS = 2**25 - MIN_BASE_FEE_PER_BLOB_GAS = 1 ``` ### `excess_blob_gas` Reset To avoid a blob basefee spike, the `calc_excess_blob_gas` is modified to reset `excess_blob_gas` to 0 at the fork. To detect the fork height, the block timestamp needs to be passed into `calc_excess_blob_gas`. ```python def calc_excess_blob_gas(parent: Header, block_timestamp: int) -> int: # at the fork, set excess_blob_gas to 0 if parent.timestamp < PECTRA_FORK_TIMESTAMP and block_timestamp >= PECTRA_FORK_TIMESTAMP: return 0 # otherwise, calculate normally ... ``` `validate_block` needs to be updated
+### `MIN_BASE_FEE_PER_BLOB_GAS` Increase The main specification change introduced by this EIP is setting MIN_BASE_FEE_PER_BLOB_GAS to 2**25: ```diff + MIN_BASE_FEE_PER_BLOB_GAS = 2**25 - MIN_BASE_FEE_PER_BLOB_GAS = 1 ``` ### `excess_blob_gas` Reset To avoid a blob basefee spike, the `calc_excess_blob_gas` is modified to reset `excess_blob_gas` to 0 at the fork. To detect the fork height, the block timestamp needs to be passed into `calc_excess_blob_gas`. ```python def calc_excess_blob_gas(parent: Header, block_timestamp: int) -> int: # at the fork, set excess_blob_gas to 0 if parent.timestamp < FORK_TIMESTAMP and block_timestamp >= FORK_TIMESTAMP: return 0 # otherwise, calculate normally ... ``` `validate_block` needs to be updated
 
 MOTIVATION:
 When scoping 4844, the thinking was that blobs would only enter price discovery once, relatively quickly after the blob rollout; however, this has not been the case. In fact, blobs have entered price discovery several times, and the frequency of price discovery events is likely to increase in the short term as we approach saturation of capacity. Moreover, the roadmap calls for further increases in blob capacity in subsequent hardforks, which may lead to price discovery events happening around those changes in the future. Increasing the MIN_BASE_FEE_PER_BLOB_GAS will speed up price discovery on blob space.
 
 RATIONALE:
 The current MIN_BASE_FEE_PER_BLOB_GAS is 1 wei. This is many orders of magnitude lower than the prevailing price of blobs when blobs enter price discovery. Whenever demand for blobs exceeds supply, blobs enter price discovery, but traversing the 8 orders of magnitude between 1 wei and the point where elasticity of demand starts to decrease takes a long time. The blob base fee can at most double every $\log_{1.125}(10) = 5.885$ blocks when blocks use all available blob space. When blobs enter price discovery, they must climb many factors of 2 to reach the prevailing price. To set the
+
+
+=== EIP-7910 ===
+TITLE: eth_config JSON-RPC Method
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2025-03-18
+REQUIRES: 
+
+SUMMARY:
+This document describes an RPC method that provides node-relevant configuration data for the current and next fork.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Clients MUST expose a new RPC method to report the current functional configuration and the expected next configuration via the standard JSON-RPC port. Clients MAY also expose this method through the Engine API. Clients MAY use these configuration objects to manage their per-fork configurations, though they SHOULD NOT simply return unprocessed configuration data. When reporting the current and next configurations, clients MUST include every
+
+MOTIVATION:
+Throughout Ethereum's history, there have been multiple instances where a client was not correctly configured for an upcoming hard fork, causing it to fall out of consensus when the fork boundary was crossed. Most incidents have been minor, such as a single client forking the chain in proof-of-work or having its blocks orphaned in proof-of-stake. The most significant occurrence was during the Pectra activation on the Holešky testnet. Four out of six clients on the network had an incorrect configuration for the deposits contract. Instead of being orphaned, the incorrect chain was justified, and the side effects persist
+
+RATIONALE:
+### Why Enumerate Precompiles? (And in General, Why Track a Particular Config Item?) The purpose of this specification is to enable nodes to advertise, prior to a fork, that they have the correct configurations loaded and ready. Past testnet and mainnet forks have revealed clients with incorrect precompile sets, chain IDs, deposit contract addresses, and other configuration errors. For precompiles in particular there has been discussion about removing or replacing precomiles in future forks, so a full enumeration of precompiles will reflect removal. Generally, if a configurable variable or constant causes a client to diverge at a fork—whether
 
 
 === EIP-858 ===
@@ -1440,6 +1460,26 @@ RATIONALE:
 ### Persist pending withdrawals Rejected deposits from block at slot N can not be withdrawn in block N due to a cyclic dependency. An execution client must know the full list of withdrawals before constructing a payload for slot N. After [EIP-6110](./eip-6110.md), a consensus client must know the full execution payload for slot N before constructing the beacon block for slot N. Therefore, rejected deposits must be withdrawn in some future slot. All pending withdrawals are processed at once in the very next slot for simplicity but could be queued and processed progressively if there are DOS concerns.
 
 
+=== EIP-7917 ===
+TITLE: Deterministic proposer lookahead
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-24
+REQUIRES: 
+
+SUMMARY:
+At the start of each epoch, pre-calculate and store in the `beacon_state` a deterministic `proposer_lookahead` for the next `MIN_SEED_LOOKAHEAD + 1` epochs.
+
+SPECIFICATION:
+The `BeaconState` container is extended with a `proposer_lookahead` field, which is a list of validator indices covering the full visible lookahead period, starting from the beginning of the current epoch to the next `MIN_SEED_LOOKAHEAD` epochs. ```python class BeaconState: ... proposer_lookahead: List[ValidatorIndex, (MIN_SEED_LOOKAHEAD + 1) * SLOTS_PER_EPOCH] ``` For example, `proposer_lookahead[0]` is the validator index for the first proposer in the current epoch, `proposer_lookahead[SLOTS_PER_EPOCH + 4]` is the validator index for the fifth proposer in the next epoch, and so forth. The function `get_beacon_proposer_index` is modified to use the pre-calculated `proposer_lookahead` instead of calculating proposer indices on-demand. ```python def
+
+MOTIVATION:
+Unlike RANDAO seeds, which have a deterministic lookahead of at least `MIN_SEED_LOOKAHEAD == 1` epochs, the beacon proposer schedule of epoch `N + 1` is not fully predictable from the beacon state during epoch `N`. The reason is that, under certain edge cases, the effective balances (EBs) of active validators—themselves used as input for proposer election in epoch `N + 1`—can change within epoch `N`. Based preconfirmation protocols rely on a deterministic proposer schedule for smooth operations. Since the beacon genesis, slashings and penalties that accumulate to at least 1 ETH can change EBs of active validators and
+
+RATIONALE:
+### Considered Alternatives An alternative approach would be to cache the effective balances at the start of epoch `N` so it can be used to calculate the proposer lookahead at the start of epoch `N+MIN_SEED_LOOKAHEAD`. However, this approach would require additional footprint in the beacon state, and would not be able to provide the proposer lookahead to the EVM via the beacon root. ### Single Secret Leader Election Compatibility In the future, we may introduce a Single Secret Leader Election (SSLE) mechanism in which only the selected validator knows their role until they propose a block. However, current
+
+
 === EIP-4938 ===
 TITLE: eth/67 - Removal of GetNodeData
 TYPE: Standards Track Networking
@@ -1458,6 +1498,26 @@ MOTIVATION:
 
 RATIONALE:
 A replacement for `GetNodeData` is available in the [snap protocol](https://github.com/ethereum/devp2p/blob/40ab248bf7e017e83cc9812a4e048446709623e8/caps/snap.md). Specifically, clients can use the [GetByteCodes](https://github.com/ethereum/devp2p/blob/40ab248bf7e017e83cc9812a4e048446709623e8/caps/snap.md#getbytecodes-0x04) and [GetTrieNodes](https://github.com/ethereum/devp2p/blob/40ab248bf7e017e83cc9812a4e048446709623e8/caps/snap.md#gettrienodes-0x06) messages instead of `GetNodeData`. The snap protocol can be used to implement the "fast sync" algorithm, though it is recommended to use it for "snap sync".
+
+
+=== EIP-7903 ===
+TITLE: Remove Initcode Size Limit
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-05
+REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
+
+SUMMARY:
+This EIP proposes the removal of the `initcode` size limit of 49152 bytes introduced in [EIP-3860](./eip-3860). The restriction complicates deploying multiple contracts addressing the [EIP-170](./eip-170) limit (24576 bytes) within a single transaction, while the existing gas metering for `initcode`, already ensures fair `initcode` costing, including for `JUMPDEST` analysis.
+
+SPECIFICATION:
+Revert the `initcode` size limit introduced in EIP-3860. Specifically: - Remove the 49152-byte cap on `initcode` size during contract creation. - Retain existing gas costs for `initcode` execution, including the 2 gas per byte for `JUMPDEST` analysis, as defined in EIP-3860. No changes to deployed contract size limits (EIP-170) or gas schedules beyond removing the size restriction are proposed.
+
+MOTIVATION:
+The EIP-3860 `initcode` size limit imposes an unnecessary constraint on deployment patterns, particularly for creation transactions creating large _logical_ contracts composed of multiple _physical sub-contracts_ in a single transaction. A key argument for retaining EIP-170's 24KB runtime code limit is that high-level languages (HLLs) should abstract it away. However, the EIP-3860 limit prevents HLLs from cleanly abstracting this, as deploying large logical contracts exceeding 49152 bytes of `initcode` requires splitting into multiple transactions, undermining the abstraction. Removing the cap simplifies smart contract deployment and enables HLLs to cleanly abstract large contracts, without compromising network security or cost attribution.
+
+RATIONALE:
+This proposal is driven by the need to restore flexibility in contract deployment patterns, such as factory contracts creating multiple sub-contracts in one transaction. The design decision to remove the 49152-byte cap leverages the pre-existing gas metering system, which scales linearly with `initcode` size (i.e., 2 gas per byte), ensuring fair cost attribution without artificial limits. A key justification for EIP-170's 24576-byte limit is that high-level languages (HLLs) should abstract it away. However, EIP-3860's `initcode` cap undermines this by forcing multi-transaction deployments for large contracts, breaking the abstraction HLLs aim to provide. Removing the cap aligns with this
 
 
 === EIP-6466 ===
@@ -2090,7 +2150,7 @@ SUMMARY:
 This EIP proposes a procedure to convert, on each block, a fixed number of key-values from the existing Merkle Patricia Tree (MPT) to the Verkle Tree (VKT).
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Constants | Parameter | value | Description | | ---------------------------- | ----- | -------------------------------------------------------------- | | `CONVERSION_START_TIMESTAMP` | `TBD` | Timestamp at which the conversion starts. | | `CONVERSION_STRIDE` | `TBD` | Maximum number of _conversion units_ to be converted per block | A _conversion unit_ is: - A contract storage slot. - A contract code. (i.e. all the code is a single
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Constants | Parameter | value | Description | | ---------------------------- | ----- | -------------------------------------------------------------- | | `CONVERSION_START_TIMESTAMP` | `TBD` | Timestamp at which the conversion starts. | | `CONVERSION_STRIDE` | `TBD` | Maximum number of _conversion units_ to be converted per block | A _conversion unit_ is: - A contract storage slot. - An account data (e.g. balance, nonce, code-hash) and code (if
 
 MOTIVATION:
 The accounts state is too large to wait for transactions to organically move all of them to the VKT through the Overlay Tree. Thus, we need a strategy to convert all the state within a reasonable time. The state conversion completion allows removing the Overlay Tree abstraction introduced in [EIP-7612](./eip-7612.md) and use directly the VKT for all state access.
@@ -2294,6 +2354,26 @@ The proposed proof systems for stateless Ethereum require an upgrade to many too
 
 RATIONALE:
 Stateless Ethereum relies on proofs using advanced mathematical concepts and tools from a fast-moving area of cryptography. As a result, a soft-fork approach is currently favored in the choice of the proof format: proofs are going to be distributed outside of consensus, and in the future, stateless clients will be able to chose their favorite proof format. This introduces a burden on several application, e.g. bridges, as they will potentially need to support proof formats designed after the release of the bridge contract. Delegating the proof verification burden to a version-aware precompile will ensure that these applications can
+
+
+=== EIP-7889 ===
+TITLE: Emit log on revert
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-02-20
+REQUIRES: 
+
+SUMMARY:
+All calls to the REVERT opcode with non-zero size must emit a log with revert data, making it accessible via standard RPC without the need for tracing.
+
+SPECIFICATION:
+### Parameters <!-- TODO --> * `REVERTTOPIC`: `TBD` * `DATA_LIMIT`: `TBD` ### Functionality Whenever `REVERT` is called with non-zero size, emit a log identical to a LOG1 with the topic `REVERTTOPIC`. The log data is the raw bytes of the revert message. The data is truncated to `DATA_LIMIT`.
+
+MOTIVATION:
+Revert messages are currently inaccessible to users as they are not available via standard RPC. Instead, users have to request a node to trace the transaction and check the stack and memory at the moment when the REVERT opcode was executed. This introduces overhead for users and nodes - users must make an additional request to find out why their transaction failed, and the node has to replay the full transaction (which may be slow and computationally expensive) to get back a relatively small piece of data. Currently it is up to smart wallet developers to emit logs
+
+RATIONALE:
+This is the simplest possible implementation that allows revert messages to be accessible via RPC methods. It does not require any changes to client libraries, or other RPC consumers as it is backward compatible. It does not introduce new RPC methods or new opcodes.
 
 
 === EIP-706 ===
@@ -2629,7 +2709,7 @@ Persisted refunds would become worthless before they fall below their activation
 === EIP-7870 ===
 TITLE: Hardware and Bandwidth Recommendations
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-01-26
 REQUIRES: 
 
@@ -4138,6 +4218,23 @@ The lack of request identifiers in the request / response paris of the `eth` pro
 
 RATIONALE:
 **Q: The efficiency gains might encourage clients to flood their peers with too many simultaneous requests** Peers can always throttle or disconnect if they don't feel treated well. This is the same as today. **Q: If `les` already defines the commands like this, why not just use the `les` protocol?** In practice, peers that serve the `les` protocol are much harder to find in the network. The reasons for this are varied but might boil down to client defaults, immature implementations or missing incentives. **Q: Networking works today, isn't this just adding bloat?** This is adding a single
+
+
+=== EIP-7916 ===
+TITLE: SSZ ProgressiveByteList
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-24
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces a new [Simple Serialize (SSZ) type](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) to make `List[T, N]` with large capacities `N` more efficient in cases where the list is much shorter than the capacity.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### ProgressiveByteList container `ProgressiveByteList[CAPACITY, COMMON_RATIO]` is defined as a byte list container type that consists of multiple byte vectors of different size. The size of the first vector is 32 bytes (a single chunk) while the size of further vectors is growing according to a geometric sequence with the specified common ratio (a power of 2), with a potential exception for the last vector
+
+RATIONALE:
+`ByteList` definitions sometimes are defined with capacities that exceed their typical practical usage, to avoid limiting design space. For example, the [`Transaction`](https://github.com/ethereum/consensus-specs/blob/3c028dc73f5d93defc9bfd38c44784573a0bc70a/specs/bellatrix/beacon-chain.md#custom-types) type has a maximum capacity of 1 GB [`MAX_BYTES_PER_TRANSACTION`](https://github.com/ethereum/consensus-specs/blob/3c028dc73f5d93defc9bfd38c44784573a0bc70a/specs/bellatrix/beacon-chain.md#execution), despite actual transactions often being below 1 KB. This difference results in at least 20 extra hashes for common cases, to offer a design space that is not practically viable. With this EIP, common cases can be hashed more efficiently while not restricting the design space, and while also retaining stable generalized Merkle indices for each individual chunk of the `ByteList`.
 
 
 === EIP-2593 ===
@@ -5675,7 +5772,7 @@ TITLE: Light client and DHT friendly log index
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-07-17
-REQUIRES: 
+REQUIRES: 7916
 
 SUMMARY:
 Replace the fixed 2048 bit log event bloom filters in block headers with a new data structure that can adapt to the changing number of events per block and consistently guarantee a sufficiently low false positive ratio. The proposed structure maps all log entries onto a global linear index space and hashes them into a Merkle tree based on that index. It also contains a _filter map_ for every fixed length section of the index space, hashed into the same Merkle tree. These are two dimensional sparse bit maps that allow searching for log address/topic patterns. Unlike the
@@ -6366,7 +6463,7 @@ RATIONALE:
 === EIP-663 ===
 TITLE: SWAPN, DUPN and EXCHANGE instructions
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2017-07-03
 REQUIRES: 3, 5, 4, 0, ,,  , 5, 4, 5, 0
 
@@ -6380,7 +6477,7 @@ MOTIVATION:
 While the stack is 1024 items deep, easy access is only possible for the top 16 items. Supporting more local variables is possible via manually keeping them in memory or through a "stack to memory elevation" in a compiler. This can result in complex and inefficient code. Furthermore, implementing higher level constructs, such as functions, on top of EVM will result in a list of input and output parameters as well as an instruction offset to return to. The number of these arguments (or stack items) can easily exceed 16 and thus will require extra care from a
 
 RATIONALE:
-### EOF-only Since this instruction depends on an immediate argument encoding, it can only be enabled within EOF. In legacy bytecode that encoding could contradict jumpdest-analysis. ### Size of immediate argument For `DUPN` and `SWAPN` a 16-bit size was considered to accommodate the full stack space of 1024 items, however: 1. that would require an additional restriction/check (`n < 1024`) 2. the 256 depth is a large improvement over the current 16 and the overhead of an extra byte would make it less useful Similarly for `EXCHANGE`, the proposed scheme allows addressing of 32 items. ### Gas cost
+### Use of an immediate argument Allowing dynamic selection of the arguments to swap, dup, or exchange could be used to prevent static analysis of the contents of the stack. Since static analysis is an important tool for security auditors we want to do what we can to make their jobs easier. Hence, the operands require an immediate argument that is not dynamic in nature. ### EOF-only Since this instruction depends on an immediate argument encoding, it can only be enabled within EOF. In legacy bytecode that encoding could contradict jumpdest-analysis. ### Size of immediate argument For `DUPN`
 
 
 === EIP-198 ===
