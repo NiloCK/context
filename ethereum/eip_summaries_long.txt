@@ -3146,7 +3146,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ExecutionBlockHeader` container Execution blocks are represented as a single, normalized SSZ container. The definition uses the `StableContainer[N]` SSZ type and `Optional[T]` as defined in [EIP-7495](./eip-7495.md). | Name | Value | Description | | - | - | - | | `MAX_EXECUTION_BLOCK_FIELDS` | `uint64(2**6)` (= 64) | Maximum number of fields to which `StableExecutionBlock` can ever grow in the future | ```python class StableGasAmounts(StableContainer[MAX_FEES_PER_GAS_FIELDS]):
 
 MOTIVATION:
-With [EIP-6404](./eip-6404.md) SSZ transactions, [EIP-6466](./eip-6466.md) SSZ receipts, and [EIP-6465](./eip-6465.md) SSZ withdrawals, all Merkle-Patricia Trie (MPT) besides the state trie are converted to SSZ. This enables the surrounding data structure, in this case, the execution block itself, to also convert to SSZ, achieving a unified block representation across both Consensus Layer and Execution Layer. 1. **Normalized block hash:** The Consensus Layer can compute the block hash autononomously, enabling it to process all consistency checks that currently require asynchronous communication with the Execution Layer ([`verify_and_notify_new_payload`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/electra/beacon-chain.md#modified-verify_and_notify_new_payload)). This allows early rejection of inconsistent blocks and dropping the requirement to wait for engine
+With [EIP-6404](./eip-6404.md) SSZ transactions, [EIP-6466](./eip-6466.md) SSZ receipts, and [EIP-6465](./eip-6465.md) SSZ withdrawals, all Merkle-Patricia Trie (MPT) besides the state trie are converted to SSZ. This enables the surrounding data structure, in this case, the execution block itself, to also convert to SSZ, achieving a unified block representation across both Consensus Layer and Execution Layer. 1. **Normalized block hash:** The Consensus Layer can compute the block hash autonomously, enabling it to process all consistency checks that currently require asynchronous communication with the Execution Layer ([`verify_and_notify_new_payload`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/electra/beacon-chain.md#modified-verify_and_notify_new_payload)). This allows early rejection of inconsistent blocks and dropping the requirement to wait for engine
 
 RATIONALE:
 In the initial draft, only the requests hash and block hash are changed to be SSZ `hash_tree_root()` based. No Consensus Layer changes are required. ### Future - With SSZ `Log`, the withdrawals mechanism and validator requests could be redefined to be based on logs (similar to deposits, originally, but without the delay), possibly removing the need for `withdrawals_root` and `requests_hash`. - The CL would insert the extra logs for minting ([EIP-7799](./eip-7799.md)) and could fetch the ones relevant for withdrawing (deposits, requests, consolidations). That mechanism would be more generic than [EIP-7685](./eip-7685.md) and would drop requiring the EL to special
@@ -8108,6 +8108,26 @@ Exert from EIP-1193 > A common convention in the Ethereum web application ("dapp
 
 RATIONALE:
 The implementation was chosen to help the ease of implementation for both providers and dapp developers. Since `ProviderMessage` is widely used by dapp developers already it means that the implementation path would be as trivial as adding and additional `if` clause to their existing message listener. This also provides a benefit to dapps in the event that a provider has not yet implemented the events, it will not cause the dapp panic with `undefined` should it be implemented natively (eg: `ethereum.txCancel(...)` which would error with `ethereum.txReplacement()` is not a function).
+
+
+=== EIP-7915 ===
+TITLE: Adaptive mean reversion blob pricing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-23
+REQUIRES: 4844
+
+SUMMARY:
+Reworks the excess blob gas update in `calc_excess_blob_gas()` so that the blob base fee rises relatively more during high gas usage than it falls during low usage whenever the current fee is below the long-run average. This establishes a smoothly adapting, neutral lower bound for the base fee. The exponential moving average (EMA) is computed in the linear domain and stored as a header variable.
+
+SPECIFICATION:
+### Parameters | Constant | Value | Short description | | - | - | - | | `EMA_DECAY` | `2**18` | Reciprocal of the EMA decay rate (per slot) | | `MEAN_REVERSION_DEADBAND` | `64` | Fee ratio at which mean reversion effect accelerates | | `MEAN_REVERSION_FULLBAND` | `10**6` | Fee ratio at which mean reversion effect stops increasing | ### Functions The function `calc_excess_blob_gas()` from [EIP-4844](./eip-4844.md) is updated. A mean reversion weight `w` is computed based on the ratio between the long-run base fee and the current base fee. The weight influences the excess gas update by
+
+MOTIVATION:
+Demand for blobspace is fee-inelastic, leading to a blob base fee that may fluctuate excessively with minor shifts in aggregate demand. The lower end of the fee range of 1 wei is under current circumstances economically inconsequential, but can be reached after a period of blocks consuming fewer blobs than the target. During increases in demand, the existing fee mechanism requires sustained periods of near-full blocks to re-establish equilibrium. This exacerbates spikiness in resource consumption, which can hamper efficient scaling of throughput. Furthermore, users may intermittently need to compete in a first-price auction for inclusion, degrading UX. The
+
+RATIONALE:
+### Supply and demand Since the introduction of blobs, the reservation fee of the marginal consumer of blobs has periodically been very low. Whenever demand picks up, a sustained succession of near-full blocks is required to restore equilibrium, with the mechanism intermittently resorting to a first-price auction, considered a worse UX by blob consumers. The resulting spikiness in resource consumption is suboptimal for scaling blobspace. At a fundamental level, the issue is that Ethereum faces a fee-inelastic demand curve while operating a perfectly inelastic supply curve—with supply fixed at `TARGET_BLOB_GAS_PER_BLOCK`. When an equilibrium forms between fee-inelastic supply and
 
 
 === EIP-4736 ===

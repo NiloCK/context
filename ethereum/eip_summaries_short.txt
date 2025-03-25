@@ -8110,6 +8110,26 @@ RATIONALE:
 The implementation was chosen to help the ease of implementation for both providers and dapp developers. Since `ProviderMessage` is widely used by dapp developers
 
 
+=== EIP-7915 ===
+TITLE: Adaptive mean reversion blob pricing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-23
+REQUIRES: 4844
+
+SUMMARY:
+Reworks the excess blob gas update in `calc_excess_blob_gas()` so that the blob base fee rises relatively more during high gas usage than it falls
+
+SPECIFICATION:
+### Parameters | Constant | Value | Short description | | - | - | - | | `EMA_DECAY` | `2**18` | Reciprocal of
+
+MOTIVATION:
+Demand for blobspace is fee-inelastic, leading to a blob base fee that may fluctuate excessively with minor shifts in aggregate demand. The lower end
+
+RATIONALE:
+### Supply and demand Since the introduction of blobs, the reservation fee of the marginal consumer of blobs has periodically been very low. Whenever
+
+
 === EIP-4736 ===
 TITLE: Consensus Layer Withdrawal Protection
 TYPE: Standards Track Interface

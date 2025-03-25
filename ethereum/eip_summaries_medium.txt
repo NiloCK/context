@@ -8110,6 +8110,26 @@ RATIONALE:
 The implementation was chosen to help the ease of implementation for both providers and dapp developers. Since `ProviderMessage` is widely used by dapp developers already it means that the implementation path would be as trivial as adding and additional `if` clause to their existing message listener. This also provides
 
 
+=== EIP-7915 ===
+TITLE: Adaptive mean reversion blob pricing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-23
+REQUIRES: 4844
+
+SUMMARY:
+Reworks the excess blob gas update in `calc_excess_blob_gas()` so that the blob base fee rises relatively more during high gas usage than it falls during low usage whenever the current fee is below the long-run average. This establishes a smoothly adapting, neutral lower bound for the base fee. The
+
+SPECIFICATION:
+### Parameters | Constant | Value | Short description | | - | - | - | | `EMA_DECAY` | `2**18` | Reciprocal of the EMA decay rate (per slot) | | `MEAN_REVERSION_DEADBAND` | `64` | Fee ratio at which mean reversion effect accelerates | | `MEAN_REVERSION_FULLBAND` | `10**6`
+
+MOTIVATION:
+Demand for blobspace is fee-inelastic, leading to a blob base fee that may fluctuate excessively with minor shifts in aggregate demand. The lower end of the fee range of 1 wei is under current circumstances economically inconsequential, but can be reached after a period of blocks consuming fewer blobs
+
+RATIONALE:
+### Supply and demand Since the introduction of blobs, the reservation fee of the marginal consumer of blobs has periodically been very low. Whenever demand picks up, a sustained succession of near-full blocks is required to restore equilibrium, with the mechanism intermittently resorting to a first-price auction, considered a
+
+
 === EIP-4736 ===
 TITLE: Consensus Layer Withdrawal Protection
 TYPE: Standards Track Interface
