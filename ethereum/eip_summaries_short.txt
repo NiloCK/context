@@ -6024,7 +6024,7 @@ MOTIVATION:
 Validator deposits are a core component of the proof-of-stake consensus mechanism. This EIP allows for an in-protocol mechanism of deposit processing on the Consensus
 
 RATIONALE:
-### `index` field Deposit `index` is used to deteministically initialize `deposit_requests_start_index` in the `BeaconState`, this prevents same deposit from being applied twice during `Eth1Data`
+### `index` field Deposit `index` is used to deterministically initialize `deposit_requests_start_index` in the `BeaconState`, this prevents same deposit from being applied twice during `Eth1Data`
 
 
 === EIP-2256 ===
