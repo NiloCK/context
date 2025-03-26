@@ -2930,6 +2930,26 @@ CREATED: 2015-11-17
 REQUIRES: 
 
 
+=== EIP-7919 ===
+TITLE: Pureth Meta
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2025-03-26
+REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 6, 4, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 6, 6, 8, ,,  , 7, 6, 8, 8, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 0, 8, ,,  , 7, 7, 4, 5, ,,  , 7, 7, 9, 2, ,,  , 7, 7, 9, 9, ,,  , 7, 8, 0, 7, ,,  , 7, 9, 1, 6
+
+SUMMARY:
+This Meta EIP lists the EIPs which belong to the Pureth proposal.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### PURGE: LOG Reform Certain EVM operations can change the ETH balance, without an appropriate
+
+MOTIVATION:
+It is currently not feasible to consume Ethereum data for a given account to efficiently reconstruct the account activity, without relying on a trusted API gateway. This is a problem for: - End users, through mobile or browser based wallets where a local full node is not viable -
+
+RATIONALE:
+See individual EIPs.
+
+
 === EIP-1014 ===
 TITLE: Skinny CREATE2
 TYPE: Standards Track Core
@@ -4751,6 +4771,26 @@ The current JSON-RPC interface for Ethereum nodes has a number of shortcomings. 
 
 RATIONALE:
 Ethereum nodes have been moving away from providing read-write functionality such as transaction and message signing, and from other services such as code compilation, in favor of a more 'unix-like' approach where each task is performed by a dedicated process. We have thus specified a core set of types
+
+
+=== EIP-7898 ===
+TITLE: Uncouple execution payload from beacon block
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-01
+REQUIRES: 
+
+SUMMARY:
+Currently, the beacon block in Ethereum Consensus embed transactions within `ExecutionPayload` field of `BeaconBlockBody`. This EIP proposes to replace `ExecutionPayload` with `ExecutionPayloadHeader` in `BeaconBlockBody` and to independently transmit `ExecutionPayloadWithInclusionProof`. However, this EIP makes no change to the block import mechanism, with the exception that block availability now includes waiting
+
+SPECIFICATION:
+- `ExecutionPayload` in the `BeaconBlockBody` is replaced by `ExecutionPayloadHeader` - `ExecutionPayloadWithInclusionProof` is computed by the block proposer/builder and gossiped independently on a separate new topic. Also builder `submitBlindedBlock` api is modified to respond with `ExecutionPayloadWithInclusionProof` instead. - Data availability checks for block import into forkchoice now must wait for
+
+MOTIVATION:
+Ethereum protocol has an ambitious goal to grow the `gasLimit` of the execution payloads (possibly by 10X). This leads to larger messages, negatively affecting the networking and block processing pipelines of the consensus layer (CL) clients leading to following issues: 1. Higher latencies for the arrival of beacon blocks
+
+RATIONALE:
+There is another choice we could have made to go for `SignedExecutionPayload` instead of `ExecutionPayloadWithInclusionProof` and having a `SignedExecutionPayloadHeader` with builder signing these messages (validator is the builder in local block building). But without builder enshrinment tight gossip validation of `SignedExecutionPayload` would be an issue and could become a
 
 
 === EIP-3044 ===
