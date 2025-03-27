@@ -8305,3 +8305,23 @@ Provide original Ethash proof of work verification with minimal set of changes b
 
 RATIONALE:
 In case of ethash algorithm, it can't prevent ASIC forever. And, current ethash algorithm's FNV function is deprecated. So, It needs to be upgraded
+
+
+=== EIP-7918 ===
+TITLE: Blob base fee bounded by execution cost
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-25
+REQUIRES: 4844
+
+SUMMARY:
+This EIP imposes that the price of the targeted number blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying transaction `TX_BASE_COST
+
+SPECIFICATION:
+The function `calc_excess_blob_gas()` from [EIP-4844](./eip-4844.md) is changed to not subtract `TARGET_BLOB_GAS_PER_BLOCK` when updating the `excess_blob_gas`, if the price of `TARGET_BLOB_GAS_PER_BLOCK` is below the price
+
+MOTIVATION:
+Ethereum deploys a dynamic pricing auction to set the blob base fee, lowering the fee if less gas is consumed than `TARGET_BLOB_GAS_PER_BLOCK` and raising
+
+RATIONALE:
+### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. At a fundamental level, the issue is that the demand curve becomes
