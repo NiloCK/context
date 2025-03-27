@@ -3714,7 +3714,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered for & Scheduled for Inclusion in the Fulu/Osaka network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * EOF EIPs listed as part of [EIP-7692](./eip-7692.md), namely: * [EIP-663](./eip-663.md): SWAPN, DUPN and EXCHANGE instructions * [EIP-3540](./eip-3540.md): EOF
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * EOF EIPs introduced in `eof-devnet-0` and `eof-devnet-1` in [EIP-7692](./eip-7692.md), namely: * [EIP-663](./eip-663.md): SWAPN, DUPN and EXCHANGE instructions *
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Fusaka network upgrade, as well as links to full specification.
@@ -7523,7 +7523,7 @@ SUMMARY:
 The current calldata pricing permits EL payloads of up to 7.15 MB, while the average size is much smaller at around 100 KB. This EIP proposes adjusting the calldata cost to reduce the maximum possible block size and its variance without negatively impacting regular users. This is achieved by
 
 SPECIFICATION:
-| Parameter | Value | |------------------------------|-------| | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `10` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`. Let `isContractCreation` be a boolean indicating the respective event. Let `execution_gas_used` be the gas used for EVM execution with the gas refund subtracted. Let `INITCODE_WORD_COST`
+| Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `10` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`. Let `isContractCreation` be a boolean indicating the respective event. Let `execution_gas_used` be the gas used for EVM execution with the gas
 
 MOTIVATION:
 The block gas limit has not been increased since [EIP-1559](./eip-1559.md), while the average size of blocks has continuously increased due to the growing number of rollups posting data to Ethereum. Moreover, calldata costs have remained unchanged since [EIP-2028](./eip-2028). [EIP-4844](./eip-4844.md) introduces blobs as a preferred method for data availability (DA).

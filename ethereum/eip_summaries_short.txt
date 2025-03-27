@@ -7523,7 +7523,7 @@ SUMMARY:
 The current calldata pricing permits EL payloads of up to 7.15 MB, while the average size is much smaller at around 100 KB. This
 
 SPECIFICATION:
-| Parameter | Value | |------------------------------|-------| | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `10` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`.
+| Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `10` | Let `tokens_in_calldata = zero_bytes_in_calldata
 
 MOTIVATION:
 The block gas limit has not been increased since [EIP-1559](./eip-1559.md), while the average size of blocks has continuously increased due to the growing number
