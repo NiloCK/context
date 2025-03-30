@@ -4241,20 +4241,23 @@ RATIONALE:
 
 
 === EIP-7916 ===
-TITLE: SSZ ProgressiveByteList
+TITLE: SSZ ProgressiveList
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-03-24
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces a new [Simple Serialize (SSZ) type](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) to make `List[T, N]` with large capacities `N` more efficient in cases where the list
+This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) type, `ProgressiveList[T]`, to represent lists of arbitrary length with stable merkleization. Unlike the existing `List[T, N]`
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
+MOTIVATION:
+Current SSZ `List[T, N]` types require a predefined capacity `N`, which leads to several issues: - Inefficient hashing: Lists often contain far fewer elements
+
 RATIONALE:
-`ByteList` definitions sometimes are defined with capacities that exceed their typical practical usage, to avoid limiting design space. For example, the [`Transaction`](https://github.com/ethereum/consensus-specs/blob/3c028dc73f5d93defc9bfd38c44784573a0bc70a/specs/bellatrix/beacon-chain.md#custom-types) type has
+### Why a Recursive Structure? - Efficiency: Small lists use fewer hashes (e.g., a 3-item list in a 16-element subtree wastes fewer hashes than
 
 
 === EIP-2593 ===
