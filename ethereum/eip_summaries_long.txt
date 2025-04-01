@@ -3055,6 +3055,26 @@ SPECIFICATION:
 - Codename: Ethereum ProgPoW - Aliases: N/A - Activation: - `Block >= 7280000` on the Ethereum mainnet - Included EIPs: - [EIP-1057](./eip-1057.md): ProgPoW, a Programmatic Proof-of-Work
 
 
+=== EIP-7557 ===
+TITLE: Block-level Warming with fair cost savings
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2023-10-01
+REQUIRES: 
+
+SUMMARY:
+A mechanism for a fair distribution of the gas costs associated with access to addresses and storage slots among multiple transactions with shared items in their `accessList`.
+
+SPECIFICATION:
+The [EIP-2930: Optional access lists](./eip-2930) already introduced the first part of the solution. Each transaction can specify an array of `accessed_addresses` and `accessed_storage_keys` to announce its intention to read those values during the execution of the transaction. The sender of the transaction is then pre-charged with the cost of accessing this data but is given a small discount compared to unannounced access. The missing component is a mechanism to aggregate the gas costs of the cold access and redistribute the resulting savings amongst the participating transactions. ### Overview During the transaction execution, the cost of all storage-related operations
+
+MOTIVATION:
+[EIP-2929: Gas cost increases for state access opcodes](./eip-2929) introduced a new gas cost model that differentiates between "cold" and "warm" access to accounts and storage slots. However, the cost of every cold access is borne by each transaction separately, even though the validator only needs to fetch the state object once for the entire block. When multiple transactions access the same state object in the same block the fees charged for these transactions do not accurately reflect the computations that block builders and validators perform for the blockchain state access during transaction execution. [EIP-2930: Optional access lists](./eip-2930) made
+
+RATIONALE:
+### Current cold storage gas cost is unfair As described in the [Motivation](#motivation) section, the amount of gas that users spend on accessing the contract code does not reflect the actual cost of this access for the block builder or a validator. The more popular the contract code or a storage slot is, the more transactions in each block should share the cost. However, the current system multiplies the cost for the users instead of dividing it. ### Issuing a regular gas refund after a transaction is not possible There exists a list of EVM instructions that trigger
+
+
 === EIP-7801 ===
 TITLE: etha - Sharded Blocks Subprotocol
 TYPE: Standards Track Networking
@@ -3063,13 +3083,13 @@ CREATED: 2024-10-30
 REQUIRES: 7642
 
 SUMMARY:
-This EIP proposes the creation of a new subprotocol, `etha`, enabling Ethereum nodes to communicate available block spans via a bitmask. Each bit represents a 100_000-block span within each 1_000_000 block range of chain history. Nodes use this bitmask to signal stored spans and commit to storing future spans as they are created. This allows peers to make informed decisions about data availability without first connecting and querying for it. The bitmask repeats every 1 million blocks for straightforward reasoning about data availability probabilities. The `etha` subprotocol has the same functionality to serve historical data using message types
+This EIP proposes the creation of a new subprotocol, `etha`, enabling Ethereum nodes to communicate available block spans via a bitmask. Each bit represents a 106_496-block span within each 1_064_960 block range of chain history. Nodes use this bitmask to signal stored spans and commit to storing future spans as they are created. This allows peers to make informed decisions about data availability without first connecting and querying for it. The bitmask repeats every 1_064_960 blocks for straightforward reasoning about data availability probabilities. The `etha` subprotocol has the same functionality to serve historical data using message types copied
 
 SPECIFICATION:
-### Subprotocol Handshake - Introduce a new subprotocol named `etha`. - Define the handshake message for the `etha` subprotocol as follows: - Handshake packet: `[version: P, networkid: P, blockhash: B_32, genesis: B_32, forkid, blockBitmask]` - `blockBitmask` is a 10-bit bitmask, with each bit representing a 100_000-block range per 1_000_000 blocks of history. - the rest of the elements are as defined in eth/69 ### Supported Messages The `etha` subprotocol **MUST** include support for the following messages from the `eth/69` protocol to facilitate historical data serving: - **GetBlockBodies (0x05):** Request block bodies. - **BlockBodies (0x06):** Response to `GetBlockBodies`. -
+### Subprotocol Handshake - Introduce a new subprotocol named `etha`. - Define the handshake message for the `etha` subprotocol as follows: - Handshake packet: `[version: P, networkid: P, blockhash: B_32, genesis: B_32, forkid, blockBitmask]` - `blockBitmask` is a 10-bit bitmask, with each bit representing a 106_496-block range per 1_064_960 blocks of history. - the rest of the elements are as defined in eth/69 ### Supported Messages The `etha` subprotocol **MUST** include support for the following messages from the `eth/69` protocol to facilitate historical data serving: - **GetBlockBodies (0x05):** Request block bodies. - **BlockBodies (0x06):** Response to `GetBlockBodies`. -
 
 MOTIVATION:
-With [EIP-4444](./eip-4444.md), nodes may prune historical data while others continue serving it. Determining data availability by connecting and requesting blocks is inefficient consuming unnexessary bandwidth. This EIP addresses this inefficiency by enabling nodes to shard chain history into 100_000 block segments and signal availability via a bitmask. By introducing a separate subprotocol, `etha`, nodes can exchange this information seamlessly and retain the ability to serve historical data without impacting existing `eth` protocol versions.
+With [EIP-4444](./eip-4444.md), nodes may prune historical data while others continue serving it. Determining data availability by connecting and requesting blocks is inefficient consuming unnexessary bandwidth. This EIP addresses this inefficiency by enabling nodes to shard chain history into 106_496 block segments and signal availability via a bitmask. By introducing a separate subprotocol, `etha`, nodes can exchange this information seamlessly and retain the ability to serve historical data without impacting existing `eth` protocol versions.
 
 RATIONALE:
 The bitmask approach provides a flexible means to represent and retain block data while committing to future spans. This mechanism aligns with the pruning proposed in EIP-4444, while ensuring that historical and future data spans remain available across the network. A similar bitlist approach is already used in the Consensus Layer for attestation subnets, making it a familiar and efficient method for representing data spans. Additionally, committing to future spans ensures better predictability and stability for data locality. The `etha` subprotocol separates this functionality from `eth` ensuring nodes dont hammer other nodes with requests on historical ranges that
@@ -7399,6 +7419,26 @@ The proliferation of smart contract controlled validators has caused there to be
 
 RATIONALE:
 ### Opaque byte array rather than an RLP array By having the bytes of `request_data` array from second byte on be opaque bytes, rather than an RLP (or other encoding) list, we can support different encoding formats for the request payload in the future such as SSZ, LEB128, or a fixed width format. ### Request source and validity This EIP makes no strict requirement where a request may come from nor when/how a request must be validated. This is to provide future protocol designers maximum flexibility. The authors' recommendations on source and validity of requests are: * The
+
+
+=== EIP-7921 ===
+TITLE: Skip `JUMPDEST` immediate argument check
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-26
+REQUIRES: 
+
+SUMMARY:
+Allow `JUMP` and `JUMPI` to arrive at any byte matching `JUMPDEST` (`0x5b`), even if that byte is an immediate argument.
+
+SPECIFICATION:
+When activated, all `0x5b` bytes are valid `JUMPDEST` for `JUMPI` and `JUMP` opcodes.
+
+MOTIVATION:
+Immediate arguments are opcode parameters supplied within the code rather than the stack. Currently determining the validity of a `JUMPDEST` requires determining which bytes are immediate arguments to other opcodes, such as `PUSH1`. This presents several problems: 1. Codesize is a linear DoS vector because code must be preprocessed to determine `JUMPDEST` validity. 2. New opcodes with immediate arguments cannot be safely adopted. 3. `CODECOPY` data spans can invalidate subsequent `JUMPDEST`. The rationale for this `JUMPDEST` validity check is to prevent unintended code execution. However, almost all `JUMP` and `JUMPI` target constant destinations. Removing this check allows larger
+
+RATIONALE:
+Removing the check solves several problems while reducing EVM complexity.
 
 
 === EIP-3322 ===

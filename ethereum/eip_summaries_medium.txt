@@ -3055,6 +3055,26 @@ SPECIFICATION:
 - Codename: Ethereum ProgPoW - Aliases: N/A - Activation: - `Block >= 7280000` on the Ethereum mainnet - Included EIPs: - [EIP-1057](./eip-1057.md): ProgPoW, a Programmatic Proof-of-Work
 
 
+=== EIP-7557 ===
+TITLE: Block-level Warming with fair cost savings
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2023-10-01
+REQUIRES: 
+
+SUMMARY:
+A mechanism for a fair distribution of the gas costs associated with access to addresses and storage slots among multiple transactions with shared items in their `accessList`.
+
+SPECIFICATION:
+The [EIP-2930: Optional access lists](./eip-2930) already introduced the first part of the solution. Each transaction can specify an array of `accessed_addresses` and `accessed_storage_keys` to announce its intention to read those values during the execution of the transaction. The sender of the transaction is then pre-charged with the cost of
+
+MOTIVATION:
+[EIP-2929: Gas cost increases for state access opcodes](./eip-2929) introduced a new gas cost model that differentiates between "cold" and "warm" access to accounts and storage slots. However, the cost of every cold access is borne by each transaction separately, even though the validator only needs to fetch the state
+
+RATIONALE:
+### Current cold storage gas cost is unfair As described in the [Motivation](#motivation) section, the amount of gas that users spend on accessing the contract code does not reflect the actual cost of this access for the block builder or a validator. The more popular the contract code or
+
+
 === EIP-7801 ===
 TITLE: etha - Sharded Blocks Subprotocol
 TYPE: Standards Track Networking
@@ -3063,13 +3083,13 @@ CREATED: 2024-10-30
 REQUIRES: 7642
 
 SUMMARY:
-This EIP proposes the creation of a new subprotocol, `etha`, enabling Ethereum nodes to communicate available block spans via a bitmask. Each bit represents a 100_000-block span within each 1_000_000 block range of chain history. Nodes use this bitmask to signal stored spans and commit to storing future spans
+This EIP proposes the creation of a new subprotocol, `etha`, enabling Ethereum nodes to communicate available block spans via a bitmask. Each bit represents a 106_496-block span within each 1_064_960 block range of chain history. Nodes use this bitmask to signal stored spans and commit to storing future spans
 
 SPECIFICATION:
-### Subprotocol Handshake - Introduce a new subprotocol named `etha`. - Define the handshake message for the `etha` subprotocol as follows: - Handshake packet: `[version: P, networkid: P, blockhash: B_32, genesis: B_32, forkid, blockBitmask]` - `blockBitmask` is a 10-bit bitmask, with each bit representing a 100_000-block range per 1_000_000
+### Subprotocol Handshake - Introduce a new subprotocol named `etha`. - Define the handshake message for the `etha` subprotocol as follows: - Handshake packet: `[version: P, networkid: P, blockhash: B_32, genesis: B_32, forkid, blockBitmask]` - `blockBitmask` is a 10-bit bitmask, with each bit representing a 106_496-block range per 1_064_960
 
 MOTIVATION:
-With [EIP-4444](./eip-4444.md), nodes may prune historical data while others continue serving it. Determining data availability by connecting and requesting blocks is inefficient consuming unnexessary bandwidth. This EIP addresses this inefficiency by enabling nodes to shard chain history into 100_000 block segments and signal availability via a bitmask. By introducing
+With [EIP-4444](./eip-4444.md), nodes may prune historical data while others continue serving it. Determining data availability by connecting and requesting blocks is inefficient consuming unnexessary bandwidth. This EIP addresses this inefficiency by enabling nodes to shard chain history into 106_496 block segments and signal availability via a bitmask. By introducing
 
 RATIONALE:
 The bitmask approach provides a flexible means to represent and retain block data while committing to future spans. This mechanism aligns with the pruning proposed in EIP-4444, while ensuring that historical and future data spans remain available across the network. A similar bitlist approach is already used in the
@@ -7399,6 +7419,26 @@ The proliferation of smart contract controlled validators has caused there to be
 
 RATIONALE:
 ### Opaque byte array rather than an RLP array By having the bytes of `request_data` array from second byte on be opaque bytes, rather than an RLP (or other encoding) list, we can support different encoding formats for the request payload in the future such as SSZ, LEB128, or
+
+
+=== EIP-7921 ===
+TITLE: Skip `JUMPDEST` immediate argument check
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-26
+REQUIRES: 
+
+SUMMARY:
+Allow `JUMP` and `JUMPI` to arrive at any byte matching `JUMPDEST` (`0x5b`), even if that byte is an immediate argument.
+
+SPECIFICATION:
+When activated, all `0x5b` bytes are valid `JUMPDEST` for `JUMPI` and `JUMP` opcodes.
+
+MOTIVATION:
+Immediate arguments are opcode parameters supplied within the code rather than the stack. Currently determining the validity of a `JUMPDEST` requires determining which bytes are immediate arguments to other opcodes, such as `PUSH1`. This presents several problems: 1. Codesize is a linear DoS vector because code must be preprocessed
+
+RATIONALE:
+Removing the check solves several problems while reducing EVM complexity.
 
 
 === EIP-3322 ===

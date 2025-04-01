@@ -332,7 +332,7 @@ The standard uses three different query parameters rather than a single query pa
 === ERC-7837 ===
 TITLE: Diffusive Tokens
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-12-07
 REQUIRES: 
 

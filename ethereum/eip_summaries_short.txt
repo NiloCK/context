@@ -3055,6 +3055,26 @@ SPECIFICATION:
 - Codename: Ethereum ProgPoW - Aliases: N/A - Activation: - `Block >= 7280000` on the Ethereum mainnet - Included EIPs: - [EIP-1057](./eip-1057.md): ProgPoW, a
 
 
+=== EIP-7557 ===
+TITLE: Block-level Warming with fair cost savings
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2023-10-01
+REQUIRES: 
+
+SUMMARY:
+A mechanism for a fair distribution of the gas costs associated with access to addresses and storage slots among multiple transactions with shared items
+
+SPECIFICATION:
+The [EIP-2930: Optional access lists](./eip-2930) already introduced the first part of the solution. Each transaction can specify an array of `accessed_addresses` and `accessed_storage_keys` to
+
+MOTIVATION:
+[EIP-2929: Gas cost increases for state access opcodes](./eip-2929) introduced a new gas cost model that differentiates between "cold" and "warm" access to accounts and
+
+RATIONALE:
+### Current cold storage gas cost is unfair As described in the [Motivation](#motivation) section, the amount of gas that users spend on accessing the
+
+
 === EIP-7801 ===
 TITLE: etha - Sharded Blocks Subprotocol
 TYPE: Standards Track Networking
@@ -7399,6 +7419,26 @@ The proliferation of smart contract controlled validators has caused there to be
 
 RATIONALE:
 ### Opaque byte array rather than an RLP array By having the bytes of `request_data` array from second byte on be opaque bytes, rather
+
+
+=== EIP-7921 ===
+TITLE: Skip `JUMPDEST` immediate argument check
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-26
+REQUIRES: 
+
+SUMMARY:
+Allow `JUMP` and `JUMPI` to arrive at any byte matching `JUMPDEST` (`0x5b`), even if that byte is an immediate argument.
+
+SPECIFICATION:
+When activated, all `0x5b` bytes are valid `JUMPDEST` for `JUMPI` and `JUMP` opcodes.
+
+MOTIVATION:
+Immediate arguments are opcode parameters supplied within the code rather than the stack. Currently determining the validity of a `JUMPDEST` requires determining which bytes
+
+RATIONALE:
+Removing the check solves several problems while reducing EVM complexity.
 
 
 === EIP-3322 ===
