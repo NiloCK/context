@@ -9140,6 +9140,26 @@ RATIONALE:
 [ERC-20](./eip-20.md) and [ERC-1155](./eip-1155.md) are unsupported as partial ownership is much more complex to track than boolean ownership.
 
 
+=== ERC-7811 ===
+TITLE: Wallet Asset Discovery
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-07
+REQUIRES: 2, 0, ,,  , 1, 5, 5, ,,  , 7, 2, 1, ,,  , 5, 7, 9, 2
+
+SUMMARY:
+This ERC introduces a new RPC call, `wallet_getAssets`, for wallets to declare to the Dapp what assets are owned by the user. This allows
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
+
+MOTIVATION:
+Currently, Dapps primarily rely on on-chain data to determine a user's balance, which can be limiting. Furthermore, a Dapp might restrict the user from
+
+RATIONALE:
+<!-- TODO -->
+
+
 === ERC-7754 ===
 TITLE: Tamperproof Web Immutable Transaction (TWIT)
 TYPE: Standards Track ERC
