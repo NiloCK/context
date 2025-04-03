@@ -4175,7 +4175,7 @@ The previous proposal introduced mechanisms that relied on a single, mutable win
 === EIP-7594 ===
 TITLE: PeerDAS - Peer Data Availability Sampling
 TYPE: Standards Track Networking
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2024-01-12
 REQUIRES: 4844
 
