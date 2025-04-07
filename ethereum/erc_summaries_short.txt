@@ -2997,6 +2997,26 @@ RATIONALE:
 <!-- TODO -->
 
 
+=== ERC-7652 ===
+TITLE: ERC-721 Guarantee Extension
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-03-10
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This specification defines functions outlining a guarantor role for instance of [EIP-721](./eip-721.md). The guarantee interface implements the user-set valuation and guarantee share for a
+
+SPECIFICATION:
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as
+
+MOTIVATION:
+NFT (token ID) commonly face the issue of insufficient market liquidity: the main reason being the lack of transparency in NFT pricing, making it
+
+RATIONALE:
+Key factors influencing the standard: - Pay attention to ensuring fairness between and within groups when allocating commissions - Keeping the number of guarantee
+
+
 === ERC-2477 ===
 TITLE: Token Metadata Integrity
 TYPE: Standards Track ERC
@@ -7864,6 +7884,26 @@ As digital assets become increasingly utilized in AI and machine learning workfl
 
 RATIONALE:
 The technical decisions behind this EIP have been carefully considered to address specific challenges and requirements in the digital asset landscape. Here are the
+
+
+=== ERC-7913 ===
+TITLE: Signature Verifiers
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-03-21
+REQUIRES: 
+
+SUMMARY:
+Externally Owned Accounts (EOA) can sign messages with their associated private keys. Additionally [ERC-1271](./eip-1271.md) defines a method for signature verification by smart accounts such
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+With the development of account abstraction, there is an increasing need for non-ethereum signature verification. Cryptographic algorithms besides the natively supported secp256k1 are being
+
+RATIONALE:
+Verifiers can be used to avoid deploying many ERC-1271 "identity contract" (one per key), which would be expensive. Using this model, new keys can
 
 
 === ERC-55 ===

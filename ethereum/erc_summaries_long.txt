@@ -2997,6 +2997,26 @@ RATIONALE:
 <!-- TODO -->
 
 
+=== ERC-7652 ===
+TITLE: ERC-721 Guarantee Extension
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-03-10
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This specification defines functions outlining a guarantor role for instance of [EIP-721](./eip-721.md). The guarantee interface implements the user-set valuation and guarantee share for a given NFT (token ID), as well as the guarantee rights enjoyed and obligations assumed during subsequent transactions. An implementation enables the user to read or set the current guarantee value for a given NFT (token ID), and also realizes the distribution of guarantee interest and the performance of guarantee obligations. It sends the standardized events when the status changes. This proposal relies on and extends the existing [EIP-721](./eip-721.md).
+
+SPECIFICATION:
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. Every contract compliant to the `ERC721Guarantee` MUST implement the `IERC721Guarantee` guarantee interface. The **guarantee extension** is OPTIONAL for EIP-721 contracts. ```solidity pragma solidity ^0.8.20; // import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol"; /// @title EIP-721 Guarantor Role extension /// Note: the EIP-165 identifier for this interface is interface IERC721Guarantee /*is IERC721*/{ /// @notice Emitted when `guarantee contract` is established for an NFT /// @param user address of guarantor /// @param value The guarantee
+
+MOTIVATION:
+NFT (token ID) commonly face the issue of insufficient market liquidity: the main reason being the lack of transparency in NFT pricing, making it difficult for users to cash out after trading and purchasing NFT (token ID). With the introduction of the guarantor role, different guarantor groups can offer various price guarantees for NFT (token ID), establishing a multi-faceted price evaluation system for NFT (token ID). After purchasing an NFT (token ID), users can return it to the guarantor at any time at the highest guaranteed price to protect their interests. Additionally, after fulfilling their guarantee obligations, the
+
+RATIONALE:
+Key factors influencing the standard: - Pay attention to ensuring fairness between and within groups when allocating commissions - Keeping the number of guarantee groups (DAOs)in the interfaces to prevent contract bloat - The guarantee group is a DAO contract, which MUST implement the `ERC721TokenReceiver` interface - Simplicity - Gas Efficiency
+
+
 === ERC-2477 ===
 TITLE: Token Metadata Integrity
 TYPE: Standards Track ERC
@@ -7864,6 +7884,26 @@ As digital assets become increasingly utilized in AI and machine learning workfl
 
 RATIONALE:
 The technical decisions behind this EIP have been carefully considered to address specific challenges and requirements in the digital asset landscape. Here are the clarifications for the rationale behind: 1. Adoption of JSON schema: The use of JSON facilitates ease of integration and interaction, both manually and programmatically, with the metadata. 2. Detailed control with training types: The different categories like `aiGenerativeTraining`, `aiTraining`, and `aiInference` let creators control in detail, considering both ethics and computer resource needs. 3. Authorship options included: Options like `aiGenerativeTrainingWithAuthorship` and `aiTrainingWithAuthorship` make sure creators get credit, addressing ethical and legal issues. 4. Introduction
+
+
+=== ERC-7913 ===
+TITLE: Signature Verifiers
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-03-21
+REQUIRES: 
+
+SUMMARY:
+Externally Owned Accounts (EOA) can sign messages with their associated private keys. Additionally [ERC-1271](./eip-1271.md) defines a method for signature verification by smart accounts such as multisig. In both cases the identity of the signer is an ethereum address. We propose a standard to extend this concept of signer description, and signature verification, to keys that do not have an ethereum identity of their own, in the sense that they don't have their own address to represent them. This new mechanism can be used to integrate new signers such as non-ethereum cryptographic curves, hardware devices, or even email addresses.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Nomenclature - Keys are represented using `bytes` objects of arbitrary length. For example a P256 or RSA public key. Keys MUST NOT be empty. - Verifiers are smart contracts in charge of signature verification for a given type of key. They have an ethereum address. ### Signature Verifier interface Verifiers MUST implement the following interface: ```solidity interface IERC7913SignatureVerifier { /** * @dev Verifies
+
+MOTIVATION:
+With the development of account abstraction, there is an increasing need for non-ethereum signature verification. Cryptographic algorithms besides the natively supported secp256k1 are being used for controlling smart accounts. In particular, curves such as secp256r1 (supported by many mobile devices) and RSA keys (that are distributed by traditional institutions) are widely available. Beyond these two examples, we also see the emergence of ZK solutions for signing with emails or JWT from big Web2 services. All these signature mechanisms have one thing in common: they do not have a canonical ethereum address to represent them onchain. While users could
+
+RATIONALE:
+Verifiers can be used to avoid deploying many ERC-1271 "identity contract" (one per key), which would be expensive. Using this model, new keys can be used without any deployment costs. ERC-1271 already covers the cases were a key is not necessary. To avoid ambiguity, the verifiers contracts should not support (or be expected to support) empty keys. Signers that are 20 bytes long (empty key) should be handled using ERC-1271. Consistency with existing systems (ecrecover and ERC-1271) requires the message to be `bytes32` hash. These are usually produced following [ERC-191](./eip-191.md) or [ERC-712](./eip-712.md). Cryptographic systems that use different hashing
 
 
 === ERC-55 ===
