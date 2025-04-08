@@ -3706,7 +3706,7 @@ This EIP is mostly a retrospective EIP meaning it codifies an already existing s
 === EIP-7880 ===
 TITLE: EOF - EXTCODEADDRESS instruction
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-02-08
 REQUIRES: 7, 6, 9, 2, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 6, 1
 
