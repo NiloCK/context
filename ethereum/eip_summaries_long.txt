@@ -1891,7 +1891,7 @@ In order to keep in place the implicit reentrancy protection of existing contrac
 === EIP-7761 ===
 TITLE: EXTCODETYPE instruction
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-09-01
 REQUIRES: 3, 5, 4, 0, ,,  , 7, 6, 9, 2
 
@@ -6859,7 +6859,7 @@ RATIONALE:
 === EIP-7873 ===
 TITLE: EOF - TXCREATE and InitcodeTransaction type
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-01-31
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 3, 8, 6, 0, ,,  , 7, 6, 2, 0
 
@@ -6867,13 +6867,13 @@ SUMMARY:
 EVM Object Format (EOF) removes the possibility to create contracts using creation transactions (with an empty `to` field), `CREATE` or `CREATE2` instructions. We introduce a new instruction: `TXCREATE`, as well as a new transaction type (`InitcodeTransaction`), to provide a way to create contracts using EOF containers in transaction data.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | | - | - | | `INITCODE_TX_TYPE` | `Bytes1(0x06)` | | `MAX_INITCODE_COUNT` | `256` | | `CREATOR_CONTRACT_ADDRESS` | tbd | | `CREATOR_CONTRACT_BYTECODE` | tbd | | `TX_CREATE_COST` | Defined as `32000` in the [Ethereum Execution Layer Specs](https://github.com/ethereum/execution-specs/blob/0f9e4345b60d36c23fffaa69f70cf9cdb975f4ba/src/ethereum/shanghai/fork_types.py#L42) | | `STACK_DEPTH_LIMIT` | Defined as `1024` in the [Ethereum Execution Layer Specs](https://github.com/ethereum/execution-specs/blob/0f9e4345b60d36c23fffaa69f70cf9cdb975f4ba/src/ethereum/shanghai/vm/interpreter.py#L60) | | `GAS_CODE_DEPOSIT` | Defined as `200`
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | | - | - | | `INITCODE_TX_TYPE` | `Bytes1(0x06)` | | `MAX_INITCODE_COUNT` | `256` | | `TX_CREATE_COST` | Defined as `32000` in the [Ethereum Execution Layer Specs](https://github.com/ethereum/execution-specs/blob/0f9e4345b60d36c23fffaa69f70cf9cdb975f4ba/src/ethereum/shanghai/fork_types.py#L42) | | `STACK_DEPTH_LIMIT` | Defined as `1024` in the [Ethereum Execution Layer Specs](https://github.com/ethereum/execution-specs/blob/0f9e4345b60d36c23fffaa69f70cf9cdb975f4ba/src/ethereum/shanghai/vm/interpreter.py#L60) | | `GAS_CODE_DEPOSIT` | Defined as `200` in the [Ethereum Execution Layer Specs](https://github.com/ethereum/execution-specs/blob/0f9e4345b60d36c23fffaa69f70cf9cdb975f4ba/src/ethereum/shanghai/vm/gas.py#L44) | | `TX_DATA_COST_PER_ZERO` |
 
 MOTIVATION:
 This EIP uses terminology from the [EIP-3540](./eip-3540.md) which introduces the EOF format. Creation transaction and creation instructions `CREATE` and `CREATE2` are means provided by legacy EVM to deploy new code, but per requirement of removing code observability, they are not allowed to deploy EOF code. To allow Externally Owned Accounts (EOAs) to deploy EOF contrats, there must be a way to create EOF contracts using bytecode delivered in transaction data. Additionally, the new instruction and transaction type introduced in this EIP enable contracts to create other contracts using initcode from the transaction data, which in legacy EVM is
 
 RATIONALE:
-### `TXCREATE` failure modes `TXCREATE` has two "light" failure modes in case the initcontainer is not present and in case the EOF validation is unsuccessful. An alternative design where both cases led to a "hard" failure (consuming the entire gas available) was considered. We decided to have the more granular and forgiving failure modes in order to align the gas costs incurred to the actual work the EVM performs. ### Creator Contract EOF contract creation requires a predeployed Creator Contract to be introduced, because neither legacy contracts nor create transactions can deploy EOF code to bootstrap. The alternative
+### `TXCREATE` failure modes `TXCREATE` has two "light" failure modes in case the initcontainer is not present and in case the EOF validation is unsuccessful. An alternative design where both cases led to a "hard" failure (consuming the entire gas available) was considered. We decided to have the more granular and forgiving failure modes in order to align the gas costs incurred to the actual work the EVM performs. ### Allowing `TXCREATE` in legacy EVM EOF contract creation requires an exceptional possibility of calling an EOF opcode in legacy code - `TXCREATE`, because otherwise neither legacy contracts nor
 
 
 === EIP-7896 ===

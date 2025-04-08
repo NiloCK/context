@@ -1891,7 +1891,7 @@ In order to keep in place the implicit reentrancy protection of existing contrac
 === EIP-7761 ===
 TITLE: EXTCODETYPE instruction
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-09-01
 REQUIRES: 3, 5, 4, 0, ,,  , 7, 6, 9, 2
 
@@ -6859,7 +6859,7 @@ RATIONALE:
 === EIP-7873 ===
 TITLE: EOF - TXCREATE and InitcodeTransaction type
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-01-31
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 3, 8, 6, 0, ,,  , 7, 6, 2, 0
 
