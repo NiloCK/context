@@ -1603,7 +1603,7 @@ RATIONALE:
 === EIP-7834 ===
 TITLE: Separate Metadata Section for EOF
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-12-06
 REQUIRES: 3540
 
