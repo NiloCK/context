@@ -2327,7 +2327,7 @@ SUMMARY:
 Introduce the ability to have several code sections in EOF-formatted ([EIP-3540](./eip-3540.md)) bytecode, each one representing a separate subroutine/function. Two new opcodes,`CALLF` and `RETF`, are introduced to call and return from such a function. Dynamic jump instructions are disallowed.
 
 SPECIFICATION:
-### Type Section The type section of EOF containers must adhere to following requirements: 1. The section is comprised of a list of metadata where the metadata index in the type section corresponds to a code section index. Therefore, the type section size MUST be `n * 4` bytes,
+### Type Section The type section of EOF containers must adhere to following requirements: 1. The section is a list of metadata where the metadata index in the type section corresponds to a code section index. Therefore, the type section size MUST be `n * 4` bytes, where `n`
 
 MOTIVATION:
 Currently, in the EVM everything is a dynamic jump. Languages like Solidity generate most jumps in a static manner (i.e. the destination is pushed to the stack right before, `PUSHn .. JUMP`). Unfortunately however this cannot be used by most EVM interpreters, because of added requirement of validation/analysis. This
@@ -4200,16 +4200,16 @@ CREATED: 2024-05-01
 REQUIRES: 3540
 
 SUMMARY:
-This proposal describes a slight variation of the Native Account Abstraction design fully described in RIP-7560. This version's difference compared to the original proposal is in relying on features of "EVM Object Format" to distinguish between validation and execution code sections.
+We propose splitting the Ethereum transaction scope into multiple steps: validations, execution, and post-transaction logic. Transaction validity is determined by the result of the validation steps of a transaction. We further separate transaction validation for the purposes of authorization and the gas fee payment, allowing one contract to pay
 
 SPECIFICATION:
-### Constants | Name | Value | |------------|-------| | AA_TX_TYPE | TBD | ### New Transaction Type A new [EIP-2718](./eip-2718) transaction with type `AA_TX_TYPE` is introduced. Transactions of this type are referred to as "AA transactions". The contents of such transactions are fully described in RIP-7560. ### System-level code
+### Constants | Name | Value | |-------------------|--------------------------------------------| | AA_TX_TYPE | TBD | | AA_ENTRY_POINT | `address(0x7701)` | | AA_BASE_GAS_COST | 15000 | ### New Transaction Type A new [EIP-2718](./eip-2718) transaction with type `AA_TX_TYPE` is introduced. Transactions of this type are referred to as "AA transactions". Their payload should
 
 MOTIVATION:
-Talking about Full Native Account Abstraction, the fundamental idea any solution has to address is a mechanism for a Smart Contract Account to separate its validation and execution code sections. RIP-7560 is build on the current Ethereum contract structure, and therefore has little choice but to rely on using
+Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps.
 
 RATIONALE:
-### ABI encoding for system frames' input and output data Using an ABI encoding format for data provided by the protocol itself does represent an abstraction levels violation, however it is a relatively safe one and any alternative solution would require some trade-offs. The validation section of a Smart
+### Introduction of the `TXPARAM*` opcode family The validation section of a Smart Contract Account code needs to have full access to the majority of transaction details in order to be able to make an informed decision about either accepting or rejecting the transaction. A small subset of this
 
 
 === EIP-158 ===
