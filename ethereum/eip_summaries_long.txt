@@ -693,7 +693,7 @@ In [EIP-2200](./eip-2200.md#specification), three cases for refunds were introdu
 === EIP-7872 ===
 TITLE: Max blob flag for local builders
 TYPE: Meta 
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-01-30
 REQUIRES: 
 
@@ -768,6 +768,26 @@ MOTIVATION:
 
 RATIONALE:
 ### How to rank `SyncAggregate`? The EIP reuses the [`is_better_update`](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/sync-protocol.md#is_better_update) function from existing specs. ### How could a backfill protocol use this? Once the data is available in the `BeaconState`, a light client data backfill protocol could be defined that serves, for past periods: 1. A `LightClientUpdate` from requested `period` + 1 that proves that the entirety of `period` is finalized. 2. `BeaconState.historical_summaries[period].block_summary_root` at (1)'s `attested_header.beacon.state_root` + Merkle proof. 3. For each epoch's slot 0 block within requested `period`, the corresponding `LightClientHeader` + Merkle multi-proof for the block's inclusion into (2)'s `block_summary_root`. 4. For each of the entries
+
+
+=== EIP-7923 ===
+TITLE: Linear, Page-Based Memory Costing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-27
+REQUIRES: 
+
+SUMMARY:
+This EIP replaces the quadratic memory model in the EVM with a linear, page-based costing model. Memory is virtually addressable. Page allocation and page thrashing are included in the cost model. After applying this EIP, memory limits are invariant to the state of the message call stack.
+
+SPECIFICATION:
+Consider the following constants: ```python ALLOCATE_PAGE_COST = 100 THRASH_PAGE_COST = 6 LRU_SIZE = 512 PAGE_SIZE = 4096 MAXIMUM_MEMORY_SIZE = 64 * 1024 * 1024 ``` The memory costing algorithm is changed as follows: 1. For each page touched by an instruction 1. Charge 100 gas if it has not been touched before in this message call. 2. Charge 3 gas if it is not in the 512 least-recently touched pages. 2. The base gas cost for all memory instructions, e.g. `MLOAD` and `MSTORE`, remains the same, at 3. The behavior of `msize` remains the same. It returns the
+
+MOTIVATION:
+The EVM currently uses a quadratic pricing model for its memory. This was originally put in place to defend against DoS attacks. However, the memory model has several drawbacks. 1. It is anachronistic. Even at a gas limit of 30 million gas, users can only use 3MB of memory in a message call (and that burns all gas). Since the quadratic term for memory expansion starts kicking in at 724 bytes, users use much less memory in practice. To use even 64KB of memory -- the amount of memory available to a PC from the early 80's --
+
+RATIONALE:
+Benchmarks were performed on a 2019-era CPU, with the ability to keccak256 around 256MB/s, giving it a gas-to-ns ratio of 20 ns per 1 gas. The following benchmarks were performed: - Time to allocate a fresh page: 1-2us - Time to randomly read a byte from a 2MB range: 1.8ns - Time to randomly read a byte from a 32MB range: 7ns - Time to randomly read a byte from a 4GB range: 40ns - Time to update a hashmap with 512 items: 8ns - Time to update a hashmap with 8192 items: 9ns - Time to update
 
 
 === EIP-1193 ===
@@ -2294,6 +2314,26 @@ The Casper development and switch to proof-of-stake is delayed, the Ethash proof
 
 RATIONALE:
 This will delay the ice age by 42 million seconds (approximately 1.4 years), so the chain would be back at 30 second block times at the end of 2018. An alternate proposal was to add special rules to the difficulty calculation to effectively _pause_ the difficulty between different blocks. This would lead to similar results. This was previously discussed at All Core Devs Meeting [#09](https://github.com/ethereum/pm/blob/master/AllCoreDevs-Meetings/Meeting%209.md#metropolis-timing-and-roadmap-discussion), [#12](https://github.com/ethereum/pm/blob/master/AllCoreDevs-Meetings/Meeting%2012.md#5-metropolis-update), [#13](https://github.com/ethereum/pm/blob/master/AllCoreDevs-Meetings/Meeting%2013.md#3-eip-186-reduce-eth-issuance-before-proof-of-stake-hudson), and [#14](https://github.com/ethereum/pm/blob/master/AllCoreDevs-Meetings/Meeting%2014.md#1-eip-186-reduce-eth-issuance-before-proof-of-stake-core-devs). Consensus on the specification was achieved in All Core Devs Meeting [#19](https://github.com/ethereum/pm/blob/master/AllCoreDevs-Meetings/Meeting%2019.md) and specification drafted in EIP issue [#649](https://github.com/ethereum/EIPs/issues/649). It was decided to replace EIP [#186](https://github.com/ethereum/EIPs/issues/186) and include the
+
+
+=== EIP-7848 ===
+TITLE: On-chain upgrade signaling
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-12-22
+REQUIRES: 
+
+SUMMARY:
+This proposal adds a mechanism for clients to signal their willingness for a network upgrade by including a “reference implementation hash” field in each block. A network upgrade activates only if enough blocks specify that they are using the new software.
+
+SPECIFICATION:
+Ethereum consensus clients shall identify with a reference implementation having its equivalent behaviors. Ethereum consensus clients shall include a `referenceImplementationHash` (specified below) field immediately following the `extraData` field in the block header. Proposed new Ethereum consensus clients shall initially behave as the then-current network does. If, and only if, a successful upgrade (defined below) is activated will the new behavior take effect. When a network participant is willing to support a network upgrade, they shall immediately begin using the new software. The blocks they create including the new `referenceImplementationHash` will contribute to the network upgrade activation. ### The
+
+MOTIVATION:
+Currently, upgrades to Ethereum Mainnet are announced on the ethereum.org blog. This proposal changes that process by activating upgrades based on the consent of network participants.
+
+RATIONALE:
+### Forking is no Longer Possible Since the merge, forking Ethereum Mainnet has become practically impossible. Validators stake valuable assets to participate in the network, so any rational validator will choose to upgrade only if they expect widespread adoption. If a validator expects 95% or more participants to upgrade, they should upgrade; if they expect only 5% or less, they should not. For intermediate cases, there is a threshold where a validator would rationally shut down (incurring a small penalty) rather than risk participating in the wrong network—which could result in slashing 100% of their staked ether (currently
 
 
 === EIP-7668 ===
@@ -5408,7 +5448,7 @@ The byte `0xb6` was chosen to align with [EIP-615](./eip-615.md). The choice to 
 === EIP-1898 ===
 TITLE: Add `blockHash` to defaultBlock methods
 TYPE: Standards Track Interface
-STATUS: Last Call
+STATUS: Final
 CREATED: 2019-04-01
 REQUIRES: 234
 
@@ -5500,6 +5540,26 @@ Peer-to-peer networking is messy and hard due to firewalls and network address t
 
 RATIONALE:
 ##### Why flatten `FORK_HASH` into 4 bytes? Why not share the entire genesis and fork list? Whilst the `eth` devp2p protocol permits arbitrarily much data to be transmitted, the discovery protocol's total space allowance for all ENR entries is 300 bytes. Reducing the `FORK_HASH` into a 4 bytes checksum ensures that we leave ample room in the ENR for future extensions; and 4 bytes is more than enough for arbitrarily many Ethereum networks from a (practical) collision perspective. ##### Why use IEEE CRC32 as the checksum instead of Keccak256? We need a mechanism that can flatten arbitrary data
+
+
+=== EIP-7922 ===
+TITLE: Dynamic exit queue rate limit
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-24
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes updating Ethereum's validator exit churn calculation by dynamically adjusting the churn limit at the start of each 256-epoch period ("generation") based on historical validator exits. Specifically, the maximum churn allowed in each generation will adjust according to the unused churn from the past 16 generations. This approach reduces validator wait times during periods of high exit demand *without sacrificing network safety*.
+
+SPECIFICATION:
+Since the validator exit process is complex, we start with the stack trace and a verbal description of the end-to-end process in Electra. 1. `initiate_validator_exit` – a validator signals their intent to exit, which is actuated by setting `validator.exit_epoch` and `validator.withdrawable_epoch` based on the output of `compute_exit_epoch_and_update_churn`. 2. `compute_exit_epoch_and_update_churn` – is used to determine the exit epoch of a validator. This function implements the exit queue in the following way: - `get_balance_churn_limit` - returns the amount of withdrawable ETH per epoch by dividing the total active balance by 2**16. - set `exit_balance_to_consume` to the churn available in the
+
+MOTIVATION:
+Ethereum currently implements a fixed, rate-limited queue for validator exits to ensure the security and stability of the network. The exit queue ensures the economic security of transactions finalized by the validator set. Suppose a malicious validator could immediately exit the set without any delay. In that case, they may attempt to execute a double spend attack by publishing a block while withholding a conflicting block, which they release after their stake has exited the protocol. The slashing mechanism can no longer hold the malicious validator accountable, and two conflicting finalized transactions may exist (if the attacker has
+
+RATIONALE:
+As we described earlier, by computing unused churn from the previous 14 generations, the churn limit dynamically responds to actual validator behavior. This mechanism: - Reduces validator waiting times during periods of congestion. - Ensures security by restricting maximum churn limit increases. - Simplifies implementation compared to more complex dynamic mechanisms. A generation length of 256 epochs (~27 hours) and a history of 14 generations (~16 days) balances responsiveness and stability, enabling Ethereum to adapt smoothly to sustained changes in validator exit behavior.
 
 
 === EIP-3338 ===
@@ -8353,7 +8413,7 @@ In case of ethash algorithm, it can't prevent ASIC forever. And, current ethash 
 === EIP-7918 ===
 TITLE: Blob base fee bounded by execution cost
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-25
 REQUIRES: 4844
 
@@ -8361,10 +8421,10 @@ SUMMARY:
 This EIP imposes that the price of the targeted number blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying transaction `TX_BASE_COST * base_fee_per_gas`. This ensures that the blob fee auction can function properly, because the equilibrium always forms relative to the fee that carries the price signal. The proposed `if` statement to check fee parity in `calc_excess_blob_gas()` represents a neutral, simple, and future-proof resolution to current blob fee auction idiosyncrasies.
 
 SPECIFICATION:
-The function `calc_excess_blob_gas()` from [EIP-4844](./eip-4844.md) is changed to not subtract `TARGET_BLOB_GAS_PER_BLOCK` when updating the `excess_blob_gas`, if the price of `TARGET_BLOB_GAS_PER_BLOCK` is below the price of `TX_BASE_COST`. ```python def calc_excess_blob_gas(parent: Header) -> int: if parent.excess_blob_gas + parent.blob_gas_used < TARGET_BLOB_GAS_PER_BLOCK: return 0 if TX_BASE_COST * parent.base_fee_per_gas > TARGET_BLOB_GAS_PER_BLOCK * get_base_fee_per_blob_gas(parent): return parent.excess_blob_gas + parent.blob_gas_used else: return parent.excess_blob_gas + parent.blob_gas_used - TARGET_BLOB_GAS_PER_BLOCK ```
+The function `calc_excess_blob_gas()` from [EIP-4844](./eip-4844.md) is changed to add `parent.blob_gas_used // 3` and not subtract `TARGET_BLOB_GAS_PER_BLOCK` when updating the `excess_blob_gas`, if the price of `TARGET_BLOB_GAS_PER_BLOCK` is below the price of `TX_BASE_COST`. ```python def calc_excess_blob_gas(parent: Header) -> int: if parent.excess_blob_gas + parent.blob_gas_used < TARGET_BLOB_GAS_PER_BLOCK: return 0 if TX_BASE_COST * parent.base_fee_per_gas > TARGET_BLOB_GAS_PER_BLOCK * get_base_fee_per_blob_gas(parent): return parent.excess_blob_gas + parent.blob_gas_used else: return parent.excess_blob_gas + parent.blob_gas_used - TARGET_BLOB_GAS_PER_BLOCK ```
 
 MOTIVATION:
 Ethereum deploys a dynamic pricing auction to set the blob base fee, lowering the fee if less gas is consumed than `TARGET_BLOB_GAS_PER_BLOCK` and raising the fee if more gas is consumed. Such an auction can function well when the blob base fee represents the price signal, allowing the mechanism to control the real price facing the consumer. However, when the cost of execution gas in the blob-carrying transaction dominates, the price signal is lost. The blob base fee no longer represents the actual cost facing the consumer, and the protocol cannot adjust the blob base fee to regulate
 
 RATIONALE:
-### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. At a fundamental level, the issue is that the demand curve becomes fee-inelastic as the cost of blob data falls relative to the cost of the blob-carrying transaction. When the execution cost dominates, it does not matter to the blob consumer how the blob fee evolves—it is ultimately the execution cost that contributes to equilibrium formation. Given that the protocol stipulates a perfectly inelastic supply curve (vertical blue line in Figure 1), the blob base fee will simply fall to the boundary of 1 wei whenever
+### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. Fundamentally, the issue is that the demand curve becomes fee-inelastic as the cost of blob data falls relative to the cost of the blob-carrying transaction. When the execution cost dominates, it does not matter to the blob consumer how the blob fee evolves—it is ultimately the execution cost that determines equilibrium formation. Given that the protocol stipulates a long-run perfectly inelastic supply curve (vertical blue line in Figure 1), the blob base fee will simply fall to the boundary of 1 wei whenever the execution cost
