@@ -4240,7 +4240,7 @@ CREATED: 2024-05-01
 REQUIRES: 3540
 
 SUMMARY:
-We propose splitting the Ethereum transaction scope into multiple steps: validations, execution, and post-transaction logic. Transaction validity is determined by the result of the validation steps of a transaction. We further separate transaction validation for the purposes of authorization and the gas fee payment, allowing one contract to pay
+We propose splitting the Ethereum transaction scope into multiple steps: validations, execution, and post-operation logic. Transaction validity is determined by the result of the validation steps of a transaction. We further separate transaction validation for the purposes of authorization and the gas fee payment, allowing one contract to pay
 
 SPECIFICATION:
 ### Constants | Name | Value | |-------------------|--------------------------------------------| | AA_TX_TYPE | TBD | | AA_ENTRY_POINT | `address(0x7701)` | | AA_BASE_GAS_COST | 15000 | ### New Transaction Type A new [EIP-2718](./eip-2718) transaction with type `AA_TX_TYPE` is introduced. Transactions of this type are referred to as "AA transactions". Their payload should
