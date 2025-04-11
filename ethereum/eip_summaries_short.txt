@@ -1705,7 +1705,7 @@ TITLE: Meter Contract Code Size And Increase Limit
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-03-14
-REQUIRES: 170
+REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
 
 SUMMARY:
 This EIP substantially increases the hard contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 256KB, and adds gas metering. It
@@ -4777,23 +4777,23 @@ This EIP chooses to rely on DIDs and JOSE since there is already support for the
 
 
 === EIP-7642 ===
-TITLE: eth/69 - Drop pre-merge fields
+TITLE: eth/69 - history expiry and simpler receipts
 TYPE: Standards Track Networking
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-02-29
 REQUIRES: 5793
 
 SUMMARY:
-After the merge the `td` field in the networking protocol became obsolete. This EIP modifies the networking messages such that this field is not
+This EIP modifies the 'eth' p2p protocol to announce the historical block range served by the node. We also simplify the handshake to remove
 
 SPECIFICATION:
-Modify the `Status (0x00)` message as follows: - (eth/68): `[version: P, networkid: P, td: P, blockhash: B_32, genesis: B_32, forkid]` - (eth/69): `[version: P,
+### Status message changes Modify the `Status (0x00)` message as follows: - (eth/68): `[version: P, networkid: P, td: P, blockhash: B_32, genesis: B_32, forkid]`
 
 MOTIVATION:
-We recently discovered that none of the clients store the `Bloom` field of the receipts as it can be recomputed on demand. However the
+### Block range in Status message In the history expiry working group, it was decided that clients may drop pre-merge history from their storage
 
 RATIONALE:
-After the merge, the `TD` field of the `Status` message became meaningless since the difficulty of post-merge blocks are 0. It could in theory
+### Status changes After the merge, the `TD` field of the `Status` message became meaningless since the difficulty of post-merge blocks are 0. It
 
 
 === EIP-7799 ===

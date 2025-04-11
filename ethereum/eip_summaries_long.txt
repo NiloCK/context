@@ -1705,10 +1705,10 @@ TITLE: Meter Contract Code Size And Increase Limit
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-03-14
-REQUIRES: 170
+REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
 
 SUMMARY:
-This EIP substantially increases the hard contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 256KB, and adds gas metering. It introduces a gas cost of 2 gas per (32 byte) word for contract code exceeding 24KB, allowing deployment of contracts of any size while preventing DoS attacks through appropriate gas metering.
+This EIP substantially increases the hard contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 256KB, and adds gas metering. It introduces a gas cost of 2 gas per (32 byte) word for contract code exceeding 24KB, allowing deployment of contracts of any size while preventing DoS attacks through appropriate gas metering. Lastly, it also commensurately increases initcode size limit from 48KB, introduced in [EIP-3860](./eip-3860.md), to 512KB.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. 1. Update the EIP-170 contract code size limit of 24KB (`0x6000` bytes) to 256KB (`0x20000` bytes). 2. Change the gas schedule for opcodes which load code. Specifically, the `CALL`, `STATICCALL`, `DELEGATECALL`, `CALLCODE` and `EXTCODECOPY` opcodes are modified so that `ceil32(excess_contract_size) * 2 // 32` gas is added to the [cold access cost](https://github.com/ethereum/execution-specs/blob/1a587803e3e698407d204888b02342393f8b4fe5/src/ethereum/cancun/vm/instructions/system.py#L367), where `excess_contract_size = max(0, contract_size - 0x6000)`. (Cf. initcode metering: [EELS](https://github.com/ethereum/execution-specs/blob/1a587803e3e698407d204888b02342393f8b4fe5/src/ethereum/cancun/vm/gas.py#L269)). If
@@ -4777,23 +4777,23 @@ This EIP chooses to rely on DIDs and JOSE since there is already support for the
 
 
 === EIP-7642 ===
-TITLE: eth/69 - Drop pre-merge fields
+TITLE: eth/69 - history expiry and simpler receipts
 TYPE: Standards Track Networking
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-02-29
 REQUIRES: 5793
 
 SUMMARY:
-After the merge the `td` field in the networking protocol became obsolete. This EIP modifies the networking messages such that this field is not sent anymore. Additionally we propose to remove the `Bloom` field from the receipts networking messages.
+This EIP modifies the 'eth' p2p protocol to announce the historical block range served by the node. We also simplify the handshake to remove total difficulty information, which isn't used anymore after the merge. Additionally we propose to remove the `Bloom` field from receipts transfered over the protocol.
 
 SPECIFICATION:
-Modify the `Status (0x00)` message as follows: - (eth/68): `[version: P, networkid: P, td: P, blockhash: B_32, genesis: B_32, forkid]` - (eth/69): `[version: P, networkid: P, blockhash: B_32, genesis: B_32, forkid]` Modify the encoding for receipts in the `Receipts (0x10)` message as follows: - (eth/68): `receipt = {legacy-receipt, typed-receipt}` with `typed-receipt = tx-type || receipt-data` and ``` legacy-receipt = [ post-state-or-status: {B_32, {0, 1}}, cumulative-gas: P, bloom: B_256, logs: [log₁, log₂, ...] ] ``` - (eth/69): `receipt = {legacy-receipt, typed-receipt}` with `typed-receipt = tx-type || receipt-data` and ``` legacy-receipt = [ post-state-or-status: {B_32, {0, 1}}, cumulative-gas: P, logs:
+### Status message changes Modify the `Status (0x00)` message as follows: - (eth/68): `[version: P, networkid: P, td: P, blockhash: B_32, genesis: B_32, forkid]` - (eth/69): `[version: P, networkid: P, genesis: B_32, forkid, earliestBlock: P, latestBlock: P, latestBlockHash: B_32]` Note `blockhash` has moved to the end to match `BlockRangeUpdate`. ### Receipts message changes Modify the encoding for receipts in the `Receipts (0x10)` message as follows: - (eth/68): `receipt = {legacy-receipt, typed-receipt}` with ``` typed-receipt = tx-type || rlp(legacy-receipt) legacy-receipt = [ post-state-or-status: {B_32, {0, 1}}, cumulative-gas: P, bloom: B_256, logs: [log₁, log₂, ...] ] ``` - (eth/69): `receipt
 
 MOTIVATION:
-We recently discovered that none of the clients store the `Bloom` field of the receipts as it can be recomputed on demand. However the networking spec requires the `Bloom` field to be sent over the network. Thus a syncing node will ask for the Bloom filters for all receipts. The serving node will regenerate roughly 530GB of bloom filters (2.3B txs * 256 byte). These 530GBs are send over the network to the syncing peer, the syncing peer will verify them and not store them either. This adds an additional 530GB of unnecessary bandwidth to every sync. Additionally
+### Block range in Status message In the history expiry working group, it was decided that clients may drop pre-merge history from their storage after May 1, 2025. For clients that want to sync history through the 'eth' protocol, it is essential to know whether a peer still serves old history. A similar idea was proposed in [EIP-7542](./eip-7542.md) but was later withdrawn because a political decision on history expiry had not been reached at the time. ### Removing Bloom in Receipts We recently discovered that none of the clients store the `Bloom` field of the receipts as it
 
 RATIONALE:
-After the merge, the `TD` field of the `Status` message became meaningless since the difficulty of post-merge blocks are 0. It could in theory be used to distinguish synced with unsynced nodes, but the same thing can be accomplished with the forkid as well. It is not used in the go-ethereum codebase in any way. Removing the bloom filters from the `Receipt` message reduces the cpu load of serving nodes as well as the bandwidth significantly. The receiving nodes will need to recompute the bloom filter. The recomputation is not very CPU intensive. The bandwidth gains amount to
+### Status changes After the merge, the `TD` field of the `Status` message became meaningless since the difficulty of post-merge blocks are 0. It could in theory be used to distinguish synced with unsynced nodes, but the same thing can be accomplished with the forkid as well. The new `earliestBlock` field is technically not required for history expiry, but there are a couple reasons why adding it can help: - It improves peer finding for clients that still want to sync history from p2p after the agreed-upon removal of pre merge history has taken place. Without `earliestBlock`, the
 
 
 === EIP-7799 ===
