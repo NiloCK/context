@@ -2544,7 +2544,7 @@ Switching to verkle trees require a complete rehashing of all tree keys. Most ex
 === EIP-7773 ===
 TITLE: Hardfork Meta - Amsterdam
 TYPE: Meta 
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-09-26
 REQUIRES: 7, 6, 0, 7, ,,  , 7, 7, 2, 3
 
@@ -3389,7 +3389,7 @@ With this scheme, we could continue to price these operations based on the 'norm
 === EIP-7667 ===
 TITLE: Raise gas costs of hash functions
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-03-31
 REQUIRES: 
 
@@ -5354,7 +5354,7 @@ RATIONALE:
 === EIP-7708 ===
 TITLE: ETH transfers emit a log
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-05-17
 REQUIRES: 
 

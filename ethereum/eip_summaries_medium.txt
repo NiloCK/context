@@ -781,7 +781,7 @@ SUMMARY:
 This EIP replaces the quadratic memory model in the EVM with a linear, page-based costing model. Memory is virtually addressable. Page allocation and page thrashing are included in the cost model. After applying this EIP, memory limits are invariant to the state of the message call stack.
 
 SPECIFICATION:
-Consider the following constants: ```python ALLOCATE_PAGE_COST = 100 THRASH_PAGE_COST = 6 LRU_SIZE = 512 PAGE_SIZE = 4096 MAXIMUM_MEMORY_SIZE = 64 * 1024 * 1024 ``` The memory costing algorithm is changed as follows: 1. For each page touched by an instruction 1. Charge 100 gas if it has not
+Consider the following constants: ```python ALLOCATE_PAGE_COST = 100 THRASH_PAGE_COST = 6 LRU_SIZE = 512 PAGE_SIZE = 4096 MAXIMUM_MEMORY_SIZE = 64 * 1024 * 1024 ``` The memory costing algorithm is changed as follows: 1. For each page touched by an instruction 1. Charge `ALLOCATE_PAGE_COST` gas if it has not
 
 MOTIVATION:
 The EVM currently uses a quadratic pricing model for its memory. This was originally put in place to defend against DoS attacks. However, the memory model has several drawbacks. 1. It is anachronistic. Even at a gas limit of 30 million gas, users can only use 3MB of memory
@@ -2544,7 +2544,7 @@ Switching to verkle trees require a complete rehashing of all tree keys. Most ex
 === EIP-7773 ===
 TITLE: Hardfork Meta - Amsterdam
 TYPE: Meta 
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-09-26
 REQUIRES: 7, 6, 0, 7, ,,  , 7, 7, 2, 3
 
@@ -3389,7 +3389,7 @@ With this scheme, we could continue to price these operations based on the 'norm
 === EIP-7667 ===
 TITLE: Raise gas costs of hash functions
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-03-31
 REQUIRES: 
 
@@ -5354,7 +5354,7 @@ RATIONALE:
 === EIP-7708 ===
 TITLE: ETH transfers emit a log
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-05-17
 REQUIRES: 
 
