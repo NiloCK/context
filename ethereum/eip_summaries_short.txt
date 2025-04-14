@@ -787,7 +787,7 @@ MOTIVATION:
 The EVM currently uses a quadratic pricing model for its memory. This was originally put in place to defend against DoS attacks. However, the
 
 RATIONALE:
-Benchmarks were performed on a 2019-era CPU, with the ability to keccak256 around 256MB/s, giving it a gas-to-ns ratio of 20 ns per 1
+Benchmarks were performed on a 2019-era CPU, with the ability to `keccak256` around 256MB/s, giving it a gas-to-ns ratio of 20 ns per 1
 
 
 === EIP-1193 ===

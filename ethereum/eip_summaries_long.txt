@@ -787,7 +787,7 @@ MOTIVATION:
 The EVM currently uses a quadratic pricing model for its memory. This was originally put in place to defend against DoS attacks. However, the memory model has several drawbacks. 1. It is anachronistic. Even at a gas limit of 30 million gas, users can only use 3MB of memory in a message call (and that burns all gas). Since the quadratic term for memory expansion starts kicking in at 724 bytes, users use much less memory in practice. To use even 64KB of memory -- the amount of memory available to a PC from the early 80's --
 
 RATIONALE:
-Benchmarks were performed on a 2019-era CPU, with the ability to keccak256 around 256MB/s, giving it a gas-to-ns ratio of 20 ns per 1 gas. The following benchmarks were performed: - Time to allocate a fresh page: 1-2us - Time to randomly read a byte from a 2MB range: 1.8ns - Time to randomly read a byte from a 32MB range: 7ns - Time to randomly read a byte from a 4GB range: 40ns - Time to update a hashmap with 512 items: 8ns - Time to update a hashmap with 8192 items: 9ns - Time to update
+Benchmarks were performed on a 2019-era CPU, with the ability to `keccak256` around 256MB/s, giving it a gas-to-ns ratio of 20 ns per 1 gas (given that `keccak256` costs 6 gas per 32 bytes). The following benchmarks were performed: - Time to allocate a fresh page: 1-2us - Time to randomly read a byte from a 2MB range: 1.8ns - Time to randomly read a byte from a 32MB range: 7ns - Time to randomly read a byte from a 4GB range: 40ns - Time to update a hashmap with 512 items: 8ns - Time to update a
 
 
 === EIP-1193 ===
