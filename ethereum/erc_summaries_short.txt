@@ -9398,20 +9398,20 @@ This standard unifies the representation of fractional ownership with the non-fu
 
 
 === ERC-7802 ===
-TITLE: Crosschain Token Interface
+TITLE: Token With Mint/Burn Access Across Chains
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2024-10-30
 REQUIRES: 1, 6, 5, ,,  , 5, 6, 7, 9
 
 SUMMARY:
-This standard introduces a minimal interface, `IERC7802`, for tokens to enable standardized cross-chain communication. The interface consists of two functions, `crosschainMint` and `crosschainBurn`, which
+This standard introduces a minimal and extensible interface, `IERC7802`, for tokens to enable standardized crosschain communication. The interface consists of two functions, `crosschainMint` and
 
 SPECIFICATION:
 This ERC introduces the `IERC7802` interface. ### Interface Identification The interface identifier for `IERC7802` is **`0x33331994`**, calculated according to [ERC-165](./eip-165.md) as the XOR of
 
 MOTIVATION:
-All rollups and multiple important sidechains (Gnosis and Polygon PoS, among others) implement canonical bridges that embed their security into some part of the
+All rollups and multiple important sidechains implement canonical bridges that embed their security into some part of the network's core architecture. These bridges do
 
 RATIONALE:
 ### Design philosophy The core design decisions behind this minimal interface are - Bridge agnosticism. - Extensibility. **Bridge agnosticism** This interface is designed so

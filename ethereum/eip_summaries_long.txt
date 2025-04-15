@@ -21,7 +21,7 @@ Adoption of fractional gas costs should only be an implementation detail inside 
 === EIP-5920 ===
 TITLE: PAY opcode
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2022-03-14
 REQUIRES: 2, 9, 2, 9, ,,  , 7, 5, 2, 3
 
