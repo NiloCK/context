@@ -1112,12 +1112,12 @@ While this standard is perhaps not the greatest mechanism for communicating betw
 === EIP-7495 ===
 TITLE: SSZ StableContainer
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Draft
 CREATED: 2023-08-18
-REQUIRES: 
+REQUIRES: 7916
 
 SUMMARY:
-This EIP introduces two new [Simple Serialize (SSZ) types](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) to enable forward-compatible containers. A `StableContainer[N]` extends an SSZ `Container` with stable merkleization and forward-compatible serialization even when individual fields are deprecated or new fields are introduced in the future. Furthermore, `Profile[B]` is introduced to support specialized sub-types of `StableContainer[N]`
+This EIP introduces two new [Simple Serialize (SSZ) types](https://github.com/ethereum/consensus-specs/blob/0cd5dcd26327e49b726e66ca51802c4cd65be889/ssz/simple-serialize.md) to enable forward-compatible containers. A `StableContainer[N]` extends an SSZ `Container` with stable merkleization and forward-compatible serialization even when individual fields are deprecated or new fields are introduced in the future. Furthermore, `Profile[B]` is introduced to support specialized sub-types of `StableContainer[N]`
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. **Note:** In this document, `Optional[T]` exclusively refers to Python's `typing.Optional`. Specifically, `Optional[T]` is NOT an
@@ -3686,7 +3686,7 @@ EOAs are the most widely used type of wallet. This EIP would drastically expand 
 === EIP-7688 ===
 TITLE: Forward compatible consensus data structures
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Draft
 CREATED: 2024-04-15
 REQUIRES: 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 4, 9, 5, ,,  , 7, 5, 4, 9, ,,  , 7, 5, 6, 9
 
@@ -4308,7 +4308,7 @@ CREATED: 2025-03-24
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) type, `ProgressiveList[T]`, to represent lists of arbitrary length with stable merkleization. Unlike the existing `List[T, N]` type, which imposes a fixed capacity `N`, `ProgressiveList[T]` supports unbounded growth using a recursive tree structure during merkleization to efficiently handle lists of any size
+This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/0cd5dcd26327e49b726e66ca51802c4cd65be889/ssz/simple-serialize.md) type, `ProgressiveList[T]`, to represent lists of arbitrary length with stable merkleization. Unlike the existing `List[T, N]` type, which imposes a fixed capacity `N`, `ProgressiveList[T]` supports unbounded growth using a recursive tree structure during merkleization to efficiently handle lists of any size
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ProgressiveList[T]` `ProgressiveList[T]` defines an ordered, homogeneous collection of elements of type `T`, where `T`
