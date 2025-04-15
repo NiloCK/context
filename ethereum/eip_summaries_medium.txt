@@ -3774,7 +3774,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered for & Scheduled for Inclusion in the Fulu/Osaka network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * EOF EIPs introduced in `eof-devnet-0` and `eof-devnet-1` in [EIP-7692](./eip-7692.md), namely: * [EIP-663](./eip-663.md): SWAPN, DUPN and EXCHANGE instructions *
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * EOF EIPs introduced in `eof-devnet-0` and `eof-devnet-1` in [EIP-7692](./eip-7692.md), namely: * [EIP-663](./eip-663.md): SWAPN, DUPN and
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Fusaka network upgrade, as well as links to full specification.
@@ -6261,7 +6261,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Prague/Electra network upgrade.
 
 SPECIFICATION:
-A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits * [EIP-7251](./eip-7251.md): Increase the
+A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits *
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Prague/Electra network upgrade, as well as links to full specification.

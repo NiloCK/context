@@ -3774,7 +3774,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered for & Scheduled for Inclusion in the Fulu/Osaka network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7594](./eip-7594.md):
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Fusaka network upgrade, as well as links to full specification.
@@ -6261,7 +6261,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Prague/Electra network upgrade.
 
 SPECIFICATION:
-A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations
+A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Prague/Electra network upgrade, as well as links to full specification.
