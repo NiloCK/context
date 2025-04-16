@@ -7053,7 +7053,7 @@ MOTIVATION:
 ### Generating address collisions By creating keys for `2**80` EOAs and simulating the deployment of `2**80` contracts from these EOAs (one each), one expects
 
 RATIONALE:
-We note that it was always the expected that a contract account's behaviour is constrained by the code in that contract -- which means
+We note that it was always expected that a contract account's behaviour is constrained by the code in that contract -- which means that
 
 
 === EIP-1959 ===
