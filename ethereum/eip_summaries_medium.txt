@@ -4516,7 +4516,7 @@ SUMMARY:
 This Meta EIP lists the EIPs which belong to the EVM Object Format (EOF) proposal, in its first version (EOFv1), also known as the "Mega EOF".
 
 SPECIFICATION:
-### EIPs Included - [EIP-3540](./eip-3540.md): EOF - EVM Object Format v1 - [EIP-3670](./eip-3670.md): EOF - Code Validation - [EIP-4200](./eip-4200.md): EOF - Static relative jumps - [EIP-4750](./eip-4750.md): EOF - Functions - [EIP-5450](./eip-5450.md): EOF - Stack Validation - [EIP-6206](./eip-6206.md): EOF - JUMPF and non-returning functions - [EIP-7480](./eip-7480.md): EOF - Data section
+### EIPs Included Introduced in eof-devnet-0 - [EIP-3540](./eip-3540.md): EOF - EVM Object Format v1 - [EIP-3670](./eip-3670.md): EOF - Code Validation - [EIP-4200](./eip-4200.md): EOF - Static relative jumps - [EIP-4750](./eip-4750.md): EOF - Functions - [EIP-5450](./eip-5450.md): EOF - Stack Validation - [EIP-6206](./eip-6206.md): EOF - JUMPF and non-returning functions - [EIP-7480](./eip-7480.md): EOF
 
 RATIONALE:
 Refer to the individual EIPs.
@@ -4779,7 +4779,7 @@ This EIP chooses to rely on DIDs and JOSE since there is already support for the
 === EIP-7642 ===
 TITLE: eth/69 - history expiry and simpler receipts
 TYPE: Standards Track Networking
-STATUS: Draft
+STATUS: Last Call
 CREATED: 2024-02-29
 REQUIRES: 5793
 
