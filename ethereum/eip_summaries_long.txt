@@ -7170,6 +7170,26 @@ RATIONALE:
 The `wallet_updateEthereumChain` method is designed to be as simple as possible, while still providing the necessary information for a wallet to switch to a new chain. The `chainId` is the only required parameter, as it is the only parameter that is guaranteed to be unique. The `chainName` is included to provide a human-readable name for the chain, and the `rpcUrls` array is included to provide a list of RPC endpoints for the chain. The `nativeCurrency` object is included to provide a suggestion for how the native currency should be displayed. Finally, the `blockExplorerUrl` is included to provide a
 
 
+=== EIP-7927 ===
+TITLE: History Expiry Meta
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2025-03-28
+REQUIRES: 4444
+
+SUMMARY:
+This Meta-EIP documents the activation process and plan for history expiry as well as providing links to other EIPs that are related.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Execution layer client MUST implement [EIP-7642](./eip-7642.md) to support the `eth/69` over DevP2P. Execution layer clients MAY drop pre-merge history according to [EIP-7639](./eip-7639.md). Consensus layer clients SHOULD NOT depend on Execution Layer clients having the deposit logs from pre-merge blocks and SHOULD implement [EIP-6110](./eip-6110.md). ### Mainnet Activation Mainnet activation of history expiry will occur shortly (a few days or weeks) after the activation of the
+
+MOTIVATION:
+[EIP-4444](./eip-4444.md) documents the motivation for history expiry itself. This EIP exists to document the process through which history expiry will be activated on mainnet, the testnet activation on Sepolia, devnet testing and other information surrounding history expiry that doesn't fit cleanly in any of the supporting EIPs.
+
+RATIONALE:
+### Why wait for Pectra Consensus Layer clients have a dependency on pre-merge deposit logs. [EIP-6110](./eip-6110.md) will remove this dependency when the Pectra fork is activated. ### Why drop Sepolia history The Sepolia history drop is intended as a testing ground for the mainnet activation. ### Why drop Devnet history The Devnet history drop is intended to test prior to Sepolia to avoid any breakage on the Sepolia network. ### Won't this break JSON-RPC History Expiry doesn't require clients to remove this data. It only allows them to. Clients that wish to preserve this history in their client
+
+
 === EIP-665 ===
 TITLE: Add precompiled contract for Ed25519 signature verification
 TYPE: Standards Track Core

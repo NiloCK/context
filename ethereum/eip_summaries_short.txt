@@ -7170,6 +7170,26 @@ RATIONALE:
 The `wallet_updateEthereumChain` method is designed to be as simple as possible, while still providing the necessary information for a wallet to switch to a
 
 
+=== EIP-7927 ===
+TITLE: History Expiry Meta
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2025-03-28
+REQUIRES: 4444
+
+SUMMARY:
+This Meta-EIP documents the activation process and plan for history expiry as well as providing links to other EIPs that are related.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[EIP-4444](./eip-4444.md) documents the motivation for history expiry itself. This EIP exists to document the process through which history expiry will be activated on mainnet,
+
+RATIONALE:
+### Why wait for Pectra Consensus Layer clients have a dependency on pre-merge deposit logs. [EIP-6110](./eip-6110.md) will remove this dependency when the Pectra fork
+
+
 === EIP-665 ===
 TITLE: Add precompiled contract for Ed25519 signature verification
 TYPE: Standards Track Core
