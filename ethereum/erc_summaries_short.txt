@@ -6539,7 +6539,7 @@ SPECIFICATION:
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be
 
 MOTIVATION:
-Introduces an extension for [ERC-721](./eip-721.md) Non-Fungible Tokens (NFTs) and Soulbound Tokens (SBTs), which facilitates the implementation of an expiration mechanism. Use cases include: -
+Before this EIP, NFTs and SBTs implemented expiration mechanisms via custom mappings. However, this approach presents challenges, such as inconsistent integration with other smart
 
 RATIONALE:
 ### First, do no harm Introducing expirability as an additional layer of functionality ensures it doesn’t interfere with existing use cases or applications. For
