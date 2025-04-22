@@ -7835,7 +7835,7 @@ RATIONALE:
 === EIP-5792 ===
 TITLE: Wallet Call API
 TYPE: Standards Track Interface
-STATUS: Review
+STATUS: Last Call
 CREATED: 2022-10-17
 REQUIRES: 1193
 
