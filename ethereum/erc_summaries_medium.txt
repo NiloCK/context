@@ -5927,7 +5927,7 @@ SUMMARY:
 This EIP defines a standard interface for indexing smart contracts on Ethereum by their bytecode hash. This enables trustless discovery and verification of contract code, facilitating use cases like bytecode signing, whitelisting, and decentralized distribution mechanisms.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity 0.8.28; interface IERC7744 { event Indexed(address indexed container, bytes32
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity 0.8.28; import {IERC7744} from "./IERC7744.sol"; /** * @title Byte
 
 MOTIVATION:
 Existing contract discovery relies on addresses, which are non-deterministic and can be obfuscated through proxies. Indexing by bytecode hash provides a deterministic and tamper-proof way to identify and verify contract code, enhancing security and trust in the Ethereum ecosystem. Consider a security auditor who wants to attest to the
