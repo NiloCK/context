@@ -2176,23 +2176,23 @@ In the initial draft, only the requests hash and block hash are changed to be SS
 
 
 === EIP-7702 ===
-TITLE: Set EOA account code
+TITLE: Set Code for EOAs
 TYPE: Standards Track Core
 STATUS: Last Call
 CREATED: 2024-05-07
 REQUIRES: 2, ,,  , 1, 6, 1, ,,  , 1, 0, 5, 2, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 3, 5, 4, 1, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4
 
 SUMMARY:
-Add a new transaction type that adds a list of `[chain_id, address, nonce, y_parity, r, s]` authorization tuples. For each tuple, write a delegation
+Add a new [EIP-2718](./eip-2718.md) transaction type that allows Externally Owned Accounts (EOAs) to set the code in their account. This is done by attaching
 
 SPECIFICATION:
 ### Parameters | Parameter | Value | | ------------------------ | ------- | | `SET_CODE_TX_TYPE` | `0x04` | | `MAGIC` | `0x05` | | `PER_AUTH_BASE_COST`
 
 MOTIVATION:
-There is a lot of interest in adding short-term functionality improvements to EOAs, increasing the usability of applications and in some cases allowing improved
+Despite great advances in the smart contract wallet ecosystem, EOAs have held back broad adoption of UX improvements across applications. This EIP therefore focuses
 
 RATIONALE:
-### Cost of Delegation The `PER_AUTH_BASE_COST` is the cost to process the authorization tuple and set the delegation destination. We are able to compute
+Below is the rationale from both general design directions of the EIP, as well as specific technical choices. ### General design philosphy #### Persistence
 
 
 === EIP-4863 ===
