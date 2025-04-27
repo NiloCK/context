@@ -474,7 +474,7 @@ Naive PoS specifications and implementations have existed since early blockchain
 === EIP-7778 ===
 TITLE: Prevent Block Gas Smuggling
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-10-01
 REQUIRES: 
 
