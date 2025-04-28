@@ -920,6 +920,26 @@ RATIONALE:
 ### Gas Metering The goal is to measure the CPU/IO cost of the contract read/write operations reusing existing gas metering so that the resources will not be abused. - For code-size-related opcodes (`CODESIZE`/`EXTCODESIZE`), we would expect the client to implement a mapping from the hash of code to the
 
 
+=== EIP-7912 ===
+TITLE: Pragmatic stack manipulation tools
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-25
+REQUIRES: 
+
+SUMMARY:
+Add `SWAP17`-`SWAP24`, `DUP17` - `DUP24`, `SWAPN`, `DUPN`, and `EXCHANGE` instructions. The arbitrary depth operations must be preceded by `PUSH1` instructions defining operands.
+
+SPECIFICATION:
+Let `top - N` be the `N`th most recently pushed value on the stack, and `top - 0` be the most recent. If any of the following instructions reference a stack element beyond the current length of the stack, causing a stack underflow, abort with an exceptional halt. ###
+
+MOTIVATION:
+Due to the nature of some compilers, deeper stack access is a desirable VM feature. Previous attempts either required code versioning, like the EVM Object Format (EOF), or caused the behavior of some deployed contracts to change, due to the interpretation of new immediates. This is a pragmatic approach
+
+RATIONALE:
+### Constant and Dynamic `SWAP`s and `DUP`s The main trade off between using the constant `SWAPXX` or `DUPXX` instructions versus the dynamic `SWAPN` or `DUPN` instructions is that the dynamic instructions require an additional two bytes in the form of a preceding `PUSH1` operation, whereas the constant versions require
+
+
 === EIP-2539 ===
 TITLE: BLS12-377 curve operations
 TYPE: Standards Track Core
@@ -2830,7 +2850,7 @@ SUMMARY:
 EVM Object Format (EOF) removes the possibility to create contracts using creation transactions (with an empty `to` field), `CREATE` or `CREATE2` instructions. We introduce a new instruction: `TXCREATE`, as well as a new transaction type (`InitcodeTransaction`), to provide a way to create contracts using EOF containers in transaction data.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | | - | - | | `INITCODE_TX_TYPE` |
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | |-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| | `INITCODE_TX_TYPE` | `Bytes1(0x06)` | | `MAX_INITCODE_COUNT`
 
 MOTIVATION:
 This EIP uses terminology from the [EIP-3540](./eip-3540.md) which introduces the EOF format. Creation transaction and creation instructions `CREATE` and `CREATE2` are means provided by legacy EVM to deploy new code, but per requirement of removing code observability, they are not allowed to deploy EOF code. To allow Externally Owned

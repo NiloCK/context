@@ -920,6 +920,26 @@ RATIONALE:
 ### Gas Metering The goal is to measure the CPU/IO cost of the contract read/write operations reusing existing gas metering so that the resources
 
 
+=== EIP-7912 ===
+TITLE: Pragmatic stack manipulation tools
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-25
+REQUIRES: 
+
+SUMMARY:
+Add `SWAP17`-`SWAP24`, `DUP17` - `DUP24`, `SWAPN`, `DUPN`, and `EXCHANGE` instructions. The arbitrary depth operations must be preceded by `PUSH1` instructions defining operands.
+
+SPECIFICATION:
+Let `top - N` be the `N`th most recently pushed value on the stack, and `top - 0` be the most recent. If any
+
+MOTIVATION:
+Due to the nature of some compilers, deeper stack access is a desirable VM feature. Previous attempts either required code versioning, like the EVM
+
+RATIONALE:
+### Constant and Dynamic `SWAP`s and `DUP`s The main trade off between using the constant `SWAPXX` or `DUPXX` instructions versus the dynamic `SWAPN` or
+
+
 === EIP-2539 ===
 TITLE: BLS12-377 curve operations
 TYPE: Standards Track Core
