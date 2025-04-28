@@ -7822,7 +7822,7 @@ CREATED: 2023-05-05
 REQUIRES: 1, 5, 0, ,,  , 2, 1, 1, ,,  , 2, 1, 4, ,,  , 2, 9, 2, 9, ,,  , 3, 5, 4, 0
 
 SUMMARY:
-Introduce three new call instructions, `EXTCALL`, `EXTDELEGATECALL` and `EXTSTATICCALL`, with simplified semantics. Introduce another instruction, `RETURNDATALOAD` for loading a word from return data into stack. Modify the behavior of `RETURNDATACOPY` instruction executed within EOF formatted code (as defined by [EIP-3540](./eip-3540.md)). The existing `*CALL` instructions remain unchanged. The new instructions
+Introduce three new call instructions, `EXTCALL`, `EXTDELEGATECALL` and `EXTSTATICCALL`, with simplified semantics. Introduce another instruction, `RETURNDATALOAD` for loading a word from return data into stack. Modify the behavior of `RETURNDATACOPY` instruction executed within EOF formatted code (as defined by [EIP-3540](./eip-3540.md)). The existing `*CALL` instructions are rejected by EOF validation.
 
 SPECIFICATION:
 | Name | Value | Comment | |------|-------|---------| | WARM_STORAGE_READ_COST | 100 | From [EIP-2929](./eip-2929.md) | | COLD_ACCOUNT_ACCESS | 2600 | From [EIP-2929](./eip-2929.md) | | CALL_VALUE_COST | 9000 | | | ACCOUNT_CREATION_COST | 25000 | | | MIN_RETAINED_GAS | 5000 | | | MIN_CALLEE_GAS | 2300 | | We
