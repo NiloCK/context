@@ -1984,6 +1984,26 @@ RATIONALE:
 The authors believe that it is very important that this standard leaves the other open to any resolver mechanism to be implemented and adopted. That's why a lot of the function and variable names were left intentionally bogus to be compatible with future resolvers without changing the standard. ERC-3000
 
 
+=== ERC-7871 ===
+TITLE: Wallet Signing API
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-01-29
+REQUIRES: 1, 9, 1, ,,  , 7, 1, 2, ,,  , 5, 7, 9, 2
+
+SUMMARY:
+Defines a new JSON-RPC method `wallet_sign` which enables apps to ask a wallet to sign [EIP-191](./eip-191.md) messages. Applications can use this JSON-RPC method to request a signature over any version of `signed_data` as defined by [EIP-191](./eip-191.md). The new JSON-RPC method allows for support of future [EIP-191](./eip-191.md) `signed_data` versions. The
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. One new JSON-RPC method is introduced. ### `wallet_sign` Requests a signature over [EIP-191](./eip-191.md) `signed_data` from
+
+MOTIVATION:
+Wallets and developer tools currently support multiple JSON-RPC methods for handling offchain signature requests. This proposal simplifies wallet & tooling implementations by consolidating these requests under a single `wallet_sign` JSON-RPC method. This also leaves room for new [EIP-191](./eip-191.md) `signed_data` versions without needing to introduce a new corresponding JSON-RPC method.
+
+RATIONALE:
+<!-- TODO -->
+
+
 === ERC-4393 ===
 TITLE: Micropayments for NFTs and Multi Tokens
 TYPE: Standards Track ERC
@@ -8177,6 +8197,26 @@ Industrial-scale ticket touting has been a longstanding issue, with its associat
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. What is the most crucial for ticketing agents, performers, and audiences? * For ticketing companies, selling out all tickets is crucial. Sometimes, to create a vibrant sales environment, ticketing companies may even collaborate with scalpers. This practice can be detrimental
+
+
+=== ERC-7806 ===
+TITLE: Minimal intent-centric EOA smart account
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-02
+REQUIRES: 7702
+
+SUMMARY:
+This proposal defines a standard interface for intent-centric smart accounts. It enables externally owned accounts (EOAs) to delegate contract code to a smart account implementation, allowing them to sign intents. These intents can then be executed by solvers (or relayers) on behalf of the account owner, streamlining interactions and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `UserIntent` schema Each intent is a packed data structure containing sufficient information about the
+
+MOTIVATION:
+Account Abstraction (AA) is a highly discussed topic in the blockchain industry, as it enhances the programmability of accounts, enabling features such as: * **Batch Execution** * **Gas Sponsorship** * **Access Control** The introduction of [ERC-4337](./eip-4337.md) established a permissionless standard for AA, unlocking a wide range of powerful features.
+
+RATIONALE:
+### Usage of Bytes Defining `UserIntent` object as a struct would improve readability and make it easier to work with in Solidity. For example: ```solidity struct UserIntent { address sender; address standard; bytes header; bytes[] instructions; bytes[] signatures; } ``` However, this approach has several drawbacks: - Mandating all
 
 
 === ERC-6662 ===

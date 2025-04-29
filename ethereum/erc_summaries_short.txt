@@ -1984,6 +1984,26 @@ RATIONALE:
 The authors believe that it is very important that this standard leaves the other open to any resolver mechanism to be implemented and adopted.
 
 
+=== ERC-7871 ===
+TITLE: Wallet Signing API
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-01-29
+REQUIRES: 1, 9, 1, ,,  , 7, 1, 2, ,,  , 5, 7, 9, 2
+
+SUMMARY:
+Defines a new JSON-RPC method `wallet_sign` which enables apps to ask a wallet to sign [EIP-191](./eip-191.md) messages. Applications can use this JSON-RPC method to
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Wallets and developer tools currently support multiple JSON-RPC methods for handling offchain signature requests. This proposal simplifies wallet & tooling implementations by consolidating these
+
+RATIONALE:
+<!-- TODO -->
+
+
 === ERC-4393 ===
 TITLE: Micropayments for NFTs and Multi Tokens
 TYPE: Standards Track ERC
@@ -8177,6 +8197,26 @@ Industrial-scale ticket touting has been a longstanding issue, with its associat
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. What is the most crucial for ticketing agents, performers, and audiences? * For ticketing companies,
+
+
+=== ERC-7806 ===
+TITLE: Minimal intent-centric EOA smart account
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-02
+REQUIRES: 7702
+
+SUMMARY:
+This proposal defines a standard interface for intent-centric smart accounts. It enables externally owned accounts (EOAs) to delegate contract code to a smart account
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Account Abstraction (AA) is a highly discussed topic in the blockchain industry, as it enhances the programmability of accounts, enabling features such as: *
+
+RATIONALE:
+### Usage of Bytes Defining `UserIntent` object as a struct would improve readability and make it easier to work with in Solidity. For example:
 
 
 === ERC-6662 ===

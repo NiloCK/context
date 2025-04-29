@@ -4098,6 +4098,26 @@ RATIONALE:
 ### Why not `Union[None, T]`? `Union[None, T]` leaves ambiguity about the intention whether the type may be extended in the future, i.e., `Union[None, T,
 
 
+=== EIP-7938 ===
+TITLE: Exponential Gas Limit Increase
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2025-04-27
+REQUIRES: 
+
+SUMMARY:
+This proposal introduces a deterministic gas limit growth schedule via client-side defaults. Ethereum clients will vote to increase the gas limit according to an
+
+SPECIFICATION:
+### Schedule Let `G0 = 50,000,000` be the gas limit at the activation epoch. Let the activation epoch be Ethereum beacon chain **epoch 369017**,
+
+MOTIVATION:
+The current gas limit mechanism relies on miner/operator voting, which lacks coordination and predictability. While flexible, this approach can lead to stagnation or overly
+
+RATIONALE:
+This EIP maintains Ethereum's current gas voting mechanism but enhances it with a predictable and community-coordinated trajectory. By distributing responsibility across clients rather than
+
+
 === EIP-2 ===
 TITLE: Homestead Hard-fork Changes
 TYPE: Standards Track Core
@@ -6924,6 +6944,26 @@ When an application is hooked up to an Ethereum provider, there is value in havi
 
 RATIONALE:
 This EIP is mostly a retrospective EIP meaning it codifies an already existing specification so there isn’t a lot of room for improving things
+
+
+=== EIP-7937 ===
+TITLE: 64-bit mode EVM opcodes (EVM64)
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-04-23
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces multibyte opcodes prefixed by `C0` for 64-bit arithmetic (`C001`-`C00B`), comparison (`C010`-`C015`), bitwise (`C016`-`C019`) and flow (`C056` and `C057` in "legacy", or
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Not all computations in EVM can utilize the full 256-bit integer width. It can therefore be beneficial to have a "64-bit mode" to avoid
+
+RATIONALE:
+When a smart contract uses the 64-bit mode, it's expected that once entered, it will want to stay in 64-bit mode, and only exit
 
 
 === EIP-1681 ===
