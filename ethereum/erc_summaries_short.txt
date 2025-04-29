@@ -21,7 +21,7 @@ RATIONALE:
 === ERC-7837 ===
 TITLE: Diffusive Tokens
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-12-07
 REQUIRES: 
 
@@ -804,6 +804,26 @@ As decentralized domain registration methods evolve with the integration of NFTs
 
 RATIONALE:
 #### Name Expiry By implementing expiration periods for usernames, we introduce several advantages. This mechanism ensures a dynamic environment where unused or outdated usernames
+
+
+=== ERC-7878 ===
+TITLE: Bequeathable Contracts
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-01
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
+
+SUMMARY:
+This EIP proposes a standard interface for contracts to allow tokens to be inherited after the owner's death. The interface allows token owners to
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Crypto Tokens in general and NFTs in particular are starting to be used to tokenise real-world assets. In order for them to be adopted
+
+RATIONALE:
+The standard follows what currently happens in real life when preparing and executing a Will. 1. An owner writes a Will and in doing
 
 
 === ERC-1581 ===

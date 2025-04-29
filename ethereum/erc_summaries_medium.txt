@@ -21,7 +21,7 @@ RATIONALE:
 === ERC-7837 ===
 TITLE: Diffusive Tokens
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-12-07
 REQUIRES: 
 
@@ -804,6 +804,26 @@ As decentralized domain registration methods evolve with the integration of NFTs
 
 RATIONALE:
 #### Name Expiry By implementing expiration periods for usernames, we introduce several advantages. This mechanism ensures a dynamic environment where unused or outdated usernames can be released, fostering a healthy ecosystem. It encourages turnover of usernames, preventing long-term hoarding and promoting active participation. Users are motivated to manage their
+
+
+=== ERC-7878 ===
+TITLE: Bequeathable Contracts
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-01
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
+
+SUMMARY:
+This EIP proposes a standard interface for contracts to allow tokens to be inherited after the owner's death. The interface allows token owners to set up a Will and designate executors to enable the transfer of tokens to inheritors after a specified waiting period.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Every compliant contract MUST implement the `Bequeathable` interface: ```solidity /// @title EIP-7878 Bequeathable tokens ///
+
+MOTIVATION:
+Crypto Tokens in general and NFTs in particular are starting to be used to tokenise real-world assets. In order for them to be adopted by the main stream finance world, there needs to be a way to inherit these tokens after the owner has passed away. Currently, there is
+
+RATIONALE:
+The standard follows what currently happens in real life when preparing and executing a Will. 1. An owner writes a Will and in doing so names the executor(s) of their Will 2. Upon passing away, the executor will announce the Obituary 3. The Will is read and the inheritors
 
 
 === ERC-1581 ===

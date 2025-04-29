@@ -21,7 +21,7 @@ RATIONALE:
 === ERC-7837 ===
 TITLE: Diffusive Tokens
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-12-07
 REQUIRES: 
 
@@ -804,6 +804,26 @@ As decentralized domain registration methods evolve with the integration of NFTs
 
 RATIONALE:
 #### Name Expiry By implementing expiration periods for usernames, we introduce several advantages. This mechanism ensures a dynamic environment where unused or outdated usernames can be released, fostering a healthy ecosystem. It encourages turnover of usernames, preventing long-term hoarding and promoting active participation. Users are motivated to manage their username portfolio, renewing valuable names while relinquishing irrelevant ones. Ultimately, this fosters fairness and efficiency, ensuring naming resources are utilized effectively and refreshed to meet evolving needs. #### Name Uniqueness Enforcing unique usernames is crucial for maintaining a clear and intuitive identification system. It prevents confusion and enables seamless
+
+
+=== ERC-7878 ===
+TITLE: Bequeathable Contracts
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-01
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
+
+SUMMARY:
+This EIP proposes a standard interface for contracts to allow tokens to be inherited after the owner's death. The interface allows token owners to set up a Will and designate executors to enable the transfer of tokens to inheritors after a specified waiting period.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Every compliant contract MUST implement the `Bequeathable` interface: ```solidity /// @title EIP-7878 Bequeathable tokens /// @dev See https://eips.ethereum.org/EIPS/eip-7878 pragma solidity ^0.8.0; /** * @notice Bequeathable interface */ interface Bequeathable { /** * @notice Announce the owner's tokens are to be inherited * @dev Emitted by `announceObit` * @param owner The original owner of the tokens * @param inheritor The address of the wallet that
+
+MOTIVATION:
+Crypto Tokens in general and NFTs in particular are starting to be used to tokenise real-world assets. In order for them to be adopted by the main stream finance world, there needs to be a way to inherit these tokens after the owner has passed away. Currently, there is no standardised way for token holders to pass on their digital assets in the event of their death. This EIP aims to solve this problem by providing a standard interface for "bequeathable" tokens, allowing for a secure and transparent process of token inheritance. In designing this interface we have
+
+RATIONALE:
+The standard follows what currently happens in real life when preparing and executing a Will. 1. An owner writes a Will and in doing so names the executor(s) of their Will 2. Upon passing away, the executor will announce the Obituary 3. The Will is read and the inheritors are identified 4. The transfer of ownership is executed according to the wishes of the Will However, real life is not always as straight forward as this. Conflicts happen all the time. To handle this situation and to keep the interface simple, we added the ability to cancel the
 
 
 === ERC-1581 ===
