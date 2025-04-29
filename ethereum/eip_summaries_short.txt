@@ -7800,6 +7800,26 @@ RATIONALE:
 A client (dApp) who needs reliable notification of both log additions (on new blocks) and log removals (on chain reorgs) cannot achieve this while
 
 
+=== EIP-7939 ===
+TITLE: Count leading zeros (CLZ) opcode
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-04-28
+REQUIRES: 
+
+SUMMARY:
+Introduce a new opcode, `CLZ(x)`, which pops `x` from the stack and pushes the number of leading zero bits in `x` to the stack.
+
+SPECIFICATION:
+A new opcode is introduced: `CLZ` (`0x1e`). - Pops 1 value from the stack. - Pushes a value to the stack, according to the
+
+MOTIVATION:
+Count leading zeros (CLZ) is a native opcode in many processor architectures (even in RISC architectures like ARM). It is a basic building block
+
+RATIONALE:
+### The special 0 case 256 is the smallest number after 255. Returning a small number allows the result to be compared with minimal
+
+
 === EIP-3074 ===
 TITLE: AUTH and AUTHCALL opcodes
 TYPE: Standards Track Core
