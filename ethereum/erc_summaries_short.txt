@@ -3151,7 +3151,7 @@ The intent from individual technical decisions made during the development of **
 === ERC-7631 ===
 TITLE: Dual Nature Token Pair
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-02-21
 REQUIRES: 2, 0, ,,  , 7, 2, 1
 
