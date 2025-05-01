@@ -2079,23 +2079,23 @@ The computational cost of pushing the current value to the call stack (for handl
 
 
 === EIP-7819 ===
-TITLE: Create delegate
+TITLE: SETDELEGATE instruction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-11-18
-REQUIRES: 7, 6, 9, 2, ,,  , 7, 7, 0, 2
+REQUIRES: 7702
 
 SUMMARY:
-Introduce a new EVM instruction to [EOF](./eip-7692.md) that allows smart contracts to create (and update) delegation accounts that match [EIP-7702](./eip-7702.md)'s design. These accounts can be used similarly to [ERC-1167](./eip-1167.md) clones, with significant advantages.
+Introduce a new instruction that allows smart contracts to create (and update) delegation accounts that match [EIP-7702](./eip-7702.md)'s design. These accounts can be used similarly to [ERC-1167](./eip-1167.md) clones, with significant advantages.
 
 SPECIFICATION:
-A new instruction (`CREATE_DELEGATE`) is added to EOF at `0xf6`. This instruction is NOT added to legacy EVM. ### Behavior Executing this instruction does the following: 1. deduct `EMPTY_ACCOUNT_COST` gas 2. halt if the current frame is in `static-mode` 3. pop `salt`, `target` from the operand stack 4. calculate
+A new instruction (`SETDELEGATE`) is added at `0xf6`. ### Behavior Executing this instruction does the following: 1. deduct `EMPTY_ACCOUNT_COST` gas 2. halt if the current frame is in `static-mode` 3. pop `salt`, `target` from the operand stack 4. calculate `location` as `keccak256(MAGIC ++ address ++ salt)[12:]` 5. halt if
 
 MOTIVATION:
 Many on-chain applications involve creating multiple instances of the same code at different locations. These applications often rely on clones, or proxies, to reduce deployment costs. Clones, such as the one described in ERC-1167 are minimal pieces of code that contain the target address directly in the code. That
 
 RATIONALE:
-### Gas cost The execution of the `CREATE_DELEGATE` instruction involves fewer moving pieces than what EIP-7702 gas costs account for: - there is no signature recovery - there is no dedicated calldata that must be accounted for that is not already paid for at the transaction level - there
+### Gas cost The execution of the `SETDELEGATE` instruction involves fewer moving pieces than what EIP-7702 gas costs account for: - there is no signature recovery - there is no dedicated calldata that must be accounted for that is not already paid for at the transaction level - there
 
 
 === EIP-2926 ===
