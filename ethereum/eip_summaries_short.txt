@@ -3901,6 +3901,26 @@ RATIONALE:
 This EIP is very similar to [EIP-7761], which introduces account type introspection. Its rationale is included by reference as they all apply to this
 
 
+=== EIP-7940 ===
+TITLE: Ethereum Shah
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2025-04-28
+REQUIRES: 
+
+SUMMARY:
+Ethereum needs a Shah. The role of the Shah is to be the "protector". A Shah, empowered by the community and with a mandate
+
+SPECIFICATION:
+The Shah SHOULD be elected by the Ethereum community, using a combination of ETH voting, social signalling, and core dev ratification. The Shah SHOULD
+
+MOTIVATION:
+It is clear from recent events that Ethereum is suffering from a coordination breakdown between the user ecosystem and the core devs. A case
+
+RATIONALE:
+During times of war, the Roman Senate would elect an "Imperator" that would be responsible for dealing with an imminent threat, and once the
+
+
 === EIP-6800 ===
 TITLE: Ethereum state using a unified verkle tree
 TYPE: Standards Track Core

@@ -3901,6 +3901,26 @@ RATIONALE:
 This EIP is very similar to [EIP-7761], which introduces account type introspection. Its rationale is included by reference as they all apply to this situation. ### Alternative: Return the whole designation, have contract parse One alternative is to have a specially limited `EXTCODECOPY` that would return just delegation designations.
 
 
+=== EIP-7940 ===
+TITLE: Ethereum Shah
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2025-04-28
+REQUIRES: 
+
+SUMMARY:
+Ethereum needs a Shah. The role of the Shah is to be the "protector". A Shah, empowered by the community and with a mandate to represent their interests, could solve the communication gaps between the Ethereum community and core devs, represent the interests of the Ethereum community (holders, stakers,
+
+SPECIFICATION:
+The Shah SHOULD be elected by the Ethereum community, using a combination of ETH voting, social signalling, and core dev ratification. The Shah SHOULD be singularly responsible for deciding on the EIP inclusion roadmap, as well as having veto power over which EIPs to include. The Shah SHOULD maintain
+
+MOTIVATION:
+It is clear from recent events that Ethereum is suffering from a coordination breakdown between the user ecosystem and the core devs. A case in point is the EOF debacle, with years wasted in EOF development that ~~seems ultimately likely to be~~ was just rejected as a result of
+
+RATIONALE:
+During times of war, the Roman Senate would elect an "Imperator" that would be responsible for dealing with an imminent threat, and once the threat was dealt with, would abdicate their power. The Shah is a similar concept, but rooted in the culture of the Persian Empire, which pioneered
+
+
 === EIP-6800 ===
 TITLE: Ethereum state using a unified verkle tree
 TYPE: Standards Track Core
