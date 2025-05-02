@@ -6700,7 +6700,7 @@ SUMMARY:
 This EIP substantially increases the hard contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 256KB, and adds gas metering. It introduces a gas cost of 2 gas per (32 byte) word for contract code exceeding 24KB, allowing deployment of contracts of any size while preventing
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). 1. Update the [EIP-170](./eip-170.md) contract code size limit of 24KB (`0x6000` bytes) to 256KB (`0x20000`
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). 1. Update the [EIP-170](./eip-170.md) contract code size limit of 24KB (`0x6000` bytes) to 256KB (`0x40000`
 
 MOTIVATION:
 EIP-170 introduced a 24KB contract code size limit to prevent potential DoS attacks, as large contract code requires O(n) resource cost in terms of disk reads, VM preprocessing, and Merkle proof sizes, all of which are not directly compensated by gas fees. However, this limit restricts legitimate use cases
