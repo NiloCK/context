@@ -798,7 +798,7 @@ Formalizing the `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled
 === EIP-7782 ===
 TITLE: Reduce Slot Time for Lower Peak Bandwidth
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-10-05
 REQUIRES: 7, 6, 2, 3, ,,  , 7, 7, 7, 8
 
@@ -3924,7 +3924,7 @@ During times of war, the Roman Senate would elect an "Imperator" that would be r
 === EIP-6800 ===
 TITLE: Ethereum state using a unified verkle tree
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2023-03-17
 REQUIRES: 6780
 
