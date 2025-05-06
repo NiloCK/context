@@ -2315,6 +2315,26 @@ RATIONALE:
 ### Properties of validated code Any code section validated according to operand stack validation has the following properties: 1. There are no unreachable instructions
 
 
+=== EIP-7934 ===
+TITLE: RLP Execution Block Size Limit
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-04-16
+REQUIRES: 
+
+SUMMARY:
+This proposal introduces a protocol-level cap on the maximum RLP-encoded execution block size to 10 megabytes (MiB), which includes a margin of 512 KiB
+
+SPECIFICATION:
+### Block Size Cap - Introduce constants: - `MAX_BLOCK_SIZE` set to **10 MiB (10,485,760 bytes)** - `MARGIN` set to **512 KiB (524,288 bytes)** -
+
+MOTIVATION:
+Currently, Ethereum does not enforce a strict upper limit on the encoded size of blocks. This lack of constraint can result in: 1. **Network
+
+RATIONALE:
+### Why 10 MiB? A cap of 10 MiB aligns with the gossip protocol constraint in Ethereum's consensus layer (CL). An additional 512 KiB
+
+
 === EIP-7650 ===
 TITLE: Programmable access lists
 TYPE: Standards Track Core
@@ -4116,6 +4136,26 @@ Optional values are currently only representable in SSZ using workarounds. Addin
 
 RATIONALE:
 ### Why not `Union[None, T]`? `Union[None, T]` leaves ambiguity about the intention whether the type may be extended in the future, i.e., `Union[None, T,
+
+
+=== EIP-7928 ===
+TITLE: Block-Level Access Lists
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-31
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes adding Block-Level Access Lists (BALs). By including a complete list of all addresses and storage keys accessed during a block, along
+
+SPECIFICATION:
+### Block Structure Modification We introduce three new components in the block body: 1. A Block Access List (BAL) that maps transactions to accessed
+
+MOTIVATION:
+Currently, transactions without an explicit transaction access list cannot be efficiently parallelized, as the execution engine cannot determine in advance which addresses and storage
+
+RATIONALE:
+### BAL Design Choice This design variant was chosen for several key reasons: 1. **Balance between size and parallelization benefits**: BALs enable both parallel
 
 
 === EIP-7938 ===
@@ -5990,7 +6030,7 @@ RATIONALE:
 === EIP-6916 ===
 TITLE: Automatically Reset Testnet
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-04-10
 REQUIRES: 
 
