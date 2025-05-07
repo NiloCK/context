@@ -2212,7 +2212,7 @@ MOTIVATION:
 Despite great advances in the smart contract wallet ecosystem, EOAs have held back broad adoption of UX improvements across applications. This EIP therefore focuses on adding short-term functionality improvements to EOAs which will allow UX improvements to permeate through the entire application stack. Three particular features this EIP is designed around are: * **Batching**: allowing multiple operations from the same user in one atomic transaction. One common example is an [ERC-20](./eip-20.md) approval followed by spending that approval. This is a common workflow in DEXes that requires two transactions today. Advanced use cases of batching occasionally involve dependencies: the
 
 RATIONALE:
-Below is the rationale from both general design directions of the EIP, as well as specific technical choices. ### General design philosphy #### Persistence of code delegation The first draft of this proposal had a clever idea to avoid disagreement on whether in-protocol revocation was needed or not. The idea was to temporarily set code in the account with the authorization. After the transaction the code would be completely cleared. This was a new design space enriching EOA functionality. Even this approach was not without its flaws. Fundamentally, there was little friction for users including set code authorizations.
+Below is the rationale for both general design directions of the EIP, as well as specific technical choices. ### General design philosphy #### Persistence of code delegation The first draft of this proposal had a clever idea to avoid disagreement on whether in-protocol revocation was needed or not. The idea was to temporarily set code in the account with the authorization. After the transaction finished, the code would be completely cleared. This was a new design space for enriching EOA functionality. Even this approach was not without its flaws. Fundamentally, there was not much friction for users including
 
 
 === EIP-4863 ===
@@ -5901,10 +5901,10 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Prague/Electra network upgrade.
 
 SPECIFICATION:
-A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits * [EIP-7251](./eip-7251.md): Increase the MAX_EFFECTIVE_BALANCE * [EIP-7549](./eip-7549.md): Move committee index outside Attestation * [EIP-7623](./eip-7623.md): Increase calldata cost * [EIP-7685](./eip-7685.md): General purpose execution layer requests * [EIP-7691](./eip-7691.md): Blob throughput increase * [EIP-7702](./eip-7702.md): Set EOA account code * [EIP-7840](./eip-7840.md): Add blob schedule to EL config files #### Other EIPs * [EIP-7642](./eip-7642.md): eth/69
+A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits * [EIP-7251](./eip-7251.md): Increase the MAX_EFFECTIVE_BALANCE * [EIP-7549](./eip-7549.md): Move committee index outside Attestation * [EIP-7623](./eip-7623.md): Increase calldata cost * [EIP-7685](./eip-7685.md): General purpose execution layer requests * [EIP-7691](./eip-7691.md): Blob throughput increase * [EIP-7702](./eip-7702.md): Set EOA account code #### Other EIPs * [EIP-7840](./eip-7840.md): Add blob schedule to EL config files (Informational) * [EIP-7642](./eip-7642.md):
 
 RATIONALE:
-This Meta EIP provides a global view of all changes included in the Prague/Electra network upgrade, as well as links to full specification.
+This Meta EIP provides a global view of all changes included in the Prague/Electra network upgrade, as well as links to the full specification.
 
 
 === EIP-7587 ===

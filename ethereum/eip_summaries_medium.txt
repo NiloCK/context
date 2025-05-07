@@ -2212,7 +2212,7 @@ MOTIVATION:
 Despite great advances in the smart contract wallet ecosystem, EOAs have held back broad adoption of UX improvements across applications. This EIP therefore focuses on adding short-term functionality improvements to EOAs which will allow UX improvements to permeate through the entire application stack. Three particular features this EIP is
 
 RATIONALE:
-Below is the rationale from both general design directions of the EIP, as well as specific technical choices. ### General design philosphy #### Persistence of code delegation The first draft of this proposal had a clever idea to avoid disagreement on whether in-protocol revocation was needed or not. The
+Below is the rationale for both general design directions of the EIP, as well as specific technical choices. ### General design philosphy #### Persistence of code delegation The first draft of this proposal had a clever idea to avoid disagreement on whether in-protocol revocation was needed or not. The
 
 
 === EIP-4863 ===
@@ -5904,7 +5904,7 @@ SPECIFICATION:
 A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits *
 
 RATIONALE:
-This Meta EIP provides a global view of all changes included in the Prague/Electra network upgrade, as well as links to full specification.
+This Meta EIP provides a global view of all changes included in the Prague/Electra network upgrade, as well as links to the full specification.
 
 
 === EIP-7587 ===
