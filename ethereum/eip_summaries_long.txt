@@ -6707,6 +6707,26 @@ RATIONALE:
 N/A
 
 
+=== EIP-7935 ===
+TITLE: Set default gas limit to XX0M
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2025-04-22
+REQUIRES: 
+
+SUMMARY:
+<!--TODO: Fill in recommended gas limit--> The gas limit on mainnet is currently 36M. This should be significantly increased to XX0Mby the time Fusaka is released by execution layer clients updating their default configurations.
+
+SPECIFICATION:
+Execution layer clients have different configuration formats. They should all update the gas limit value generated in their default configurations to XX0M.
+
+MOTIVATION:
+There is currently great interest in scaling L1 execution. This can likely be done to some extent without implementing any new features. However, it requires guidance from EL devs as we expect to find bugs in clients at higher gas limits than currently used on mainnet. This will require time from client developers both to test and to fix any bugs that arise, therefore it makes sense to include as an EIP in a hard fork to commit to this.
+
+RATIONALE:
+In the past there has been some difficulty coordinating EL clients to update gas limit values in their default configurations. Therefore we suggest tying a new value to a hard fork release.
+
+
 === EIP-2242 ===
 TITLE: Transaction Postdata
 TYPE: Standards Track Core
