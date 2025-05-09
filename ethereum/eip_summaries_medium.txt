@@ -4721,7 +4721,7 @@ CREATED: 2025-03-25
 REQUIRES: 4844
 
 SUMMARY:
-This EIP imposes that the total price of the targeted number blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying transaction `TX_BASE_COST * base_fee_per_gas`. This ensures that the blob fee auction can function properly, because the equilibrium always forms relative to the fee that carries the
+This EIP imposes that the total price of the targeted number of blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying transaction `TX_BASE_COST * base_fee_per_gas`. This ensures that the blob fee auction can function properly, because equilibrium always forms relative to the fee that carries the
 
 SPECIFICATION:
 The function `calc_excess_blob_gas()` from [EIP-4844](./eip-4844.md) is changed to add `parent.blob_gas_used // 3` and not subtract `TARGET_BLOB_GAS_PER_BLOCK` when updating the `excess_blob_gas`, if the price of `TARGET_BLOB_GAS_PER_BLOCK` is below the price of `TX_BASE_COST`. ```python def calc_excess_blob_gas(parent: Header) -> int: if parent.excess_blob_gas + parent.blob_gas_used < TARGET_BLOB_GAS_PER_BLOCK: return 0 if TX_BASE_COST * parent.base_fee_per_gas
@@ -4730,7 +4730,7 @@ MOTIVATION:
 Ethereum deploys a dynamic pricing auction to set the blob base fee, lowering the fee if less gas is consumed than `TARGET_BLOB_GAS_PER_BLOCK` and raising the fee if more gas is consumed. Such an auction can function well when the blob base fee represents the price signal, allowing the mechanism
 
 RATIONALE:
-### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. The fee mechanism is unaware of the full price of the goods that it regulates the price for and therefore fails to converge on equilibrium in a timely manner. To resolve this, the fee update should be
+### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. The fee update mechanism is unaware of the full price of the goods that it regulates the price for and therefore fails to converge on equilibrium in a timely manner. To resolve this, the fee update should
 
 
 === EIP-7709 ===
@@ -5172,11 +5172,11 @@ Ever since the first bitcoin mining ASIC was released, many new Proof of Work al
 
 
 === EIP-7701 ===
-TITLE: Native Account Abstraction with EOF
+TITLE: Native Account Abstraction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-05-01
-REQUIRES: 3540
+REQUIRES: 
 
 SUMMARY:
 We propose splitting the Ethereum transaction scope into multiple steps: validations, execution, and post-operation logic. Transaction validity is determined by the result of the validation steps of a transaction. We further separate transaction validation for the purposes of authorization and the gas fee payment, allowing one contract to pay
@@ -5188,7 +5188,7 @@ MOTIVATION:
 Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps.
 
 RATIONALE:
-### Introduction of the `TXPARAM*` opcode family The validation section of a Smart Contract Account code needs to have full access to the majority of transaction details in order to be able to make an informed decision about either accepting or rejecting the transaction. A small subset of this
+### Introduction of the `TXPARAM*` opcode family The validation calls of a Smart Contract Account code need to have full access to the majority of transaction details in order to be able to make an informed decision about either accepting or rejecting the transaction. A small subset of this
 
 
 === EIP-3860 ===

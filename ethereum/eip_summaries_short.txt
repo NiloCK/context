@@ -4721,7 +4721,7 @@ CREATED: 2025-03-25
 REQUIRES: 4844
 
 SUMMARY:
-This EIP imposes that the total price of the targeted number blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying transaction
+This EIP imposes that the total price of the targeted number of blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying
 
 SPECIFICATION:
 The function `calc_excess_blob_gas()` from [EIP-4844](./eip-4844.md) is changed to add `parent.blob_gas_used // 3` and not subtract `TARGET_BLOB_GAS_PER_BLOCK` when updating the `excess_blob_gas`, if the price of
@@ -4730,7 +4730,7 @@ MOTIVATION:
 Ethereum deploys a dynamic pricing auction to set the blob base fee, lowering the fee if less gas is consumed than `TARGET_BLOB_GAS_PER_BLOCK` and raising
 
 RATIONALE:
-### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. The fee mechanism is unaware of the full price of the goods
+### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. The fee update mechanism is unaware of the full price of the
 
 
 === EIP-7709 ===
@@ -5172,11 +5172,11 @@ Ever since the first bitcoin mining ASIC was released, many new Proof of Work al
 
 
 === EIP-7701 ===
-TITLE: Native Account Abstraction with EOF
+TITLE: Native Account Abstraction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-05-01
-REQUIRES: 3540
+REQUIRES: 
 
 SUMMARY:
 We propose splitting the Ethereum transaction scope into multiple steps: validations, execution, and post-operation logic. Transaction validity is determined by the result of the
@@ -5188,7 +5188,7 @@ MOTIVATION:
 Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps.
 
 RATIONALE:
-### Introduction of the `TXPARAM*` opcode family The validation section of a Smart Contract Account code needs to have full access to the majority
+### Introduction of the `TXPARAM*` opcode family The validation calls of a Smart Contract Account code need to have full access to the majority
 
 
 === EIP-3860 ===

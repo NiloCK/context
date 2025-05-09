@@ -4721,16 +4721,16 @@ CREATED: 2025-03-25
 REQUIRES: 4844
 
 SUMMARY:
-This EIP imposes that the total price of the targeted number blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying transaction `TX_BASE_COST * base_fee_per_gas`. This ensures that the blob fee auction can function properly, because the equilibrium always forms relative to the fee that carries the price signal. The proposed `if` statement in `calc_excess_blob_gas()` represents a neutral, simple, and future-proof resolution to current blob fee auction idiosyncrasies.
+This EIP imposes that the total price of the targeted number of blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying transaction `TX_BASE_COST * base_fee_per_gas`. This ensures that the blob fee auction can function properly, because equilibrium always forms relative to the fee that carries the price signal. The proposed `if` statement in `calc_excess_blob_gas()` represents a neutral, simple, and future-proof resolution to current blob fee auction idiosyncrasies.
 
 SPECIFICATION:
 The function `calc_excess_blob_gas()` from [EIP-4844](./eip-4844.md) is changed to add `parent.blob_gas_used // 3` and not subtract `TARGET_BLOB_GAS_PER_BLOCK` when updating the `excess_blob_gas`, if the price of `TARGET_BLOB_GAS_PER_BLOCK` is below the price of `TX_BASE_COST`. ```python def calc_excess_blob_gas(parent: Header) -> int: if parent.excess_blob_gas + parent.blob_gas_used < TARGET_BLOB_GAS_PER_BLOCK: return 0 if TX_BASE_COST * parent.base_fee_per_gas > TARGET_BLOB_GAS_PER_BLOCK * get_base_fee_per_blob_gas(parent): return parent.excess_blob_gas + parent.blob_gas_used // 3 else: return parent.excess_blob_gas + parent.blob_gas_used - TARGET_BLOB_GAS_PER_BLOCK ```
 
 MOTIVATION:
-Ethereum deploys a dynamic pricing auction to set the blob base fee, lowering the fee if less gas is consumed than `TARGET_BLOB_GAS_PER_BLOCK` and raising the fee if more gas is consumed. Such an auction can function well when the blob base fee represents the price signal, allowing the mechanism to control the real price facing the consumer. However, when the cost of execution gas dominates, even when relying on a simple transaction that merely carries the blobs, the price signal is lost. The blob base fee no longer represents the actual cost facing the consumer, and the protocol
+Ethereum deploys a dynamic pricing auction to set the blob base fee, lowering the fee if less gas is consumed than `TARGET_BLOB_GAS_PER_BLOCK` and raising the fee if more gas is consumed. Such an auction can function well when the blob base fee represents the price signal, allowing the mechanism to control the real price facing the consumer. However, when the cost of a simple transaction carrying the blobs is higher than the total cost of buying the targeted number of blobs per block, the price signal is lost. The blob base fee no longer represents the actual cost
 
 RATIONALE:
-### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. The fee mechanism is unaware of the full price of the goods that it regulates the price for and therefore fails to converge on equilibrium in a timely manner. To resolve this, the fee update should be made aware of the price of execution gas. When the execution cost dominates, it does not matter to the blob consumer how the blob fee evolves—it is ultimately the execution cost that determines equilibrium formation. Given that the protocol stipulates a long-run perfectly inelastic supply curve (vertical blue line
+### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. The fee update mechanism is unaware of the full price of the goods that it regulates the price for and therefore fails to converge on equilibrium in a timely manner. To resolve this, the fee update should be made aware of the price of execution gas. A relatively high cost of execution gas renders changes to the blob base fee less effective in controlling quantity demanded—it is ultimately the execution cost that determines equilibrium formation. Given that the protocol stipulates a long-run perfectly inelastic supply curve
 
 
 === EIP-7709 ===
@@ -5172,23 +5172,23 @@ Ever since the first bitcoin mining ASIC was released, many new Proof of Work al
 
 
 === EIP-7701 ===
-TITLE: Native Account Abstraction with EOF
+TITLE: Native Account Abstraction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-05-01
-REQUIRES: 3540
+REQUIRES: 
 
 SUMMARY:
 We propose splitting the Ethereum transaction scope into multiple steps: validations, execution, and post-operation logic. Transaction validity is determined by the result of the validation steps of a transaction. We further separate transaction validation for the purposes of authorization and the gas fee payment, allowing one contract to pay gas for a transaction that will be executed from another contract.
 
 SPECIFICATION:
-### Constants | Name | Value | |-------------------|--------------------------------------------| | AA_TX_TYPE | TBD | | AA_ENTRY_POINT | `address(0x7701)` | | AA_BASE_GAS_COST | 15000 | ### New Transaction Type A new [EIP-2718](./eip-2718) transaction with type `AA_TX_TYPE` is introduced. Transactions of this type are referred to as "AA transactions". Their payload should be interpreted as: ``` AA_TX_TYPE || rlp([ chainId, nonce, sender, senderValidationData, deployer, deployerData, paymaster, paymasterData, senderExecutionData, validAfter, validUntil, maxPriorityFeePerGas, maxFeePerGas, senderValidationGasLimit, paymasterValidationGasLimit, senderExecutionGasLimit, paymasterPostOpGasLimit, accessList, authorizationList ]) ``` ### Definitions * **Smart Contract Account**: an Ethereum smart contract that serves as the user's account and on-chain identity. It is
+### Constants | Name | Value | |-------------------|--------------------------------------------| | AA_TX_TYPE | TBD | | AA_ENTRY_POINT | `address(0x7701)` | | AA_BASE_GAS_COST | 15000 | ### New Transaction Type A new [EIP-2718](./eip-2718) transaction with type `AA_TX_TYPE` is introduced. Transactions of this type are referred to as "AA transactions". Their payload should be interpreted as: ``` AA_TX_TYPE || rlp([ chain_id, nonce, sender, sender_validation_data, deployer, deployer_data, paymaster, paymaster_data, sender_execution_data, valid_after, valid_until, max_priority_fee_per_gas, max_fee_per_gas, sender_validation_gas_limit, paymaster_validation_gas_limit, sender_execution_gas_limit, paymaster_post_op_gas_limit, access_list, authorization_list ]) ``` ### Definitions * **Smart Contract Account**: an Ethereum smart contract that serves as the user's account and on-chain identity. It is
 
 MOTIVATION:
 Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps.
 
 RATIONALE:
-### Introduction of the `TXPARAM*` opcode family The validation section of a Smart Contract Account code needs to have full access to the majority of transaction details in order to be able to make an informed decision about either accepting or rejecting the transaction. A small subset of this data is available with the existing opcodes, like `CALLER (0x33)` or `GASPRICE (0x3A)`. However, creating an opcode for every transaction parameter is not feasible or desirable. The `TXPARAM*` opcode family provides the Account Abstraction contracts with access to this data. These values are not made accessible to the transactions'
+### Introduction of the `TXPARAM*` opcode family The validation calls of a Smart Contract Account code need to have full access to the majority of transaction details in order to be able to make an informed decision about either accepting or rejecting the transaction. A small subset of this data is available with the existing opcodes, like `CALLER (0x33)` or `GASPRICE (0x3A)`. However, creating an opcode for every transaction parameter is not feasible or desirable. The `TXPARAM*` opcode family provides the Account Abstraction contracts with access to this data. These values are not made accessible to the transactions'
 
 
 === EIP-3860 ===
