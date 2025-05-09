@@ -4721,7 +4721,7 @@ CREATED: 2025-03-25
 REQUIRES: 4844
 
 SUMMARY:
-This EIP imposes that the price of the targeted number blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying transaction `TX_BASE_COST
+This EIP imposes that the total price of the targeted number blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying transaction
 
 SPECIFICATION:
 The function `calc_excess_blob_gas()` from [EIP-4844](./eip-4844.md) is changed to add `parent.blob_gas_used // 3` and not subtract `TARGET_BLOB_GAS_PER_BLOCK` when updating the `excess_blob_gas`, if the price of
@@ -4730,7 +4730,7 @@ MOTIVATION:
 Ethereum deploys a dynamic pricing auction to set the blob base fee, lowering the fee if less gas is consumed than `TARGET_BLOB_GAS_PER_BLOCK` and raising
 
 RATIONALE:
-### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. Fundamentally, the issue is that the demand curve becomes fee-inelastic as the
+### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. The fee mechanism is unaware of the full price of the goods
 
 
 === EIP-7709 ===
