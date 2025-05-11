@@ -8068,7 +8068,7 @@ The design of `wallet_addEthereumChain` is deliberately ignorant of what it mean
 === EIP-5792 ===
 TITLE: Wallet Call API
 TYPE: Standards Track Interface
-STATUS: Last Call
+STATUS: Final
 CREATED: 2022-10-17
 REQUIRES: 1193
 
