@@ -5537,19 +5537,19 @@ TITLE: Delayed execution
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-02-18
-REQUIRES: 
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This proposal makes (execution) blocks statically verifiable through minimal checks that only require the previous state, but no execution of the block's transactions, allowing
+This proposal introduces a mechanism to make execution blocks statically verifiable through minimal checks that only require the previous state, without requiring execution of
 
 SPECIFICATION:
-### Change to the header structure #### Deferred fields In order to be verifiable before execution, the header cannot commit to any execution output.
+### Header Changes The block header structure is extended to support delayed execution: ```python @dataclass class Header: # Existing fields parent_hash: Hash32 ommers_hash: Hash32
 
 MOTIVATION:
-A key advantage of this proposal is that it enables **asynchronous block validation**. Currently, blocks must be fully executed before validators can attest to
+The primary advantage of this proposal is **asynchronous block validation**. In the current Ethereum protocol, blocks must be fully executed before validators can attest
 
 RATIONALE:
-### Overview Enabling delayed execution by making the block's validity statically verifiable requires two things: 1. **Deferred execution outputs**: all header fields that commit
+### Deferred Execution Outputs The core innovation of deferring execution outputs to the next block enables static and stateful validation without requiring immediate execution.
 
 
 === EIP-7039 ===
