@@ -6790,7 +6790,7 @@ By adding a flag for the local block builder, they are able to specify how many 
 === EIP-2537 ===
 TITLE: Precompile for BLS12-381 curve operations
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2020-02-21
 REQUIRES: 
 
