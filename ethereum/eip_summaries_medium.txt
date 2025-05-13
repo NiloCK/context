@@ -8196,7 +8196,7 @@ MOTIVATION:
 Despite great advances in the smart contract wallet ecosystem, EOAs have held back broad adoption of UX improvements across applications. This EIP therefore focuses on adding short-term functionality improvements to EOAs which will allow UX improvements to permeate through the entire application stack. Three particular features this EIP is
 
 RATIONALE:
-Below is the rationale for both general design directions of the EIP, as well as specific technical choices. ### General design philosphy #### Persistence of code delegation The first draft of this proposal had a clever idea to avoid disagreement on whether in-protocol revocation was needed or not. The
+Below is the rationale for both general design directions of the EIP, as well as specific technical choices. ### General design philosophy #### Persistence of code delegation The first draft of this proposal had a clever idea to avoid disagreement on whether in-protocol revocation was needed or not. The
 
 
 === EIP-7927 ===

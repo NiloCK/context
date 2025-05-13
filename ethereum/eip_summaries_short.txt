@@ -8196,7 +8196,7 @@ MOTIVATION:
 Despite great advances in the smart contract wallet ecosystem, EOAs have held back broad adoption of UX improvements across applications. This EIP therefore focuses
 
 RATIONALE:
-Below is the rationale for both general design directions of the EIP, as well as specific technical choices. ### General design philosphy #### Persistence
+Below is the rationale for both general design directions of the EIP, as well as specific technical choices. ### General design philosophy #### Persistence
 
 
 === EIP-7927 ===
