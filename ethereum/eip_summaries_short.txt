@@ -3675,6 +3675,26 @@ RATIONALE:
 The additional gas cost of `25` represents the cost of fetching the nonce and comparing it to the given value. `eth_getStorageAt` was modified to
 
 
+=== EIP-7932 ===
+TITLE: Algorithmic Transaction Wrapper
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-04-12
+REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This EIP introduces a new [EIP-2718](./eip-2718.md) typed transaction that wraps (contains) another transaction, this EIP nullifies the default signature parameters and appends signature data
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+As quantum computers are getting more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all contain drawbacks such as large key
+
+RATIONALE:
+### Setting `y_parity`, `r`, `s` values to zero rather than removing them Keeping the `y_parity`, `r`, `s` values inside the transactions keeps the previous
+
+
 === EIP-2481 ===
 TITLE: eth/66 request identifier
 TYPE: Standards Track Networking

@@ -1847,7 +1847,7 @@ We are now thinking about a building block as a smart contract with an encapsula
 === ERC-7743 ===
 TITLE: Multi-Owner Non-Fungible Tokens (MO-NFT)
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-07-13
 REQUIRES: 
 
@@ -2392,7 +2392,7 @@ Technically, the cases of L2s and databases are similar; routing to an L2 involv
 === ERC-7878 ===
 TITLE: Bequeathable Contracts
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-02-01
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
 
@@ -2672,7 +2672,7 @@ Key factors influencing the standard: - Keeping the number of functions in the i
 === ERC-7634 ===
 TITLE: Limited Transfer Count NFT
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-02-22
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
@@ -2977,7 +2977,7 @@ the key technical decisions in this proposal are: **Improved Approve Mechanism**
 === ERC-7858 ===
 TITLE: Expirable NFTs and SBTs
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-01-04
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
@@ -3739,6 +3739,26 @@ RATIONALE:
 ### Metadata Choices The `symbol` function (found in the ERC-20 and ERC-721 standards) was not included as we do not believe this is a
 
 
+=== ERC-7920 ===
+TITLE: Composite EIP-712 Signatures
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-03-20
+REQUIRES: 2, 0, ,,  , 7, 1, 2
+
+SUMMARY:
+This ERC provides a standard for signing multiple typed-data messages with a single signature by encoding them into a Merkle tree. This allows components
+
+SPECIFICATION:
+### Overview The composite signature scheme uses a Merkle tree to hash multiple typed-data data messages together under a single root. The user signs
+
+MOTIVATION:
+As the ecosystem moves towards ETH-less transactions, users are often required to sign multiple off-chain messages in quick succession. Typically, a first signature is
+
+RATIONALE:
+The choice of using a Merkle tree to bundle messages provides the following additional benefits: ### Efficient verification on-chain `_verifyMerkleProof` has a runtime of
+
+
 === ERC-6372 ===
 TITLE: Contract clock
 TYPE: Standards Track ERC
@@ -4286,18 +4306,18 @@ The proposed format attempts to solve the problem of vendor specific protocols f
 === ERC-7291 ===
 TITLE: Purpose bound money
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-06-24
 REQUIRES: 1, 6, 5, ,,  , 1, 7, 3, ,,  , 1, 1, 5, 5
 
 SUMMARY:
-This proposal outlines a smart contract interface that builds upon the [ERC-1155](./eip-1155.md) standard to implement the purpose bound money (PBM) concept: - PBMs is
+A Purpose Bound Money (PBM) token is a wrapper around an [ERC-1155](./eip-1155.md) token that can be used for a limited activity. This proposal outlines
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-This proposal intends to forestall technology fragmentation and consequently a lack of interoperability. By making the PBM specification open, it gives new participants easy
+Purpose Bound Money (PBM) enables digital currencies to carry conditions on how they can be spent, making them especially useful in real-world scenarios such
 
 RATIONALE:
 ### Why sovToken **MUST** be ERC-20 compatible? As PBM is envisioned to have functionality of money, it has to be a fungible token with
@@ -7977,6 +7997,14 @@ When returning data to the web browser, a `Content-Type` header indicating the M
 
 RATIONALE:
 The standard uses three different query parameters rather than a single query parameter to avoid confusion - an implementer or a user can easily
+
+
+=== ERC-7832 ===
+TITLE: Sustainable collaborative NFT collections
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-12-04
+REQUIRES: 721
 
 
 === ERC-7913 ===

@@ -2864,7 +2864,7 @@ SUMMARY:
 Clients must stop serving historical headers, bodies, and receipts older than one year on the p2p layer. Clients may locally prune this historical data.
 
 SPECIFICATION:
-| Parameter | Value | Description | | - | - | - | | `HISTORY_PRUNE_EPOCHS` | 82125 | A year in beacon chain epochs | Clients SHOULD NOT serve headers, block bodies, and receipts that are older than `HISTORY_PRUNE_EPOCHS` epochs on the p2p network. Clients MAY locally prune headers, block bodies, and receipts that is older than `HISTORY_PRUNE_EPOCHS` epochs. #### Bootstrapping and syncing This EIP impacts the way clients bootstrap and sync. Clients will not be able to full sync using devp2p since historical data will no longer be served. Clients MUST use a valid Weak Subjectivity
+| Parameter | Value | Description | | - | - | - | | `HISTORY_PRUNE_EPOCHS` | 82125 | A year in beacon chain epochs | Clients SHOULD NOT serve headers, block bodies, and receipts that are older than `HISTORY_PRUNE_EPOCHS` epochs on the p2p network. Clients MAY locally prune headers, block bodies, and receipts that are older than `HISTORY_PRUNE_EPOCHS` epochs. #### Bootstrapping and syncing This EIP impacts the way clients bootstrap and sync. Clients will not be able to full sync using devp2p since historical data will no longer be served. Clients MUST use a valid Weak Subjectivity
 
 MOTIVATION:
 Historical blocks and receipts currently occupy more than 400GB of disk space (and growing!). Therefore, to validate the chain, users must typically have a 1TB disk. Historical data is not necessary for validating new blocks, so once a client has synced the tip of the chain, historical data is only retrieved when requested explicitly over the JSON-RPC or when a peer attempts to sync the chain. By pruning the history, this proposal reduces the disk requirements for users. Pruning history also allows clients to remove code that processes historical blocks. This means that execution clients don't need to
@@ -3673,6 +3673,26 @@ This EIP is not terribly useful on its own, as it adds additional computation an
 
 RATIONALE:
 The additional gas cost of `25` represents the cost of fetching the nonce and comparing it to the given value. `eth_getStorageAt` was modified to throw an error because of alias contracts' special behavior. The nonce of `2^64-1` was chosen since it is the nonce protected by [EIP-6188](./eip-6188.md). The contract code of `0x1` was chosen arbitrarily. A nonzero code was chosen just in case a non-alias contract with nonce `2^64-1` somehow had its code set to `0x0`, or an EOA had its nonce set to `2^64-1`.
+
+
+=== EIP-7932 ===
+TITLE: Algorithmic Transaction Wrapper
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-04-12
+REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This EIP introduces a new [EIP-2718](./eip-2718.md) typed transaction that wraps (contains) another transaction, this EIP nullifies the default signature parameters and appends signature data to the front of the transaction with a selector, this effectively wraps a transaction and swaps out signature data for alternative algorithms and data. It also creates a new precompile to be able to decode these additional signature algorithms.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Note: The "verification function" referred to by this EIP is the one specified by additional EIP & their signature types. When calling explicitly the "verification function" implementations MUST NOT call the precompile due to differing gas costs. ### Parameters | Constant | Value | | - | - | | `ALG_TX_TYPE` | `Bytes1(0x07)` | | `GAS_PER_ADDITIONAL_VERIFICATION_BYTE`| `16` | | `SIGRECOVER_PRECOMPILE_ADDRESS`| `Bytes20(0x12)` <!-- TODO: Ensure
+
+MOTIVATION:
+As quantum computers are getting more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all contain drawbacks such as large key sizes (>1KiB), large signature sizes or long verification times. These issues make them more expensive to compute and store than the current secp256k1 curve in use (as of 2025-04-12). This EIP provides a future-proof solution to these algorithms by adding a standardized way to represent alternative algorithms within a transaction.
+
+RATIONALE:
+### Setting `y_parity`, `r`, `s` values to zero rather than removing them Keeping the `y_parity`, `r`, `s` values inside the transactions keeps the previous parsing, verification and processing logic the same and allows for minimal modification to the other specifications while still preventing excessive space usage. ### Opaque `signature_info` type As each algorithm has unique properties, i.e. signature recovery and key sizes, a object is needed to hold every permutation of every possible key and signature. A bytearray of dynamic size would be able to achieve this goal, this does lead to a DoS vector which the [Gas
 
 
 === EIP-2481 ===
@@ -8073,7 +8093,7 @@ CREATED: 2022-10-17
 REQUIRES: 1193
 
 SUMMARY:
-Defines new JSON-RPC methods which enable apps to ask a wallet to process a batch of onchain write calls and to check on the status of those calls. Applications can specify that these onchain calls be executed taking advantage of specific capabilities previously expressed by the wallet; an additional, a novel wallet RPC is defined to enable apps to query the wallet for those capabilities.
+Defines new JSON-RPC methods which enable apps to ask a wallet to process a batch of onchain write calls and to check on the status of those calls. Applications can specify that these onchain calls be executed taking advantage of specific capabilities previously expressed by the wallet; an additional, novel wallet RPC is defined to enable apps to query the wallet for those capabilities.
 
 SPECIFICATION:
 Four new JSON-RPC methods are added: three are for handling batches of onchain calls, and one is for querying support for wallet capabilities, such as to make better use of the three batching methods. Apps may begin using these first three methods immediately, falling back to `eth_sendTransaction` and `eth_getTransactionReceipt` when they are not available. ### `wallet_sendCalls` Requests that a wallet submits a batch of calls. `from` and `chainId` are identified by [EIP-155](./eip-155.md) integers expressed in hexadecimal notation, with `0x` prefix and no leading zeroes for the `chainId` value. The items in the `calls` field are simple `{to, data,
@@ -8187,7 +8207,7 @@ CREATED: 2024-05-07
 REQUIRES: 2, ,,  , 1, 6, 1, ,,  , 1, 0, 5, 2, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 3, 5, 4, 1, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4
 
 SUMMARY:
-Add a new [EIP-2718](./eip-2718.md) transaction type that allows Externally Owned Accounts (EOAs) to set the code in their account. This is done by attaching a list of authorization tuples -- individually formated as `[chain_id, address, nonce, y_parity, r, s]` -- to the transaction. For each tuple, a delegation indicator `(0xef0100 || address)` is written to the authorizing account's code. All code executing operations must load and execute the code pointed to by the delegation.
+Add a new [EIP-2718](./eip-2718.md) transaction type that allows Externally Owned Accounts (EOAs) to set the code in their account. This is done by attaching a list of authorization tuples -- individually formatted as `[chain_id, address, nonce, y_parity, r, s]` -- to the transaction. For each tuple, a delegation indicator `(0xef0100 || address)` is written to the authorizing account's code. All code executing operations must load and execute the code pointed to by the delegation.
 
 SPECIFICATION:
 ### Parameters | Parameter | Value | | ------------------------ | ------- | | `SET_CODE_TX_TYPE` | `0x04` | | `MAGIC` | `0x05` | | `PER_AUTH_BASE_COST` | `12500` | | `PER_EMPTY_ACCOUNT_COST` | `25000` | ### Set code transaction A new [EIP-2718](./eip-2718.md) transaction known as the "set code transaction" is introduced, where the `TransactionType` is `SET_CODE_TX_TYPE` and the `TransactionPayload` is the RLP serialization of the following: ``` rlp([chain_id, nonce, max_priority_fee_per_gas, max_fee_per_gas, gas_limit, destination, value, data, access_list, authorization_list, signature_y_parity, signature_r, signature_s]) authorization_list = [[chain_id, address, nonce, y_parity, r, s], ...] ``` The fields `chain_id`, `nonce`, `max_priority_fee_per_gas`, `max_fee_per_gas`, `gas_limit`, `destination`, `value`, `data`, and

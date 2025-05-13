@@ -1847,18 +1847,18 @@ We are now thinking about a building block as a smart contract with an encapsula
 === ERC-7743 ===
 TITLE: Multi-Owner Non-Fungible Tokens (MO-NFT)
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-07-13
 REQUIRES: 
 
 SUMMARY:
-This ERC proposes a new standard for non-fungible tokens (NFTs) that supports multiple owners. The MO-NFT standard allows a single NFT to have multiple owners, reflecting the shared and distributable nature of digital assets. This model incorporates mechanisms for provider-defined transfer fees and ownership burning, enabling flexible and collaborative
+This ERC proposes a new standard for non-fungible tokens (NFTs) that supports multiple owners. The MO-NFT standard allows a single NFT to have multiple owners, reflecting the shared and distributable nature of digital assets. This model incorporates mechanisms for provider-defined transfer fees and ownership archiving, enabling flexible and collaborative
 
 SPECIFICATION:
 ### Token Creation and Ownership Model 1. **Minting**: - The function `mintToken()` allows the creation of a new MO-NFT. The caller becomes both the initial owner and the provider of the token. ```solidity function mintToken() public onlyOwner returns (uint256); ``` - A new `tokenId` is generated, and the caller
 
 MOTIVATION:
-Traditional NFTs enforce a single-ownership model, which does not align with the inherent duplicability and collaborative potential of digital assets. MO-NFTs allow for shared ownership, promoting wider distribution and collaboration while maintaining secure access control. The inclusion of provider fees and ownership burning enhances the utility and flexibility of
+Traditional NFTs enforce a single-ownership model, which does not align with the inherent duplicability and collaborative potential of digital assets. MO-NFTs allow for shared ownership, promoting wider distribution and collaboration while maintaining secure access control. The inclusion of provider fees and ownership archiving enhances the utility and flexibility of
 
 RATIONALE:
 1. **Multi-Ownership Model**: - Digital assets are inherently duplicable and can be shared without loss of quality. The multi-owner model allows broader distribution and collaboration while maintaining a unique token identity. 2. **Additive Ownership**: - By adding new owners without removing existing ones, we support shared ownership models common
@@ -2392,7 +2392,7 @@ Technically, the cases of L2s and databases are similar; routing to an L2 involv
 === ERC-7878 ===
 TITLE: Bequeathable Contracts
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-02-01
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
 
@@ -2672,7 +2672,7 @@ Key factors influencing the standard: - Keeping the number of functions in the i
 === ERC-7634 ===
 TITLE: Limited Transfer Count NFT
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-02-22
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
@@ -2977,7 +2977,7 @@ the key technical decisions in this proposal are: **Improved Approve Mechanism**
 === ERC-7858 ===
 TITLE: Expirable NFTs and SBTs
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-01-04
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
@@ -3739,6 +3739,26 @@ RATIONALE:
 ### Metadata Choices The `symbol` function (found in the ERC-20 and ERC-721 standards) was not included as we do not believe this is a globally useful piece of data to identify a generic virtual item / asset and are also prone to collisions. Short-hand symbols are used in tickers
 
 
+=== ERC-7920 ===
+TITLE: Composite EIP-712 Signatures
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-03-20
+REQUIRES: 2, 0, ,,  , 7, 1, 2
+
+SUMMARY:
+This ERC provides a standard for signing multiple typed-data messages with a single signature by encoding them into a Merkle tree. This allows components to independently verify messages, without requiring full knowledge of the others. It provides a significant UX improvement by reducing the number of signature prompts to
+
+SPECIFICATION:
+### Overview The composite signature scheme uses a Merkle tree to hash multiple typed-data data messages together under a single root. The user signs only the Merkle root. The process is described below. ### Generating a Composite Signature 1. For a set of messages `[m₁, m₂, ..., mₙ]`, encode
+
+MOTIVATION:
+As the ecosystem moves towards ETH-less transactions, users are often required to sign multiple off-chain messages in quick succession. Typically, a first signature is needed for a precise spend allowance (via Permit2, [ERC-2612](./eip-2612.md), etc.), followed by subsequent messages to direct the use of funds. This creates a frictional user
+
+RATIONALE:
+The choice of using a Merkle tree to bundle messages provides the following additional benefits: ### Efficient verification on-chain `_verifyMerkleProof` has a runtime of `O(log2(N))` where N is the number of messages that were signed. ### Flexible Verification Modes Applications can require combination of messages be signed together to
+
+
 === ERC-6372 ===
 TITLE: Contract clock
 TYPE: Standards Track ERC
@@ -4286,18 +4306,18 @@ The proposed format attempts to solve the problem of vendor specific protocols f
 === ERC-7291 ===
 TITLE: Purpose bound money
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-06-24
 REQUIRES: 1, 6, 5, ,,  , 1, 7, 3, ,,  , 1, 1, 5, 5
 
 SUMMARY:
-This proposal outlines a smart contract interface that builds upon the [ERC-1155](./eip-1155.md) standard to implement the purpose bound money (PBM) concept: - PBMs is comprised of a PBM wrapper and a digital money token that it wraps. A digital money token (e.g. stablecoins, central bank digital currency, tokenised bank
+A Purpose Bound Money (PBM) token is a wrapper around an [ERC-1155](./eip-1155.md) token that can be used for a limited activity. This proposal outlines a smart contract interface that builds upon the ERC-1155 standard to implement the purpose bound money (PBM) concept: - PBMs is comprised of a PBM
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions - **sovToken** - an ERC-20 or ERC-20 compatible digital currency (e.g. [ERC-777](./eip-777.md), [ERC-1363](./eip-1363.md))
 
 MOTIVATION:
-This proposal intends to forestall technology fragmentation and consequently a lack of interoperability. By making the PBM specification open, it gives new participants easy and free access to the pre-existing market standards, enabling interoperability across different platforms, wallets, payment systems and rails. This would lower cost of entry for
+Purpose Bound Money (PBM) enables digital currencies to carry conditions on how they can be spent, making them especially useful in real-world scenarios such as: - **Government vouchers** (e.g. CDC vouchers in Singapore), where funds should only be redeemable at approved heartland merchants; - **Conditional disbursements**, such as SkillsFuture
 
 RATIONALE:
 ### Why sovToken **MUST** be ERC-20 compatible? As PBM is envisioned to have functionality of money, it has to be a fungible token with stable value. Currently, the major stablecoins in the market are mainly based on the ERC-20 interface. ERC-20 or ERC-20 compatible tokens are the most widely
@@ -7977,6 +7997,14 @@ When returning data to the web browser, a `Content-Type` header indicating the M
 
 RATIONALE:
 The standard uses three different query parameters rather than a single query parameter to avoid confusion - an implementer or a user can easily tell the expected returned MIME of a link. Further, in auto mode, the query parameters are not used to form the EVM message (e.g., calldata)
+
+
+=== ERC-7832 ===
+TITLE: Sustainable collaborative NFT collections
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-12-04
+REQUIRES: 721
 
 
 === ERC-7913 ===

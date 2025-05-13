@@ -3675,6 +3675,26 @@ RATIONALE:
 The additional gas cost of `25` represents the cost of fetching the nonce and comparing it to the given value. `eth_getStorageAt` was modified to throw an error because of alias contracts' special behavior. The nonce of `2^64-1` was chosen since it is the nonce protected by [EIP-6188](./eip-6188.md). The contract
 
 
+=== EIP-7932 ===
+TITLE: Algorithmic Transaction Wrapper
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-04-12
+REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This EIP introduces a new [EIP-2718](./eip-2718.md) typed transaction that wraps (contains) another transaction, this EIP nullifies the default signature parameters and appends signature data to the front of the transaction with a selector, this effectively wraps a transaction and swaps out signature data for alternative algorithms and data. It
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Note: The "verification function" referred to by this EIP is the one specified by additional
+
+MOTIVATION:
+As quantum computers are getting more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all contain drawbacks such as large key sizes (>1KiB), large signature sizes or long verification times. These issues make them more expensive to compute and store than the current secp256k1 curve in
+
+RATIONALE:
+### Setting `y_parity`, `r`, `s` values to zero rather than removing them Keeping the `y_parity`, `r`, `s` values inside the transactions keeps the previous parsing, verification and processing logic the same and allows for minimal modification to the other specifications while still preventing excessive space usage. ### Opaque `signature_info`
+
+
 === EIP-2481 ===
 TITLE: eth/66 request identifier
 TYPE: Standards Track Networking
@@ -8187,7 +8207,7 @@ CREATED: 2024-05-07
 REQUIRES: 2, ,,  , 1, 6, 1, ,,  , 1, 0, 5, 2, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 3, 5, 4, 1, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4
 
 SUMMARY:
-Add a new [EIP-2718](./eip-2718.md) transaction type that allows Externally Owned Accounts (EOAs) to set the code in their account. This is done by attaching a list of authorization tuples -- individually formated as `[chain_id, address, nonce, y_parity, r, s]` -- to the transaction. For each tuple, a delegation indicator
+Add a new [EIP-2718](./eip-2718.md) transaction type that allows Externally Owned Accounts (EOAs) to set the code in their account. This is done by attaching a list of authorization tuples -- individually formatted as `[chain_id, address, nonce, y_parity, r, s]` -- to the transaction. For each tuple, a delegation indicator
 
 SPECIFICATION:
 ### Parameters | Parameter | Value | | ------------------------ | ------- | | `SET_CODE_TX_TYPE` | `0x04` | | `MAGIC` | `0x05` | | `PER_AUTH_BASE_COST` | `12500` | | `PER_EMPTY_ACCOUNT_COST` | `25000` | ### Set code transaction A new [EIP-2718](./eip-2718.md) transaction known as the "set code transaction" is introduced, where
