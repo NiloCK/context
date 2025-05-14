@@ -6230,13 +6230,13 @@ TITLE: PAY opcode
 TYPE: Standards Track Core
 STATUS: Review
 CREATED: 2022-03-14
-REQUIRES: 2, 9, 2, 9, ,,  , 7, 5, 2, 3
+REQUIRES: 2, 1, 4, ,,  , 2, 9, 2, 9, ,,  , 7, 5, 2, 3
 
 SUMMARY:
 This EIP introduces a new opcode, `PAY`, taking two stack parameters, `addr` and `val`, that transfers `val` wei to the address `addr` without calling any of its functions.
 
 SPECIFICATION:
-### Constants | Constant | Definition | | -------------------------- | ------------------------- | | `WARM_STORAGE_READ_COST` | [EIP-2929](./eip-2929.md) | | `COLD_ACCOUNT_ACCESS_COST` | [EIP-2929](./eip-2929.md) | | `GAS_NEW_ACCOUNT` | [EELS][gna] | | `GAS_CALL_VALUE` | [EELS][gcv] | [gna]: https://github.com/ethereum/execution-specs/blob/4d953035fb0cceda7cf21d71b2ab7a9a6f4632f0/src/ethereum/frontier/vm/gas.py#L52 [gcv]: https://github.com/ethereum/execution-specs/blob/4d953035fb0cceda7cf21d71b2ab7a9a6f4632f0/src/ethereum/frontier/vm/gas.py#L53 ### Behavior A new opcode is introduced: `PAY` (`0xfc`), which: - Pops two
+### Constants | Constant | Definition | | -------------------------- | ------------------------- | | `WARM_STORAGE_READ_COST` | [EIP-2929](./eip-2929.md) | | `COLD_ACCOUNT_ACCESS_COST` | [EIP-2929](./eip-2929.md) | | `GAS_NEW_ACCOUNT` | [EELS][gna] | | `GAS_CALL_VALUE` | [EELS][gcv] | [gna]: https://github.com/ethereum/execution-specs/blob/4d953035fb0cceda7cf21d71b2ab7a9a6f4632f0/src/ethereum/frontier/vm/gas.py#L52 [gcv]: https://github.com/ethereum/execution-specs/blob/4d953035fb0cceda7cf21d71b2ab7a9a6f4632f0/src/ethereum/frontier/vm/gas.py#L53 ### Behavior A new opcode is introduced: `PAY` (`0xfc`), which: - Halt with
 
 MOTIVATION:
 Currently, to send ether to an address requires you to call into that address, which transfers execution context to that address, which creates several issues: - First of all, it opens a reentrancy attack vector, as the recipient can call back into the sender. More generally, the recipient can
@@ -6998,7 +6998,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered for & Scheduled for Inclusion in the Fulu/Osaka network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * [EIP-7892](./eip-7892.md): Blob Parameter Only Hardforks * [EIP-7935](./eip-7935.md): Set default gas limit to XX0M #### Other
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * [EIP-7823](./eip-7823.md): Set upper bounds for MODEXP * [EIP-7892](./eip-7892.md): Blob Parameter Only Hardforks * [EIP-7823](./eip-7823.md): Set
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Fusaka network upgrade, as well as links to full specification.

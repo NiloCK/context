@@ -6230,7 +6230,7 @@ TITLE: PAY opcode
 TYPE: Standards Track Core
 STATUS: Review
 CREATED: 2022-03-14
-REQUIRES: 2, 9, 2, 9, ,,  , 7, 5, 2, 3
+REQUIRES: 2, 1, 4, ,,  , 2, 9, 2, 9, ,,  , 7, 5, 2, 3
 
 SUMMARY:
 This EIP introduces a new opcode, `PAY`, taking two stack parameters, `addr` and `val`, that transfers `val` wei to the address `addr` without calling

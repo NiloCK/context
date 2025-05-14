@@ -9370,6 +9370,26 @@ RATIONALE:
 This ERC extends [EIP-5792](./eip-5792.md) rather than defining new RPC methods because: 1. **Consistency**: Leverages existing capability discovery mechanism 2. **Composability**: Requirements can be combined with other [EIP-5792](./eip-5792.md) capabilities 3. **Flexibility**: Wallets can implement only the requirements they support 4. **Extensibility**: New requirement types can be added as additional capabilities The decision to split requirements into individual capabilities rather than a single capability type allows: 1. Granular support by wallets 2. Clear capability discovery 3. Independent versioning of requirement types 4. Simpler implementation for basic wallets
 
 
+=== ERC-7847 ===
+TITLE: Social Media NFTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-12-18
+REQUIRES: 7, 2, 1, ,,  , 1, 1, 5, 5
+
+SUMMARY:
+This proposal defines a standardized format for representing decentralized social media posts as NFTs. The Nostr protocol has done most of the heavy lifting for creating an open decentralized social media network. This ERC serves to adapt those standards to the most common blockchain non-fungible token standard. In this way we can take advantage of the reach and longevity of a blockchain. It is genericized here so that it can be easily mapped to other event based decentralized social media like the AT protocol. An event can be used as a social media post, blog post, forum post,
+
+SPECIFICATION:
+### To derive the id To obtain the id, we sha256 the serialized attributes in this order. The serialization is done over the UTF-8 JSON-serialized string of the following structure: ```json [ 0, <pubkey, as a lowercase hex string>, <created_at, unix timestamp in seconds>, <kind, as a number>, <tags, as an array of arrays of non-null strings>, <content, as a string> ] ``` **To prevent implementation differences from creating a different event ID for the same event, the following rules MUST be followed while serializing:** - UTF-8 should be used for encoding. - Whitespace, line breaks or other
+
+MOTIVATION:
+With the continued censorship and manipulation of social media platforms, it becomes increasingly important for truly decentralized and permissionless social media to exist. Unlike other attempts at blockchain decentralized social media, this method does not rely on a centralized set of smart contracts. Blockchain integration of author-signed event based social media simply adds a powerful substrate for standardized decentralized social media to exist in. The benefits of blockchain include, but are not limited to, longevity, censorship resistance, monetary, and neutrality. The NFT standard is the most common and widely used standard for representing unique digital data on the
+
+RATIONALE:
+These attributes in the metadata are a 1:1 mapping of a Nostr-style event. Nostr is a blockchain compatible social media protocol because it uses a public/private key verification system that does not rely on a central set of smart contracts. It relies on the same format of private key EVM chains already use. It has a json based event system that is easily mapped to NFTs. Content can be freely moved between web3 and web2 based platforms. Each post is signed by the author, enabling tamperproof third-party transportation and publishing. A standardized tagging system enables referencing posts on
+
+
 === ERC-7677 ===
 TITLE: Paymaster Web Service Capability
 TYPE: Standards Track ERC

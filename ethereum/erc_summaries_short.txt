@@ -9370,6 +9370,26 @@ RATIONALE:
 This ERC extends [EIP-5792](./eip-5792.md) rather than defining new RPC methods because: 1. **Consistency**: Leverages existing capability discovery mechanism 2. **Composability**: Requirements can be combined
 
 
+=== ERC-7847 ===
+TITLE: Social Media NFTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-12-18
+REQUIRES: 7, 2, 1, ,,  , 1, 1, 5, 5
+
+SUMMARY:
+This proposal defines a standardized format for representing decentralized social media posts as NFTs. The Nostr protocol has done most of the heavy lifting
+
+SPECIFICATION:
+### To derive the id To obtain the id, we sha256 the serialized attributes in this order. The serialization is done over the UTF-8
+
+MOTIVATION:
+With the continued censorship and manipulation of social media platforms, it becomes increasingly important for truly decentralized and permissionless social media to exist. Unlike
+
+RATIONALE:
+These attributes in the metadata are a 1:1 mapping of a Nostr-style event. Nostr is a blockchain compatible social media protocol because it uses
+
+
 === ERC-7677 ===
 TITLE: Paymaster Web Service Capability
 TYPE: Standards Track ERC
