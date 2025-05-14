@@ -5705,23 +5705,23 @@ SPECIFICATION:
 
 
 === EIP-7793 ===
-TITLE: TXINDEX precompile
+TITLE: ASSERTTXINDEX opcode
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-17
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes to add a new precompile that returns the index of the transaction being executed within the current block.
+This EIP proposes to add a new opcode `ASSERTTXINDEX` (`0xfb`), that reverts if the index of the current transaction within the block does not match the expected value. This allows for transactions that can only be executed at a certain index within a block.
 
 SPECIFICATION:
-If `block.timestamp >= TBD` a new precompiled contract `TXINDEX` shall be created at address `TBD`. `TXINDEX` returns as output the transaction index as a 4 byte uint in big endian encoding. ### Gas Cost The gas cost for `TXINDEX` is a fixed fee of `2`
+A new opcode `ASSERTTXINDEX` is introduced at `0xfb`. It takes as an argument the expected transaction index as an offset into calldata. ### Input The opcode takes a single input from the stack, an offset into calldata. From the provided byte offset, a 32 byte word (the expected transaction index) is retrieved from calldata, matching the semantics of `CALLDATALOAD`. ### Behaviour The `ASSERTTXINDEX` instruction will revert under the following conditions: - The current transaction index does not match the expected value loaded from calldata. - If `gasUsed > 3` (to allow a `PUSH*` or similar instruction before to
 
 MOTIVATION:
-The new precompile aims to improve support for encrypted mempools. In order to be secure, the validity of encrypted mempool transactions should be tied to the inclusion of all transactions by a proposer in the correct slot, and following the ordering rules. If these rules are not enshrined as block validity conditions then they can be enforced by a smart contract. This proposal enables smart contract solutions to check their own transaction index, so they can enforce inclusion at the correct index. These out-of-protocol solutions could be used for experimentation until a design appropriate for enshrinement is agreed
+The new opcode aims to improve support for encrypted mempools. Transactions in an encrypted mempool are ordered while the transactions are encrypted, before being decrypted and included onchain at the top of the block. If the builder does not respect the order when including the decrypted transactions then they could frontrun decrypted transactions. The new opcode can be used to make this impossible; if a decrypted transaction is not included at the correct index, it will revert.
 
 RATIONALE:
-### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than an opcode gives L2s flexibility to decide whether to implement it. ### ZK-VM proving The TXINDEX precompile should not increase the complexity of proving EVM execution, as it is similar to existing opcodes such as GAS. If a whole block is proven then no additional inputs to the circuit are required to prove transaction indices, as they can be inferred from the transaction ordering. If a transaction is proved individually then the index must
+### Assertion An alternative design could simply return the current transaction index. The assertion approach is favoured as it means that the expected transaction index can be determined statically, rather than allowing dynamic behaviour based on the returned transaction index. This prevents complex constraints being imposed that makes it difficult to build a block. Furthermore the instruction must execute at the start of a transaction (with a `PUSH*` before to provide an argument) and read its input from calldata, so that one can statically evaluate what the expected transaction index is. ### Gas Price The opcode is priced
 
 
 === EIP-2566 ===

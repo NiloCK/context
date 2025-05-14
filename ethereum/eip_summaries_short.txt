@@ -5705,23 +5705,23 @@ SPECIFICATION:
 
 
 === EIP-7793 ===
-TITLE: TXINDEX precompile
+TITLE: ASSERTTXINDEX opcode
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-17
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes to add a new precompile that returns the index of the transaction being executed within the current block.
+This EIP proposes to add a new opcode `ASSERTTXINDEX` (`0xfb`), that reverts if the index of the current transaction within the block does not
 
 SPECIFICATION:
-If `block.timestamp >= TBD` a new precompiled contract `TXINDEX` shall be created at address `TBD`. `TXINDEX` returns as output the transaction index as a
+A new opcode `ASSERTTXINDEX` is introduced at `0xfb`. It takes as an argument the expected transaction index as an offset into calldata. ### Input
 
 MOTIVATION:
-The new precompile aims to improve support for encrypted mempools. In order to be secure, the validity of encrypted mempool transactions should be tied
+The new opcode aims to improve support for encrypted mempools. Transactions in an encrypted mempool are ordered while the transactions are encrypted, before being
 
 RATIONALE:
-### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than
+### Assertion An alternative design could simply return the current transaction index. The assertion approach is favoured as it means that the expected transaction
 
 
 === EIP-2566 ===

@@ -9370,7 +9370,7 @@ CREATED: 2024-11-08
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces an on-chain registry system for storing and proving abstract statements. Users may utilize the system to store commitments to their private data to later prove its validity and authenticity via zero knowledge, without disclosing anything about the data itself. Moreover, developers may use the singleton `EvidenceRegistry` contract available at `FIXME` to integrate custom business-specific registrars for managing and processing particular statements.
+This EIP introduces an on-chain registry system for storing and proving abstract statements. Users may utilize the system to store commitments to their private data to later prove its validity and authenticity via zero knowledge, without disclosing anything about the data itself. Moreover, developers may use the singleton `EvidenceRegistry` contract available at `0x781246D2256dc0C1d8357c9dDc1eEe926a9c7812` to integrate custom business-specific registrars for managing and processing particular statements.
 
 SPECIFICATION:
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Definitions - A "Sparse Merkle Tree (SMT)" is a special Merkle tree that works by deterministically and idempotently storing key/value pairs in the given locations leveraging a hash function. The Poseidon hash function is often used to optimize the compatibility with ZK. - A "statement" is an accepted structured representation of some abstract evidence. A statement can range from a simple `string` to a Merkle root of some SMT.
