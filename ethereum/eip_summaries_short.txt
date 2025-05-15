@@ -1577,7 +1577,7 @@ Making the `eth_getLogs` response verifiable adds the necessary security attribu
 === EIP-7549 ===
 TITLE: Move committee index outside Attestation
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-11-01
 REQUIRES: 
 
@@ -4265,7 +4265,7 @@ REQUIRES:
 === EIP-2935 ===
 TITLE: Serve historical block hashes from state
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2020-09-03
 REQUIRES: 
 
@@ -4285,7 +4285,7 @@ Very similar ideas were proposed before. This EIP is a simplification, removing 
 === EIP-7685 ===
 TITLE: General purpose execution layer requests
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-04-14
 REQUIRES: 
 
@@ -5648,7 +5648,7 @@ Ethereum does not have an official Stratum implementation yet. It officially sup
 === EIP-7623 ===
 TITLE: Increase calldata cost
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-02-13
 REQUIRES: 
 
@@ -5739,7 +5739,7 @@ RATIONALE:
 === EIP-7691 ===
 TITLE: Blob throughput increase
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-04-17
 REQUIRES: 
 
@@ -5913,7 +5913,7 @@ RATIONALE:
 === EIP-7002 ===
 TITLE: Execution layer triggerable withdrawals
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-05-09
 REQUIRES: 7685
 
@@ -6167,6 +6167,26 @@ RATIONALE:
 TBA
 
 
+=== EIP-7904 ===
+TITLE: General Repricing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-02-05
+REQUIRES: 7883
+
+SUMMARY:
+This proposal revises the gas cost schedule for opcodes, precompiles, memory expansion, and data access, prioritizing computational complexity, while excluding network-related costs such as
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Gas costs compromise of two components: network (social) cost and computation cost. Network cost reflects the blockchain’s effort to maintain state, including adding transactions,
+
+RATIONALE:
+### Gas Cost Estimator Project The [Gas Cost Estimator](../assets/eip-7904/gas-cost-estimator-report.pdf) project serves as the empirical foundation for this EIP. This project conducted extensive testing across
+
+
 === EIP-7668 ===
 TITLE: Remove bloom filters
 TYPE: Standards Track Core
@@ -6384,7 +6404,7 @@ RATIONALE:
 === EIP-7251 ===
 TITLE: Increase the MAX_EFFECTIVE_BALANCE
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-06-28
 REQUIRES: 7, 0, 0, 2, ,,  , 7, 6, 8, 5
 
@@ -6695,7 +6715,7 @@ In [EIP-2200](./eip-2200.md#specification), three cases for refunds were introdu
 === EIP-7840 ===
 TITLE: Add blob schedule to EL config files
 TYPE: Informational 
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-12-12
 REQUIRES: 
 
@@ -6715,7 +6735,7 @@ Although maintaining the target and max blob only in the consensus client is des
 === EIP-6110 ===
 TITLE: Supply validator deposits on chain
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2022-12-09
 REQUIRES: 7685
 
@@ -7747,7 +7767,7 @@ SPECIFICATION:
 The gas and memory semantics for `CALL`, `CALLCODE` and `DELEGATECALL` (called later as `CALL*`) are changed in the following way (`CREATE` does not write
 
 MOTIVATION:
-In general, it is good practise to reserve a certain memory area for the output of a call, because letting a subroutine write to
+In general, it is good practice to reserve a certain memory area for the output of a call, because letting a subroutine write to
 
 RATIONALE:
 This way of dealing with the problem requires a minimal change to the Ethereum Virtual Machine. Other means of achieving a similar goal would
@@ -7923,7 +7943,7 @@ RATIONALE:
 === EIP-3074 ===
 TITLE: AUTH and AUTHCALL opcodes
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Withdrawn
 CREATED: 2020-10-15
 REQUIRES: 155
 
