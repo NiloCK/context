@@ -2686,7 +2686,7 @@ EIP-1052 In order to include the function of `BALANCE`, let the `EXTCODEHASH` of
 === EIP-7775 ===
 TITLE: BURN opcode
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-09-30
 REQUIRES: 
 
@@ -3977,7 +3977,7 @@ Propagating the sender and value from the parent scope to the child scope makes 
 === EIP-7790 ===
 TITLE: Controlled Gas Limit Increase Guidelines
 TYPE: Informational 
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-10-18
 REQUIRES: 7783
 
