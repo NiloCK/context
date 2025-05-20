@@ -3032,23 +3032,23 @@ The purpose of a Provider is to _provide_ a consumer with access to Ethereum. In
 
 
 === EIP-7843 ===
-TITLE: SLOT precompile
+TITLE: SLOTNUM opcode
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-12-06
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes to add a new precompile that returns the corresponding slot number for the current block.
+This EIP proposes to add a new opcode `SLOTNUM` (`0x4b`), that returns the corresponding slot number for the current block.
 
 SPECIFICATION:
-If `block.timestamp >= TBD` a new precompiled contract `SLOT` shall be created at address `TBD`. `SLOT` returns as output the current slot number as an 8-byte uint64 in big-endian encoding. ### Gas Cost The gas cost for `SLOT` is a fixed fee of `2`. ### RPC changes The slot
+A new opcode `SLOTNUM` is introduced at `0x4b`. It shall return one stack element. ### Output #### Stack | Stack | Value | | ---------- | ------------- | | `top - 0` | `SlotNumber` | `SlotNumber` is an 8 byte uint in big endian encoding. ### Gas Cost The
 
 MOTIVATION:
-It is currently possible to calculate the slot number from the block timestamp. However, this requires hardcoding the chain slot length into a smart contract. This would require the contract code to be changed in the event of a future change to slot length. A better approach is for
+There are currently two ways to get the current slot number onchain: 1) Calculate from the block timestamp. This requires hardcoding the chain slot length into a smart contract. 2) Provide the slot number as calldata and prove it against the beacon block root (using [EIP-4788](./eip-4788.md)). Both of these
 
 RATIONALE:
-### Gas Price The precompile is priced to match similar opcodes in the `W_base` set. ### Precompile Making the feature a precompile rather than an opcode gives L2s flexibility to decide whether to implement it. ### Calculation in consensus layer The slot number could alternatively be calculated in the
+### Gas Price The opcode is priced to match similar opcodes in the `W_base` set. ### Calculation in consensus layer The slot number could alternatively be calculated in the execution layer using the timestamp, but it is more appropriate to calculate values pertaining to the beacon chain in the
 
 
 === EIP-1959 ===
