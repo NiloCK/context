@@ -6985,7 +6985,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered for & Scheduled for Inclusion in the Fulu/Osaka network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * [EIP-7823](./eip-7823.md): Set upper bounds for MODEXP * [EIP-7892](./eip-7892.md): Blob Parameter Only Hardforks * [EIP-7823](./eip-7823.md): Set
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * [EIP-7823](./eip-7823.md): Set upper bounds for MODEXP * [EIP-7883](./eip-7883.md): ModExp Gas Cost Increase * [EIP-7892](./eip-7892.md): Blob
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Fusaka network upgrade, as well as links to full specification.
