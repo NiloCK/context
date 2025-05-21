@@ -1781,7 +1781,7 @@ TITLE: Meter Contract Code Size And Increase Limit
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-03-14
-REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
+REQUIRES: 1, 7, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 8, 6, 0
 
 SUMMARY:
 This EIP substantially increases the hard contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 256KB, and adds gas metering. It
