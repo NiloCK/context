@@ -6982,10 +6982,10 @@ CREATED: 2024-02-01
 REQUIRES: 7600
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Proposed, Considered for & Scheduled for Inclusion in the Fulu/Osaka network upgrade.
+This Meta EIP lists the EIPs formally Proposed, Considered, Scheduled & Declined for Inclusion in the Fulu/Osaka network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * [EIP-7823](./eip-7823.md): Set upper bounds for MODEXP * [EIP-7883](./eip-7883.md): ModExp Gas Cost Increase * [EIP-7892](./eip-7892.md): Blob Parameter Only Hardforks * [EIP-7935](./eip-7935.md): Set default gas limit to XX0M #### Other EIPs * [EIP-7642](./eip-7642.md): eth/69 - Drop pre-merge fields * Client teams MUST support this EIP by the activation of the Fusaka network upgrade. ### Considered for Inclusion * [EIP-5920](./eip-5920.md): PAY opcode * RIP-7212: Precompile for secp256r1
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Proposed for Inclusion` and `Declined for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * [EIP-7823](./eip-7823.md): Set upper bounds for MODEXP * [EIP-7825](./eip-7825.md): Transaction Gas Limit Cap * [EIP-7883](./eip-7883.md): ModExp Gas Cost Increase * [EIP-7892](./eip-7892.md): Blob Parameter Only Hardforks * [EIP-7918](./eip-7918.md): Blob base fee bounded by execution cost * [EIP-7935](./eip-7935.md): Set default gas limit to XX0M #### Other EIPs * [EIP-7642](./eip-7642.md): eth/69 - Drop pre-merge fields * Client teams MUST support this EIP by the activation
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Fusaka network upgrade, as well as links to full specification.
