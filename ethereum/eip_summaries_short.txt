@@ -2262,19 +2262,19 @@ TITLE: Blob base fee bounded by execution cost
 TYPE: Standards Track Core
 STATUS: Review
 CREATED: 2025-03-25
-REQUIRES: 4844
+REQUIRES: 4, 8, 4, 4, ,,  , 7, 8, 4, 0
 
 SUMMARY:
-This EIP imposes that the total price of the targeted number of blobs `TARGET_BLOB_GAS_PER_BLOCK * base_fee_per_blob_gas` stays above the price of a simple blob-carrying
+This EIP assigns a reserve price `BLOB_BASE_COST * base_fee_per_gas` to blobs by introducing an `if`-clause in `calc_excess_blob_gas()`. Specifically, when the reserve price is higher
 
 SPECIFICATION:
-The function `calc_excess_blob_gas()` from [EIP-4844](./eip-4844.md) is changed to add `parent.blob_gas_used // 3` and not subtract `TARGET_BLOB_GAS_PER_BLOCK` when updating the `excess_blob_gas`, if the price of
+### Parameters | Constant | Value | - | - | | `BLOB_BASE_COST` | `2**14` | ### Functions An `if`-clause is added to `calc_excess_blob_gas()`
 
 MOTIVATION:
 Ethereum deploys a dynamic pricing auction to set the blob base fee, lowering the fee if less gas is consumed than `TARGET_BLOB_GAS_PER_BLOCK` and raising
 
 RATIONALE:
-### Fee-inelasticity This proposal alleviates idiosyncrasies in the blob base fee auction. The fee update mechanism is unaware of the full price of the
+### Fee-inelasticity and reserve price This proposal alleviates idiosyncrasies in the blob base fee auction. The fee update mechanism is unaware of the full
 
 
 === EIP-1682 ===
@@ -6835,14 +6835,14 @@ Gas should reflect the cost of use. The revert cost reflects the cost of access 
 
 
 === EIP-7937 ===
-TITLE: 64-bit mode EVM opcodes (EVM64)
+TITLE: EVM64 - 64-bit mode EVM opcodes
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-04-23
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces multibyte opcodes prefixed by `C0` for 64-bit arithmetic (`C001`-`C00B`), comparison (`C010`-`C015`), bitwise (`C016`-`C019`) and flow (`C056` and `C057` in "legacy", or
+This EIP introduces multibyte opcodes prefixed by `C0` for 64-bit arithmetic (`C001`-`C00B`), comparison (`C010`-`C015`), bitwise (`C016`-`C019`) and flow (`C056` and `C057`) operations.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
