@@ -1089,12 +1089,12 @@ This EIP uses [EIP-1996][EIP-1996] to hold the money after a transfer is ordered
 === ERC-7291 ===
 TITLE: Purpose bound money
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-06-24
 REQUIRES: 1, 6, 5, ,,  , 1, 7, 3, ,,  , 1, 1, 5, 5
 
 SUMMARY:
-A Purpose Bound Money (PBM) token is a wrapper around an [ERC-1155](./eip-1155.md) token that can be used for a limited activity. This proposal outlines a smart contract interface that builds upon the ERC-1155 standard to implement the purpose bound money (PBM) concept: - PBMs is comprised of a PBM wrapper and a digital money token that it wraps. A digital money token (e.g. stablecoins, central bank digital currency, tokenised bank deposits etc) serves as as a store of value (abbreviated as "sov"). Thus, a digital money token (also referred to as "sovToken") **SHOULD** be: - a good store
+A Purpose Bound Money (PBM) token is a wrapper around an [ERC-1155](./eip-1155.md) token that can be used for a limited activity. This proposal outlines a smart contract interface that builds upon the ERC-1155 standard to implement the purpose bound money (PBM) concept: - A PBM consists of a PBM wrapper and the digital money token it wraps. A digital money token (e.g., stablecoins, central bank digital currencies, tokenized bank deposits, and similar instruments) serves as a store of value (abbreviated as "sov"). Thus, a digital money token (also referred to as "sovToken") **SHOULD** be: - a good store
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions - **sovToken** - an ERC-20 or ERC-20 compatible digital currency (e.g. [ERC-777](./eip-777.md), [ERC-1363](./eip-1363.md)) serving as the store of value token (i.e. collateral backing the PBM Token). - **PBM Wrapper** - an ERC-1155 compliant smart contract, which wraps the sovToken by specifying one or more conditions that have to be met (referred to as PBM business logic in subsequent section of this proposal).
@@ -1711,6 +1711,26 @@ RATIONALE:
 ### Why provide only an author consent proof? Adding support for full authorship proofs (i.e. Alice is the author and no one else is the author) requires a protocol to prove that someone is the only author of an NFT. In other words, we need to answer the question: "Given an NFT Y and a user X claiming to be the author, is X the original author of Y?". For the sake of the argument, assume that there exists a protocol that, given an NFT Y, can determine the original author of Y. Even if such method existed,
 
 
+=== ERC-7929 ===
+TITLE: PermaLink Asset Bound Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-04-01
+REQUIRES: 721
+
+SUMMARY:
+This standard introduces a subclass of tokens known as **PermaLink Asset Bound Tokens (PermaLink-ABTs)**. They are a specific implementation of the broader **Asset Bound Token (ABT)** concept. ABTs establish a novel ownership paradigm where **an asset can own another asset**, enabling composable, nested, and portfolio-like token structures that evolve together over time. PermaLink-ABTs implement a permanent binding mechanism where a token in one smart contract is irreversibly linked to a token in another contract. These links mirror key state data such as `ownerOf`, `tokenId`, `totalSupply`, and `balanceOf` using the `assetBoundContract` interface. Traditional token transfer and approval functions are
+
+SPECIFICATION:
+### `IERC7929` (Token Interface) **NOTES**: - The following specifications use syntax from Solidity `0.8.27` (or above) ```solidity interface IERC7929 { event AssetBoundContractSet(address assetBoundContract); function ownerOf(uint256 tokenId) external view returns (address); function tokenExists(uint256 tokenId) external view returns (bool); function totalSupply() external view returns (uint256); function balanceOf(address owner) external view returns (uint256); } ``` ### Events #### `AssetBoundContractSet` Event Emitted when the contract is deployed and bound to `assetBoundContract` ```solidity event AssetBoundContractSet(address assetBoundContract); ``` ### Functions The functions detailed below MUST be implemented. #### `ownerOf` Returns the owner of the NFT specified by the `tokenId`. Will read from the `assetBoundContract`
+
+MOTIVATION:
+Traditional ownership models on Ethereum are inherently limited. Only externally owned accounts (EOAs) or smart contracts can own blockchain assets. This creates rigidity, especially as the blockchain ecosystem expands to include digital identities, tokenized real-world assets (RWAs), and NFTs. Current smart contracts are static in nature, meaning once deployed, they cannot adapt to evolving systems, unforeseen use cases, or new integration layers. There is a need for a more flexible and modular ownership model that allows for dynamic interactions between assets. This standard proposes **Asset Bound Tokens (ABTs)** as a solution to this challenge. ABTs allow one token
+
+RATIONALE:
+The design of PermaLink-ABTs centers around the goal of enabling permanent token binding while optimizing for gas efficiency, composability, and secure ownership structures. We adopted the `assetBoundContract` interface to mirror essential metadata such as `ownerOf`, `tokenId`, `totalSupply`, and `balanceOf` from the binding token’s contract. This ensures that PermaLink-ABTs remain synchronized with the asset they are bound to, without duplicating logic or requiring manual updates. The mirroring also ensures traceability and visibility across contracts, allowing observers and off-chain systems to reliably interpret the token relationship. To preserve the permanent nature of the bond, standard `transfer` and `approve` methods are
+
+
 === ERC-4987 ===
 TITLE: Held token interface
 TYPE: Standards Track ERC
@@ -2193,7 +2213,7 @@ This standards offers a way for any type of address (externally owned and contra
 === ERC-7837 ===
 TITLE: Diffusive Tokens
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-12-07
 REQUIRES: 
 
@@ -4339,6 +4359,26 @@ To mitigate the effects of reasonably provable token or asset loss or theft and 
 
 RATIONALE:
 * A recoverable token standard can provide configurable safety for users or contracts who desire this safety. * Implementations of this standard will give users the ability to select a dispute resolution process on an opt-in basis and benefit the community by decreasing the necessity of consideration of token recovery actions.
+
+
+=== ERC-7866 ===
+TITLE: Decentralised User Profiles
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-22
+REQUIRES: 165
+
+SUMMARY:
+This EIP proposes a standard for decentralised, interoperable user profiles known as Decentralised Profiles. Profiles are implemented as **Soul Bound Tokens (SBTs)** that are immutable, non-transferable, and tied to unique identifiers across multiple blockchain networks. The standard provides a unified structure for user metadata, including dApp-specific customisation, default profiles, and seamless cross-chain compatibility. Profiles can be leveraged for identity management, reputation systems, and personalised dApp experiences.
+
+SPECIFICATION:
+### Unique Profile Identifiers #### Decentralised Profile Each profile is identified by: ``` <username>@<network_slug>.soul ``` - `username`: User-defined, chain-unique string. - `network_slug`: Short identifier for the chain (e.g., `eth`, `polygon`, `xion`). - `soul`: Fixed suffix indicating soul bound token. Example: `john@eth.soul` `alice@polygon.soul` #### Decentralised Identifier (DID) Each profile is tied to a DID: ``` did:<chain>:<address> ``` Example: `did:ethereum:0x123...` `did:xion:xion1abc...` ### Metadata Structure The profile metadata structure is designed to balance extensibility, usability, and compatibility with decentralized storage systems like IPFS. Metadata will adhere to the following schema: ```json { "$schema": "https://json-schema.org/draft/2020-12/schema", "title": "UserProfile", "type": "object", "properties": { "username":
+
+MOTIVATION:
+Existing solutions for decentralised identity and user profiles lack cross-chain compatibility, dApp-specific customisation, and standardisation. A unified approach is essential to: 1. Facilitate interoperable profiles across all chains. 2. Leverage the immutability and non-transferability of SBTs for secure identities. 3. Enable dApp-specific customisations, such as unique avatars. 4. Provide a robust, standards-based alternative to centralised solutions like Gravatar. 5. Ensure user control and decentralisation with profiles stored on IPFS/Arweave. 6. A common standard for Decentralised Identity that can be used across all chains. 7. Act as a Digital Passport for users, enabling seamless decentralised verification and authentication.
+
+RATIONALE:
+The design of the Decentralised Profile Standard was guided by the need for a unified, interoperable user profile system that can operate seamlessly across all blockchain networks. Current solutions, such as ENS profiles or Gravatar, either lack cross-chain functionality, are centralised, or do not allow users to customise profiles for specific dApps. This standard addresses these shortcomings while ensuring simplicity, security, and scalability. ### Design Decisions 1. **Decentralised Identifiers (DIDs)** - Using the `did:<chain>:<address>` format provides a globally unique identifier for profiles. This aligns with the decentralised identity movement and ensures compatibility with broader DID frameworks. 2. **Decentralised
 
 
 === ERC-7821 ===
@@ -8923,7 +8963,7 @@ First of all, NFT contract owner can set the maximum number of authorized users 
 === ERC-7743 ===
 TITLE: Multi-Owner Non-Fungible Tokens (MO-NFT)
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-07-13
 REQUIRES: 
 

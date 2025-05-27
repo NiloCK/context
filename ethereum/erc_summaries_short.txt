@@ -1089,7 +1089,7 @@ This EIP uses [EIP-1996][EIP-1996] to hold the money after a transfer is ordered
 === ERC-7291 ===
 TITLE: Purpose bound money
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2023-06-24
 REQUIRES: 1, 6, 5, ,,  , 1, 7, 3, ,,  , 1, 1, 5, 5
 
@@ -1711,6 +1711,26 @@ RATIONALE:
 ### Why provide only an author consent proof? Adding support for full authorship proofs (i.e. Alice is the author and no one else is
 
 
+=== ERC-7929 ===
+TITLE: PermaLink Asset Bound Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-04-01
+REQUIRES: 721
+
+SUMMARY:
+This standard introduces a subclass of tokens known as **PermaLink Asset Bound Tokens (PermaLink-ABTs)**. They are a specific implementation of the broader **Asset Bound
+
+SPECIFICATION:
+### `IERC7929` (Token Interface) **NOTES**: - The following specifications use syntax from Solidity `0.8.27` (or above) ```solidity interface IERC7929 { event AssetBoundContractSet(address assetBoundContract); function
+
+MOTIVATION:
+Traditional ownership models on Ethereum are inherently limited. Only externally owned accounts (EOAs) or smart contracts can own blockchain assets. This creates rigidity, especially
+
+RATIONALE:
+The design of PermaLink-ABTs centers around the goal of enabling permanent token binding while optimizing for gas efficiency, composability, and secure ownership structures. We
+
+
 === ERC-4987 ===
 TITLE: Held token interface
 TYPE: Standards Track ERC
@@ -2193,7 +2213,7 @@ This standards offers a way for any type of address (externally owned and contra
 === ERC-7837 ===
 TITLE: Diffusive Tokens
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-12-07
 REQUIRES: 
 
@@ -4339,6 +4359,26 @@ To mitigate the effects of reasonably provable token or asset loss or theft and 
 
 RATIONALE:
 * A recoverable token standard can provide configurable safety for users or contracts who desire this safety. * Implementations of this standard will give
+
+
+=== ERC-7866 ===
+TITLE: Decentralised User Profiles
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-22
+REQUIRES: 165
+
+SUMMARY:
+This EIP proposes a standard for decentralised, interoperable user profiles known as Decentralised Profiles. Profiles are implemented as **Soul Bound Tokens (SBTs)** that are
+
+SPECIFICATION:
+### Unique Profile Identifiers #### Decentralised Profile Each profile is identified by: ``` <username>@<network_slug>.soul ``` - `username`: User-defined, chain-unique string. - `network_slug`: Short identifier
+
+MOTIVATION:
+Existing solutions for decentralised identity and user profiles lack cross-chain compatibility, dApp-specific customisation, and standardisation. A unified approach is essential to: 1. Facilitate interoperable
+
+RATIONALE:
+The design of the Decentralised Profile Standard was guided by the need for a unified, interoperable user profile system that can operate seamlessly across
 
 
 === ERC-7821 ===
@@ -8923,7 +8963,7 @@ First of all, NFT contract owner can set the maximum number of authorized users 
 === ERC-7743 ===
 TITLE: Multi-Owner Non-Fungible Tokens (MO-NFT)
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-07-13
 REQUIRES: 
 

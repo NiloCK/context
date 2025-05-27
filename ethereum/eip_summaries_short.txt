@@ -1864,7 +1864,7 @@ CREATED: 2023-11-01
 REQUIRES: 
 
 SUMMARY:
-Move the committee `index` field outside of the signed Attestation message to allow aggregation of equal consensus votes.
+Move the committee's `index` field outside of the signed Attestation message to allow aggregation of equal consensus votes.
 
 SPECIFICATION:
 ### Execution layer This requires no changes to the Execution Layer. ### Consensus layer - Set `index` field from `AttestationData` to a fixed value
