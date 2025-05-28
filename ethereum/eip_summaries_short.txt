@@ -998,7 +998,7 @@ RATIONALE:
 === EIP-7788 ===
 TITLE: Dynamic target blob count
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Withdrawn
 CREATED: 2024-10-15
 REQUIRES: 7742
 
