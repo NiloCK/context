@@ -3216,10 +3216,10 @@ CREATED: 2025-03-31
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes adding Block-Level Access Lists (BALs). By including a complete list of all addresses and storage keys accessed during a block, along with their post-execution values for writes, we enable parallel disk reads and parallel transaction validation. This improves execution efficiency and accelerates block validation, potentially allowing for future gas limit increases.
+This EIP introduces Block-Level Access Lists (BALs), which provide a comprehensive record of all storage locations accessed during a block, along with the corresponding modifications and their impact on the state. By making this information explicit, BALs enable parallel disk reads, parallel transaction validation, and executionless state updates. These capabilities improve execution efficiency and accelerate block validation, potentially allowing for higher gas limits in the future and laying important groundwork for zkEVM full nodes.
 
 SPECIFICATION:
-### Block Structure Modification We introduce three new components in the block body: 1. A Block Access List (BAL) that maps transactions to accessed addresses and storage slots, transaction indices, and post-execution values for writes. 2. Balance Diffs that track every address touched by value transfers along with the balance deltas. 3. Nonces that record the pre-block nonces of contracts using `CREATE` or `CREATE2` within the block. ### SSZ Data Structures ```python # Type aliases Address = ByteVector(20) StorageKey = ByteVector(32) StorageValue = ByteVector(32) TxIndex = uint16 Nonce = uint64 # Constants; chosen to support a 630m block
+### Block Structure Modification We introduce three new components in the block body: 1. A Block Access List (BAL) that maps transactions to accessed storage locations and post-execution values for writes. 2. Balance Diffs that track every address touched by value transfers along with the balance deltas. 3. Code Diffs that track every address and the deployed code to it. 4. Nonce Diffs that record the pre-block nonces of contracts using `CREATE` or `CREATE2` within the block. ### SSZ Data Structures ```python # Type aliases Address = ByteVector(20) StorageKey = ByteVector(32) StorageValue = ByteVector(32) CodeData = ByteVector(MAX_CODE_SIZE) TxIndex
 
 MOTIVATION:
 Currently, transactions without an explicit transaction access list cannot be efficiently parallelized, as the execution engine cannot determine in advance which addresses and storage slots will be accessed. While transaction-level access lists exist via [EIP-2930](./eip-2930.md), they are not enforced, making it difficult to optimize execution pipelines. We propose enforcing access lists at the block level and shifting the responsibility of their creation to the block builder. This enables to efficiently parallelize both disk reads and transaction execution, knowing in advance the exact scope of storage interactions for each transaction. The inclusion of post-execution values for writes in BALs
@@ -5359,7 +5359,7 @@ CREATED: 2025-01-15
 REQUIRES: 
 
 SUMMARY:
-This proposal introduces block-level address and storage key warming, allowing accessed addresses and storage keys to maintain their "warm" status throughout an entire block's execution. Accessed slots can be effectively cached at the block level, allowing for this opimization.
+This proposal introduces block-level address and storage key warming, allowing accessed addresses and storage keys to maintain their "warm" status throughout an entire block's execution. Accessed slots can be effectively cached at the block level, allowing for this optimization.
 
 SPECIFICATION:
 ### Mechanics When a storage slot is accessed within a block: 1. The first access to a slot in a block incurs the cold access cost as of [EIP-2929](./eip-2929.md). 2. All subsequent accesses to the same slot within the same block incur only the warm access cost as of [EIP-2929](./eip-2929.md). 3. The warm/cold status resets at block boundaries ### Block Processing 1. At the start of each block: * Initialize two empty sets `block_level_accessed_addresses` and `block_level_accessed_storage_keys` 2. For each transaction in the block: * Before processing storage access: * Check if touched address is in `block_level_accessed_addresses` * If

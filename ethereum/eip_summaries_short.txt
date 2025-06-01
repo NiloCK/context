@@ -3216,7 +3216,7 @@ CREATED: 2025-03-31
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes adding Block-Level Access Lists (BALs). By including a complete list of all addresses and storage keys accessed during a block, along
+This EIP introduces Block-Level Access Lists (BALs), which provide a comprehensive record of all storage locations accessed during a block, along with the corresponding
 
 SPECIFICATION:
 ### Block Structure Modification We introduce three new components in the block body: 1. A Block Access List (BAL) that maps transactions to accessed
