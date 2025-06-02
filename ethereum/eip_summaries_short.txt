@@ -883,10 +883,10 @@ CREATED: 2024-11-01
 REQUIRES: 
 
 SUMMARY:
-FOCIL implements a robust mechanism to preserve Ethereum’s censorship resistance properties by guaranteeing timely transaction inclusion. FOCIL (**Fo**rk-choice enforced **I**nclusion **L**ists) is built in
+FOCIL implements a robust mechanism to preserve Ethereum’s censorship resistance properties by guaranteeing timely transaction inclusion. FOCIL (**Fo**rk-**c**hoice enforced **I**nclusion **L**ists) is built in
 
 SPECIFICATION:
-### Execution Layer On the execution layer, the block validity conditions are extended such that, after all of the transactions in the block have
+### Execution Layer On the execution layer, an additional check is introduced for new payloads. After all of the transactions in the payload have
 
 MOTIVATION:
 In an effort to shield the Ethereum validator set from centralizing forces, the right to build blocks has been auctioned off to specialized entities
