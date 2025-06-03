@@ -5542,7 +5542,7 @@ SUMMARY:
 This EIP introduces **Blob Parameter Only (BPO) Hardforks**, a lightweight mechanism for incrementally scaling Ethereum’s blob capacity through targeted hard forks that modify only
 
 SPECIFICATION:
-BPO forks are a special class of hard fork which **only modifies any of the following** blob-related parameters: - **Blob Target (`blob_target`)**: The expected
+### Definition BPO hardforks are defined as protocol upgrades that modify only blob-related parameters through configuration, without requiring any client-side code changes. The new
 
 MOTIVATION:
 Ethereum's scaling strategy relies on Layer 2 (L2) solutions for transaction execution while using Ethereum as a **data availability (DA) layer**. However, the demand
@@ -5725,23 +5725,23 @@ RATIONALE:
 
 
 === EIP-7793 ===
-TITLE: ASSERTTXINDEX opcode
+TITLE: Conditional Transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-17
-REQUIRES: 
+REQUIRES: 7843
 
 SUMMARY:
-This EIP proposes to add a new opcode `ASSERTTXINDEX` (`0xfb`), that reverts if the index of the current transaction within the block does not
+This EIP proposes to add a new transaction format for "conditional transactions", that are only valid at a specified slot and index within the
 
 SPECIFICATION:
-A new opcode `ASSERTTXINDEX` is introduced at `0xfb`. It takes as an argument the expected transaction index as an offset into calldata. ### Input
+### Parameters | Constant | Value | | - | - | | `COND_TX_TYPE` | `Bytes1(0x05)` | | `TXINDEX_OPCODE_BYTE` | `Bytes1(0x4c)` | | `TXINDEX_OPCODE_GAS`
 
 MOTIVATION:
-The new opcode aims to improve support for encrypted mempools. Transactions in an encrypted mempool are ordered while the transactions are encrypted, before being
+The proposal aims to improve support for encrypted mempools. Transactions in an encrypted mempool are ordered while the transactions are encrypted, before being decrypted
 
 RATIONALE:
-### Assertion An alternative design could simply return the current transaction index. The assertion approach is favoured as it means that the expected transaction
+### Transaction Type An alternative design could simply return the current transaction index without adding a new transaction type. Adding a new transaction type
 
 
 === EIP-2566 ===

@@ -5542,10 +5542,10 @@ SUMMARY:
 This EIP introduces **Blob Parameter Only (BPO) Hardforks**, a lightweight mechanism for incrementally scaling Ethereum’s blob capacity through targeted hard forks that modify only blob-related parameters: `blob target`, `blob limit`, and `baseFeeUpdateFraction`. Unlike traditional hard forks, which require extensive coordination and introduce broader protocol changes, BPO forks enable rapid, low-overhead scaling of blob capacity in response to **real-world demand and network conditions**.
 
 SPECIFICATION:
-BPO forks are a special class of hard fork which **only modifies any of the following** blob-related parameters: - **Blob Target (`blob_target`)**: The expected number of blobs per block. - **Blob Limit (`blob_limit`)**: The maximum number of blobs per block. - **Blob Base Fee Update Fraction (`baseFeeUpdateFraction`)**: Determines how blob gas pricing adjusts per block. To facilitate these changes on the execution layer, the `blobSchedule` object specified in [EIP-7840](./eip-7840.md) is extended to allow for an arbitrary number of block timestamps at which these parameters **MAY** change. ```json "blobSchedule": { "cancun": { "target": 3, "max": 6, "baseFeeUpdateFraction": 3338477 },
+### Definition BPO hardforks are defined as protocol upgrades that modify only blob-related parameters through configuration, without requiring any client-side code changes. The new parameters take effect immediately at the specified activation time. ### Blob schedule configuration The following protocol parameters are now managed by the blob schedule configuration: - **Blob Target (`blob_target`)**: The expected number of blobs per block. - **Blob Limit (`blob_limit`)**: The maximum number of blobs per block. - **Blob Base Fee Update Fraction (`baseFeeUpdateFraction`)**: Determines how blob gas pricing adjusts per block. To ensure consistency, when a regular hardfork changes any of these parameters,
 
 MOTIVATION:
-Ethereum's scaling strategy relies on Layer 2 (L2) solutions for transaction execution while using Ethereum as a **data availability (DA) layer**. However, the demand for DA has increased rapidly, and the current approach of only modifying blob parameters in large, infrequent hard forks is **not agile enough** to keep up with L2 growth. The key motivations for BPO forks are: 1. **Continuous Scaling** - L2 DA demand is growing rapidly, leading to saturation of blob capacity. - Large, infrequent blob parameter changes create high costs and inefficiencies. - BPO forks allow for more frequent, safer capacity increases. 2.
+Ethereum's scaling strategy relies on Layer 2 (L2) solutions for transaction execution while using Ethereum as a **data availability (DA) layer**. However, the demand for DA has increased rapidly, and the current approach of only modifying blob parameters in large, infrequent hard forks is **not agile enough** to keep up with L2 growth. The key motivations for BPO forks are as follows: 1. **Continuous Scaling** - L2 DA demand is growing rapidly, leading to ongoing saturation of blob capacity. - Large, infrequent blob parameter changes create high costs and inefficiencies. - BPO forks allow for more frequent, safer
 
 RATIONALE:
 ### Why not just use regular hardforks? Full hard forks require extensive coordination, testing, and implementation changes beyond parameter adjustments. For example, in Lighthouse, a typical hard fork implementation requires thousands of lines of boilerplate before any protocol changes occur. BPO forks streamline this process by avoiding the need for this boilerplate code. ### Why specify parameters in the node configuration instead of code? Allowing blob parameters to be configured externally enables rapid experimentation, testing, and adjustments without requiring code changes across client implementations. Testing teams can investigate different parameters with minimal involvement from client implementers. ### Why
@@ -5725,23 +5725,23 @@ RATIONALE:
 
 
 === EIP-7793 ===
-TITLE: ASSERTTXINDEX opcode
+TITLE: Conditional Transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-17
-REQUIRES: 
+REQUIRES: 7843
 
 SUMMARY:
-This EIP proposes to add a new opcode `ASSERTTXINDEX` (`0xfb`), that reverts if the index of the current transaction within the block does not match the expected value. This allows for transactions that can only be executed at a certain index within a block.
+This EIP proposes to add a new transaction format for "conditional transactions", that are only valid at a specified slot and index within the block. A new opcode `TXINDEX` is introduced to expose the conditional transaction index onchain.
 
 SPECIFICATION:
-A new opcode `ASSERTTXINDEX` is introduced at `0xfb`. It takes as an argument the expected transaction index as an offset into calldata. ### Input The opcode takes a single input from the stack, an offset into calldata. From the provided byte offset, a 32 byte word (the expected transaction index) is retrieved from calldata, matching the semantics of `CALLDATALOAD`. ### Behaviour The `ASSERTTXINDEX` instruction will revert under the following conditions: - The current transaction index does not match the expected value loaded from calldata. - If `gasUsed > 3` (to allow a `PUSH*` or similar instruction before to
+### Parameters | Constant | Value | | - | - | | `COND_TX_TYPE` | `Bytes1(0x05)` | | `TXINDEX_OPCODE_BYTE` | `Bytes1(0x4c)` | | `TXINDEX_OPCODE_GAS` | `2` | ### Conditional Transaction Type We introduce a new type of [EIP-2718](./eip-2718.md) transaction, "conditional transactions", where the `TransactionType` is `COND_TX_TYPE` and the `TransactionPayload` is the RLP serialization of the following `TransactionPayloadBody`: ``` [chain_id, nonce, max_priority_fee_per_gas, max_fee_per_gas, gas_limit, to, value, data, access_list, max_fee_per_blob_gas, blob_versioned_hashes, conditional_slot, conditional_tx_index, y_parity, r, s] ``` The fields `chain_id`, `nonce`, `max_priority_fee_per_gas`, `max_fee_per_gas`, `gas_limit`, `to`, `value`, `data`, `access_list`, `max_fee_per_blob_gas` follow the same semantics as [EIP-4844](./eip-4844.md). The field `blob_versioned_hashes` is the
 
 MOTIVATION:
-The new opcode aims to improve support for encrypted mempools. Transactions in an encrypted mempool are ordered while the transactions are encrypted, before being decrypted and included onchain at the top of the block. If the builder does not respect the order when including the decrypted transactions then they could frontrun decrypted transactions. The new opcode can be used to make this impossible; if a decrypted transaction is not included at the correct index, it will revert.
+The proposal aims to improve support for encrypted mempools. Transactions in an encrypted mempool are ordered while the transactions are encrypted, before being decrypted and included onchain at the top of the block. If the builder does not respect the order when including the decrypted transactions then they could frontrun decrypted transactions. The new transaction type can be used to make this impossible; if a decrypted transaction is not included at the correct index, it will be invalid.
 
 RATIONALE:
-### Assertion An alternative design could simply return the current transaction index. The assertion approach is favoured as it means that the expected transaction index can be determined statically, rather than allowing dynamic behaviour based on the returned transaction index. This prevents complex constraints being imposed that makes it difficult to build a block. Furthermore the instruction must execute at the start of a transaction (with a `PUSH*` before to provide an argument) and read its input from calldata, so that one can statically evaluate what the expected transaction index is. ### Gas Price The opcode is priced
+### Transaction Type An alternative design could simply return the current transaction index without adding a new transaction type. Adding a new transaction type is favoured as it means that the expected transaction index must be declared statically upfront, rather than allowing dynamic behaviour based on the returned transaction index. This prevents complex constraints being imposed that makes it difficult to build a block. ### Gas Price The opcode is priced to match similar opcodes in the `W_base` set.
 
 
 === EIP-2566 ===
