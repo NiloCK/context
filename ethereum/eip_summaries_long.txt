@@ -8522,7 +8522,7 @@ Other solutions that would allow returning dynamic data were considered, but the
 === EIP-7702 ===
 TITLE: Set Code for EOAs
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-05-07
 REQUIRES: 2, ,,  , 1, 6, 1, ,,  , 1, 0, 5, 2, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 3, 5, 4, 1, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4
 
