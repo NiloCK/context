@@ -2530,7 +2530,7 @@ SUMMARY:
 At the start of each epoch, pre-calculate and store in the `beacon_state` a deterministic `proposer_lookahead` for the next `MIN_SEED_LOOKAHEAD + 1` epochs.
 
 SPECIFICATION:
-The `BeaconState` container is extended with a `proposer_lookahead` field, which is a list of validator indices covering the full visible lookahead period, starting from
+The `BeaconState` container is extended with a `proposer_lookahead` field, which is a vector of validator indices covering the full visible lookahead period, starting from
 
 MOTIVATION:
 Unlike RANDAO seeds, which have a deterministic lookahead of at least `MIN_SEED_LOOKAHEAD == 1` epochs, the beacon proposer schedule of epoch `N + 1`
@@ -7786,7 +7786,7 @@ SUMMARY:
 We propose splitting the Ethereum transaction scope into multiple steps: validations, execution, and post-operation logic. Transaction validity is determined by the result of the
 
 SPECIFICATION:
-### Constants | Name | Value | |-------------------|--------------------------------------------| | AA_TX_TYPE | TBD | | AA_ENTRY_POINT | `address(0x7701)` | | AA_BASE_GAS_COST | 15000 | ###
+### Constants | Name | Value | |-----------------------------|-------------------| | `AA_TX_TYPE` | TBD | | `AA_ENTRY_POINT` | `address(0x7701)` | | `AA_BASE_GAS_COST` | 15000 | |
 
 MOTIVATION:
 Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps.

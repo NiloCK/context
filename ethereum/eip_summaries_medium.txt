@@ -2530,7 +2530,7 @@ SUMMARY:
 At the start of each epoch, pre-calculate and store in the `beacon_state` a deterministic `proposer_lookahead` for the next `MIN_SEED_LOOKAHEAD + 1` epochs.
 
 SPECIFICATION:
-The `BeaconState` container is extended with a `proposer_lookahead` field, which is a list of validator indices covering the full visible lookahead period, starting from the beginning of the current epoch to the next `MIN_SEED_LOOKAHEAD` epochs. ```python class BeaconState: ... proposer_lookahead: List[ValidatorIndex, (MIN_SEED_LOOKAHEAD + 1) * SLOTS_PER_EPOCH] ``` For example,
+The `BeaconState` container is extended with a `proposer_lookahead` field, which is a vector of validator indices covering the full visible lookahead period, starting from the beginning of the current epoch to the next `MIN_SEED_LOOKAHEAD` epochs. ```python class BeaconState: ... proposer_lookahead: Vector[ValidatorIndex, (MIN_SEED_LOOKAHEAD + 1) * SLOTS_PER_EPOCH] ``` For example,
 
 MOTIVATION:
 Unlike RANDAO seeds, which have a deterministic lookahead of at least `MIN_SEED_LOOKAHEAD == 1` epochs, the beacon proposer schedule of epoch `N + 1` is not fully predictable from the beacon state during epoch `N`. The reason is that, under certain edge cases, the effective balances (EBs) of active
@@ -7786,7 +7786,7 @@ SUMMARY:
 We propose splitting the Ethereum transaction scope into multiple steps: validations, execution, and post-operation logic. Transaction validity is determined by the result of the validation steps of a transaction. We further separate transaction validation for the purposes of authorization and the gas fee payment, allowing one contract to pay
 
 SPECIFICATION:
-### Constants | Name | Value | |-------------------|--------------------------------------------| | AA_TX_TYPE | TBD | | AA_ENTRY_POINT | `address(0x7701)` | | AA_BASE_GAS_COST | 15000 | ### New Transaction Type A new [EIP-2718](./eip-2718) transaction with type `AA_TX_TYPE` is introduced. Transactions of this type are referred to as "AA transactions". Their payload should
+### Constants | Name | Value | |-----------------------------|-------------------| | `AA_TX_TYPE` | TBD | | `AA_ENTRY_POINT` | `address(0x7701)` | | `AA_BASE_GAS_COST` | 15000 | | `ROLE_SENDER_DEPLOYMENT` | `0xA0` | | `ROLE_SENDER_VALIDATION` | `0xA1` | | `ROLE_PAYMASTER_VALIDATION` | `0xA2` | | `ROLE_SENDER_EXECUTION` | `0xA3` | | `ROLE_PAYMASTER_POST_OP` | `0xA4` | ###
 
 MOTIVATION:
 Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps.
