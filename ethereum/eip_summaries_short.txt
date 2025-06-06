@@ -7792,7 +7792,7 @@ MOTIVATION:
 Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps.
 
 RATIONALE:
-### Introduction of the `TXPARAM*` opcode family The validation calls of a Smart Contract Account code need to have full access to the majority
+A full list of rationales for the decisions made in this proposal can be found in the [README document](../assets/eip-7701/README.md).
 
 
 === EIP-6046 ===

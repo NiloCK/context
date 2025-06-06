@@ -7789,10 +7789,10 @@ SPECIFICATION:
 ### Constants | Name | Value | |-----------------------------|-------------------| | `AA_TX_TYPE` | TBD | | `AA_ENTRY_POINT` | `address(0x7701)` | | `AA_BASE_GAS_COST` | 15000 | | `ROLE_SENDER_DEPLOYMENT` | `0xA0` | | `ROLE_SENDER_VALIDATION` | `0xA1` | | `ROLE_PAYMASTER_VALIDATION` | `0xA2` | | `ROLE_SENDER_EXECUTION` | `0xA3` | | `ROLE_PAYMASTER_POST_OP` | `0xA4` | ###
 
 MOTIVATION:
-Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps.
+Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps. A more detailed motivation for this proposal can be found in the [README document](../assets/eip-7701/README.md).
 
 RATIONALE:
-### Introduction of the `TXPARAM*` opcode family The validation calls of a Smart Contract Account code need to have full access to the majority of transaction details in order to be able to make an informed decision about either accepting or rejecting the transaction. A small subset of this
+A full list of rationales for the decisions made in this proposal can be found in the [README document](../assets/eip-7701/README.md).
 
 
 === EIP-6046 ===

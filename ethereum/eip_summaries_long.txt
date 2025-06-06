@@ -7789,10 +7789,10 @@ SPECIFICATION:
 ### Constants | Name | Value | |-----------------------------|-------------------| | `AA_TX_TYPE` | TBD | | `AA_ENTRY_POINT` | `address(0x7701)` | | `AA_BASE_GAS_COST` | 15000 | | `ROLE_SENDER_DEPLOYMENT` | `0xA0` | | `ROLE_SENDER_VALIDATION` | `0xA1` | | `ROLE_PAYMASTER_VALIDATION` | `0xA2` | | `ROLE_SENDER_EXECUTION` | `0xA3` | | `ROLE_PAYMASTER_POST_OP` | `0xA4` | ### New Transaction Type A new [EIP-2718](./eip-2718) transaction with type `AA_TX_TYPE` is introduced. Transactions of this type are referred to as "AA transactions". Their payload should be interpreted as: ``` AA_TX_TYPE || rlp([ chain_id, nonce, sender, sender_validation_data, deployer, deployer_data, paymaster, paymaster_data, sender_execution_data, max_priority_fee_per_gas, max_fee_per_gas, sender_validation_gas, paymaster_validation_gas, sender_execution_gas, paymaster_post_op_gas, access_list, authorization_list
 
 MOTIVATION:
-Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps.
+Native Account Abstraction allows custom validation logic of a transaction and custom gas payment logic, opening new use-cases and features for wallets and dApps. A more detailed motivation for this proposal can be found in the [README document](../assets/eip-7701/README.md).
 
 RATIONALE:
-### Introduction of the `TXPARAM*` opcode family The validation calls of a Smart Contract Account code need to have full access to the majority of transaction details in order to be able to make an informed decision about either accepting or rejecting the transaction. A small subset of this data is available with the existing opcodes, like `CALLER (0x33)` or `GASPRICE (0x3A)`. However, creating an opcode for every transaction parameter is not feasible or desirable. The `TXPARAM*` opcode family provides the Account Abstraction contracts with access to this data. These values are not made accessible to the transactions'
+A full list of rationales for the decisions made in this proposal can be found in the [README document](../assets/eip-7701/README.md).
 
 
 === EIP-6046 ===
