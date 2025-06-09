@@ -978,7 +978,7 @@ RATIONALE:
 === EIP-7642 ===
 TITLE: eth/69 - history expiry and simpler receipts
 TYPE: Standards Track Networking
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-02-29
 REQUIRES: 5793
 
@@ -1486,6 +1486,26 @@ The current JSON-RPC interface for Ethereum nodes has a number of shortcomings. 
 
 RATIONALE:
 Ethereum nodes have been moving away from providing read-write functionality such as transaction and message signing, and from other services such as code compilation,
+
+
+=== EIP-7949 ===
+TITLE: Genesis File Format
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2025-05-19
+REQUIRES: 
+
+SUMMARY:
+This EIP defines a canonical structure for Ethereum genesis files (`genesis.json`) used to bootstrap Ethereum networks. The standard aligns with the de facto structure
+
+SPECIFICATION:
+The canonical genesis file MUST be a JSON object with the following top-level fields: ### Top-Level Fields | Field | Description | |-----------------|-----------------------------------------------------------------| |
+
+MOTIVATION:
+The lack of an official standard for the `genesis.json` file has led to incompatibilities, bugs and confusion, as well as added workload for those
+
+RATIONALE:
+There are a growing number of EIPs that propose improvements to how a network is configured at genesis: [Add Blob Schedule to EL Config
 
 
 === EIP-4520 ===
@@ -2108,11 +2128,23 @@ Formalizing the `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled
 
 
 === EIP-7778 ===
-TITLE: Prevent Block Gas Smuggling
+TITLE: Block Gas Limit Accounting without Refunds
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-10-01
 REQUIRES: 
+
+SUMMARY:
+This EIP modifies the block gas accounting mechanism to prevent the circumvention of block gas limits. It proposes that gas refunds, particularly those from
+
+SPECIFICATION:
+### Gas Accounting Changes 1. **User Gas Costs (Unchanged):** - Users continue to receive gas refunds for operations that qualify (e.g., setting storage to
+
+MOTIVATION:
+Currently, gas refunds from operations like clearing storage slots (setting to zero) reduce both the transaction gas cost for users and the gas counted
+
+RATIONALE:
+### Aligning Gas Limits with Computational Work - The block gas limit is designed to constrain the computational load per block - Gas refunds
 
 
 === EIP-7523 ===
@@ -3034,7 +3066,7 @@ The purpose of a Provider is to _provide_ a consumer with access to Ethereum. In
 === EIP-7843 ===
 TITLE: SLOTNUM opcode
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-12-06
 REQUIRES: 
 
@@ -3042,7 +3074,7 @@ SUMMARY:
 This EIP proposes to add a new opcode `SLOTNUM` (`0x4b`), that returns the corresponding slot number for the current block.
 
 SPECIFICATION:
-A new opcode `SLOTNUM` is introduced at `0x4b`. It shall return one stack element. ### Output #### Stack | Stack | Value | |
+A new opcode `SLOTNUM` is introduced at `0x4b`. It shall return one stack element. ### Output One element `SlotNumber` is added to the stack;
 
 MOTIVATION:
 There are currently two ways to get the current slot number onchain: 1) Calculate from the block timestamp. This requires hardcoding the chain slot
@@ -4436,6 +4468,26 @@ RATIONALE:
 ### Signature doesn't include transaction type as first signature byte These transaction types are explicitly designed to be signature compatible with legacy transactions, which
 
 
+=== EIP-7950 ===
+TITLE: Encode chain id with transaction hash
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2025-05-22
+REQUIRES: 155
+
+SUMMARY:
+This standard proposes a way to encode the combination of a chain ID and a transaction hash into one string.
+
+SPECIFICATION:
+The encoded string has three components: - A chain ID, denoted as `chainId`. The used chain id MUST be based on [EIP-155](./eip-155) and the
+
+MOTIVATION:
+Looking up a transaction by its hash always requires the context of the chain - a transaction hash alone is not enough to identify
+
+RATIONALE:
+The chain ID is the most important detail when routing queries based on this standard and is therefore the first element in the string.
+
+
 === EIP-6811 ===
 TITLE: To The Moon—10 Minute Blocks
 TYPE: Standards Track Core
@@ -4759,20 +4811,20 @@ RATIONALE:
 
 
 === EIP-7773 ===
-TITLE: Hardfork Meta - Amsterdam
+TITLE: Hardfork Meta - Glamsterdam
 TYPE: Meta 
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-09-26
 REQUIRES: 7, 6, 0, 7, ,,  , 7, 7, 2, 3
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Proposed, Considered for & Scheduled for Inclusion in the Amsterdam network upgrade.
+This Meta EIP lists the EIPs formally Proposed, Considered for & Scheduled for Inclusion in the Glamsterdam network upgrade.
 
 SPECIFICATION:
 Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion ### Considered
 
 RATIONALE:
-This Meta EIP provides a global view of all changes included in the Amsterdam network upgrade, as well as links to full specification.
+This Meta EIP provides a global view of all changes included in the Glamsterdam network upgrade, as well as links to full specification.
 
 
 === EIP-2387 ===
@@ -6069,7 +6121,7 @@ One key was chosen over using many keys to make efficient use of space. The use 
 === EIP-7932 ===
 TITLE: Algorithmic Transaction Wrapper
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-04-12
 REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2
 
@@ -6189,15 +6241,15 @@ RATIONALE:
 === EIP-7600 ===
 TITLE: Hardfork Meta - Pectra
 TYPE: Meta 
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-01-18
-REQUIRES: 2, 5, 3, 7, ,,  , 2, 9, 3, 5, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 5, 4, 9, ,,  , 7, 6, 2, 3, ,,  , 7, 6, 8, 5, ,,  , 7, 6, 9, 1, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 4, 0
+REQUIRES: 2, 5, 3, 7, ,,  , 2, 9, 3, 5, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 5, 4, 9, ,,  , 7, 6, 2, 3, ,,  , 7, 6, 8, 5, ,,  , 7, 6, 9, 1, ,,  , 7, 7, 0, 2
 
 SUMMARY:
 This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Prague/Electra network upgrade.
 
 SPECIFICATION:
-A formal definition for `Scheduled for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for
+### Included EIPs #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Prague/Electra network upgrade, as well as links to the full specification.
