@@ -2313,7 +2313,7 @@ RATIONALE:
 === ERC-6093 ===
 TITLE: Custom errors for commonly-used tokens
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2022-12-06
 REQUIRES: 2, 0, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
 
@@ -9733,7 +9733,7 @@ The `knownAccounts` only allows specifying the exact values for storage slots. W
 === ERC-7913 ===
 TITLE: Signature Verifiers
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-21
 REQUIRES: 
 
