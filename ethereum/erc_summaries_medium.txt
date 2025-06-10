@@ -8267,7 +8267,7 @@ This specification is extending and clarifying current custom lists such as from
 === ERC-7399 ===
 TITLE: ⚡ Flash Loans ⚡
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-07-25
 REQUIRES: 20
 
@@ -8818,6 +8818,26 @@ With NFTs being a widespread form of tokens in the Ethereum ecosystem and being 
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. **Does the proposal support custom emotes or only the Unicode specified ones?**\ The proposal only accepts the Unicode identifier which is a `string` value. This means that while we encourage implementers to add the reactions using standardized emojis, the values
+
+
+=== ERC-7891 ===
+TITLE: Splitting and Merging of NFTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-15
+REQUIRES: 7, 2, 1, ,,  , 6, 1, 5, 0
+
+SUMMARY:
+This standard extends [EIP-721](./eip-721.md) and [EIP-6150](./eip-6150.md). This introduces a structured parent-child relationship between NFTs, allowing an NFT to be fractionally split into multiple child NFTs and merged back into a single entity. It provides interfaces to retrieve an NFT's parent, children, and hierarchical status, ensuring flexible ownership management. This
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Every compliant contract MUST implement this proposal, [EIP-721](./eip-721), [EIP-165](./eip-165), and [ERC-6150](./eip-6150) ```solidity pragma solidity ^0.8.0;
+
+MOTIVATION:
+This EIP introduces hierarchical NFTs with splitting and merging capabilities, allowing assets to be dynamically restructured. This proposal is crucial for fractional ownership, gaming assets, and financial instruments, where assets need to be split or merged. 1. **Splitting**: One of the key limitations of [EIP-6150](./eip-6150.md) is its rigid hierarchy,
+
+RATIONALE:
+This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduce a structured mechanism for share-based hierarchical NFTs, enabling splitting, merging, and fractional ownership directly within the token standard. The proposal reuses [ERC-6150](./eip-6150)'s parent-child architecture to preserve compatibility and reduce implementation complexity. Share management is embedded natively through internal mappings, allowing
 
 
 === ERC-6596 ===
@@ -9510,6 +9530,26 @@ RATIONALE:
 This standard extends the applicability of metadata assignment to those use cases that are not adequately represented by EIP-735, EIP-780, or similar proposals. Namely, it enforces the constraint of one attribute value per attribute ID per address, as opposed to one value per ID per address *per issuer*. Aside
 
 
+=== ERC-7888 ===
+TITLE: Crosschain Broadcaster
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-18
+REQUIRES: 
+
+SUMMARY:
+This ERC defines a standardized protocol for cross-rollup message broadcasting and reception via storage proofs. Users can broadcast messages on a source chain, those messages can then be read by one or many other chains, as long as those chains share a common ancestor chain with the source chain.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### High Level There is a singleton Receiver and Broadcaster contract deployed to each chain. Broadcasters are responsible for storing
+
+MOTIVATION:
+The Ethereum ecosystem is experiencing a rapid growth in the number of rollup chains. As the number of chains grows, the experience becomes more fragmented for users, creating a need for trustless "interop" between rollup chains. These rollup chains, hosted on different rollup stacks, have heterogenous properties, and as
+
+RATIONALE:
+### Broadcast vs Unicast A contract on any given chain cannot dictate which other chains can and cannot inspect its state. Contracts are naturally broadcasting their state to anything capable of reading it. Targeted messaging applications can always be built on top of a broadcast messaging system. See [Reference
+
+
 === ERC-7507 ===
 TITLE: Multi-User NFT Extension
 TYPE: Standards Track ERC
@@ -9813,7 +9853,7 @@ Needs discussion.
 === ERC-7813 ===
 TITLE: Store, Table-Based Introspectable Storage
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-08
 REQUIRES: 
 

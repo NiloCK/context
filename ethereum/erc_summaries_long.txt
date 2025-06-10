@@ -2381,7 +2381,7 @@ SUMMARY:
 This proposal introduces a standard way for smart contracts to delegate capabilities to other smart contracts or Externally Owned Accounts (EOAs). The delegating contract (delegator) must be able to authorize a `DelegationManager` contract to call the delegator to execute the desired action. This framework empowers a delegating contract with the ability to delegate any actions it has the authority to perform, thereby enabling more flexible and scalable contract interactions. This standard outlines the minimal interface necessary to facilitate such delegation. Additionally, this proposal is compatible with [ERC-4337](./eip-4337.md), although its implementation does not necessitate [ERC-4337](./eip-4337.md).
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Terms - A **Delegator** is a smart contract that can create a delegation. - A **Delegation Manager** is a singleton smart contract that is responsible for validating delegation authority and calling on the *Delegator* to execute an action. It implements the `ERC7710Manager` interface. - A **delegation** is an authority given to another address to perform a specific action. - A **delegate** is a
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Terms - A **Delegator** is a smart contract that can create a delegation. - A **Delegation Manager** is a smart contract that validates delegation authority and calls on the *Delegator* to execute an action. It implements the `ERC7710Manager` interface. A Delegation Manager verifies and processes delegation redemptions, and multiple Delegation Managers can exist with different implementations. A contract account can be its own
 
 MOTIVATION:
 The development of smart contracts on Ethereum has led to a diverse array of decentralized applications (dApps) that leverage composability to interact with one another in innovative ways. While current smart contracts are indeed capable of working together, enabling these interactions, especially in the realm of sharing capabilities or permissions, remains a tedious and often gas-expensive process, which lacks backwards compatibility. Currently, for a smart contract to interact with or utilize the functionality of another, it typically requires hardcoded permissions or the development of bespoke, intermediary contracts. This not only increases the complexity and development time but also
@@ -8267,7 +8267,7 @@ This specification is extending and clarifying current custom lists such as from
 === ERC-7399 ===
 TITLE: ⚡ Flash Loans ⚡
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-07-25
 REQUIRES: 20
 
@@ -8275,7 +8275,7 @@ SUMMARY:
 A flash loan is a loan between lender and borrower smart contracts that must be repaid, plus an optional fee, before the end of the transaction. This ERC specifies interfaces for lenders to accept flash loan requests, and for borrowers to take temporary control of the transaction within the lender execution. The process for the safe execution of flash loans is also specified.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Under this standard a flash loan is a loan of an `amount` of an [ERC-20](./eip-20.md) `asset` from a `lender`. This loan can remain open for the span of a single `flash` call in the `lender`. This `amount` plus a `fee` defined by the `lender` in the same `asset` must be repaid before the end of `flash` call at a `repayment receiver` address defined by
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Under this standard a flash loan is a loan of an `amount` of an [ERC-20](./eip-20.md) `asset` from a `lender`. This loan can remain open for the span of a single `flash` call in the `lender`. This `amount` plus a `fee` defined by the `lender` in the same `asset` must be repaid before the end of `flash` call at a _repayment receiver_ address defined by
 
 MOTIVATION:
 The current state of the flash loan ecosystem is fragmented and lacks standardization, leading to several challenges for both lenders and borrowers. The absence of a common interface results in increased integration efforts, as each flash loan provider implements its own unique approach. This lack of standardization is expected to become more problematic as the ecosystem grows, requiring more resources to maintain compatibility. A comprehensive analysis of the existing flash loan protocols reveals significant differences in their implementations, including: - Inconsistent syntax for initiating flash loans across different platforms. - Variations in the relationship between the loan receiver
@@ -8818,6 +8818,26 @@ With NFTs being a widespread form of tokens in the Ethereum ecosystem and being 
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. **Does the proposal support custom emotes or only the Unicode specified ones?**\ The proposal only accepts the Unicode identifier which is a `string` value. This means that while we encourage implementers to add the reactions using standardized emojis, the values not covered by the Unicode standard can be used for custom emotes. The only drawback being that the interface displaying the reactions will have to know what kind of image to render and such additions will probably be limited to the interface or marketplace in which they were made.
+
+
+=== ERC-7891 ===
+TITLE: Splitting and Merging of NFTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-15
+REQUIRES: 7, 2, 1, ,,  , 6, 1, 5, 0
+
+SUMMARY:
+This standard extends [EIP-721](./eip-721.md) and [EIP-6150](./eip-6150.md). This introduces a structured parent-child relationship between NFTs, allowing an NFT to be fractionally split into multiple child NFTs and merged back into a single entity. It provides interfaces to retrieve an NFT's parent, children, and hierarchical status, ensuring flexible ownership management. This standard is particularly useful for applications in fractional ownership, asset distribution, and composable digital assets, opening new possibilities in fields like real estate, gaming, and decentralized finance.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Every compliant contract MUST implement this proposal, [EIP-721](./eip-721), [EIP-165](./eip-165), and [ERC-6150](./eip-6150) ```solidity pragma solidity ^0.8.0; // Note: the ERC-165 identifier for this interface is 0x43cb816b. interface IERC7891 /* is IERC6150, IERC721, IERC165 */ { /** * @notice Emitted when a child token is minted under a parent with an assigned share. * @param parentId The ID of the parent token * @param childId The
+
+MOTIVATION:
+This EIP introduces hierarchical NFTs with splitting and merging capabilities, allowing assets to be dynamically restructured. This proposal is crucial for fractional ownership, gaming assets, and financial instruments, where assets need to be split or merged. 1. **Splitting**: One of the key limitations of [EIP-6150](./eip-6150.md) is its rigid hierarchy, where NFTs are permanently assigned to a parent without the ability to restructure ownership. In many real-world scenarios, assets need to be split into smaller, independent units. This EIP introduces a standardized way to split an NFT into multiple child NFTs, enabling dynamic asset management. For example, in financial
+
+RATIONALE:
+This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduce a structured mechanism for share-based hierarchical NFTs, enabling splitting, merging, and fractional ownership directly within the token standard. The proposal reuses [ERC-6150](./eip-6150)'s parent-child architecture to preserve compatibility and reduce implementation complexity. Share management is embedded natively through internal mappings, allowing each token to track its fractional ownership independently without relying on external protocols. Functions like `mintSplit` and `mintMerge` are designed to reflect real-world asset behaviors, clearly distinguishing between asset decomposition and consolidation. The `sharePass` function facilitates redistribution of shares between tokens without requiring minting or burning, offering an efficient
 
 
 === ERC-6596 ===
@@ -9510,6 +9530,26 @@ RATIONALE:
 This standard extends the applicability of metadata assignment to those use cases that are not adequately represented by EIP-735, EIP-780, or similar proposals. Namely, it enforces the constraint of one attribute value per attribute ID per address, as opposed to one value per ID per address *per issuer*. Aside from the prescribed attribute value, attribute properties are deliberately omitted from the standard. While many attribute registries will require additional metadata on attributes at both the instance and the class level, reliable and flexible interoperability between highly variable registry extensions is facilitated more effectively by enforcing a widely-applicable base
 
 
+=== ERC-7888 ===
+TITLE: Crosschain Broadcaster
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-18
+REQUIRES: 
+
+SUMMARY:
+This ERC defines a standardized protocol for cross-rollup message broadcasting and reception via storage proofs. Users can broadcast messages on a source chain, those messages can then be read by one or many other chains, as long as those chains share a common ancestor chain with the source chain. The standard enables trustless message passing across rollups hosted on different rollup architecture stacks.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### High Level There is a singleton Receiver and Broadcaster contract deployed to each chain. Broadcasters are responsible for storing messages. Receivers are responsible for verifying proofs of Broadcasters' storage on remote chains. A Receiver learns about the contents of a Broadcaster on another chain by using storage proofs to unwrap a finalized block hash of the Broadcaster's chain. The Receiver verifies these finalized block hashes using storage proofs
+
+MOTIVATION:
+The Ethereum ecosystem is experiencing a rapid growth in the number of rollup chains. As the number of chains grows, the experience becomes more fragmented for users, creating a need for trustless "interop" between rollup chains. These rollup chains, hosted on different rollup stacks, have heterogenous properties, and as yet there does not exist a simple, trustless, unified mechanism for sending messages between these diverse chains. Many classes of applications could benefit from a unified system for broadcasting messages across chains. Some examples include: - **Intent-Based Protocols:** These protocols enable "fillers" to quickly execute crosschain actions on behalf
+
+RATIONALE:
+### Broadcast vs Unicast A contract on any given chain cannot dictate which other chains can and cannot inspect its state. Contracts are naturally broadcasting their state to anything capable of reading it. Targeted messaging applications can always be built on top of a broadcast messaging system. See [Reference Implementation](#reference-implementation) for an example of a unicast application. ### Using Storage Proofs Message reading uses storage proofs. An alternative to this would be to pass messages (perhaps batched) via the canonical bridges of the chains. However storage proofs have some advantages over this method: - They only require gas
+
+
 === ERC-7507 ===
 TITLE: Multi-User NFT Extension
 TYPE: Standards Track ERC
@@ -9813,7 +9853,7 @@ Needs discussion.
 === ERC-7813 ===
 TITLE: Store, Table-Based Introspectable Storage
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-08
 REQUIRES: 
 

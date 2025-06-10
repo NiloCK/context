@@ -8267,7 +8267,7 @@ This specification is extending and clarifying current custom lists such as from
 === ERC-7399 ===
 TITLE: ⚡ Flash Loans ⚡
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-07-25
 REQUIRES: 20
 
@@ -8818,6 +8818,26 @@ With NFTs being a widespread form of tokens in the Ethereum ecosystem and being 
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. **Does the proposal support custom emotes or only the Unicode specified ones?**\ The proposal only
+
+
+=== ERC-7891 ===
+TITLE: Splitting and Merging of NFTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-15
+REQUIRES: 7, 2, 1, ,,  , 6, 1, 5, 0
+
+SUMMARY:
+This standard extends [EIP-721](./eip-721.md) and [EIP-6150](./eip-6150.md). This introduces a structured parent-child relationship between NFTs, allowing an NFT to be fractionally split into multiple child
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+This EIP introduces hierarchical NFTs with splitting and merging capabilities, allowing assets to be dynamically restructured. This proposal is crucial for fractional ownership, gaming
+
+RATIONALE:
+This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduce a structured mechanism for share-based hierarchical NFTs, enabling splitting, merging, and fractional ownership directly within
 
 
 === ERC-6596 ===
@@ -9510,6 +9530,26 @@ RATIONALE:
 This standard extends the applicability of metadata assignment to those use cases that are not adequately represented by EIP-735, EIP-780, or similar proposals. Namely,
 
 
+=== ERC-7888 ===
+TITLE: Crosschain Broadcaster
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-18
+REQUIRES: 
+
+SUMMARY:
+This ERC defines a standardized protocol for cross-rollup message broadcasting and reception via storage proofs. Users can broadcast messages on a source chain, those
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+
+MOTIVATION:
+The Ethereum ecosystem is experiencing a rapid growth in the number of rollup chains. As the number of chains grows, the experience becomes more
+
+RATIONALE:
+### Broadcast vs Unicast A contract on any given chain cannot dictate which other chains can and cannot inspect its state. Contracts are naturally
+
+
 === ERC-7507 ===
 TITLE: Multi-User NFT Extension
 TYPE: Standards Track ERC
@@ -9813,7 +9853,7 @@ Needs discussion.
 === ERC-7813 ===
 TITLE: Store, Table-Based Introspectable Storage
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-08
 REQUIRES: 
 
