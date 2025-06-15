@@ -1207,7 +1207,7 @@ SUMMARY:
 This subscription-based [ERC-20](./eip-20.md) token extends the basic [ERC-20](./eip-20.md) token standard with a `subscribe` and `unsubscribe` function, which allow users to subscribe or unsubscribe from
 
 SPECIFICATION:
-Below are the implementaions required by the standard: ### `SubscriptionToken` #### `subscribers` Returns the list of `addresses` subscribed to the subscription token contract. ####
+Below are the implementations required by the standard: ### `SubscriptionToken` #### `subscribers` Returns the list of `addresses` subscribed to the subscription token contract. ####
 
 MOTIVATION:
 The rise of subscription-based business models necessitates a standardized approach to handle recurring payments on the Ethereum blockchain. Currently, users often manually initiate subscription

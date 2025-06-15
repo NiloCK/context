@@ -1207,7 +1207,7 @@ SUMMARY:
 This subscription-based [ERC-20](./eip-20.md) token extends the basic [ERC-20](./eip-20.md) token standard with a `subscribe` and `unsubscribe` function, which allow users to subscribe or unsubscribe from the subscription service. The `subscriptionFee` and `subscriptionFrequency` variables define the cost and frequency of the subscription. The `nextPaymentDate` mapping keeps track of the next payment
 
 SPECIFICATION:
-Below are the implementaions required by the standard: ### `SubscriptionToken` #### `subscribers` Returns the list of `addresses` subscribed to the subscription token contract. #### `subscriptionInfo` Metadata information of the subscription, like - `subscriptionID`, `subscriptionName`, `subscriptionDesc` and `subscriptionTandC`. #### `subscriptionFee` The subscription amount specified that will be deducted in `subscriptionFrequency`
+Below are the implementations required by the standard: ### `SubscriptionToken` #### `subscribers` Returns the list of `addresses` subscribed to the subscription token contract. #### `subscriptionInfo` Metadata information of the subscription, like - `subscriptionID`, `subscriptionName`, `subscriptionDesc` and `subscriptionTandC`. #### `subscriptionFee` The subscription amount specified that will be deducted in `subscriptionFrequency`
 
 MOTIVATION:
 The rise of subscription-based business models necessitates a standardized approach to handle recurring payments on the Ethereum blockchain. Currently, users often manually initiate subscription payments, resulting in inconvenience and potential disruptions in service delivery. By introducing a Subscription Token, users can seamlessly authorize periodic deductions, enabling uninterrupted access to
