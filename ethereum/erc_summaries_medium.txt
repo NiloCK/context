@@ -8731,13 +8731,13 @@ CREATED: 2024-11-29
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
 SUMMARY:
-This proposal is an extension of [ERC-721](./eip-721.md). This proposal introduces a new role, Reader, who is granted by the Owner and allows multiple Readers for a single NFT. Additionally, this proposal extends the metadata interface of ERC-721, requiring that metadata should include at least a commitment, size, expire, and
+This proposal is an extension of [ERC-721](./eip-721.md). This proposal introduces a new role, Reader, who is granted by the Owner and allows multiple Readers for a single NFT. Additionally, this proposal extends the metadata interface of ERC-721, requiring that metadata should include at least a commitment, size, expire time,
 
 SPECIFICATION:
 ### Terms In this proposal, we divide data assets into three parts: - Storage Metadata: Includes commitment, size, expire, and uploader's address. Stored and maintained by storage contracts on the blockchain. - Permission Metadata: Includes information on ownership and reading rights, as well as which addresses can modify this
 
 MOTIVATION:
-ERC-721 proposed the NFTs to represent the ownership of digital or physical assets. Currently, the NFT metadata is considered the NFT content, and its scarcity determines the value of the NFT. NFT owners can convert the content value of NFTs into revenue by transferring the ownership of NFTs. However,
+ERC-721 proposed NFTs to represent the ownership of digital or physical assets. Currently, the NFT metadata is considered the NFT content, and its scarcity determines the value of the NFT. NFT owners can convert the content value of NFTs into revenue by transferring the ownership of NFTs. However, due
 
 RATIONALE:
 ![arc](../assets/eip-7829/architect.svg) The biggest challenge for data asset NFTs is the visibility but inaccessibility of data content: after establishing access control permissions for NFT data content, i.e., accessing data content requires certain access permissions, how can users without data access permissions ensure that the data content exists when obtaining access

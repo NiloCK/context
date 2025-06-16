@@ -8737,7 +8737,7 @@ SPECIFICATION:
 ### Terms In this proposal, we divide data assets into three parts: - Storage Metadata: Includes commitment, size, expire, and uploader's address. Stored and
 
 MOTIVATION:
-ERC-721 proposed the NFTs to represent the ownership of digital or physical assets. Currently, the NFT metadata is considered the NFT content, and its
+ERC-721 proposed NFTs to represent the ownership of digital or physical assets. Currently, the NFT metadata is considered the NFT content, and its scarcity
 
 RATIONALE:
 ![arc](../assets/eip-7829/architect.svg) The biggest challenge for data asset NFTs is the visibility but inaccessibility of data content: after establishing access control permissions for NFT data
