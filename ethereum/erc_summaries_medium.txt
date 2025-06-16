@@ -2040,6 +2040,26 @@ RATIONALE:
 This standard extends the applicability of metadata assignment to those use cases that are not adequately represented by EIP-735, EIP-780, or similar proposals. Namely, it enforces the constraint of one attribute value per attribute ID per address, as opposed to one value per ID per address *per issuer*. Aside
 
 
+=== ERC-7908 ===
+TITLE: HD wallet In Treasury Management
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-03-07
+REQUIRES: 
+
+SUMMARY:
+This proposal aims to provide a standardized method for on-chain treasury management of institutional assets, ensuring secure private key generation, hierarchical management, and departmental permission isolation while supporting asset security and transaction efficiency in multi-chain environments. By defining a unified derivation path and security mechanisms, this proposal offers an
+
+SPECIFICATION:
+### Derivation Path For secure on-chain treasury account key management, implementations **MUST** use the following hierarchical deterministic (HD) path: ```latex m/44'/60'/entity_id' / department_id' / account_index ``` Path Components: 1. **Master Key (**`m`**)** - **SHALL** represent the root HD wallet private key. 2. **BIP-44 Compliance Layer (`44'`)** - **MUST** use
+
+MOTIVATION:
+With the rapid development of blockchain and DeFi, secure management of on-chain assets has become critical. Traditional private key management struggles to meet the security demands of large organizations in complex scenarios, where hierarchical key management, permission controls, and multi-signature mechanisms are essential. This proposal provides a standardized solution
+
+RATIONALE:
+The scenarios for which the proposal applies are: 1. **Company and Department Isolation**: Different subsidiaries within the group, as well as different departments within each subsidiary, can create isolated on-chain accounts. Enhanced derivation is used to isolate exposure risks. 2. **Group Unified Management Authority**: The group administrator holds the
+
+
 === ERC-2335 ===
 TITLE: BLS12-381 Keystore
 TYPE: Standards Track ERC
@@ -6310,6 +6330,26 @@ RATIONALE:
 The intent from individual technical decisions made during the development of **FKBTs** focused on maintaining consistency and backward compatibility with ERC-20s, all the while offering self-custodial security features to the user. It was important that **FKBT's** inherited all of ERC-20s characteristics to comply with requirements found in dApps which
 
 
+=== ERC-7902 ===
+TITLE: Wallet Capabilities for Account Abstraction
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-03-01
+REQUIRES: 5, 7, 9, 2, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+[EIP-5792](./eip-5792) defines a baseline JSON-RPC API for a communication between wallets and dapps, and provides an ability to extend the base protocol with "capabilities". This proposal defines a set of "capabilities" the wallets may want to implement in order to provide a comprehensive support for Account Abstraction (AA). These
+
+SPECIFICATION:
+All actions in Account Abstraction within the context of EIP-5792 must be done on a single chain and atomically. We define the following list of new "capabilities" which together cover many features necessary for Account Abstraction. Note that use of Paymasters managed by a "paymaster web service" is described
+
+MOTIVATION:
+[ERC-4337](./eip-4337.md) introduced Account Abstraction, enabling Smart Contract Accounts to function as first-class citizens in Ethereum. However, while [ERC-4337](./eip-4337.md) and [ERC-7769](./eip-7769.md) define a low-level RPC API for Account Abstraction, they do not specify a way for advanced AA-aware dApps to communicate their supported features and parameters to the advanced AA
+
+RATIONALE:
+<!-- TODO -->
+
+
 === ERC-725 ===
 TITLE: General data key/value store and execution
 TYPE: Standards Track ERC
@@ -6710,6 +6750,26 @@ The Proxy Contract proposed here should be deployed _as is_, and used as a drop-
 
 MOTIVATION:
 - Improve upon existing proxy implementations to improve developer experience for deploying and maintaining Proxy and Logic Contracts. - Standardize and improve the methods for verifying the bytecode used by the Proxy Contract.
+
+
+=== ERC-7857 ===
+TITLE: AI Agents NFT with Private Metadata
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-02
+REQUIRES: 
+
+SUMMARY:
+A standard interface for NFTs specifically designed for AI agents, where the metadata represents agent capabilities and requires privacy protection. Unlike traditional NFT standards that focus on static metadata, this standard introduces mechanisms for verifiable data ownership and secure transfer. By defining a unified interface for different verification methods
+
+SPECIFICATION:
+The EIP defines three key interfaces: the main NFT interface, the metadata interface, and the data verification interface. ### Data Verification System The verification system consists of two core components that work together to ensure secure data operations: 1. **On-chain Verifier (data verification interface)** - Implemented as a smart
+
+MOTIVATION:
+With the increasing intelligence of AI models, agents have become powerful tools for automating meaningful daily tasks. The integration of agents with blockchain technology has been recognized as a major narrative in the crypto industry, with many projects enabling agent creation for their users. However, a crucial missing piece
+
+RATIONALE:
+The design choices in this standard are motivated by several key requirements: 1. **Verification Abstraction**: The standard separates the verification logic into a dedicated interface (`IDataVerifier`), allowing different verification mechanisms (TEE, ZKP) to be implemented and used interchangeably. The verifier should support two types of proof: - Ownership Proof
 
 
 === ERC-7417 ===
