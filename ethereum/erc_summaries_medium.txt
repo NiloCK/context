@@ -8743,6 +8743,26 @@ RATIONALE:
 Storing ABIs onchain avoids the need to introduce additional dependencies for applications wishing to fetch them, such as swarm or HTTP access. Given the typical compactness of ABIs, we believe this is a worthwhile tradeoff in many cases. The two-step resolution process permits different names to provide different ABIs
 
 
+=== ERC-7936 ===
+TITLE: Versioned Proxy Contract Interface
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-04-17
+REQUIRES: 
+
+SUMMARY:
+This EIP standardizes an interface for proxy contracts that allows callers to explicitly select which version of an implementation contract they want to interact with. Unlike traditional proxy patterns that only expose the latest implementation, this standard enables backward compatibility by maintaining access to previous implementations while supporting upgrades.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface ```solidity interface IVersionedProxy { /// @notice Emitted when a new implementation version is registered /// @param version The
+
+MOTIVATION:
+Smart contract upgrades are essential for fixing bugs and adding features. Current proxy patterns typically force all callers to use the latest implementation, which can break existing integrations when interfaces change. Furthermore, traditional proxy patterns expose all users to risk if an upgrade is malicious, as they have no
+
+RATIONALE:
+### Version Identifiers as bytes32 Version identifiers are specified as `bytes32` rather than semantic versioning strings to: 1. Provide flexibility in versioning schemes 2. Reduce gas costs for storage and comparison 3. Allow for both string-based versions (converted to bytes32) and numeric versions 4. Allow for storing a Git
+
+
 === ERC-4626 ===
 TITLE: Tokenized Vaults
 TYPE: Standards Track ERC
