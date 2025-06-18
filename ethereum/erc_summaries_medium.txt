@@ -922,7 +922,7 @@ CREATED: 2018-11-13
 REQUIRES: 
 
 SUMMARY:
-BIP32 defines a way to generate hierarchical trees of keys which can be derived from a common master key. BIP32 and [BIP44](https://https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) defines the usage of these keys as wallets. In this EIP we describe the usage of such keys outside the scope of the blockchain defining a logical
+BIP32 defines a way to generate hierarchical trees of keys which can be derived from a common master key. BIP32 and [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) defines the usage of these keys as wallets. In this EIP we describe the usage of such keys outside the scope of the blockchain defining a logical
 
 SPECIFICATION:
 ### Path levels We define the following levels in BIP32 path: ```m / purpose' / coin_type' / subpurpose' / key_type' / key_index``` Apostrophe in the path indicates that BIP32 hardened derivation is used. This structure follows the [BIP43](https://github.com/bitcoin/bips/blob/master/bip-0043.mediawiki) recommendations and its [amendments for non-Bitcoin usage](https://github.com/bitcoin/bips/pull/523/files). Each level has a

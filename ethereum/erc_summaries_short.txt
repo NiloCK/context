@@ -922,7 +922,7 @@ CREATED: 2018-11-13
 REQUIRES: 
 
 SUMMARY:
-BIP32 defines a way to generate hierarchical trees of keys which can be derived from a common master key. BIP32 and [BIP44](https://https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) defines the
+BIP32 defines a way to generate hierarchical trees of keys which can be derived from a common master key. BIP32 and [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) defines the
 
 SPECIFICATION:
 ### Path levels We define the following levels in BIP32 path: ```m / purpose' / coin_type' / subpurpose' / key_type' / key_index``` Apostrophe in

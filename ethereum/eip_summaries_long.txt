@@ -1198,7 +1198,7 @@ SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ### Parameters - `FORK_BLKNUM` = `TBD` - `CHAIN_ID` = `TBD` - `TX_TYPE` = TBD, > 0x02 ([EIP-1559](./eip-1559.md)) As of `FORK_BLOCK_NUMBER`, a new [EIP-2718](./eip-2718.md) transaction is introduced with `TransactionType` = `TX_TYPE(TBD)`. The intrinsic cost of the new transaction is inherited from [EIP-2930](./eip-2930.md), specifically `21000 + 16 * non-zero calldata bytes + 4 * zero calldata bytes + 1900 * access list storage key count + 2400 * access list address
 
 MOTIVATION:
-When a user sends a transaction `tx0` with a low gas price, sometimes it might not be high enough to be executed. A common resolution is for the user to submit the transaction again with the same nonce and higher gas price. That previous `tx0` can theoretically be included in any time in the future unless a `tx` with the exact same nonce is already executed. When network is congested, gas price are high, for critical transactions user might try gas price that is much higher than an average day. This cause the `tx0` choose might be very
+When a user sends a transaction `tx0` with a low gas price, sometimes it might not be high enough to be executed. A common resolution is for the user to submit the transaction again with the same nonce and higher gas price. That previous `tx0` can theoretically be included in any time in the future unless a `tx` with the exact same nonce is already executed. When network is congested, gas price are high, for critical transactions user might try gas price that is much higher than an average day. This cause the `tx0` choice might be very
 
 RATIONALE:
 TODO
@@ -8140,7 +8140,7 @@ CREATED: 2023-06-20
 REQUIRES: 
 
 SUMMARY:
-Currently in practice EIP linter tools (EIPW, for example) will block a Pull Request for lint errors even if that lint errors was not introduced in that Pull Request. This EIP make it explicit that lint errors for untouched lines shall be considered ignoreable except for status change.
+Currently in practice EIP linter tools (EIPW, for example) will block a Pull Request for lint errors even if that lint errors was not introduced in that Pull Request. This EIP make it explicit that lint errors for untouched lines shall be considered ignorable except for status change.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. In an update to an EIP, A Pull Request SHOULD NOT be required to fix linter errors in untouched lines unless it's changing the Status of the EIP.

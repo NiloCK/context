@@ -8140,7 +8140,7 @@ CREATED: 2023-06-20
 REQUIRES: 
 
 SUMMARY:
-Currently in practice EIP linter tools (EIPW, for example) will block a Pull Request for lint errors even if that lint errors was not introduced in that Pull Request. This EIP make it explicit that lint errors for untouched lines shall be considered ignoreable except for status change.
+Currently in practice EIP linter tools (EIPW, for example) will block a Pull Request for lint errors even if that lint errors was not introduced in that Pull Request. This EIP make it explicit that lint errors for untouched lines shall be considered ignorable except for status change.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. In an update to an EIP, A Pull Request SHOULD NOT be required to fix linter errors in untouched lines
