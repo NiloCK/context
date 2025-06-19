@@ -9690,6 +9690,26 @@ RATIONALE:
 Storage proofs (often referred to as space-time proofs) have long been a subject of interest, with numerous implementations and related projects existing. 1. Compared to existing copy proofs based on zero-knowledge proofs, our storage proof is based on "Nash Consensus," with its core principles being: a. The public network
 
 
+=== ERC-7947 ===
+TITLE: Account Abstraction Recovery Interface
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-07
+REQUIRES: 
+
+SUMMARY:
+Introduce a universal account abstraction recovery mechanism `recoverOwnership(newOwner, provider, proof)` along with recovery provider management functions for smart accounts to securely update their owner.
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. A smart account willing to support AARI MUST implement the following interface: ```solidity pragma solidity ^0.8.20; /** * @notice Defines a
+
+MOTIVATION:
+Account abstraction and the "contractization" of EOAs are important Ethereum milestones for improving on-chain UX and off-chain security. A wide range of smart accounts emerge daily, aiming to simplify the steep onboarding curve for new users. The ultimate smart account experience is to never ask them to deal with
+
+RATIONALE:
+The AARI is expected to work with *any* account abstraction standard to allow for maximum account recovery flexibility. Whether it is [EIP-4337](./eip-4337.md) or [EIP-7702](./eip-7702.md), a particular smart account provider may support account recovery by simply implementing a common interface. Since the whole account recovery process is nothing but proving
+
+
 === ERC-7603 ===
 TITLE: ERC-1155 Multi-Asset extension
 TYPE: Standards Track ERC

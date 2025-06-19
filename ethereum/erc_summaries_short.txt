@@ -9690,6 +9690,26 @@ RATIONALE:
 Storage proofs (often referred to as space-time proofs) have long been a subject of interest, with numerous implementations and related projects existing. 1. Compared
 
 
+=== ERC-7947 ===
+TITLE: Account Abstraction Recovery Interface
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-07
+REQUIRES: 
+
+SUMMARY:
+Introduce a universal account abstraction recovery mechanism `recoverOwnership(newOwner, provider, proof)` along with recovery provider management functions for smart accounts to securely update their owner.
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as
+
+MOTIVATION:
+Account abstraction and the "contractization" of EOAs are important Ethereum milestones for improving on-chain UX and off-chain security. A wide range of smart accounts
+
+RATIONALE:
+The AARI is expected to work with *any* account abstraction standard to allow for maximum account recovery flexibility. Whether it is [EIP-4337](./eip-4337.md) or [EIP-7702](./eip-7702.md),
+
+
 === ERC-7603 ===
 TITLE: ERC-1155 Multi-Asset extension
 TYPE: Standards Track ERC
