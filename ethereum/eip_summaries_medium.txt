@@ -126,7 +126,7 @@ The rationale behind this Ethereum Improvement Proposal (EIP) stems from the nee
 === EIP-4803 ===
 TITLE: Limit transaction gas to a maximum of 2^63-1
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2022-02-02
 REQUIRES: 
 
@@ -6488,7 +6488,7 @@ SPECIFICATION:
 === EIP-6888 ===
 TITLE: Arithmetic verification at EVM level
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2023-04-16
 REQUIRES: 
 
