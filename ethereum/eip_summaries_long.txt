@@ -1392,7 +1392,7 @@ CREATED: 2018-06-24
 REQUIRES: 1474
 
 SUMMARY:
-Ethereum uses a [Merkle Tree](https://github.com/ethereum/wiki/wiki/Patricia-Tree) to store the state of accounts and their storage. This allows verification of each value by simply creating a Merkle Proof. But currently, the standard RPC-Interface does not give you access to these proofs. This EIP suggests an additional RPC-Method, which creates Merkle Proofs for Accounts and Storage Values. Combined with a stateRoot (from the blockheader) it enables offline verification of any account or storage-value. This allows especially IOT-Devices or even mobile apps which are not able to run a light client to verify responses from an untrusted source only given a trusted
+Ethereum uses a [Merkle Tree](https://github.com/ethereum/eth-wiki/blob/master/fundamentals/patricia-tree.md) to store the state of accounts and their storage. This allows verification of each value by simply creating a Merkle Proof. But currently, the standard RPC-Interface does not give you access to these proofs. This EIP suggests an additional RPC-Method, which creates Merkle Proofs for Accounts and Storage Values. Combined with a stateRoot (from the blockheader) it enables offline verification of any account or storage-value. This allows especially IOT-Devices or even mobile apps which are not able to run a light client to verify responses from an untrusted source only given a trusted
 
 SPECIFICATION:
 As Part of the eth-Module, an additional Method called `eth_getProof` should be defined as follows: #### eth_getProof Returns the account- and storage-values of the specified account including the Merkle-proof. ##### Parameters 1. `DATA`, 20 Bytes - address of the account. 2. `ARRAY`, 32 Bytes - array of storage-keys which should be proofed and included. See [`eth_getStorageAt`](https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getstorageat) 3. `QUANTITY|TAG` - integer block number, or the string `"latest"` or `"earliest"`, see the [default block parameter](https://github.com/ethereum/wiki/wiki/JSON-RPC#the-default-block-parameter) ##### Returns `Object` - A account object: - `balance`: `QUANTITY` - the balance of the account. See [`eth_getBalance`](https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getbalance) - `codeHash`: `DATA`, 32 Bytes - hash
@@ -2723,6 +2723,26 @@ Ethereum achieves a consistent block time due to its' difficulty retargeting alg
 
 RATIONALE:
 I want to address the rationale for the intention of the Iceage and the implementation of the Iceage separately. **The original intentions of the ice age include:** - At the time of upgrades, inhibit unintentional growth of the resulting branching forks leading up to Eth 2.0. * - Encourage a prompt upgrade schedule for the path to Eth 2.0. * - Forces the community to come back into agreement repeatedly...and it gives whatever portion of the community that wants to a chance to fork off - Is a check for the Core Devs in the case that a
+
+
+=== EIP-7954 ===
+TITLE: Increase Maximum Contract Size
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-06-09
+REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
+
+SUMMARY:
+This EIP proposes to raise the maximum allowed size for contract code deployed on Ethereum from 24,576 bytes to 32,768 bytes.
+
+SPECIFICATION:
+1. Update the [EIP-170](./eip-170.md) contract code size limit of 24KiB (`0x6000` bytes) to 32KiB (`0x8000` bytes). 2. Update the [EIP-3860](./eip-3860.md) initcode size limit of 48KiB (`0xC000` bytes) to 64KiB (`0x10000` bytes).
+
+MOTIVATION:
+The current 24KiB contract size limit can be restrictive for complex contracts and applications. Increasing the limit to 32KiB allows for more feature-rich contracts while maintaining reasonable constraints on block and state growth.
+
+RATIONALE:
+- **Developer Flexibility:** Enables more complex contracts and features. - **Backward Compatibility:** Existing contracts are unaffected. - **Simplicity:** Only the size limit is changed, with no other protocol modifications.
 
 
 === EIP-2014 ===
@@ -4219,6 +4239,26 @@ RATIONALE:
 Persisted refunds would become worthless before they fall below their activation cost. Once the refunds are worthless, they can be removed by another hard fork without waiting for 0. The rate of diminishing specified would currently require (24000-5000) * 100 = 1,900,000 blocks for `SELFDESTRUCT` and (15000-5000) * 100 = 1,000,000 blocks for `SSTORE`. This timeframe is currently about a year, which should be enough flexibility for the remaining refunds to be consumed.
 
 
+=== EIP-7956 ===
+TITLE: Tx Ordering via Block-level Randomness
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-05-24
+REQUIRES: 
+
+SUMMARY:
+Proposers and builders can currently permute pending transactions arbitrarily, enabling reorder‑driven MEV. This EIP introduces a consensus rule that sorts all transactions inside a block by XOR‑ing each transaction hash with fresh slot randomness. The randomness is unknown until the slot starts, so the order is deterministic once known but unpredictable beforehand. The mechanism **significantly reduces reorder‑based MEV**; latency‑driven back‑running, censorship, and other classes of MEV remain and should be mitigated through complementary techniques (encrypted mempools, reputation, PBS marketplaces, etc.).
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Slot Randomness `R` > **Consensus‑layer prerequisite** — Companion EIP “**`EL‑VRF‑exposure`**” is needed to add the RANDAO's per‑slot VRF output to the execution layer. <-- TODO -- add companion EIP “**`EL‑VRF‑exposure`**” --> ``` R = randao_mix_slot[0:16] : bytes16 ``` Execution payloads include `randomness: bytes16` that **MUST** equal `R`; execution clients verify via EIP‑4788. ### Builder Flow 1. **Candidate‑set selection** – Builders **MAY** choose **any
+
+MOTIVATION:
+Unrestricted ordering is the key enabler of sandwich and classic front‑running attacks. Deterministic ordering collapses these vectors to latency racing and information asymmetry. Clear candidate‑set and bundle semantics preserve fee markets while removing the need for trusted sequencers. Academic works shows deterministic ordering drives sandwich profits toward zero. ### References * Julia Ofoegbu, “Maximal Extractable Value (MEV): A Tale As Old As Time,” Medium (2024). * J. Qian et al., “Deterministic Transaction Ordering Without Trusted Sequencers,” arXiv:2411.03327 v1 (2024). * “Shutter Network Introduces Plan for First Encrypted Mempool on Ethereum,” GlobeNewswire, 13 Feb 2025.
+
+RATIONALE:
+### Why randomness‑driven ordering? * Objective & Verifiable – Using a function of on‑chain randomness (R) and a transaction’s own hash gives every validator an identical, cheap check on order validity. * Unpredictable Until Slot Start – The XOR of slot‑level RANDAO and the proposer’s VRF output ensures that neither users nor builders can know the final sort key before the slot begins, closing the classic front‑run window. * Minimal Surface Area – A single 16‑byte field in the execution payload plus a hash operation keeps consensus changes small and auditable. ### Why 128‑bit R rather than full
+
+
 === EIP-758 ===
 TITLE: Subscriptions and filters for completed transactions
 TYPE: Standards Track Interface
@@ -4763,7 +4803,7 @@ Although maintaining the target and max blob only in the consensus client is des
 === EIP-7950 ===
 TITLE: Encode chain id with transaction hash
 TYPE: Standards Track Interface
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-05-22
 REQUIRES: 155
 
@@ -5771,7 +5811,7 @@ CREATED: 2024-01-18
 REQUIRES: 2, 5, 3, 7, ,,  , 2, 9, 3, 5, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 5, 4, 9, ,,  , 7, 6, 2, 3, ,,  , 7, 6, 8, 5, ,,  , 7, 6, 9, 1, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Prague/Electra network upgrade.
+This Meta EIP lists the EIPs Included in the Prague/Electra network upgrade.
 
 SPECIFICATION:
 ### Included EIPs #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits * [EIP-7251](./eip-7251.md): Increase the MAX_EFFECTIVE_BALANCE * [EIP-7549](./eip-7549.md): Move committee index outside Attestation * [EIP-7623](./eip-7623.md): Increase calldata cost * [EIP-7685](./eip-7685.md): General purpose execution layer requests * [EIP-7691](./eip-7691.md): Blob throughput increase * [EIP-7702](./eip-7702.md): Set EOA account code #### Other EIPs * [EIP-7840](./eip-7840.md): Add blob schedule to EL config files (Informational) * [EIP-7642](./eip-7642.md): eth/69 - Drop pre-merge fields (Networking) * While not necessary for the Pectra network
@@ -7833,10 +7873,10 @@ CREATED: 2025-03-01
 REQUIRES: 
 
 SUMMARY:
-Currently, the beacon block in Ethereum Consensus embed transactions within `ExecutionPayload` field of `BeaconBlockBody`. This EIP proposes to replace `ExecutionPayload` with `ExecutionPayloadHeader` in `BeaconBlockBody` and to independently transmit `ExecutionPayloadWithInclusionProof`. However, this EIP makes no change to the block import mechanism, with the exception that block availability now includes waiting for the availability of `ExecutionPayloadWithInclusionProof`, making it different and simpler from proposals like ePBS/APS. But this availability requirement can infact be restricted to `gossip` import while allowing optimistic syncing of the execution layer (EL) on checkpoint/range sync as EL can pull full blocks from their peers in optimistic sync
+Currently, the beacon block in Ethereum Consensus embed transactions within `ExecutionPayload` field of `BeaconBlockBody`. This EIP proposes to replace `ExecutionPayload` with `ExecutionPayloadHeader` in `BeaconBlockBody` and to independently transmit `ExecutionPayloadWithInclusionProof`. However, this EIP makes no change to the block import mechanism, with the exception that block availability now includes waiting for the availability of `ExecutionPayloadWithInclusionProof`, making it different and simpler from proposals like ePBS/APS. But this availability requirement can in fact be restricted to `gossip` import while allowing optimistic syncing of the execution layer (EL) on checkpoint/range sync as EL can pull full blocks from their peers in optimistic
 
 SPECIFICATION:
-- `ExecutionPayload` in the `BeaconBlockBody` is replaced by `ExecutionPayloadHeader` - `ExecutionPayloadWithInclusionProof` is computed by the block proposer/builder and gossiped independently on a separate new topic. Also builder `submitBlindedBlock` api is modified to respond with `ExecutionPayloadWithInclusionProof` instead. - Data availability checks for block import into forkchoice now must wait for availability of the corresponding `ExecutionPayloadWithInclusionProof` but only for gossiped blocks - `newPayloadHeader` engine api is introduced to augument the previous usage of `newPayload` in block processing when `ExecutionPayload` is not available for e.g. in processing range synced blocks signalling EL clients to optimistic sync those payloads from EL p2p
+- `ExecutionPayload` in the `BeaconBlockBody` is replaced by `ExecutionPayloadHeader` - `ExecutionPayloadWithInclusionProof` is computed by the block proposer/builder and gossiped independently on a separate new topic. Also builder `submitBlindedBlock` api is modified to respond with `ExecutionPayloadWithInclusionProof` instead. - Data availability checks for block import into forkchoice now must wait for availability of the corresponding `ExecutionPayloadWithInclusionProof` but only for gossiped blocks - `newPayloadHeader` engine api is introduced to augment the previous usage of `newPayload` in block processing when `ExecutionPayload` is not available for e.g. in processing range synced blocks signalling EL clients to optimistic sync those payloads from EL p2p
 
 MOTIVATION:
 Ethereum protocol has an ambitious goal to grow the `gasLimit` of the execution payloads (possibly by 10X). This leads to larger messages, negatively affecting the networking and block processing pipelines of the consensus layer (CL) clients leading to following issues: 1. Higher latencies for the arrival of beacon blocks increase, requiring larger bandwidth resources to be made available for the beacon node. 2. The greater number and size of transactions directly increase the merkelization compute time, increasing the import time of the block. We know from timing games that the block import latency greatly affects a client's performance
@@ -8082,6 +8122,26 @@ Currently a builder will include all blobs in their local mempool, up to the max
 
 RATIONALE:
 By adding a flag for the local block builder, they are able to specify how many blobs they can include in a block.
+
+
+=== EIP-7960 ===
+TITLE: EOF - Extended types section
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-05-28
+REQUIRES: 3540
+
+SUMMARY:
+This EIP extends the definition of `types_section` in EOF format ([EIP-3540](./eip-3540.md)) with an additional `type` parameter.
+
+SPECIFICATION:
+`types_section`, as defined in EIP-3540, is changed to be of the following format `(type, reserved, inputs, outputs, max_stack_increase)`. `type` is `uint8`, `reserved` is 24 bits, and `inputs`, `outputs`, `max_stack_increase` are defined as `uint8`, `uint8`, `uint16` respectively, the same as before. The only valid `type` defined in this EIP is `0x01`. Additional EIPs may be defined for other code section `type`s. `version`, as defined in EIP-3540, is changed to `0x02`, to avoid the backward compatibility issue if a third-party chain already deployed EOF in production. In EOF container, the following validation rules are added: * If a `type` in
+
+MOTIVATION:
+An additional `type` parameter allows the EOF EVM interpreter to identify the "type" of a code section. This allows the interpreter to "interpret" each code section differently, allowing EOF function calls to, for example, invoke pure EVM64 code or even later support RISC-V.
+
+RATIONALE:
+The new `type` parameter allows a contract to "dispatch" to different variants of the interpreter to better suit its need. * The portion of the code where it mainly interacts with Ethereum addresses, balances, storages may run "normal" EVM. * The portion of the code that is computationally heavy may run faster EVM64, but loses the ability to directly interact with Ethereum addresses and balances. Allowing this `type` to be defined for each code section ensures that a contract remains conscise -- it can quickly switch between its computational needs and system/runtime needs. `reserved` is added to `types_section`
 
 
 === EIP-7685 ===
@@ -8569,6 +8629,26 @@ The current `21,000` gas intrinsic cost of a transaction makes sending ETH very 
 
 RATIONALE:
 The proliferation of calls to DeFi smart-contracts had substantially increased the cost of making transactions, since such calls are usually both time sensitive and involve large sums of money. While the utilization of the chain's capacity by the most valuable transactions is by design, the high cost of sending transactionsz is limiting Ethereum's the use-cases, create a terribel user experience, decreases the actual value created (and captured) by ETH, and pushes users to seek alternatives in other, less-congested chains. Note on Layer-2: It is true that the high cost might push users to try using L2 solutions, however
+
+
+=== EIP-7958 ===
+TITLE: EVM64 - Little endian opcodes
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-05-26
+REQUIRES: 7937
+
+SUMMARY:
+This EIP defines additional little endian opcodes that can be deployed alongside [EIP-7937](./eip-7937.md).
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. We define the following gas cost constant: * `G_VERYLOW64`: 2 ### `BYTE64` `BYTE64` (0xc01a) is defined as `(x >> i * 8) & 0xFF`. Note that the definition is changed from big endian to little endian. The gas cost is `G_VERYLOW64`. ### `MLOAD64` and `MSTORE64` `MLOAD64` (0xc051) will load a 64-bit integer in little endian onto the stack. `MSTORE64` (0xc052) will read an 64-bit
+
+MOTIVATION:
+The core EIP that defines EVM64 (EIP-7937) is endianness-independent. This EIP defines those additional opcodes that must expose endianness. They are the bitwise opcode `BYTE64`, memory opcodes `MLOAD64` and `MSTORE64`, and stack opcodes `PUSH*64`.
+
+RATIONALE:
+For detailed rationale discussion, please see the core EVM64 definition [EIP-7937](./eip-7937.md).
 
 
 === EIP-7921 ===

@@ -1392,7 +1392,7 @@ CREATED: 2018-06-24
 REQUIRES: 1474
 
 SUMMARY:
-Ethereum uses a [Merkle Tree](https://github.com/ethereum/wiki/wiki/Patricia-Tree) to store the state of accounts and their storage. This allows verification of each value by simply creating a
+Ethereum uses a [Merkle Tree](https://github.com/ethereum/eth-wiki/blob/master/fundamentals/patricia-tree.md) to store the state of accounts and their storage. This allows verification of each value by simply creating a
 
 SPECIFICATION:
 As Part of the eth-Module, an additional Method called `eth_getProof` should be defined as follows: #### eth_getProof Returns the account- and storage-values of the
@@ -2723,6 +2723,26 @@ Ethereum achieves a consistent block time due to its' difficulty retargeting alg
 
 RATIONALE:
 I want to address the rationale for the intention of the Iceage and the implementation of the Iceage separately. **The original intentions of the
+
+
+=== EIP-7954 ===
+TITLE: Increase Maximum Contract Size
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-06-09
+REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
+
+SUMMARY:
+This EIP proposes to raise the maximum allowed size for contract code deployed on Ethereum from 24,576 bytes to 32,768 bytes.
+
+SPECIFICATION:
+1. Update the [EIP-170](./eip-170.md) contract code size limit of 24KiB (`0x6000` bytes) to 32KiB (`0x8000` bytes). 2. Update the [EIP-3860](./eip-3860.md) initcode size limit of
+
+MOTIVATION:
+The current 24KiB contract size limit can be restrictive for complex contracts and applications. Increasing the limit to 32KiB allows for more feature-rich contracts
+
+RATIONALE:
+- **Developer Flexibility:** Enables more complex contracts and features. - **Backward Compatibility:** Existing contracts are unaffected. - **Simplicity:** Only the size limit is changed,
 
 
 === EIP-2014 ===
@@ -4219,6 +4239,26 @@ RATIONALE:
 Persisted refunds would become worthless before they fall below their activation cost. Once the refunds are worthless, they can be removed by another hard
 
 
+=== EIP-7956 ===
+TITLE: Tx Ordering via Block-level Randomness
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-05-24
+REQUIRES: 
+
+SUMMARY:
+Proposers and builders can currently permute pending transactions arbitrarily, enabling reorder‑driven MEV. This EIP introduces a consensus rule that sorts all transactions inside a
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Unrestricted ordering is the key enabler of sandwich and classic front‑running attacks. Deterministic ordering collapses these vectors to latency racing and information asymmetry. Clear
+
+RATIONALE:
+### Why randomness‑driven ordering? * Objective & Verifiable – Using a function of on‑chain randomness (R) and a transaction’s own hash gives every validator
+
+
 === EIP-758 ===
 TITLE: Subscriptions and filters for completed transactions
 TYPE: Standards Track Interface
@@ -4763,7 +4803,7 @@ Although maintaining the target and max blob only in the consensus client is des
 === EIP-7950 ===
 TITLE: Encode chain id with transaction hash
 TYPE: Standards Track Interface
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-05-22
 REQUIRES: 155
 
@@ -5771,7 +5811,7 @@ CREATED: 2024-01-18
 REQUIRES: 2, 5, 3, 7, ,,  , 2, 9, 3, 5, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 5, 4, 9, ,,  , 7, 6, 2, 3, ,,  , 7, 6, 8, 5, ,,  , 7, 6, 9, 1, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Prague/Electra network upgrade.
+This Meta EIP lists the EIPs Included in the Prague/Electra network upgrade.
 
 SPECIFICATION:
 ### Included EIPs #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply
@@ -8084,6 +8124,26 @@ RATIONALE:
 By adding a flag for the local block builder, they are able to specify how many blobs they can include in a block.
 
 
+=== EIP-7960 ===
+TITLE: EOF - Extended types section
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-05-28
+REQUIRES: 3540
+
+SUMMARY:
+This EIP extends the definition of `types_section` in EOF format ([EIP-3540](./eip-3540.md)) with an additional `type` parameter.
+
+SPECIFICATION:
+`types_section`, as defined in EIP-3540, is changed to be of the following format `(type, reserved, inputs, outputs, max_stack_increase)`. `type` is `uint8`, `reserved` is 24
+
+MOTIVATION:
+An additional `type` parameter allows the EOF EVM interpreter to identify the "type" of a code section. This allows the interpreter to "interpret" each
+
+RATIONALE:
+The new `type` parameter allows a contract to "dispatch" to different variants of the interpreter to better suit its need. * The portion of
+
+
 === EIP-7685 ===
 TITLE: General purpose execution layer requests
 TYPE: Standards Track Core
@@ -8569,6 +8629,26 @@ The current `21,000` gas intrinsic cost of a transaction makes sending ETH very 
 
 RATIONALE:
 The proliferation of calls to DeFi smart-contracts had substantially increased the cost of making transactions, since such calls are usually both time sensitive and
+
+
+=== EIP-7958 ===
+TITLE: EVM64 - Little endian opcodes
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-05-26
+REQUIRES: 7937
+
+SUMMARY:
+This EIP defines additional little endian opcodes that can be deployed alongside [EIP-7937](./eip-7937.md).
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The core EIP that defines EVM64 (EIP-7937) is endianness-independent. This EIP defines those additional opcodes that must expose endianness. They are the bitwise opcode
+
+RATIONALE:
+For detailed rationale discussion, please see the core EVM64 definition [EIP-7937](./eip-7937.md).
 
 
 === EIP-7921 ===
