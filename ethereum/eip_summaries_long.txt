@@ -2785,6 +2785,26 @@ RATIONALE:
 ### Why not `Union[None, T]`? `Union[None, T]` leaves ambiguity about the intention whether the type may be extended in the future, i.e., `Union[None, T, U]`. Furthermore, SSZ Union types are currently not used in any final Ethereum specification and do not have a finalized design themselves. If the only use case is a workaround for lack of `Optional[T]`, the simpler `Optional[T]` type is sufficient, and support for general unions could be delayed until really needed. Note that the design of `Optional[T]` could be used as basis for a more general `Union`. ### Why not `List[T, 1]`? The serialization
 
 
+=== EIP-7976 ===
+TITLE: Further increase calldata cost
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-06-18
+REQUIRES: 7623
+
+SUMMARY:
+Following the implementation of [EIP-7623](./eip-7623.md), this EIP proposes a further adjustment to calldata pricing by raising the floor cost from 10/40 to 15/60 gas per zero/non-zero byte. This change aims to provide additional reduction in maximum block size and variance while maintaining compatibility with regular user transactions that involve significant EVM computation.
+
+SPECIFICATION:
+| Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `15` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`. Let `isContractCreation` be a boolean indicating the respective event. Let `execution_gas_used` be the gas used for EVM execution with the gas refund subtracted. Let `INITCODE_WORD_COST` be 2 as defined in [EIP-3860](./eip-3860.md). The formula for determining the gas used per transaction changes from [EIP-7623](./eip-7623.md)'s implementation to: ```python tx.gasUsed = ( 21000 + max( STANDARD_TOKEN_COST * tokens_in_calldata + execution_gas_used + isContractCreation * (32000 + INITCODE_WORD_COST * words(calldata)), TOTAL_COST_FLOOR_PER_TOKEN * tokens_in_calldata ) )
+
+MOTIVATION:
+While [EIP-7623](./eip-7623.md) successfully reduced the maximum possible block size by introducing a floor cost of 10/40 gas per byte for data-heavy transactions, continued increases in gas limit demands further optimization. The current floor cost still permits relatively large data-heavy payloads that contribute to block size variance. By increasing the floor cost to 15/60 gas per byte, this proposal aims to: - Further reduce the maximum possible block size for data-heavy transactions - Create additional headroom for potential block gas limit increases - Maintain the same exemption for transactions with significant EVM computation
+
+RATIONALE:
+With [EIP-7623](./eip-7623.md)'s implementation, data-heavy transactions cost 10/40 gas per zero/non-zero byte, reducing the maximum possible EL payload size to approximately 0.72 MB (`30_000_000/40`). This EIP further reduces this to approximately 0.47 MB (`30_000_000/60`) for zero bytes and maintains proportional costs for non-zero bytes. By increasing calldata costs from 10/40 to 15/60 gas per byte for data-heavy transactions, this EIP provides: - **Enhanced block size reduction**: Maximum data-heavy payload size drops to ~0.47 MB - **Maintained user experience**: Regular users engaging in DeFi, token transfers, and other EVM-heavy operations remain unaffected - **Better blob incentivization**: Higher calldata costs further
+
+
 === EIP-4881 ===
 TITLE: Deposit Contract Snapshot Interface
 TYPE: Standards Track Interface
