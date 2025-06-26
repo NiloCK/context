@@ -1034,6 +1034,26 @@ RATIONALE:
 + To achieve the atomicity, HTLC is used. + The participant should decide whether to participate after the initiator locks the token and sets up the timelock. + The initiator should decide whether to proceed the swap (redeem the tokens from the participant and reveal the preimage of the hash lock), after the participant locks the tokens and sets up the time locks. + Premium is redeemable for the participant only if the participant participates in the swap and redeems the initiator's token before premium's timelock expires. + Premium is refundable for the initiator only if the initiator
 
 
+=== ERC-7964 ===
+TITLE: Cross-Chain EIP-712 Signing Domains
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-06-05
+REQUIRES: 7, 1, 2, ,,  , 7, 8, 0, 3
+
+SUMMARY:
+This ERC extends [ERC-7803] to enable readable cross-chain account abstraction by reserving `chainId` 0 for universal signature validity in [EIP-712] domains, following the same pattern established in [EIP-7702]. It allows accounts to sign messages that authorize operations across multiple chains through a single signature, enabling cross-chain intents, multi-chain DAO voting, and unified account management. [ERC-7803]: ./eip-7803.md [EIP-7702]: ./eip-7702.md [EIP-712]: ./eip-712.md
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Cross-Chain Domain Semantics When an [EIP-712] domain in [ERC-7803] uses `chainId: 0`, it MUST be interpreted as "valid on any chain where the account exists" (even counterfactually). ### Cross-Chain Signature Verification Applications verifying cross-chain signatures MUST recognize `chainId: 0` as valid on any chain where the account exists. For on-chain validation, the account SHOULD accept the signature as valid regardless of the `chainId`
+
+MOTIVATION:
+Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for cross-chain operations such as: - **Cross-chain intents**: Users wanting to trade assets across multiple chains atomically - **Multi-chain DAO governance**: Voting on proposals that affect protocol instances across different networks - **Unified account management**: Managing the same account deployed on multiple chains - **Cross-chain social recovery**: Recovery processes that span multiple networks By extending [ERC-7803]'s signing domains to support cross-chain scenarios, this ERC enables these use cases while maintaining security through explicit chain specification.
+
+RATIONALE:
+[EIP-712] has become the standard for readable and structured data signing. Assuming [ERC-7803] is implemented, it becomes a building block that already streamlines from applications to users. By reusing the same mechanism, `signingDomains` and `authMethods` become building blocks that fit into the wider ecosystem with relatively low effort. This document extends [ERC-7803] and uses these building blocks to allow for a more consistent and informed user experience while interacting with cross-chain applications. ### Account-Centric Approach The account-centric approach represents the most interoperable way for users to express cross-chain intents. By binding signatures to user accounts rather than specific
+
+
 === ERC-6093 ===
 TITLE: Custom errors for commonly-used tokens
 TYPE: Standards Track ERC
@@ -4797,6 +4817,26 @@ RATIONALE:
 The two-level classification system introduced in this EIP allows for a more organized token ecosystem, enabling users to manage and track tokens with greater granularity. It is particularly useful for projects that require token classifications beyond the capabilities of the current ERC-1155 standard. As assets can have various properties or variations, our smart contract design reflects this by assigning a mainId to each asset category and a unique subId to each derivative or sub-category. This approach expands the capabilities of ERC-1155 to support a broader range of assets with complex requirements. Additionally, it enables tracking of mainBalance for
 
 
+=== ERC-7943 ===
+TITLE: uRWA - Universal Real World Asset Interface
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-06-10
+REQUIRES: 165
+
+SUMMARY:
+This EIP proposes the Universal RWA (uRWA) standard, an interface for tokenized Real World Assets (RWAs) such as securities, real estate, commodities, or other physical/financial assets on the blockchain. Real World Assets often require regulatory compliance features not found in standard tokens, including the ability to freeze assets, perform enforcement transfers for legal compliance, and restrict transfers to authorized users. The uRWA standard extends common token standards like [ERC-20](./eip-20.md), [ERC-721](./eip-721.md) or [ERC-1155](./eip-1155.md) by introducing essential compliance functions while remaining minimal and not opinionated about specific implementation details. This enables DeFi protocols and applications to interact with tokenized real-world
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The following defines the standard interface for an [ERC-7943](./eip-7943.md) token contract, which MUST extend from a base token interface such as [ERC-20](./eip-20.md), [ERC-721](./eip-721.md) or [ERC-1155](./eip-1155.md): ```solidity pragma solidity ^0.8.29; /// @notice Defines the ERC-7943 interface, the uRWA. /// When interacting with specific token standards: /// - For ERC-721 like (non-fungible) tokens 'amount' parameters typically represent a single token (i.e., 1). /// - For ERC-20
+
+MOTIVATION:
+Real World Assets (RWAs) represent a significant opportunity to bridge traditional finance and decentralized finance (DeFi). By tokenizing assets like real estate, corporate bonds, commodities, art, or securities, we can unlock benefits such as fractional ownership, programmable compliance, enhanced liquidity through secondary markets for traditionally illiquid assets and integration with decentralized protocols. However, tokenizing real world assets introduces regulatory requirements often absent in purely digital assets, such as allowlists for users, transfer restrictions, asset freezing or law enforcement rules. Existing token standards like [ERC-20](./eip-20.md), [ERC-721](./eip-721.md) and [ERC-1155](./eip-1155.md) lack the inherent structure to address these compliance needs directly within
+
+RATIONALE:
+* **Minimalism:** Defines only the essential functions (`forceTransfer`, `setFrozen`, `isUserAllowed`, `isTransferAllowed`, `getFrozen`) and associated events/errors needed for common RWA compliance and control patterns, avoiding mandated complexity or opinionated features. The reason to introduce specific errors (`ERC7943NotAllowedUser`, `ERC7943NotAllowedTransfer` and `ERC7943InsufficientUnfrozenBalance`) is to provide completeness with the introduced functionalities (`isUserAllowed`, `isTransferAllowed` and `getFrozen`). As dictated in the specifications, error specificity is prioritized, leaving space for implementations to accommodate more explicit errors. Regarding the events `Frozen` and `ForcedTransfer`, the reason for their existence is to signal _uncommon_ transfers (like in `forceTransfer`) but also to help off-chain indexers to correctly keep track
+
+
 === ERC-7598 ===
 TITLE: Use contract signature for signed transfer
 TYPE: Standards Track ERC
@@ -7936,7 +7976,7 @@ The rationale for the gas stations network design is a combination of two sets o
 === ERC-7812 ===
 TITLE: ZK Identity Registry
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-08
 REQUIRES: 
 

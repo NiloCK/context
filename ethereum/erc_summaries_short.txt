@@ -1034,6 +1034,26 @@ RATIONALE:
 + To achieve the atomicity, HTLC is used. + The participant should decide whether to participate after the initiator locks the token and sets
 
 
+=== ERC-7964 ===
+TITLE: Cross-Chain EIP-712 Signing Domains
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-06-05
+REQUIRES: 7, 1, 2, ,,  , 7, 8, 0, 3
+
+SUMMARY:
+This ERC extends [ERC-7803] to enable readable cross-chain account abstraction by reserving `chainId` 0 for universal signature validity in [EIP-712] domains, following the same
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for cross-chain operations such as: - **Cross-chain intents**:
+
+RATIONALE:
+[EIP-712] has become the standard for readable and structured data signing. Assuming [ERC-7803] is implemented, it becomes a building block that already streamlines from
+
+
 === ERC-6093 ===
 TITLE: Custom errors for commonly-used tokens
 TYPE: Standards Track ERC
@@ -4797,6 +4817,26 @@ RATIONALE:
 The two-level classification system introduced in this EIP allows for a more organized token ecosystem, enabling users to manage and track tokens with greater
 
 
+=== ERC-7943 ===
+TITLE: uRWA - Universal Real World Asset Interface
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-06-10
+REQUIRES: 165
+
+SUMMARY:
+This EIP proposes the Universal RWA (uRWA) standard, an interface for tokenized Real World Assets (RWAs) such as securities, real estate, commodities, or other
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Real World Assets (RWAs) represent a significant opportunity to bridge traditional finance and decentralized finance (DeFi). By tokenizing assets like real estate, corporate bonds,
+
+RATIONALE:
+* **Minimalism:** Defines only the essential functions (`forceTransfer`, `setFrozen`, `isUserAllowed`, `isTransferAllowed`, `getFrozen`) and associated events/errors needed for common RWA compliance and control patterns, avoiding
+
+
 === ERC-7598 ===
 TITLE: Use contract signature for signed transfer
 TYPE: Standards Track ERC
@@ -7936,7 +7976,7 @@ The rationale for the gas stations network design is a combination of two sets o
 === ERC-7812 ===
 TITLE: ZK Identity Registry
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-08
 REQUIRES: 
 

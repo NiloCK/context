@@ -1034,6 +1034,26 @@ RATIONALE:
 + To achieve the atomicity, HTLC is used. + The participant should decide whether to participate after the initiator locks the token and sets up the timelock. + The initiator should decide whether to proceed the swap (redeem the tokens from the participant and reveal the preimage of the
 
 
+=== ERC-7964 ===
+TITLE: Cross-Chain EIP-712 Signing Domains
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-06-05
+REQUIRES: 7, 1, 2, ,,  , 7, 8, 0, 3
+
+SUMMARY:
+This ERC extends [ERC-7803] to enable readable cross-chain account abstraction by reserving `chainId` 0 for universal signature validity in [EIP-712] domains, following the same pattern established in [EIP-7702]. It allows accounts to sign messages that authorize operations across multiple chains through a single signature, enabling cross-chain intents, multi-chain DAO
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Cross-Chain Domain Semantics When an [EIP-712] domain in [ERC-7803] uses `chainId: 0`, it MUST
+
+MOTIVATION:
+Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for cross-chain operations such as: - **Cross-chain intents**: Users wanting to trade assets across multiple chains atomically - **Multi-chain DAO governance**: Voting on proposals that affect protocol instances across different networks - **Unified
+
+RATIONALE:
+[EIP-712] has become the standard for readable and structured data signing. Assuming [ERC-7803] is implemented, it becomes a building block that already streamlines from applications to users. By reusing the same mechanism, `signingDomains` and `authMethods` become building blocks that fit into the wider ecosystem with relatively low effort. This
+
+
 === ERC-6093 ===
 TITLE: Custom errors for commonly-used tokens
 TYPE: Standards Track ERC
@@ -4797,6 +4817,26 @@ RATIONALE:
 The two-level classification system introduced in this EIP allows for a more organized token ecosystem, enabling users to manage and track tokens with greater granularity. It is particularly useful for projects that require token classifications beyond the capabilities of the current ERC-1155 standard. As assets can have various properties
 
 
+=== ERC-7943 ===
+TITLE: uRWA - Universal Real World Asset Interface
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-06-10
+REQUIRES: 165
+
+SUMMARY:
+This EIP proposes the Universal RWA (uRWA) standard, an interface for tokenized Real World Assets (RWAs) such as securities, real estate, commodities, or other physical/financial assets on the blockchain. Real World Assets often require regulatory compliance features not found in standard tokens, including the ability to freeze assets, perform
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The following defines the standard interface for an [ERC-7943](./eip-7943.md) token contract, which MUST extend from
+
+MOTIVATION:
+Real World Assets (RWAs) represent a significant opportunity to bridge traditional finance and decentralized finance (DeFi). By tokenizing assets like real estate, corporate bonds, commodities, art, or securities, we can unlock benefits such as fractional ownership, programmable compliance, enhanced liquidity through secondary markets for traditionally illiquid assets and integration
+
+RATIONALE:
+* **Minimalism:** Defines only the essential functions (`forceTransfer`, `setFrozen`, `isUserAllowed`, `isTransferAllowed`, `getFrozen`) and associated events/errors needed for common RWA compliance and control patterns, avoiding mandated complexity or opinionated features. The reason to introduce specific errors (`ERC7943NotAllowedUser`, `ERC7943NotAllowedTransfer` and `ERC7943InsufficientUnfrozenBalance`) is to provide completeness with the introduced functionalities (`isUserAllowed`, `isTransferAllowed`
+
+
 === ERC-7598 ===
 TITLE: Use contract signature for signed transfer
 TYPE: Standards Track ERC
@@ -7936,7 +7976,7 @@ The rationale for the gas stations network design is a combination of two sets o
 === ERC-7812 ===
 TITLE: ZK Identity Registry
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-08
 REQUIRES: 
 
