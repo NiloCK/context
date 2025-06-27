@@ -8303,6 +8303,26 @@ RATIONALE:
 The bitmask approach provides a flexible means to represent and retain block data while committing to future spans. This mechanism aligns with the pruning
 
 
+=== EIP-7975 ===
+TITLE: eth/70 - partial block receipt lists
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2025-06-16
+REQUIRES: 7, 6, 4, 2, ,,  , 7, 8, 2, 5
+
+SUMMARY:
+This EIP modifies the 'eth' p2p protocol to allow requesting partial block receipt lists.
+
+SPECIFICATION:
+Modify the encoding for receipts in the `Receipts (0x10)` message as follows: - (eth/69): `[request-id: P, [[receipt₁, receipt₂], ...]]` - (eth/70): `[request-id: P, lastBlockIncomplete:
+
+MOTIVATION:
+As Ethereum moves toward a higher block gas limit on mainnet, the worst-case total size of a block receipts list also becomes larger, and
+
+RATIONALE:
+Since [EIP-7825] caps the gas limit of a single transaction to 30M gas, a single transaction receipt will always be limited in size. Specifically,
+
+
 === EIP-3554 ===
 TITLE: Difficulty Bomb Delay to December 2021
 TYPE: Standards Track Core

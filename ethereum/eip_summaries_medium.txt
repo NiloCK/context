@@ -8303,6 +8303,26 @@ RATIONALE:
 The bitmask approach provides a flexible means to represent and retain block data while committing to future spans. This mechanism aligns with the pruning proposed in EIP-4444, while ensuring that historical and future data spans remain available across the network. A similar bitlist approach is already used in the
 
 
+=== EIP-7975 ===
+TITLE: eth/70 - partial block receipt lists
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2025-06-16
+REQUIRES: 7, 6, 4, 2, ,,  , 7, 8, 2, 5
+
+SUMMARY:
+This EIP modifies the 'eth' p2p protocol to allow requesting partial block receipt lists.
+
+SPECIFICATION:
+Modify the encoding for receipts in the `Receipts (0x10)` message as follows: - (eth/69): `[request-id: P, [[receipt₁, receipt₂], ...]]` - (eth/70): `[request-id: P, lastBlockIncomplete: {0,1}, [[receipt₁, receipt₂], ...]]` If the `lastBlockIncomplete` flag is set to true (`1`), the last receipt list does not contain all receipts of the block,
+
+MOTIVATION:
+As Ethereum moves toward a higher block gas limit on mainnet, the worst-case total size of a block receipts list also becomes larger, and may eventually exceed the 10MiB message size limit commonly applied in clients. This can lead to sync failures.
+
+RATIONALE:
+Since [EIP-7825] caps the gas limit of a single transaction to 30M gas, a single transaction receipt will always be limited in size. Specifically, a transaction can produce at most 30000000/8 = 3.75MiB of log data. However, a block can contain contain multiple transactions, and thus the entire block
+
+
 === EIP-3554 ===
 TITLE: Difficulty Bomb Delay to December 2021
 TYPE: Standards Track Core
