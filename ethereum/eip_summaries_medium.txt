@@ -2273,16 +2273,16 @@ CREATED: 2025-03-24
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/0cd5dcd26327e49b726e66ca51802c4cd65be889/ssz/simple-serialize.md) type, `ProgressiveList[T]`, to represent lists of arbitrary length with stable merkleization. Unlike the existing `List[T, N]` type, which imposes a fixed capacity `N`, `ProgressiveList[T]` supports unbounded growth using a recursive tree structure during merkleization to efficiently handle lists of any size
+This EIP introduces a new Merkle tree shape for [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md) types that results in fewer hashes when only a small number of leaves is used. The new tree shape grows progressively with increased leaf count and no longer has a bounded capacity. It also offers forward compatibility:
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ProgressiveList[T]` `ProgressiveList[T]` defines an ordered, homogeneous collection of elements of type `T`, where `T`
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Progressive Merkle tree The [SSZ Merkleization specification)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md#merkleization) is extended with a helper function: -
 
 MOTIVATION:
-Current SSZ `List[T, N]` types require a predefined capacity `N`, which leads to several issues: - Inefficient hashing: Lists often contain far fewer elements than their maximum capacity (e.g., [`Transaction`](https://github.com/ethereum/consensus-specs/blob/3c028dc73f5d93defc9bfd38c44784573a0bc70a/specs/bellatrix/beacon-chain.md#custom-types)), resulting in unnecessary zero-padding and dozens of extra hash computations. - Arbitrary Limits: Fixed limits such as `N` are
+Current SSZ `List[type, N]` types require a predefined capacity `N`, which leads to several issues: - Inefficient hashing: Lists often contain far fewer elements than their maximum capacity (e.g., [`Transaction`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/bellatrix/beacon-chain.md#custom-types)), resulting in unnecessary zero-padding and dozens of extra hash computations. This is exacerbated when nesting `List[type, N]`, e.g., in
 
 RATIONALE:
-### Why a Recursive Structure? - Efficiency: Small lists use fewer hashes (e.g., a 3-item list in a 16-element subtree wastes fewer hashes than a 1024-element `List[T, N]`). - Stability: Fixed subtree sizes ensure stable gindices, avoiding the need for dynamic depth adjustments or multiple queries. - Scalability: Recursive
+### Why a recursive structure? - Efficiency: Small lists use fewer hashes (e.g., a 3-item list in a 16-element subtree wastes fewer hashes than a 1024-element `List[type, N]`). - Stability: Fixed subtree sizes ensure stable gindices, avoiding the need for dynamic depth adjustments or multiple queries. - Scalability: Recursive
 
 
 === EIP-7840 ===

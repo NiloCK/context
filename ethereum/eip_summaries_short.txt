@@ -2273,16 +2273,16 @@ CREATED: 2025-03-24
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/0cd5dcd26327e49b726e66ca51802c4cd65be889/ssz/simple-serialize.md) type, `ProgressiveList[T]`, to represent lists of arbitrary length with stable merkleization. Unlike the existing `List[T, N]`
+This EIP introduces a new Merkle tree shape for [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md) types that results in fewer hashes when only a small number of
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Current SSZ `List[T, N]` types require a predefined capacity `N`, which leads to several issues: - Inefficient hashing: Lists often contain far fewer elements
+Current SSZ `List[type, N]` types require a predefined capacity `N`, which leads to several issues: - Inefficient hashing: Lists often contain far fewer elements
 
 RATIONALE:
-### Why a Recursive Structure? - Efficiency: Small lists use fewer hashes (e.g., a 3-item list in a 16-element subtree wastes fewer hashes than
+### Why a recursive structure? - Efficiency: Small lists use fewer hashes (e.g., a 3-item list in a 16-element subtree wastes fewer hashes than
 
 
 === EIP-7840 ===
