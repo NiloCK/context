@@ -732,7 +732,7 @@ RATIONALE:
 === EIP-7825 ===
 TITLE: Transaction Gas Limit Cap
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-11-23
 REQUIRES: 
 
@@ -7268,7 +7268,7 @@ TBD
 === EIP-6690 ===
 TITLE: EVM Modular Arithmetic Extensions
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2023-03-15
 REQUIRES: 
 
