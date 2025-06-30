@@ -8264,23 +8264,23 @@ RATIONALE:
 
 
 === EIP-7495 ===
-TITLE: SSZ StableContainer
+TITLE: SSZ ProgressiveContainer
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-08-18
 REQUIRES: 7916
 
 SUMMARY:
-This EIP introduces two new [Simple Serialize (SSZ) types](https://github.com/ethereum/consensus-specs/blob/0cd5dcd26327e49b726e66ca51802c4cd65be889/ssz/simple-serialize.md) to enable forward-compatible containers. A `StableContainer[N]` extends an SSZ `Container` with stable merkleization and forward-compatible serialization even when individual fields are deprecated or new fields are introduced in the future. Furthermore, `Profile[B]` is introduced to support specialized sub-types of `StableContainer[N]`
+This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md) type to represent containers with forward-compatible Merkleization: A given field is always assigned the same stable [generalized index (gindex)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/merkle-proofs.md#generalized-merkle-tree-index) even when different container versions append new fields or drop existing fields.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. **Note:** In this document, `Optional[T]` exclusively refers to Python's `typing.Optional`. Specifically, `Optional[T]` is NOT an
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ProgressiveContainer[active_fields]` Two new [SSZ composite types)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md#composite-types) are defined: - **progressive container**: ordered heterogeneous collection
 
 MOTIVATION:
-Stable containers and profiles are currently not representable in SSZ. Adding support provides these benefits: 1. **Stable signatures:** Signing roots derived from a `StableContainer[N]` never change. In the context of Ethereum, this is useful for transaction signatures that are expected to remain valid even when future updates introduce additional
+SSZ containers are frequently versioned, for example across fork boundaries. When the number of fields reaches a new power of two, or a field is removed or replaced with one of a different type, the shape of the underlying Merkle tree changes, breaking verifiers of Merkle proofs for these
 
 RATIONALE:
-### What are the problems solved by `StableContainer[N]`? Current SSZ types are only stable within one version of a specification, i.e., one fork of Ethereum. This is alright for messages pertaining to a specific fork, such as attestations or beacon blocks. However, it is a limitation for messages that
+### Why `active_fields`? `active_fields` conceptually creates a single Merkle tree shape across all prior, current, and future versions, where each field (as identified by its name) is assigned a stable gindex and can either be present or absent. This allows appending new fields or dropping existing fields as the
 
 
 === EIP-7801 ===
