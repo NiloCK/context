@@ -714,16 +714,16 @@ TITLE: Forward compatible consensus data structures
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-04-15
-REQUIRES: 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 4, 9, 5, ,,  , 7, 5, 4, 9, ,,  , 7, 5, 6, 9
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 4, 9, 5, ,,  , 7, 5, 4, 9, ,,  , 7, 5, 6, 9, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP defines the changes needed to adopt `StableContainer` from [EIP-7495](./eip-7495.md) in consensus data structures.
+This EIP defines the changes needed to adopt `ProgressiveContainer` from [EIP-7495](./eip-7495.md) and `ProgressiveList` from [EIP-7916](./eip-7916.md) in consensus data structures.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Conversion procedure For each converted data structure, a new fork agnostic `StableContainer` type `B`
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `Container` conversion `Container` types that are expected to evolve over forks SHALL be redefined
 
 MOTIVATION:
-Ethereum's consensus data structures make heavy use of [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) `Container`, which defines how they are serialized and merkleized. The merkleization scheme allows application implementations to verify that individual fields (and partial fields) have not been tampered with. This is useful, for example, in smart contracts of decentralized
+Ethereum's consensus data structures make heavy use of [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md) `Container`, which defines how they are serialized and merkleized. The merkleization scheme allows application implementations to verify that individual fields (and partial fields) have not been tampered with. This is useful, for example, in smart contracts of decentralized
 
 RATIONALE:
 ### Best timing? Applying this EIP breaks `hash_tree_root` and Merkle tree verifiers a single time, while promising forward compatibility from the fork going forward. It is best to apply it before merkleization would be broken by different changes. Merkleization is broken by a `Container` reaching a new power of
