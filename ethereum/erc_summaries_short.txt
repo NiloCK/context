@@ -660,6 +660,26 @@ RATIONALE:
 The interfaces cover the escrow operation's refundable issue. The suggested 3 functions (`escrowFund`, `escrowRefund` and `escrowWithdraw`) are based on `transfer` function in EIP-20. `escrowFund`
 
 
+=== ERC-7861 ===
+TITLE: ERC-721 Verifiable Credential Extension
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-14
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This standard is an extension of [ERC-721](./eip-721.md) that adds verifiable credential properties at the contract level. A verifiable credential is a secure digital certificate
+
+SPECIFICATION:
+### Overview Each NFT in this standard is linked to a credential that can be stored in any compatible storage location. To retrieve credentials
+
+MOTIVATION:
+Many [ERC-721](./eip-721.md) contracts require additional properties to represent verifiable credentials. While it's possible to implement these properties in various ways, it creates an extra
+
+RATIONALE:
+<!-- TODO -->
+
+
 === ERC-7615 ===
 TITLE: Atomic Push-based Data Feed Among Contracts
 TYPE: Standards Track ERC
@@ -4037,6 +4057,26 @@ CREATED: 2018-06-01
 REQUIRES: 
 
 
+=== ERC-7845 ===
+TITLE: Universal Orchestrator RPC
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-07
+REQUIRES: 
+
+SUMMARY:
+> "Hey smart speaker, swap my Shiba Inu for Pillar" > "Assistant, how much USDC can I buy with what's in my wallet?" >
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Data model standards can be written in any shape. A system will often expose their external interface but require that the request to the
+
+RATIONALE:
+- Uses the Ethereum JSON-RPC JSON wrapper for greater compatibility. - The interface definitions use only generic primitive types to ensure wide compatibility for
+
+
 === ERC-1616 ===
 TITLE: Attribute Registry Standard
 TYPE: Standards Track ERC
@@ -5991,6 +6031,26 @@ With NFTs being a widespread form of tokens in the Ethereum ecosystem and being 
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. **Should we propose another (Non-)Transferable NFT proposal given the existence of existing ones, some even
+
+
+=== ERC-7895 ===
+TITLE: API for Hierarchical Accounts
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-18
+REQUIRES: 
+
+SUMMARY:
+This ERC introduces a new wallet RPC, `wallet_addSubAccount`, which allows an app to request a wallet track a smart account that the wallet owns.
+
+SPECIFICATION:
+### Definitions The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document
+
+MOTIVATION:
+Embedded app accounts (onchain accounts specific to a single app) have led to a proliferation of user addresses, which can be difficult for users
+
+RATIONALE:
+### Naming Initial intent was to leverage existing RPCs, like `wallet_connect` (e.g. <!-- TODO: [ERC-7846](./eip-7846.md) --> with additional capabilities to add support for these
 
 
 === ERC-5269 ===
