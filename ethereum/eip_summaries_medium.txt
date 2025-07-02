@@ -874,7 +874,7 @@ TITLE: SSZ receipts
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-02-08
-REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 7, 0, 2
+REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
 
 SUMMARY:
 This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) receipts to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md)
@@ -886,7 +886,7 @@ MOTIVATION:
 RLP receipts have a number of shortcomings: 1. **Limited proving support:** Due to receipt data being linearly hashed as part of the `receipts_root` Merkle-Patricia Trie (MPT), it is not possible to efficiently proof individual parts of receipts, such as logs. Requiring the full receipt data to be present can
 
 RATIONALE:
-Switching to a single, unified and forward compatible receipt format within execution blocks reduces implementation complexity for client applications and smart contracts. Individual chunks of receipt data can now be verified, simplifying implementation of bridges. Light clients can now efficiently verify a receipt's `from`, `gas_used`, and `authorities`, which previously
+### Forward compatibility All receipts share the same Merkle tree shape with a stable [generalized index (gindex)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/merkle-proofs.md#generalized-merkle-tree-index) assigned to each field. Future transaction features can introduce additional receipt fields or drop existing fields without breaking verifiers. ### Verifier improvements Committing to `from`, `contract_address` and `authorities` in the receipt allows
 
 
 === EIP-2657 ===
@@ -4307,10 +4307,10 @@ TITLE: SSZ transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-01-30
-REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 5, 7, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2
+REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) transactions to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
+This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) transactions to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Existing definitions Definitions from existing specifications that are used throughout this document are replicated
@@ -4319,7 +4319,7 @@ MOTIVATION:
 RLP transactions have a number of shortcomings: 1. **Linear hashing:** The signing hash (`sig_hash`) and unique identifier (`tx_hash`) of an RLP transaction are computed by linear keccak256 hashes across its serialization. Even if only partial data is of interest, linear hashes require the full transaction data to be present,
 
 RATIONALE:
-Switching to a single, unified and forward compatible transaction format within execution blocks reduces implementation complexity for client applications and smart contracts. Future use cases such as transaction inclusion proofs or submitting individual verifiable chunks of calldata to a smart contract become easier to implement with SSZ. Various protocol
+### Forward compatibility The proposed transaction design is extensible with new fee types, new signature types, and entirely new transaction features (e.g., CREATE2), while retaining compatibility with the proposed transactions. ### Verifier improvements Future RPC could expose an SSZ based `tx_root` on top of the `tx_hash`, against which proofs
 
 
 === EIP-6122 ===
