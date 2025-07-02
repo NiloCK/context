@@ -649,6 +649,26 @@ RATIONALE:
 Allowing for more targeted return opcodes allows for saving gas at all levels of smart contract optimization by eliminating the intermediate steps of first
 
 
+=== EIP-7951 ===
+TITLE: Precompile for secp256r1 Curve Support
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-05-27
+REQUIRES: 
+
+SUMMARY:
+Add functionality to efficiently perform ECDSA signature verification over the secp256r1 elliptic curve (also known as P-256 or prime256v1). This precompile enables native support
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The secp256r1 elliptic curve is a NIST-standardized curve widely supported in modern secure hardware and authentication systems. Adding native support for secp256r1 signature verification
+
+RATIONALE:
+### Security Fixes This specification addresses two critical vulnerabilities in RIP-7212: 1. **Point-at-infinity check**: The original RIP-7212 failed to check if the recovered point
+
+
 === EIP-1895 ===
 TITLE: Support for an Elliptic Curve Cycle
 TYPE: Standards Track Core
