@@ -494,19 +494,19 @@ TITLE: SSZ withdrawals root
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-02-08
-REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 0, 4
+REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP defines a migration process of the existing Merkle-Patricia Trie (MPT) commitment for withdrawals to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
+This EIP defines a migration process of the existing Merkle-Patricia Trie (MPT) commitment for withdrawals to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Existing definitions Definitions from existing specifications that are used throughout this document are replicated here for reference. | Name | SSZ equivalent | | - | - | | [`ValidatorIndex`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/phase0/beacon-chain.md#custom-types) | `uint64` | | [`Gwei`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/phase0/beacon-chain.md#custom-types) | `uint64` | | [`ExecutionAddress`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/bellatrix/beacon-chain.md#custom-types) | `Bytes20` | [`WithdrawalIndex`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/capella/beacon-chain.md#custom-types) | `uint64` | | Name | Value | | - | - | | [`MAX_WITHDRAWALS_PER_PAYLOAD`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/capella/beacon-chain.md#execution) | `uint64(2**4)` (= 16)
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Existing definitions Definitions from existing specifications that are used throughout this document are replicated here for reference. | Name | SSZ equivalent | | - | - | | [`ValidatorIndex`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/phase0/beacon-chain.md#custom-types) | `uint64` | | [`Gwei`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/phase0/beacon-chain.md#custom-types) | `uint64` | | [`ExecutionAddress`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/bellatrix/beacon-chain.md#custom-types) | `Bytes20` | [`WithdrawalIndex`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/capella/beacon-chain.md#custom-types) | `uint64` | ### Withdrawals New withdrawals use a normalized SSZ representation. The existing consensus [`Withdrawal`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/capella/beacon-chain.md#withdrawal) SSZ container is
 
 MOTIVATION:
 While the consensus `ExecutionPayloadHeader` and the execution block header map to each other conceptually, they are encoded differently. This EIP aims to align the encoding of the `withdrawals_root`, taking advantage of the more modern SSZ format. This brings several advantages: 1. **Reducing complexity:** The proposed design reduces the number of use cases that require support for Merkle-Patricia Trie (MPT). 2. **Reducing ambiguity:** The name `withdrawals_root` is currently used to refer to different roots. While the execution block header refers to a Merkle Patricia Trie (MPT) root, the consensus `ExecutionPayloadHeader` instead refers to an SSZ root. With these changes,
 
 RATIONALE:
-This change was originally a candidate for inclusion in Shanghai, but was postponed to accelerate the rollout of withdrawals. ### Why typed withdrawal envelopes? The RLPx serialization layer may not be aware of the fork schedule and the block timestamp when withdrawals are exchanged. The typed withdrawal envelope assists when syncing historical blocks based on RLP and the MPT `withdrawals_root`.
+This change was originally a candidate for inclusion in Shanghai, but was postponed to accelerate the rollout of withdrawals.
 
 
 === EIP-7938 ===
@@ -4675,19 +4675,19 @@ TITLE: SSZ execution blocks
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-28
-REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 9, 9
+REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 9, 9
 
 SUMMARY:
-This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
+This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ExecutionBlockHeader` container Execution blocks are represented as a single, normalized SSZ container. The definition uses the `StableContainer[N]` SSZ type and `Optional[T]` as defined in [EIP-7495](./eip-7495.md). | Name | Value | Description | | - | - | - | | `MAX_EXECUTION_BLOCK_FIELDS` | `uint64(2**6)` (= 64) | Maximum number of fields to which `StableExecutionBlock` can ever grow in the future | ```python class StableGasAmounts(StableContainer[MAX_FEES_PER_GAS_FIELDS]):
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Gas amounts The different kinds of gas amounts are combined into a single structure, mirroring the [EIP-6404 gas fees](./eip-6404.md#gas-fees). | Name | SSZ equivalent | | - | - | | [`GasAmount`](./eip-6404.md#normalized-transactions) | `uint64` | ```python class GasAmounts(ProgressiveContainer([active_fields=[1, 1]])): regular: GasAmount blob: GasAmount ``` ### Requests hash computation `requests_hash` is changed to `ExecutionRequests.hash_tree_root()` using the same structure as in the Consensus Layer `BeaconBlockBody`.
 
 MOTIVATION:
-With [EIP-6404](./eip-6404.md) SSZ transactions, [EIP-6466](./eip-6466.md) SSZ receipts, and [EIP-6465](./eip-6465.md) SSZ withdrawals, all Merkle-Patricia Trie (MPT) besides the state trie are converted to SSZ. This enables the surrounding data structure, in this case, the execution block itself, to also convert to SSZ, achieving a unified block representation across both Consensus Layer and Execution Layer. 1. **Normalized block hash:** The Consensus Layer can compute the block hash autonomously, enabling it to process all consistency checks that currently require asynchronous communication with the Execution Layer ([`verify_and_notify_new_payload`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/electra/beacon-chain.md#modified-verify_and_notify_new_payload)). This allows early rejection of inconsistent blocks and dropping the requirement to wait for engine
+With [EIP-6404](./eip-6404.md) SSZ transactions, [EIP-6466](./eip-6466.md) SSZ receipts, and [EIP-6465](./eip-6465.md) SSZ withdrawals, all Merkle-Patricia Trie (MPT) besides the state trie are converted to SSZ. This enables the surrounding data structure, the execution block itself, to also convert to SSZ, achieving a unified block representation across both Consensus Layer and Execution Layer. 1. **Normalized block hash:** The Consensus Layer can compute the block hash autonomously, enabling it to process all consistency checks that currently require asynchronous communication with the Execution Layer ([`verify_and_notify_new_payload`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/electra/beacon-chain.md#modified-verify_and_notify_new_payload)). This allows early rejection of inconsistent blocks and dropping the requirement to wait for engine API interactions while
 
 RATIONALE:
-In the initial draft, only the requests hash and block hash are changed to be SSZ `hash_tree_root()` based. No Consensus Layer changes are required. ### Future - With SSZ `Log`, the withdrawals mechanism and validator requests could be redefined to be based on logs (similar to deposits, originally, but without the delay), possibly removing the need for `withdrawals_root` and `requests_hash`. - The CL would insert the extra logs for minting ([EIP-7799](./eip-7799.md)) and could fetch the ones relevant for withdrawing (deposits, requests, consolidations). That mechanism would be more generic than [EIP-7685](./eip-7685.md) and would drop requiring the EL to special
+This transition completes the transition to SSZ for everything except the execution state trie. ### Future - With SSZ `Log`, the withdrawals mechanism and validator requests could be redefined to be based on logs (similar to deposits, originally, but without the delay), possibly removing the need for `withdrawals_root` and `requests_hash`. - The CL would insert the extra logs for minting ([EIP-7799](./eip-7799.md)) and could fetch the ones relevant for withdrawing (deposits, requests, consolidations). That mechanism would be more generic than [EIP-7685](./eip-7685.md) and would drop requiring the EL to special case requests, including `compute_requests_hash`. - For client applications and smart
 
 
 === EIP-665 ===
@@ -6769,13 +6769,13 @@ TITLE: System logs
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-29
-REQUIRES: 1, 5, 5, 9, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 8
+REQUIRES: 1, 5, 5, 9, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 1, 6
 
 SUMMARY:
 This EIP defines an extension for eth_getLogs to provide logs for events that are not associated with a given transaction, such as block rewards and withdrawals.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### System logs list A new list is introduced to track all block level logs emitted from system interactions. The definition uses the `Log` SSZ type from [EIP-6466](./eip-6466.md). ```python system_logs = List[Log, MAX_LOGS_PER_RECEIPT]( log_0, log_1, log_2, ...) ``` ### Priority fee processing [EIP-1559](./eip-1559.md) priority fees SHALL no longer be credited after each individual transaction. Instead, they SHALL be summed up and credited after all
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### System logs list A new list is introduced to track all block level logs emitted from system interactions. The definition uses the `Log` SSZ type from [EIP-6466](./eip-6466.md). ```python system_logs = ProgressiveList[Log]( log_0, log_1, log_2, ...) ``` ### Priority fee processing [EIP-1559](./eip-1559.md) priority fees SHALL no longer be credited after each individual transaction. Instead, they SHALL be summed up and credited after all transactions
 
 MOTIVATION:
 With [EIP-7708](./eip-7708.md) wallets gain the ability to use eth_getLogs to track changes to their ETH balance. However, the ETH balance may change without an explicit transaction, through block production and withdrawals. By having such operations emit block-level system logs, eth_Logs provides a complete picture of ETH balance changes.

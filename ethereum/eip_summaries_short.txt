@@ -494,10 +494,10 @@ TITLE: SSZ withdrawals root
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-02-08
-REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 0, 4
+REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP defines a migration process of the existing Merkle-Patricia Trie (MPT) commitment for withdrawals to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
+This EIP defines a migration process of the existing Merkle-Patricia Trie (MPT) commitment for withdrawals to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -506,7 +506,7 @@ MOTIVATION:
 While the consensus `ExecutionPayloadHeader` and the execution block header map to each other conceptually, they are encoded differently. This EIP aims to align the
 
 RATIONALE:
-This change was originally a candidate for inclusion in Shanghai, but was postponed to accelerate the rollout of withdrawals. ### Why typed withdrawal envelopes?
+This change was originally a candidate for inclusion in Shanghai, but was postponed to accelerate the rollout of withdrawals.
 
 
 === EIP-7938 ===
@@ -4675,10 +4675,10 @@ TITLE: SSZ execution blocks
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-28
-REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 9, 9
+REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 9, 9
 
 SUMMARY:
-This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md).
+This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -4687,7 +4687,7 @@ MOTIVATION:
 With [EIP-6404](./eip-6404.md) SSZ transactions, [EIP-6466](./eip-6466.md) SSZ receipts, and [EIP-6465](./eip-6465.md) SSZ withdrawals, all Merkle-Patricia Trie (MPT) besides the state trie are converted to SSZ. This
 
 RATIONALE:
-In the initial draft, only the requests hash and block hash are changed to be SSZ `hash_tree_root()` based. No Consensus Layer changes are required.
+This transition completes the transition to SSZ for everything except the execution state trie. ### Future - With SSZ `Log`, the withdrawals mechanism and
 
 
 === EIP-665 ===
@@ -6769,7 +6769,7 @@ TITLE: System logs
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-29
-REQUIRES: 1, 5, 5, 9, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 8
+REQUIRES: 1, 5, 5, 9, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 1, 6
 
 SUMMARY:
 This EIP defines an extension for eth_getLogs to provide logs for events that are not associated with a given transaction, such as block rewards
