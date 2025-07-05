@@ -2917,10 +2917,10 @@ CREATED: 2024-09-26
 REQUIRES: 7, 6, 0, 7, ,,  , 7, 7, 2, 3
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Proposed, Considered for & Scheduled for Inclusion in the Glamsterdam network upgrade.
+This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Glamsterdam network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion ### Considered
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Glamsterdam network upgrade, as well as links to full specification.
