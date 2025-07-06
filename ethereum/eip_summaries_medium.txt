@@ -2057,7 +2057,7 @@ This EIP is aimed at breaking existing ASIC-based miners via small changes to th
 === EIP-7742 ===
 TITLE: Uncouple blob count between CL and EL
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-07-12
 REQUIRES: 4844
 
@@ -4040,7 +4040,7 @@ Having access to the current gas price economy allows contracts to implement mor
 === EIP-7784 ===
 TITLE: GETCONTRACT opcode
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-10-07
 REQUIRES: 
 
