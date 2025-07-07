@@ -5384,19 +5384,19 @@ TITLE: Meter Contract Code Size And Increase Limit
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-03-14
-REQUIRES: 1, 7, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 8, 6, 0
+REQUIRES: 1, 7, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 8, 6, 0, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP substantially increases the hard contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 256KB, and adds gas metering. It
+This EIP substantially increases the contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 48KB (49152 bytes), and adds gas metering.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+### Definitions | Name | Value | Description | | --- | --- | --- | | COLD_SLOAD_COST | `2100` | The cost charged
 
 MOTIVATION:
 EIP-170 introduced a 24KB contract code size limit to prevent potential DoS attacks, as large contract code requires O(n) resource cost in terms of
 
 RATIONALE:
-The gas cost of 2 per word was chosen in-line with [EIP-3860](./eip-3860.md). This accounts for: 1. The additional disk I/O for retrieving larger contract
+The gas cost of 4 per word was chosen in-line with the per word code defined by [EIP-2929](./eip-2929.md)'s `COLD_ACCOUNT_ACCESS_COST`. The value is derived from
 
 
 === EIP-4788 ===

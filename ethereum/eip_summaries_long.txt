@@ -5384,19 +5384,19 @@ TITLE: Meter Contract Code Size And Increase Limit
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-03-14
-REQUIRES: 1, 7, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 8, 6, 0
+REQUIRES: 1, 7, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 8, 6, 0, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP substantially increases the hard contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 256KB, and adds gas metering. It introduces a gas cost of 2 gas per (32 byte) word for contract code exceeding 24KB, allowing deployment of contracts of any size while preventing DoS attacks through appropriate gas metering. Lastly, it also commensurately increases initcode size limit from 48KB, introduced in [EIP-3860](./eip-3860.md), to 512KB.
+This EIP substantially increases the contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 48KB (49152 bytes), and adds gas metering. It introduces a gas cost of 4 gas per (32 byte) word for contract code exceeding 24KB, allowing deployment of contracts of any size while preventing DoS attacks through appropriate gas metering. Lastly, it also commensurately increases initcode size limit from 48KB, introduced in [EIP-3860](./eip-3860.md), to 96KB (98304 bytes).
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). 1. Update the [EIP-170](./eip-170.md) contract code size limit of 24KB (`0x6000` bytes) to 256KB (`0x40000` bytes). 2. Change the gas schedule for opcodes which load code. Specifically, the opcodes `CALL`, `STATICCALL`, `DELEGATECALL`, `CALLCODE` and `EXTCODECOPY` are modified so that `largeContractCost = ceil32(excess_contract_size) * GAS_INIT_CODE_WORD_COST // 32` gas is added to the access cost if the code is cold, where `excess_contract_size = max(0, contract_size -
+### Definitions | Name | Value | Description | | --- | --- | --- | | COLD_SLOAD_COST | `2100` | The cost charged for cold loading storage as defined by [EIP-2929](./eip-2929.md). | | WARM_STORAGE_READ_COST | `100` | The cost charged for loading warm storage as defined by [EIP-2929](./eip-2929.md). | | `COLD_ACCOUNT_ACCESS_COST` | `2600` | The cost charged for loading a cold account as defined by [EIP-2929](./eip-2929.md). | | `GAS_PER_CODE_WORD` | `4` | The cost charged per word of code loaded beyond the intial `24KB` amount. | #### Helpers ```python def ceil32(n): if n % 32 == 0:
 
 MOTIVATION:
 EIP-170 introduced a 24KB contract code size limit to prevent potential DoS attacks, as large contract code requires O(n) resource cost in terms of disk reads, VM preprocessing, and Merkle proof sizes, all of which are not directly compensated by gas fees. However, this limit restricts legitimate use cases for large contracts. This EIP proposes a gas-based solution that allows contracts of larger size while ensuring that users loading large contracts pay gas proportional to the additional resources they consume. This approach aligns with Ethereum's gas model philosophy of paying for the resources consumed. A new limit has
 
 RATIONALE:
-The gas cost of 2 per word was chosen in-line with [EIP-3860](./eip-3860.md). This accounts for: 1. The additional disk I/O for retrieving larger contract code 2. The increased computational resources for preprocessing larger code for execution (a.k.a. "JUMPDEST analysis"). 3. The growth in Merkle proof sizes for blocks containing very large contracts This EIP introduces the gas cost as an additional cost for contracts exceeding 24KB. It could have been specified as a simpler `ceil32(contract_size) * 2 // 32`, without hardcoding the existing contract size limit. However, for the sake of being conservative and avoiding lowering the cost
+The gas cost of 4 per word was chosen in-line with the per word code defined by [EIP-2929](./eip-2929.md)'s `COLD_ACCOUNT_ACCESS_COST`. The value is derived from the current gas per word code of `ceil(2600 / (24676//32)) = 4` where `2600` is the current cold account load cost and `24676` is the maximum allow code size at that price. In general, this accounts for: 1. The additional disk I/O for retrieving larger contract code 2. The increased computational resources for preprocessing larger code for execution (a.k.a. "JUMPDEST analysis"). 3. The growth in Merkle proof sizes for blocks containing very large contracts
 
 
 === EIP-4788 ===
