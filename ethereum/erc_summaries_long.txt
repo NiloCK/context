@@ -2776,6 +2776,26 @@ RATIONALE:
 The structure proposed above follows the BIP43 generic structure and is similar to the widely adopted BIP44 specification.
 
 
+=== ERC-7846 ===
+TITLE: Wallet Connection API
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-12-15
+REQUIRES: 
+
+SUMMARY:
+This ERC introduces a new wallet connection JSON-RPC method focused on extensibility, `wallet_connect`. It leverages the modular capabilities approach defined in [ERC-5792](./eip-5792.md#wallet_getcapabilities) to streamline connections and authentication into a single interaction.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### JSON-RPC Methods #### `wallet_connect` Requests to connect account(s) with optional capabilities. ##### Request ```ts type Request = { method: 'wallet_connect', params: [{ // JSON-RPC method version. version: string; // Optional capabilities to request (e.g. Sign In With Ethereum). capabilities?: Record<string, unknown>; }] } ``` ##### Response List of connected accounts with their associated capabilities. ```ts type Response = { accounts: { // Address
+
+MOTIVATION:
+With applications beginning to require support for more sophisticated functionality in wallet connection flows, the need for a unified and extensible wallet connection JSON-RPC method has become more apparent. This is especially evident in the case of attempting to batch connection with authentication, where existing methods like `eth_requestAccounts` and `personal_sign` lack extensibility and require at least two separate user interactions (ie. connect and then sign).
+
+RATIONALE:
+### Multiple Accounts Returning multiple accounts allows greater generality for apps that wish to interact in more complex ways with users. This also improves our backwards compatibility with `eth_requestAccounts`. In practice, we expect most apps only interact with the first account in the array. ### Capability Results Returning capability results alongside the connection unlocks many valuable use cases such as authentication, user metadata sharing, and permissions granted to the app. ### Initial Authentication Capability To ensure immediate value, this proposal includes a capability that combines wallet connection with authentication using the widely adopted [Sign In With Ethereum (ERC-4361)](./eip-4361.md)
+
+
 === ERC-173 ===
 TITLE: Contract Ownership Standard
 TYPE: Standards Track ERC
@@ -2853,7 +2873,7 @@ RATIONALE:
 === ERC-6224 ===
 TITLE: Contracts Dependencies Registry
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2022-12-27
 REQUIRES: 1, 9, 6, 7, ,,  , 5, 7, 5, 0
 
@@ -9618,6 +9638,26 @@ REQUIRES: 1, 9, 1, ,,  , 6, 8, 1, ,,  , 7, 2, 5, ,,  , 1, 0, 7, 7
 
 SUMMARY:
 This presents a method to replace the usual signup/login design pattern with a minimal ethereum native scheme, that doesn’t require passwords, backing up private keys nor typing seed phrases. From the user's point of view it will be very similar to patterns they’re already used to with second factor authentication (without relying in a central server), but for dapp developers it requires a new way to think about ethereum transactions.
+
+
+=== ERC-7930 ===
+TITLE: Interoperable Addresses
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-02
+REQUIRES: 
+
+SUMMARY:
+Interoperable Addresses is a binary format to describe an address specific to one chain with a companion 'Interoperable Names' specification for human-readable display. This is achieved through a versioned, length-prefixed binary envelope that supports arbitrary-length data. The interpretation and serialization rules for the data within this envelope are defined by companion standards, which provide profiles for each chain type.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Concepts Interoperable Address : A binary payload which unambiguously identifies a target address and allows conversion to a human-readable name. Interoperable Name : A string representation of an interoperable address, meant to be used by humans. Target address : The (address, chain ID) pair a particular Interoperable Address points to. ### Interoperable Address V1 binary format definition In binary format, addresses MUST have
+
+MOTIVATION:
+Current Ethereum addresses ([ERC-55]) lack chain specificity and have optional checksums, creating several challenges: - Optional checksum validation allows mistyped addresses to be accepted without user awareness. - Addresses do not include any indication of the chain to which the address applies. This means chain information must be expressed out of band, and introduces the risk of an address being mistakenly used on a chain it is not valid for. This risk is particularly pronounced for addresses that represent smart contracts. - The existing address format provides no mechanism for extension, meaning that there is no natural method
+
+RATIONALE:
+- Chain and address fields' syntax is deliberately chosen to be able to express [CAIP-2] namespaces (by using the `@` symbol for the separator, freeing up `:`) and [CAIP-10] account IDs, with the caveat that no length restriction is placed, so chains with longer address formats or full 256-bit EVM chainids can be represented. - Similarly, the address field includes `%` as a valid character to allow for url-encoding of any other characters. - While a fresh start on text-encoding schemes could e.g. make use of more characters with base58 or base64 to achieve greater information efficiency and/or
 
 
 === ERC-205 ===

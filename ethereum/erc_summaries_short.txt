@@ -2776,6 +2776,26 @@ RATIONALE:
 The structure proposed above follows the BIP43 generic structure and is similar to the widely adopted BIP44 specification.
 
 
+=== ERC-7846 ===
+TITLE: Wallet Connection API
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-12-15
+REQUIRES: 
+
+SUMMARY:
+This ERC introduces a new wallet connection JSON-RPC method focused on extensibility, `wallet_connect`. It leverages the modular capabilities approach defined in [ERC-5792](./eip-5792.md#wallet_getcapabilities) to streamline
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+With applications beginning to require support for more sophisticated functionality in wallet connection flows, the need for a unified and extensible wallet connection JSON-RPC
+
+RATIONALE:
+### Multiple Accounts Returning multiple accounts allows greater generality for apps that wish to interact in more complex ways with users. This also improves
+
+
 === ERC-173 ===
 TITLE: Contract Ownership Standard
 TYPE: Standards Track ERC
@@ -2853,7 +2873,7 @@ RATIONALE:
 === ERC-6224 ===
 TITLE: Contracts Dependencies Registry
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2022-12-27
 REQUIRES: 1, 9, 6, 7, ,,  , 5, 7, 5, 0
 
@@ -9618,6 +9638,26 @@ REQUIRES: 1, 9, 1, ,,  , 6, 8, 1, ,,  , 7, 2, 5, ,,  , 1, 0, 7, 7
 
 SUMMARY:
 This presents a method to replace the usual signup/login design pattern with a minimal ethereum native scheme, that doesn’t require passwords, backing up private
+
+
+=== ERC-7930 ===
+TITLE: Interoperable Addresses
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-02
+REQUIRES: 
+
+SUMMARY:
+Interoperable Addresses is a binary format to describe an address specific to one chain with a companion 'Interoperable Names' specification for human-readable display. This
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Current Ethereum addresses ([ERC-55]) lack chain specificity and have optional checksums, creating several challenges: - Optional checksum validation allows mistyped addresses to be accepted
+
+RATIONALE:
+- Chain and address fields' syntax is deliberately chosen to be able to express [CAIP-2] namespaces (by using the `@` symbol for the separator,
 
 
 === ERC-205 ===
