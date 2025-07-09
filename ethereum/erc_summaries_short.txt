@@ -8281,7 +8281,7 @@ TITLE: Cross-Chain Messaging Gateway
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2024-10-14
-REQUIRES: 
+REQUIRES: 7930
 
 SUMMARY:
 This proposal describes an interface, and the corresponding workflow, for smart contracts to send arbitrary data through cross-chain messaging protocols. The end goal of
@@ -8293,7 +8293,7 @@ MOTIVATION:
 Cross-chain messaging protocols (or bridges) allow communication between smart contracts deployed on different blockchains. There is a large diversity of such protocols with multiple
 
 RATIONALE:
-Attributes are designed so that gateways can expose any specific features the bridge offers without having to use a specific endpoint. Having a unique
+Attributes are designed so that gateways can expose any specific features the bridge offers without having to use a proprietary interface. This should allow
 
 
 === ERC-5851 ===

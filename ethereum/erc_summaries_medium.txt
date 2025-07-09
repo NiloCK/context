@@ -8281,19 +8281,19 @@ TITLE: Cross-Chain Messaging Gateway
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2024-10-14
-REQUIRES: 
+REQUIRES: 7930
 
 SUMMARY:
 This proposal describes an interface, and the corresponding workflow, for smart contracts to send arbitrary data through cross-chain messaging protocols. The end goal of this proposal is to have all such messaging protocols accessible via this interface (natively or using "adapters") to improve their composability and interoperability. That would
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Message Field Encoding A cross-chain message consists of a sender, receiver, payload, and list
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Message Field Encoding A cross-chain message consists of a sender, recipient, payload, value (native
 
 MOTIVATION:
 Cross-chain messaging protocols (or bridges) allow communication between smart contracts deployed on different blockchains. There is a large diversity of such protocols with multiple degrees of decentralization, different architectures, implementing different interfaces, and providing different guarantees to users. Because almost every protocol implements a different workflow using a specific
 
 RATIONALE:
-Attributes are designed so that gateways can expose any specific features the bridge offers without having to use a specific endpoint. Having a unique endpoint, with modularity through attributes, SHOULD allow contracts to change the gateway they use while continuing to express messages the same way. This portability offers
+Attributes are designed so that gateways can expose any specific features the bridge offers without having to use a proprietary interface. This should allow contracts to change the gateway they use while continuing to express messages the same way. This portability offers many advantages: - A contract that relies
 
 
 === ERC-5851 ===
