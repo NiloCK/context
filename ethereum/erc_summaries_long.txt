@@ -4928,6 +4928,26 @@ RATIONALE:
 ### SBT as an extension of EIP-1155 We believe that Soulbound Tokens serve as a specialized subset of existing [EIP-1155](./eip-1155.md) tokens. The advantage of such a design is the seamless compatibility of SBTs with existing NFT services. Service providers can treat SBTs like NFTs and do not need to make drastic changes to their existing codebase. Making the standard mostly compatible with [EIP-1155](./eip-1155.md) also allows for SBTs to bind to multiple addresses and to Smart Contracts. ### Double-Signature The Double-Signature functionality was implemented to prevent the receipt of unwanted tokens. It symbolizes a handshake between the token receiver
 
 
+=== ERC-7828 ===
+TITLE: Readable Interoperable Addresses using ENS
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-27
+REQUIRES: 1, 5, 5, ,,  , 7, 9, 3, 0
+
+SUMMARY:
+This proposal extends [ERC-7930](./eip-7930.md) (Interoperable Addresses & Names) by standardizing a human-readable format for chain-specific addresses in the form `<address>@<chain>#<checksum>`. It introduces: - A unified format for accounts that specifies, together with the address, the chain where the address lives. - The use of human-readable chain names, with resolution to chain identifiers via ENS. - The use of human-readable account names, with resolution to addresses via ENS. - An on-chain registry mapping chain names to identifiers, enabling decentralized resolution of chain metadata. - The ENS domain suffix used for chain names SHALL be abstracted from users for readability,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Format This standard defines a sub-syntax with extra semantics on top of the Interoperable Names syntax defined in [ERC-7930]. ``` <human readable name>: := <address> "@" <chain> "#" <checksum> <address>: := <raw-address> | <ens-name> <chain>: := <raw-address> | <chain-name> <checksum>: := [0-9A-F]{8} <raw-address>: := [-:_%a-zA-Z0-9]+ <raw-chain>: := [-:_a-zA-Z0-9]+ <chain-name> := (<label> ".")* "<namespace>.eth" <ens-name>: := (<label> .)+ <label> ``` Where: - `<raw-chain>`, `<raw-address>`
+
+MOTIVATION:
+The current Ethereum address landscape is leading to an ecosystem that will have hundreds and eventually thousands of L2s that use the same address format as Ethereum mainnet. This means an address by itself is not enough information to know which chain the address is related to. This can be problematic if funds are sent to an unreachable address on the incorrect chain. From the user account it should be possible to obtain the right chain identifier (chainID) to include in a transaction. The mapping from chain names to identifiers has, since [EIP-155](./eip-155.md), been maintained off chain using
+
+RATIONALE:
+- Using ENS as the only resolving method means it's enough to use the same Interoperable Addresses v1 for this standard, without extending it to also store the name resolver used. This means however that wallets are free to show users both resolved and unresolved (raw) Interoperable Names.
+
+
 === ERC-5380 ===
 TITLE: ERC-721 Entitlement Extension
 TYPE: Standards Track ERC
