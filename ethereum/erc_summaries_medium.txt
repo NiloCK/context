@@ -8496,6 +8496,26 @@ RATIONALE:
 ### Version Identifiers as bytes32 Version identifiers are specified as `bytes32` rather than semantic versioning strings to: 1. Provide flexibility in versioning schemes 2. Reduce gas costs for storage and comparison 3. Allow for both string-based versions (converted to bytes32) and numeric versions 4. Allow for storing a Git
 
 
+=== ERC-7836 ===
+TITLE: Wallet Call Preparation API
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-12-06
+REQUIRES: 1, 1, 9, 3, ,,  , 5, 7, 9, 2
+
+SUMMARY:
+This proposal defines complementary JSON-RPC methods to [EIP-5792's `wallet_sendCalls`](./eip-5792.md) to enable an Application to sign over a call bundle (instead of the Wallet). Methods defined in this proposal are purposed for the Application to sign over `calls` and submit them to the Wallet with an accompanying signature. This is
+
+SPECIFICATION:
+In this specification, we define two new JSON-RPC methods: `wallet_prepareCalls` and `wallet_sendPreparedCalls`. ### `wallet_prepareCalls` Instructs a Wallet to prepare a call bundle according to the Account's implementation. It returns a `digest` of the call bundle to sign over, as well as the parameters required to fulfil a `wallet_sendPreparedCalls` request
+
+MOTIVATION:
+Applications are increasingly seeking to use session keys and scoped permissions to make transactions on a user's behalf, without the user having to approve and sign each transaction in their wallet's interface. One example is an application that automates a user's decentralised exchange trading. As Smart Contract Accounts (SCAs)
+
+RATIONALE:
+These endpoints extend the interface established by EIP-5792, given the emergent needs of application developers. Adding new endpoints for this specific use case is simpler than adding additional options to the `wallet_sendCalls` endpoint. Surfacing the prepared calls should be relatively simple for wallets, who already need to do preparation
+
+
 === ERC-918 ===
 TITLE: Mineable Token Standard
 TYPE: Standards Track ERC
