@@ -95,21 +95,21 @@ RATIONALE:
 === EIP-7825 ===
 TITLE: Transaction Gas Limit Cap
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-11-23
 REQUIRES: 
 
 SUMMARY:
-This proposal introduces a protocol-level cap on the maximum gas usage per transaction to 30 million gas. By implementing this limit, Ethereum can enhance
+This proposal introduces a protocol-level cap on the maximum gas usage per transaction to 16,777,216 (2^24) gas. By implementing this limit, Ethereum can enhance
 
 SPECIFICATION:
-### Gas Cap - Enforce a protocol-level maximum of **30 million gas** for any single transaction. - This cap applies regardless of the block
+### Gas Cap - Enforce a protocol-level maximum of **16,777,216 gas (2^24)** for any single transaction. - This cap applies regardless of the block
 
 MOTIVATION:
 Currently, transactions can theoretically consume up to the entire block gas limit, which poses several risks: 1. **DoS Attacks**: A single transaction consuming most
 
 RATIONALE:
-### Why 30 Million? The proposed cap of 30 million gas is based on the typical size of Ethereum blocks today, which often range
+### Why 16,777,216 (2^24)? The proposed cap of 16,777,216 gas (2^24) provides a clean power-of-two boundary that simplifies implementation while still being large enough
 
 
 === EIP-2015 ===
@@ -1288,6 +1288,26 @@ RATIONALE:
 The aim was to chose a representation which is well supported by tools and supports comments. While inventing a more concise description language seems
 
 
+=== EIP-7966 ===
+TITLE: eth_sendRawTransactionSync Method
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2025-06-11
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes a new JSON-RPC method, `eth_sendRawTransactionSync`, which submits a signed raw transaction and waits synchronously for the transaction receipt or a configurable
+
+SPECIFICATION:
+### Method Name `eth_sendRawTransactionSync` ### Parameters The parameters of this method MUST be identical to the `eth_sendRawTransaction` method, which contain a signed transaction data.
+
+MOTIVATION:
+Currently, Ethereum clients submit signed transactions asynchronously using `eth_sendRawTransaction`. Clients receive a transaction hash immediately but must poll repeatedly for the transaction receipt, which
+
+RATIONALE:
+### Why Not Extend Existing RPC? Modifying `eth_sendRawTransaction` to support this behavior would risk compatibility issues and ambiguity. A separate method makes the semantics
+
+
 === EIP-7002 ===
 TITLE: Execution layer triggerable withdrawals
 TYPE: Standards Track Core
@@ -1326,6 +1346,26 @@ There is currently great interest in scaling L1 execution. This can likely be do
 
 RATIONALE:
 In the past there has been some difficulty coordinating EL clients to update gas limit values in their default configurations. Therefore we suggest tying
+
+
+=== EIP-7942 ===
+TITLE: Available Attestation
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-04-30
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes Available Attestation (AA), a protocol enhancement to make Ethereum PoS resilient against reorganization attacks. The proposal introduces a stability criterion for
+
+SPECIFICATION:
+### Overview We provide a lightweight yet efficient solution for Ethereum PoS which is: 1) reorg resilient in a synchronous network; 2) safe and
+
+MOTIVATION:
+We find that all known effective attacks on Ethereum PoS belong to reorganization attacks, although they emphasize different types of adversarial strategies. According to
+
+RATIONALE:
+The reason why our approach is reorg resilient is that the AA mechanism *prevents* Byzantine validators from creating conflicting branches. As summarized in the
 
 
 === EIP-1482 ===
@@ -8062,6 +8102,26 @@ ASIC-based miners will have lower operational costs than GPU-based miners, which
 
 RATIONALE:
 This EIP is aimed at breaking existing ASIC-based miners via small changes to the existing ethash algorithm. We hope to accomplish the following: 1.
+
+
+=== EIP-7981 ===
+TITLE: Increase access list cost
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2024-12-27
+REQUIRES: 2930
+
+SUMMARY:
+This EIP charges access lists 16 gas per byte for their data footprint, closing a loophole that allows circumventing [EIP-7623](./eip-7623.md) floor pricing.
+
+SPECIFICATION:
+| Parameter | Value | | -------------------------------------- | ----- | | `ACCESS_LIST_ADDRESS_COST` | `2400` | | `ACCESS_LIST_STORAGE_KEY_COST` | `1900` | | `ACCESS_LIST_DATA_COST_PER_BYTE` | `16`
+
+MOTIVATION:
+Access lists can circumvent [EIP-7623](./eip-7623.md) by filling blocks with uncharged data. Each address uses 20 bytes and each storage key uses 32 bytes, but
+
+RATIONALE:
+Adding 16 gas per byte ensures consistent pricing across all transaction data: - Address: 2720 gas (2400 + 320) - Storage key: 2412 gas
 
 
 === EIP-7667 ===
