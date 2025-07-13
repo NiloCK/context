@@ -957,7 +957,7 @@ Standardizing a `ProviderInfo` type allows determining the necessary information
 === EIP-7833 ===
 TITLE: Scheduled function calls
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-12-06
 REQUIRES: 
 
@@ -994,7 +994,7 @@ RATIONALE:
 === EIP-7756 ===
 TITLE: EOF/EVM Trace Specification
 TYPE: Standards Track Interface
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-08-13
 REQUIRES: 3, 1, 5, 5, ,,  , 4, 7, 5, 0
 
