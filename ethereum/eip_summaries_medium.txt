@@ -6274,7 +6274,7 @@ CREATED: 2025-02-28
 REQUIRES: 7840
 
 SUMMARY:
-This EIP introduces **Blob Parameter Only (BPO) Hardforks**, a lightweight mechanism for incrementally scaling Ethereum’s blob capacity through targeted hard forks that modify only blob-related parameters: `target`, `max`, `baseFeeUpdateFraction`, and `maxBlobsPerTx`. Unlike traditional hard forks, which require extensive coordination and introduce broader protocol changes, BPO forks enable rapid, low-overhead
+This EIP introduces **Blob Parameter Only (BPO) Hardforks**, a lightweight mechanism for incrementally scaling Ethereum’s blob capacity through targeted hard forks that modify only blob-related parameters: `target`, `max`, and `baseFeeUpdateFraction`. Unlike traditional hard forks, which require extensive coordination and introduce broader protocol changes, BPO forks enable rapid, low-overhead scaling
 
 SPECIFICATION:
 ### Definition BPO hardforks are defined as protocol upgrades that modify only blob-related parameters through configuration, without requiring any client-side code changes. The new parameters take effect immediately at the specified activation time. ### Blob schedule configuration The following protocol parameters are now managed by the blob schedule configuration:
