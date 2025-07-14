@@ -6688,21 +6688,21 @@ RATIONALE:
 === EIP-2926 ===
 TITLE: Chunk-Based Code Merkleization
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2020-08-25
-REQUIRES: 1, 6, 1, ,,  , 1, 7, 0, ,,  , 2, 5, 8, 4
+REQUIRES: 1, 6, 1, ,,  , 1, 7, 0
 
 SUMMARY:
 Code merkleization, along with binarification of the trie and gas cost bump of state accessing opcodes, are considered as the main levers for decreasing
 
 SPECIFICATION:
-This specification assumes that [EIP-2584](./eip-2584.md) is deployed, and the merkleization rules and gas costs are proposed accordingly. What follows is structured to have two
+What follows is structured to have two sections: 1. How a given contract code is split into chunks and then merkleized 2. How to
 
 MOTIVATION:
-Bytecode is currently the [second contributor](https://github.com/mandrigin/ethereum-mainnet-bin-tries-data) to block witness size, after the proof hashes. Transitioning the trie from hexary to binary reduces the hash
+Bytecode is currently the second contributor to block witness size, after the proof hashes. Transitioning the trie from hexary to binary reduces the hash
 
 RATIONALE:
-### Hexary vs binary trie The Ethereum mainnet state is encoded as of now in a hexary Merkle Patricia Tree. As part of the
+### Hexary vs binary trie The trie format is chosen to be the same as that of the account trie. If a tree conversion
 
 
 === EIP-7797 ===
