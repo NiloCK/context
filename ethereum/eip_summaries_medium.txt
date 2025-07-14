@@ -5770,13 +5770,13 @@ CREATED: 2024-03-21
 REQUIRES: 
 
 SUMMARY:
-This EIP defines a slashing condition for malicious [sync committee messages](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/validator.md#containers).
+This EIP defines a slashing condition for malicious [sync committee messages](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/altair/validator.md#containers).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### State transition checks Note: This still allows having contradictions between attestations/proposals and sync committee
 
 MOTIVATION:
-A dishonest supermajority of sync committee members is able to convince applications relying on Ethereum's [light client sync protocol](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/sync-protocol.md) to assume a non-canonical finalized header, and to potentially take over the sync authority for future `SyncCommitteePeriod`. By signing a malicious beacon block root, a malicious (but valid!) `LightClientUpdate` message
+A dishonest supermajority of sync committee members is able to convince applications relying on Ethereum's [light client sync protocol](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/altair/light-client/sync-protocol.md) to assume a non-canonical finalized header, and to potentially take over the sync authority for future `SyncCommitteePeriod`. By signing a malicious beacon block root, a malicious (but valid!) `LightClientUpdate` message
 
 RATIONALE:
 ### What's the use case? Without a slashing, the light client sync protocol is somewhat limited. While wallet applications may benefit from it (the risk being, that incorrect data is displayed) and new beacon nodes may use it for accelerating chain synchronization, other interesting use cases such as bridges,
