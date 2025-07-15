@@ -61,7 +61,7 @@ To solve the initial problem of user-facing addresses being ambiguous in a multi
 === ERC-7746 ===
 TITLE: Composable Security Middleware Hooks
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-07-17
 REQUIRES: 
 
@@ -1554,7 +1554,7 @@ RATIONALE:
 === ERC-7744 ===
 TITLE: Code Index
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-07-16
 REQUIRES: 
 
@@ -5959,7 +5959,7 @@ This ERC makes adding metadata to ERC-20 tokens more straightforward for develop
 === ERC-7631 ===
 TITLE: Dual Nature Token Pair
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-02-21
 REQUIRES: 2, 0, ,,  , 7, 2, 1
 
@@ -6633,7 +6633,7 @@ In developing this EIP, some key design decisions were made. For example, we lim
 === ERC-4361 ===
 TITLE: Sign-In with Ethereum
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2021-10-11
 REQUIRES: 5, 5, ,,  , 1, 3, 7, ,,  , 1, 5, 5, ,,  , 1, 9, 1, ,,  , 1, 2, 7, 1, ,,  , 1, 3, 2, 8
 
