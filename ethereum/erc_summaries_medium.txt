@@ -1088,10 +1088,10 @@ SUMMARY:
 This EIP proposes a natural way for complex numbers to be stored in and retrieved from the `bytes32` data-type. It splits the storage space exactly in half and, most importantly, assigns the real number part to the least significant 16 bytes and the imaginary number part to the most
 
 SPECIFICATION:
-A complex number would be defined as `bytes32` and a cartesian representation would be initalized with the `cnNew` function and converted back with `RealIm`, both given below. To create the complex number one would use ```solidity function cnNew(int128 _Real, int128 _Imag) public pure returns (bytes32){ bytes32 Imag32 = bytes16(uint128(_Imag));
+A complex number would be defined as `bytes32` and a cartesian representation would be initialized with the `cnNew` function and converted back with `RealIm`, both given below. To create the complex number one would use ```solidity function cnNew(int128 _Real, int128 _Imag) public pure returns (bytes32){ bytes32 Imag32 = bytes16(uint128(_Imag));
 
 MOTIVATION:
-Complex numbers are an essential tool for many mathematical and scientific calculations. For example, Fourier Transforms, Characteristic functions, AC Circuits and Navier-Stokes equations all require the concept. Complex numbers can be represented in many different forms (polynomial, cartesian, polar, exponential). The EIP creates a standard that can accomodate cartesian,
+Complex numbers are an essential tool for many mathematical and scientific calculations. For example, Fourier Transforms, Characteristic functions, AC Circuits and Navier-Stokes equations all require the concept. Complex numbers can be represented in many different forms (polynomial, cartesian, polar, exponential). The EIP creates a standard that can accommodate cartesian,
 
 RATIONALE:
 An EIP is required as this proposal defines a complex numbers storage/type standard for multiple apps to use. This EIP proposes to package both the real and imaginary within one existing data type, `bytes32`. This allows compact storage without the need for structures and facilitates easy library implementations. The

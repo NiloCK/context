@@ -1088,7 +1088,7 @@ SUMMARY:
 This EIP proposes a natural way for complex numbers to be stored in and retrieved from the `bytes32` data-type. It splits the storage space
 
 SPECIFICATION:
-A complex number would be defined as `bytes32` and a cartesian representation would be initalized with the `cnNew` function and converted back with `RealIm`,
+A complex number would be defined as `bytes32` and a cartesian representation would be initialized with the `cnNew` function and converted back with `RealIm`,
 
 MOTIVATION:
 Complex numbers are an essential tool for many mathematical and scientific calculations. For example, Fourier Transforms, Characteristic functions, AC Circuits and Navier-Stokes equations all
