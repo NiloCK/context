@@ -2761,16 +2761,16 @@ TITLE: Pureth Meta
 TYPE: Meta 
 STATUS: Draft
 CREATED: 2025-03-26
-REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 6, 4, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 6, 6, 8, ,,  , 7, 6, 8, 8, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 0, 8, ,,  , 7, 7, 4, 5, ,,  , 7, 7, 9, 2, ,,  , 7, 7, 9, 9, ,,  , 7, 8, 0, 7, ,,  , 7, 9, 1, 6
+REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 4, 9, 5, ,,  , 7, 6, 6, 8, ,,  , 7, 7, 0, 8, ,,  , 7, 7, 4, 5, ,,  , 7, 7, 9, 9, ,,  , 7, 8, 0, 7, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This Meta EIP lists the EIPs which belong to the Pureth proposal.
+This Meta EIP bundles a set of improvements to make Ethereum data easier to access and verify without relying on trusted RPC providers or third-party indexers. The improvements achieve this by changing data structures for blocks, transactions, and receipts, so that efficient correctness (i.e., validity) and completion (i.e., nothing omitted) proofs can be added to the RPC responses.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### PURGE: LOG Reform Certain EVM operations can change the ETH balance, without an appropriate log being emitted. For example, a SELFDESTRUCT can send an arbitrary ETH balance to an arbitrary account, e.g., as part of a smart contract based wallet. To monitor such operations, the application would have to use tracing APIs on every single transaction of every single block. Adding logs for
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Improve UX: ETH transfer logs ETH transfers currently don't emit logs, and in many situations don't leave any on-chain record in neither transaction nor receipt that they took place. For example, SENDALL can send an arbitrary ETH balance to an arbitrary account as part of a smart contract based wallet. Or a new contract deployment may send ETH to a new account of
 
 MOTIVATION:
-It is currently not feasible to consume Ethereum data for a given account to efficiently reconstruct the account activity, without relying on a trusted API gateway. This is a problem for: - End users, through mobile or browser based wallets where a local full node is not viable - dApps that interact with Ethereum through JSON-RPC - L2 networks that read data from Ethereum through Merkle proofs - Portal network which aims to be a decentralized archive node Relying on a trusted API gateway exposes the application to external privacy policies and region-specific restrictions.
+- **Security**: Today, most wallets and dApps consume data from very few large RPC providers, which exposes users to the risk of incorrect and incomplete data in case the RPC provider gets hacked, becomes malicious, or uses a faulty software version. - **Privacy**: Centralized infrastructure is subject to external data collection and privacy policies; users may be profiled across distinct wallets even when there is no on-chain link between them. - **Cost**: External indexers can be quite costly, however, are required for even basic wallet use cases. Reducing reliance on them helps lower-funded developers.
 
 RATIONALE:
 See individual EIPs.
@@ -5417,7 +5417,7 @@ MOTIVATION:
 The lack of an official standard for the `genesis.json` file has led to incompatibilities, bugs and confusion, as well as added workload for those running multiple clients together in test networks. This EIP aims to reduce ambiguity by defining a consistent structure and enabling tooling through schema-based validation.
 
 RATIONALE:
-There are a growing number of EIPs that propose improvements to how a network is configured at genesis: [Add Blob Schedule to EL Config File](eip-7840) [Blob Paramter Only Hardforks](eip-7892) [eth_config JSON-RPC method](eip-7910) However, the root configuration element these amend remains unspecified. Adopting a minimal schema to define that will make subsequent changes more accurate and concise.
+There are a growing number of EIPs that propose improvements to how a network is configured at genesis: [Add Blob Schedule to EL Config File](eip-7840) [Blob Parameter Only Hardforks](eip-7892) [eth_config JSON-RPC method](eip-7910) However, the root configuration element these amend remains unspecified. Adopting a minimal schema to define that will make subsequent changes more accurate and concise.
 
 
 === EIP-2029 ===

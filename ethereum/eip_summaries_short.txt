@@ -2761,16 +2761,16 @@ TITLE: Pureth Meta
 TYPE: Meta 
 STATUS: Draft
 CREATED: 2025-03-26
-REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 6, 4, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 6, 6, 8, ,,  , 7, 6, 8, 8, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 0, 8, ,,  , 7, 7, 4, 5, ,,  , 7, 7, 9, 2, ,,  , 7, 7, 9, 9, ,,  , 7, 8, 0, 7, ,,  , 7, 9, 1, 6
+REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 4, 9, 5, ,,  , 7, 6, 6, 8, ,,  , 7, 7, 0, 8, ,,  , 7, 7, 4, 5, ,,  , 7, 7, 9, 9, ,,  , 7, 8, 0, 7, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This Meta EIP lists the EIPs which belong to the Pureth proposal.
+This Meta EIP bundles a set of improvements to make Ethereum data easier to access and verify without relying on trusted RPC providers or
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-It is currently not feasible to consume Ethereum data for a given account to efficiently reconstruct the account activity, without relying on a trusted
+- **Security**: Today, most wallets and dApps consume data from very few large RPC providers, which exposes users to the risk of incorrect and
 
 RATIONALE:
 See individual EIPs.
