@@ -7044,7 +7044,7 @@ SUMMARY:
 Introduce a new instruction that allows smart contracts to create (and update) delegation accounts that match [EIP-7702](./eip-7702.md)'s design. These accounts can be used similarly to [ERC-1167](./eip-1167.md) clones, with significant advantages.
 
 SPECIFICATION:
-A new instruction (`SETDELEGATE`) is added at `0xf6`. ### Behavior Executing this instruction does the following: 1. deduct `EMPTY_ACCOUNT_COST` gas 2. halt if the current frame is in `static-mode` 3. pop `salt`, `target` from the operand stack 4. calculate `location` as `keccak256(MAGIC ++ address ++ salt)[12:]` 5. Add `location`
+A new instruction (`SETDELEGATE`) is added at `0xf6`. ### Behavior Executing this instruction does the following: 1. deduct `EMPTY_ACCOUNT_COST` gas 2. halt if the current frame is in `static-mode` 3. pop `salt`, `target` from the operand stack 4. calculate `location` as `keccak256(MAGIC ++ address ++ salt)[12:]` 5. add `location`
 
 MOTIVATION:
 Many on-chain applications involve creating multiple instances of the same code at different locations. These applications often rely on clones, or proxies, to reduce deployment costs. Clones, such as the one described in ERC-1167 are minimal pieces of code that contain the target address directly in the code. That
