@@ -354,10 +354,10 @@ SPECIFICATION:
 After `block.number >= FORK_BLOCK`, enforce an intrinsic gas cost of `7,000`.
 
 MOTIVATION:
-The current `21,000` gas intrinsic cost of a transaction makes sending ETH very costly, often times prohibitively costly for small amounts (tens of USD). While broad changes to the gas price and first price auction are being considerted in other EIPs (like EIP-1559), substantially reducing the cost of sending ETH and enabling higher volumes of such transactions would be a net positive if done in a safe manner, and without imposing negative externalities, as outlined below.
+The current `21,000` gas intrinsic cost of a transaction makes sending ETH very costly, often times prohibitively costly for small amounts (tens of USD). While broad changes to the gas price and first price auction are being considered in other EIPs (like EIP-1559), substantially reducing the cost of sending ETH and enabling higher volumes of such transactions would be a net positive if done in a safe manner, and without imposing negative externalities, as outlined below.
 
 RATIONALE:
-The proliferation of calls to DeFi smart-contracts had substantially increased the cost of making transactions, since such calls are usually both time sensitive and involve large sums of money. While the utilization of the chain's capacity by the most valuable transactions is by design, the high cost of sending transactionsz is limiting Ethereum's the use-cases, create a terribel user experience, decreases the actual value created (and captured) by ETH, and pushes users to seek alternatives in other, less-congested chains. Note on Layer-2: It is true that the high cost might push users to try using L2 solutions, however
+The proliferation of calls to DeFi smart-contracts had substantially increased the cost of making transactions, since such calls are usually both time sensitive and involve large sums of money. While the utilization of the chain's capacity by the most valuable transactions is by design, the high cost of sending transactionsz is limiting Ethereum's the use-cases, create a terrible user experience, decreases the actual value created (and captured) by ETH, and pushes users to seek alternatives in other, less-congested chains. Note on Layer-2: It is true that the high cost might push users to try using L2 solutions, however
 
 
 === EIP-2803 ===
@@ -468,10 +468,10 @@ CREATED: 2024-08-31
 REQUIRES: 4844
 
 SUMMARY:
-This EIP proposes an increase to the MIN_BASE_FEE_PER_BLOB_GAS to speed up price discovery on blob space. It also resets the excess blob gas to 0, to avoid a blob basefee spike.
+This EIP proposes an increase to the MIN_BASE_FEE_PER_BLOB_GAS to speed up price discovery on blob space. It also resets the excess blob gas to 0, to avoid a blob base fee spike.
 
 SPECIFICATION:
-### `MIN_BASE_FEE_PER_BLOB_GAS` Increase The main specification change introduced by this EIP is setting MIN_BASE_FEE_PER_BLOB_GAS to 2**25: ```diff + MIN_BASE_FEE_PER_BLOB_GAS = 2**25 - MIN_BASE_FEE_PER_BLOB_GAS = 1 ``` ### `excess_blob_gas` Reset To avoid a blob basefee spike, the `calc_excess_blob_gas` is modified to reset `excess_blob_gas` to 0 at the fork. To detect the fork height, the block timestamp needs to be passed into `calc_excess_blob_gas`. ```python def calc_excess_blob_gas(parent: Header, block_timestamp: int) -> int: # at the fork, set excess_blob_gas to 0 if parent.timestamp < FORK_TIMESTAMP and block_timestamp >= FORK_TIMESTAMP: return 0 # otherwise, calculate normally ... ``` `validate_block` needs to be updated
+### `MIN_BASE_FEE_PER_BLOB_GAS` Increase The main specification change introduced by this EIP is setting MIN_BASE_FEE_PER_BLOB_GAS to 2**25: ```diff + MIN_BASE_FEE_PER_BLOB_GAS = 2**25 - MIN_BASE_FEE_PER_BLOB_GAS = 1 ``` ### `excess_blob_gas` Reset To avoid a blob base fee spike, the `calc_excess_blob_gas` is modified to reset `excess_blob_gas` to 0 at the fork. To detect the fork height, the block timestamp needs to be passed into `calc_excess_blob_gas`. ```python def calc_excess_blob_gas(parent: Header, block_timestamp: int) -> int: # at the fork, set excess_blob_gas to 0 if parent.timestamp < FORK_TIMESTAMP and block_timestamp >= FORK_TIMESTAMP: return 0 # otherwise, calculate normally ... ``` `validate_block` needs to be
 
 MOTIVATION:
 When scoping 4844, the thinking was that blobs would only enter price discovery once, relatively quickly after the blob rollout; however, this has not been the case. In fact, blobs have entered price discovery several times, and the frequency of price discovery events is likely to increase in the short term as we approach saturation of capacity. Moreover, the roadmap calls for further increases in blob capacity in subsequent hardforks, which may lead to price discovery events happening around those changes in the future. Increasing the MIN_BASE_FEE_PER_BLOB_GAS will speed up price discovery on blob space.
@@ -1653,7 +1653,7 @@ CREATED: 2024-02-29
 REQUIRES: 5793
 
 SUMMARY:
-This EIP modifies the 'eth' p2p protocol to announce the historical block range served by the node. We also simplify the handshake to remove total difficulty information, which isn't used anymore after the merge. Additionally we propose to remove the `Bloom` field from receipts transfered over the protocol.
+This EIP modifies the 'eth' p2p protocol to announce the historical block range served by the node. We also simplify the handshake to remove total difficulty information, which isn't used anymore after the merge. Additionally we propose to remove the `Bloom` field from receipts transferred over the protocol.
 
 SPECIFICATION:
 ### Status message changes Modify the `Status (0x00)` message as follows: - (eth/68): `[version: P, networkid: P, td: P, blockhash: B_32, genesis: B_32, forkid]` - (eth/69): `[version: P, networkid: P, genesis: B_32, forkid, earliestBlock: P, latestBlock: P, latestBlockHash: B_32]` Note `blockhash` has moved to the end to match `BlockRangeUpdate`. ### Receipts message changes Modify the encoding for receipts in the `Receipts (0x10)` message as follows: - (eth/68): `receipt = {legacy-receipt, typed-receipt}` with ``` typed-receipt = tx-type || rlp(legacy-receipt) legacy-receipt = [ post-state-or-status: {B_32, {0, 1}}, cumulative-gas: P, bloom: B_256, logs: [log₁, log₂, ...] ] ``` - (eth/69): `receipt
@@ -1662,7 +1662,7 @@ MOTIVATION:
 ### Block range in Status message In the history expiry working group, it was decided that clients may drop pre-merge history from their storage after May 1, 2025. For clients that want to sync history through the 'eth' protocol, it is essential to know whether a peer still serves old history. A similar idea was proposed in [EIP-7542](./eip-7542.md) but was later withdrawn because a political decision on history expiry had not been reached at the time. ### Removing Bloom in Receipts We recently discovered that none of the clients store the `Bloom` field of the receipts as it
 
 RATIONALE:
-### Status changes After the merge, the `TD` field of the `Status` message became meaningless since the difficulty of post-merge blocks are 0. It could in theory be used to distinguish synced with unsynced nodes, but the same thing can be accomplished with the forkid as well. The new `earliestBlock` field is technically not required for history expiry, but there are a couple reasons why adding it can help: - It improves peer finding for clients that still want to sync history from p2p after the agreed-upon removal of pre merge history has taken place. Without `earliestBlock`, the
+### Status changes After the merge, the `TD` field of the `Status` message became meaningless since the difficulty of post-merge blocks are 0. It could in theory be used to distinguish synced with unsynced nodes, but the same thing can be accomplished with the forkid as well. The new `earliestBlock` field is technically not required for history expiry, but there are a couple reasons why adding it can help: - It improves peer finding for clients that still want to sync history from p2p after the agreed-upon removal of pre-merge history has taken place. Without `earliestBlock`, the client
 
 
 === EIP-2159 ===
@@ -3978,7 +3978,7 @@ CREATED: 2018-08-26
 REQUIRES: 
 
 SPECIFICATION:
-1. Define hash function `fnv1a()` as ```python def fnv1a(v1, v2): return ((v1 ^ v2) * FNV1A_PRIME) % 2**32 ``` where `FNV1A_PRIME` is 16777499 or 16777639. 2. Change the hash function that determines the DAG item index in Ethash algorithm from `fnv()` to new `fnv1a()`. In [Main Loop](https://github.com/ethereum/wiki/wiki/Ethash#main-loop) change ```python p = fnv(i ^ s[0], mix[i % w]) % (n // mixhashes) * mixhashes ``` to ```python p = fnv1a(i ^ s[0], mix[i % w]) % (n // mixhashes) * mixhashes ```
+1. Define hash function `fnv1a()` as ```python def fnv1a(v1, v2): return ((v1 ^ v2) * FNV1A_PRIME) % 2**32 ``` where `FNV1A_PRIME` is 16777499 or 16777639. 2. Change the hash function that determines the DAG item index in Ethash algorithm from `fnv()` to new `fnv1a()`. In [Main Loop](https://github.com/ethereum/eth-wiki/blob/master/concepts/ethash/ethash.md#main-loop) change ```python p = fnv(i ^ s[0], mix[i % w]) % (n // mixhashes) * mixhashes ``` to ```python p = fnv1a(i ^ s[0], mix[i % w]) % (n // mixhashes) * mixhashes ```
 
 MOTIVATION:
 Provide minimal set of changes to Ethash algorithm to hinder and delay the adoption of ASIC based mining.
@@ -4908,7 +4908,7 @@ MOTIVATION:
 Changes to the devp2p protocols are hard to deploy because clients running an older version will refuse communication if the version number or structure of the hello (discovery ping, RLPx handshake) packet does not match local expectations. Introducing forward-compatibility requirements as part of the Homestead consensus upgrade will ensure that all client software in use on the Ethereum network can cope with future network protocol upgrades (as long as backwards-compatibility is maintained). ### Rationale The proposed changes address forward compatibility by applying Postel's Law (also known as the Robustness Principle) throughout the protocol stack. The merit and applicability
 
 RATIONALE:
-The proposed changes address forward compatibility by applying Postel's Law (also known as the Robustness Principle) throughout the protocol stack. The merit and applicability of this approach has been studied repeatedly since its original application in RFC 761. For a recent perspective, see ["The Robustness Principle Reconsidered" (Eric Allman, 2011)](https://queue.acm.org/detail.cfm?id=1999945). #### Changes to the devp2p Wire Protocol All clients currently contain statements such as the following: ```python # pydevp2p/p2p_protocol.py if data['version'] != proto.version: log.debug('incompatible network protocols', peer=proto.peer, expected=proto.version, received=data['version']) return proto.send_disconnect(reason=reasons.incompatibel_p2p_version) ``` These checks make it impossible to change the version or structure of the hello packet. Dropping
+The proposed changes address forward compatibility by applying Postel's Law (also known as the Robustness Principle) throughout the protocol stack. The merit and applicability of this approach has been studied repeatedly since its original application in RFC 761. For a recent perspective, see ["The Robustness Principle Reconsidered" (Eric Allman, 2011)](https://queue.acm.org/detail.cfm?id=1999945). #### Changes to the devp2p Wire Protocol All clients currently contain statements such as the following: ```python # pydevp2p/p2p_protocol.py if data['version'] != proto.version: log.debug('incompatible network protocols', peer=proto.peer, expected=proto.version, received=data['version']) return proto.send_disconnect(reason=reasons.incompatible_p2p_version) ``` These checks make it impossible to change the version or structure of the hello packet. Dropping
 
 
 === EIP-2028 ===
@@ -7292,7 +7292,7 @@ The transaction must fill the entire block to prevent MEV attacks. While some ca
 === EIP-7636 ===
 TITLE: Extension of EIP-778 for "client" ENR Entry
 TYPE: Standards Track Networking
-STATUS: Final
+STATUS: Withdrawn
 CREATED: 2024-02-25
 REQUIRES: 778
 
