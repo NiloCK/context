@@ -3933,7 +3933,7 @@ It is very unlikely that any precompile will need to access or modify a contract
 === EIP-7939 ===
 TITLE: Count leading zeros (CLZ) opcode
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-04-28
 REQUIRES: 
 
@@ -5725,7 +5725,7 @@ SPECIFICATION:
 Curve parameters: The BW6-761 `y^2=x^3-1` curve is fully defined by the following set of parameters: ``` Base field modulus = 0x122e824fb83ce0ad187c94004faff3eb926186a81d14688528275ef8087be41707ba638e584e91903cebaff25b423048689c8ed12f9fd9071dcd3dc73ebff2e98a116c25667a8f8160cf8aeeaf0a437e6913e6870000082f49d00000000008b A coefficient =
 
 MOTIVATION:
-This EIP is based on and tends to replace matter-labs' proposol for significant performance reasons. In most applications, BW6-761 is used as an outer
+This EIP is based on and tends to replace matter-labs' proposal for significant performance reasons. In most applications, BW6-761 is used as an outer
 
 RATIONALE:
 Gas costs are based on [EIP-1962](./eip-1962.md) estimation strategy (but do not fully include yet parsing of ABI, decoding and encoding of the result as
@@ -6625,6 +6625,26 @@ RATIONALE:
 This Meta EIP provides a global view of all changes included in the Fusaka network upgrade, as well as links to full specification.
 
 
+=== EIP-7961 ===
+TITLE: EVM64 - EOF code section
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-05-28
+REQUIRES: 3, 5, 4, 0, ,,  , 4, 7, 5, 0, ,,  , 7, 9, 6, 0
+
+SUMMARY:
+An EOF-only specification for EVM64 instruction set. This defines a separate "EVM64" type for EOF code section in addition to "regular EVM". The interpreter
+
+SPECIFICATION:
+Define `0x02` as an allowed `type` in `types_section`, as defined in EIP-7960. This denotes an EVM64 code section. ### EOF function execution When entering
+
+MOTIVATION:
+EIP-7937 has maximum compatibility with existing EVM. It implements EVM64 simply as a group of additional opcodes (using a prefix opcode). This EIP defines
+
+RATIONALE:
+### Stack behavior "Pure" in "pure EVM64" refers to the fact that all opcodes in EVM64 mode only operates on the least significant 64
+
+
 === EIP-4747 ===
 TITLE: Simplify EIP-161
 TYPE: Standards Track Core
@@ -7287,6 +7307,26 @@ Understanding the landscape of client software in the Ethereum network is crucia
 
 RATIONALE:
 One key was chosen over using many keys to make efficient use of space. The use of one string, however, does not align with
+
+
+=== EIP-7957 ===
+TITLE: EVM64 - EOF support
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-05-26
+REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 4, 2, 0, 0, ,,  , 7, 9, 3, 7
+
+SUMMARY:
+This EIP defines EOF support for EVM64 with its additional code validation rules and `RJUMPI`, `RJUMPV` opcodes.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+EOF defines a stricter stricter code validation rule to improve efficiency. Due to EVM64 using multibyte opcode (the mode opcode `C0`), a small adaptation
+
+RATIONALE:
+For detailed rationale discussion, please see the core EVM64 definition [EIP-7937](./eip-7937.md).
 
 
 === EIP-4200 ===
