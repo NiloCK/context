@@ -1299,13 +1299,13 @@ SUMMARY:
 This EIP proposes a new JSON-RPC method, `eth_sendRawTransactionSync`, which submits a signed raw transaction and waits synchronously for the transaction receipt or a configurable timeout before returning. This method addresses the user experience gap in high-frequency applications by offering stronger delivery guarantees than `eth_sendRawTransaction`.
 
 SPECIFICATION:
-### Method Name `eth_sendRawTransactionSync` ### Parameters The parameters of this method MUST be identical to the `eth_sendRawTransaction` method, which contain a signed transaction data. - `DATA`. The signed transaction data. ### Returns - **On success**. Clients MUST return the transaction receipt object as defined by the `eth_getTransactionReceipt` method. -
+### Method Name `eth_sendRawTransactionSync` ### Parameters | Position | Type | Description | Required | |----------|------------|-----------------------------------|----------| | 1 | `DATA` | The signed transaction data | Yes | | 2 | `QUANTITY` | Maximum wait time in milliseconds | No | #### Parameter Validation Rules - **Transaction Data**. MUST
 
 MOTIVATION:
 Currently, Ethereum clients submit signed transactions asynchronously using `eth_sendRawTransaction`. Clients receive a transaction hash immediately but must poll repeatedly for the transaction receipt, which increases latency and complicates client-side logic. This asynchronous approach is not efficient for high-frequency blockchains or Layer 2 solutions with fast block times and low
 
 RATIONALE:
-### Why Not Extend Existing RPC? Modifying `eth_sendRawTransaction` to support this behavior would risk compatibility issues and ambiguity. A separate method makes the semantics explicit and opt-in. ### Blocking Behavior and Timeouts Clients SHOULD allow configuration of the timeout period, defaulting to 2 seconds (depending on the implementation). This
+### Why Not Extend Existing RPC? Modifying `eth_sendRawTransaction` to support this behavior would risk compatibility issues and ambiguity. A separate method makes the semantics explicit and opt-in. ### Node-Configured Timeouts Node implementations SHOULD allow configuration of the timeout period, defaulting to 2 seconds (depending on the implementation). This balances
 
 
 === EIP-7002 ===
