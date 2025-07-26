@@ -100,7 +100,7 @@ CREATED: 2024-11-23
 REQUIRES: 
 
 SUMMARY:
-This proposal introduces a protocol-level cap on the maximum gas usage per transaction to 16,777,216 (2^24) gas. By implementing this limit, Ethereum can enhance its resilience against certain DoS vectors, improve network stability, and provide more predictability to transaction processing costs, especially in the context of increasing the Gas Limit.
+This proposal introduces a protocol-level cap on the maximum gas usage per transaction to 16,777,216 (2^24) gas. By implementing this limit, Ethereum can enhance its resilience against certain DoS vectors, improve network stability, and provide more predictability to transaction processing costs, especially in the context of increasing the gas limit.
 
 SPECIFICATION:
 ### Gas Cap - Enforce a protocol-level maximum of **16,777,216 gas (2^24)** for any single transaction. - This cap applies regardless of the block gas limit set by miners or validators. - Transactions specifying gas limits higher than 16,777,216 gas will be rejected with an appropriate error code (e.g., `MAX_GAS_LIMIT_EXCEEDED`). ### Changes to EVM Behavior 1. **Txpool Validation**: During transaction validation, if the `gasLimit` specified by the sender exceeds 16,777,216, the transaction is invalidated (not included in the txpool). 2. **Block Validation**: As part of block validation before processing, any block having a transaction with `gasLimit` > 16,777,216
