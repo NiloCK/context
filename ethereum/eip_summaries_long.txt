@@ -2619,7 +2619,7 @@ MOTIVATION:
 An additional `type` parameter allows the EOF EVM interpreter to identify the "type" of a code section. This allows the interpreter to "interpret" each code section differently, allowing EOF function calls to, for example, invoke pure EVM64 code or even later support RISC-V.
 
 RATIONALE:
-The new `type` parameter allows a contract to "dispatch" to different variants of the interpreter to better suit its need. * The portion of the code where it mainly interacts with Ethereum addresses, balances, storages may run "normal" EVM. * The portion of the code that is computationally heavy may run faster EVM64, but loses the ability to directly interact with Ethereum addresses and balances. Allowing this `type` to be defined for each code section ensures that a contract remains conscise -- it can quickly switch between its computational needs and system/runtime needs. `reserved` is added to `types_section`
+The new `type` parameter allows a contract to "dispatch" to different variants of the interpreter to better suit its need. * The portion of the code where it mainly interacts with Ethereum addresses, balances, storages may run "normal" EVM. * The portion of the code that is computationally heavy may run faster EVM64, but loses the ability to directly interact with Ethereum addresses and balances. Allowing this `type` to be defined for each code section ensures that a contract remains concise -- it can quickly switch between its computational needs and system/runtime needs. `reserved` is added to `types_section`
 
 
 === EIP-170 ===
