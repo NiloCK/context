@@ -4299,7 +4299,7 @@ the key technical decisions in this proposal are: **Improved Approve Mechanism**
 === ERC-7878 ===
 TITLE: Bequeathable Contracts
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-02-01
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
 
@@ -5132,7 +5132,7 @@ There are two obvious approaches for a generic metadata registry: the indirectio
 === ERC-7943 ===
 TITLE: uRWA - Universal Real World Asset Interface
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-06-10
 REQUIRES: 165
 
@@ -8964,7 +8964,7 @@ This standard differs from [ERC-6150](./eip-6150.md) in mainly two aspects: supp
 === ERC-7913 ===
 TITLE: Signature Verifiers
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-03-21
 REQUIRES: 
 

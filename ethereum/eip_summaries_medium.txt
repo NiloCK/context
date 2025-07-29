@@ -6716,7 +6716,7 @@ SUMMARY:
 Code merkleization, along with binarification of the trie and gas cost bump of state accessing opcodes, are considered as the main levers for decreasing block witness sizes in stateless or partial-stateless Eth1x roadmaps. Here we specify a fixed-sized chunk approach to code merkleization and outline how the transition of
 
 SPECIFICATION:
-What follows is structured to have two sections: 1. How a given contract code is split into chunks and then merkleized 2. How to merkleize all existing contract codes during a hardfork ### Constants and Definitions #### Constants - `CHUNK_SIZE`: 32 (bytes) - `VERSION_KEY`: `max(u256)` - `VERSION`: 0 -
+What follows is structured to have two sections: 1. How a given contract code is split into chunks and then merkleized 2. How to merkleize all existing contract codes during a hardfork ### Constants and Definitions #### Constants - `CHUNK_SIZE`: 31 (bytes) - `VERSION_KEY`: `max(u256)` - `VERSION`: 0 -
 
 MOTIVATION:
 Bytecode is currently the second contributor to block witness size, after the proof hashes. Transitioning the trie from hexary to binary reduces the hash section of the witness by 3x, thereby making code the first contributor. By breaking contract code into chunks and committing to those chunks in a
