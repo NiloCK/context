@@ -3238,7 +3238,7 @@ Needs discussion.
 === ERC-7776 ===
 TITLE: Transparent Financial Statements
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-09-20
 REQUIRES: 20
 
@@ -4958,6 +4958,26 @@ CREATED: 2018-09-08
 REQUIRES: 
 
 
+=== ERC-7985 ===
+TITLE: Gateway Attributes for Message Control
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-07-04
+REQUIRES: 7786
+
+SUMMARY:
+This ERC defines standard attributes for [ERC-7786] cross-chain messaging gateways to enable consistent cancellation, timeout, retry, dependency, and delivery control mechanisms across implementations. These attributes provide applications with predictable control over message lifecycle, ordering, and delivery requirements. [ERC-7786]: ./eip-7786.md
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Standard Attributes This specification defines standard attributes for [ERC-7786] cross-chain messaging gateways. The word
+
+MOTIVATION:
+[ERC-7786] introduces an extensible attribute system for cross-chain messaging, but leaves attribute standardization to follow-up specifications. As cross-chain applications mature, consistent patterns for message control have emerged as essential requirements: 1. **Cancellation**: Applications need to cancel pending messages due to changed conditions 2. **Timeouts**: Automatic cancellation prevents indefinite pending
+
+RATIONALE:
+These attributes address the most common cross-chain message control requirements: - **Lifecycle control** via cancellation and timeout mechanisms - **Delivery timing** through delivery time windows - **Failure handling** via retry policies and revert behavior - **Message ordering** through dependency chains - **Delivery guarantees** via minimum gas requirements The byte-encoded
+
+
 === ERC-7888 ===
 TITLE: Crosschain Broadcaster
 TYPE: Standards Track ERC
@@ -6079,7 +6099,7 @@ The design decisions in this EIP prioritize the effectiveness and efficiency of 
 === ERC-7858 ===
 TITLE: Expirable NFTs and SBTs
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-01-04
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
@@ -6633,7 +6653,7 @@ In developing this EIP, some key design decisions were made. For example, we lim
 === ERC-4361 ===
 TITLE: Sign-In with Ethereum
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2021-10-11
 REQUIRES: 5, 5, ,,  , 1, 3, 7, ,,  , 1, 5, 5, ,,  , 1, 9, 1, ,,  , 1, 2, 7, 1, ,,  , 1, 3, 2, 8
 
@@ -10183,14 +10203,14 @@ The Vault interface is designed to be optimized for integrators with a feature c
 
 
 === ERC-7754 ===
-TITLE: Tamperproof Web Immutable Transaction (TWIT)
+TITLE: Tamperproof Extension Wallets API (TWIST)
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2024-07-29
 REQUIRES: 1193
 
 SUMMARY:
-Introduces a new RPC method to be implemented by wallets, `wallet_signedRequest`, that enables dapps to interact with wallets in a tamperproof manner via "signed requests". The dapp associates a public key with its DNS record and uses the corresponding private key to sign payloads sent to the wallet via
+Tamperproof Web Immutable Secure Transaction (TWIST) introduces a new RPC method to be implemented by wallets, `wallet_signedRequest`, that enables dapps to interact with wallets in a tamperproof manner via "signed requests". The dapp associates a public key with its DNS record and uses the corresponding private key to sign
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview We propose to use the dapp's domain certificate of a root of trust
