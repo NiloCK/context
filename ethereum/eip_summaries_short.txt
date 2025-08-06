@@ -4076,14 +4076,14 @@ This is a purely semantic specification, placing no constraints on the syntax of
 
 
 === EIP-7932 ===
-TITLE: Algorithmic Transaction Wrapper
+TITLE: Secondary Signature Algorithms
 TYPE: Standards Track Core
 STATUS: Review
 CREATED: 2025-04-12
 REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP introduces a new [EIP-2718](./eip-2718.md) typed transaction that wraps (contains) another transaction, this EIP nullifies the default signature parameters and appends signature data
+This EIP does 3 things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-2718](./eip-2718.md) typed transaction that
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
