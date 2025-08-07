@@ -7424,23 +7424,23 @@ This is the simplest possible implementation that ensures that all ETH transfers
 
 
 === EIP-7862 ===
-TITLE: Delayed Execution Layer State Root
+TITLE: Delayed State Root
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-12-23
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes that, for each block `n`, the `state_root` in block `n`'s `ExecutionPayload` references the **post-state of block `n-1`**. As a result, block `n` no longer needs to compute & include or verify the post state root for block `n`. This removes the expensive state root computation from
+This proposal introduces a mechanism to decouple state root computation from block validation by deferring the execution layer's state root reference by one block. Each block's `ExecutionPayload` contains the post-state root of the previous block rather than its own, enabling validators to attest to a block's validity without waiting
 
 SPECIFICATION:
-### Execution Layer Changes 1. **`ExecutionPayload` State Root Field** - **Before** (in the current post-Merge design): ```solidity struct ExecutionPayload { uint256 blockNumber; uint256 timestamp; bytes32 parentHash; address feeRecipient; bytes32 stateRoot; // references the post-state root of *this* block's transactions } ``` - **After** (conceptual): ```solidity struct ExecutionPayload { uint256
+### Header Changes The block header structure is modified to support delayed state root computation: ```python @dataclass class Header: # Existing fields parent_hash: Hash32 ommers_hash: Hash32 coinbase: Address # Delayed state root - references the post-state of block (n-1) state_root: Root # Now points to parent block's post-state #
 
 MOTIVATION:
-Currently, every Ethereum block includes two `state_root`. The consensus layer (CL) `state_root` contained within the `BeaconBlock` tracks CL state (e.g., validator entries and exits). The execution layer (EL) `state_root` contained within the `ExecutionPayload` tracks the effect of transaction execution (e.g., account balances, code, etc.). The EL `state_root` must be
+The primary advantage of this proposal is **asynchronous state root computation**. In the current Ethereum protocol, blocks must compute and include their own post-state root before validators can attest to them. This requirement creates a bottleneck for block production, as the expensive state root computation must complete within critical
 
 RATIONALE:
-1. **Reduce Latency at the Tip** - Proposers and builders no longer must compute and finalize the new state root within the same slot. - This speeds up block validation, as validators can sign after checking the execution of the block and that its pre-state root matches their pre-computed
+### Latency Reduction The separation of state root computation from block validation removes the primary latency bottleneck in block production and validation. Proposers and builders no longer need to compute the state root within the same slot, enabling faster block building and validation. This latency reduction is particularly important
 
 
 === EIP-7788 ===

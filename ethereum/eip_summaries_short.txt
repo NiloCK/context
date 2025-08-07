@@ -7424,23 +7424,23 @@ This is the simplest possible implementation that ensures that all ETH transfers
 
 
 === EIP-7862 ===
-TITLE: Delayed Execution Layer State Root
+TITLE: Delayed State Root
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-12-23
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes that, for each block `n`, the `state_root` in block `n`'s `ExecutionPayload` references the **post-state of block `n-1`**. As a result, block
+This proposal introduces a mechanism to decouple state root computation from block validation by deferring the execution layer's state root reference by one block.
 
 SPECIFICATION:
-### Execution Layer Changes 1. **`ExecutionPayload` State Root Field** - **Before** (in the current post-Merge design): ```solidity struct ExecutionPayload { uint256 blockNumber; uint256 timestamp;
+### Header Changes The block header structure is modified to support delayed state root computation: ```python @dataclass class Header: # Existing fields parent_hash: Hash32
 
 MOTIVATION:
-Currently, every Ethereum block includes two `state_root`. The consensus layer (CL) `state_root` contained within the `BeaconBlock` tracks CL state (e.g., validator entries and exits).
+The primary advantage of this proposal is **asynchronous state root computation**. In the current Ethereum protocol, blocks must compute and include their own post-state
 
 RATIONALE:
-1. **Reduce Latency at the Tip** - Proposers and builders no longer must compute and finalize the new state root within the same slot.
+### Latency Reduction The separation of state root computation from block validation removes the primary latency bottleneck in block production and validation. Proposers and
 
 
 === EIP-7788 ===
