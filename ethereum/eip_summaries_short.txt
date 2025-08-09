@@ -4613,7 +4613,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-EOF defines a stricter stricter code validation rule to improve efficiency. Due to EVM64 using multibyte opcode (the mode opcode `C0`), a small adaptation
+EOF defines a stricter code validation rule to improve efficiency. Due to EVM64 using multibyte opcode (the mode opcode `C0`), a small adaptation is
 
 RATIONALE:
 For detailed rationale discussion, please see the core EVM64 definition [EIP-7937](./eip-7937.md).
@@ -8215,6 +8215,26 @@ Due to the "difficulty bomb" (also known as the "ice age"), introduced in EIP [#
 
 RATIONALE:
 This will permanently, without further changes, disable the "ice age." It will also reset the block reward to pre-Byzantium levels. Both of these changes
+
+
+=== EIP-7980 ===
+TITLE: Ed25519 transaction support
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-06-25
+REQUIRES: 7932
+
+SUMMARY:
+This EIP adds a new [EIP-7932](./eip-7932.md) algorithm of type `0x0` for supporting Ed25519 signatures.
+
+SPECIFICATION:
+This EIP defines a new [EIP-7932](../../EIPS/eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE`
+
+MOTIVATION:
+Ed25519 is one of the most widely used forms of Elliptic Curve Cryptography and is one of the defaults for SSH keys, this makes
+
+RATIONALE:
+### Additional 1000 gas penality The gas penality discourages people attempting to migrate off current secp256k1 accounts, and also covers the additional overhead (in
 
 
 === EIP-2537 ===

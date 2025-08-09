@@ -4332,7 +4332,7 @@ MOTIVATION:
 By allowing account versioning, we can execute different virtual machine for contracts created at different times. This allows breaking features to be implemented while making sure existing contracts work as expected. Note that this specification might not apply to all hard forks. We have emergency hard forks in the past due to network attacks. Whether they should maintain existing account compatibility should be evaluated in individual basis. If the attack can only be executed once against some particular contracts, then the scheme defined here might still be applicable. Otherwise, having a plain emergency hard fork might still be
 
 RATIONALE:
-This introduces account versioning via a new RLP item in account state. The design above gets account versioning by making the contract *family* always have the same version. In this way, versions are only needed to be provided by contract creation transaction, and there is no restrictions on formats of code for any version. If we want to support multiple newest VMs (for example, EVM and WebAssembly running together), then this will requires extensions such as 44-VERTXN and 45-VEROP. Alternatively, account versioning can also be done through: * **[26-VER](https://specs.corepaper.org/26-ver/)** and **[40-UNUSED](https://specs.corepaper.org/40-unused/)**: This makes an account's versioning soly dependent
+This introduces account versioning via a new RLP item in account state. The design above gets account versioning by making the contract *family* always have the same version. In this way, versions are only needed to be provided by contract creation transaction, and there is no restrictions on formats of code for any version. If we want to support multiple newest VMs (for example, EVM and WebAssembly running together), then this will requires extensions such as 44-VERTXN and 45-VEROP. Alternatively, account versioning can also be done through: * **[26-VER](https://specs.corepaper.org/26-ver/)** and **[40-UNUSED](https://specs.corepaper.org/40-unused/)**: This makes an account's versioning solely dependent
 
 
 === EIP-150 ===
@@ -4613,7 +4613,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. We define the following gas cost constant: | Name | Gas | |------|-----| | `G_RJUMPIV64` | `3` | At EOF contract creation time as defined in [EIP-3670](./eip-3670.md), if the opcode `C0` is encountered and it is not part of PUSH opcode's data, then the interpreter MUST validate that: * The next opcode exists. * The next opcode is `RJUMPI64`, `RJUMPV64`, or one of the
 
 MOTIVATION:
-EOF defines a stricter stricter code validation rule to improve efficiency. Due to EVM64 using multibyte opcode (the mode opcode `C0`), a small adaptation is needed. This EIP also additionally defines a 64-bit mode `RJUMPI` and `RJUMPV` to be 64-bit.
+EOF defines a stricter code validation rule to improve efficiency. Due to EVM64 using multibyte opcode (the mode opcode `C0`), a small adaptation is needed. This EIP also additionally defines a 64-bit mode `RJUMPI` and `RJUMPV` to be 64-bit.
 
 RATIONALE:
 For detailed rationale discussion, please see the core EVM64 definition [EIP-7937](./eip-7937.md).
@@ -8215,6 +8215,26 @@ Due to the "difficulty bomb" (also known as the "ice age"), introduced in EIP [#
 
 RATIONALE:
 This will permanently, without further changes, disable the "ice age." It will also reset the block reward to pre-Byzantium levels. Both of these changes are specified similarly to EIP [#649](./eip-649.md), so they should require only minimal changes from client developers.
+
+
+=== EIP-7980 ===
+TITLE: Ed25519 transaction support
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-06-25
+REQUIRES: 7932
+
+SUMMARY:
+This EIP adds a new [EIP-7932](./eip-7932.md) algorithm of type `0x0` for supporting Ed25519 signatures.
+
+SPECIFICATION:
+This EIP defines a new [EIP-7932](../../EIPS/eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE` | `Bytes1(0x0)` | | `GAS_PENALTY`| `1000` | | `MAX_SIZE` | `96` | ```python def verify(signature_info: bytes, payload_hash: Hash32) -> ExecutionAddress: assert(len(signature_info) == 96) signature = signature_info[:64] public_key = signature_info[64:] # This is the `Verify` function described in [RFC 8032 Section 5.1.7](https://datatracker.ietf.org/doc/html/rfc8032#section-5.1.7), # This MUST be processed as raw `Ed25519` and not `Ed25519ctx` or `Ed25519ph` assert(ed25519_verify(signature, public_key, payload_hash)) return keccak256(public_key)[-20:] ```
+
+MOTIVATION:
+Ed25519 is one of the most widely used forms of Elliptic Curve Cryptography and is one of the defaults for SSH keys, this makes it a good contender to be able to sign transactions with. It also provides an algorithm to write test cases against during the implementation phase of [EIP-7932](./eip-7932.md).
+
+RATIONALE:
+### Additional 1000 gas penality The gas penality discourages people attempting to migrate off current secp256k1 accounts, and also covers the additional overhead (in regards to hashing) that the ed25519 curve applies. ### Why Ed25519? Ed25519 has significant tooling backing it, this makes it a good candidate for using as a "dummy" algorithm. This allows it to be an algorithm for client teams to easily test [EIP-7932](./eip-7932.md). It may also be useful for signing in Hardware security modules in server environments designed for serving as [ERC-4337](./eip-4337.md) bundlers. It may also improve interoperability with other components such as TPM
 
 
 === EIP-2537 ===
