@@ -4949,12 +4949,12 @@ Below is the rationale for both general design directions of the EIP, as well as
 === EIP-7932 ===
 TITLE: Secondary Signature Algorithms
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Draft
 CREATED: 2025-04-12
-REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2
+REQUIRES: 1, 5, 5, ,,  , 6, 4, 0, 4, ,,  , 6, 4, 6, 6, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP does 3 things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-2718](./eip-2718.md) typed transaction that
+This EIP does 3 things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-7495](./eip-7495.md) transaction profile that
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -4963,7 +4963,7 @@ MOTIVATION:
 As quantum computers are getting more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all contain drawbacks such as large key
 
 RATIONALE:
-### Setting `y_parity`, `r`, `s` values to zero rather than removing them Keeping the `y_parity`, `r`, `s` values inside the transactions keeps the previous
+### Opaque `signature_info` type As each algorithm has unique properties, i.e. signature recovery and key sizes, a object is needed to hold every permutation
 
 
 === EIP-6780 ===
