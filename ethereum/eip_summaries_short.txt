@@ -1795,6 +1795,26 @@ MOTIVATION:
 Ethereum's first official testnet was Morden. It ran from July 2015 to about November 2016, when due to the accumulated junk and some testnet
 
 
+=== EIP-7998 ===
+TITLE: Turn `randao_reveal` into a VRF
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-03
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes a modification to the data signed by a block proposer for the `randao_reveal`. The current `randao_reveal` is a BLS signature over
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+This change creates a secure, per-slot VRF output from the proposer, with several benefits: 1. it **paves the way for secret proposer election**, which
+
+RATIONALE:
+### Choice of VRF Input The `randao_reveal` is effectively transformed into `VRF(sk, message)` where the `message` is the SSZ serialization of the `RandaoRevealSeed` container.
+
+
 === EIP-7514 ===
 TITLE: Add Max Epoch Churn Limit
 TYPE: Standards Track Core
@@ -4414,7 +4434,7 @@ TITLE: Tx Ordering via Block-level Randomness
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-05-24
-REQUIRES: 
+REQUIRES: 7998
 
 SUMMARY:
 Proposers and builders can currently permute pending transactions arbitrarily, enabling reorder‑driven MEV. This EIP introduces a consensus rule that sorts all transactions inside a

@@ -1795,6 +1795,26 @@ MOTIVATION:
 Ethereum's first official testnet was Morden. It ran from July 2015 to about November 2016, when due to the accumulated junk and some testnet consensus issues between Geth and Parity, it was finally laid to rest in favor of a testnet reboot. Ropsten was thus born, clearing out all
 
 
+=== EIP-7998 ===
+TITLE: Turn `randao_reveal` into a VRF
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-03
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes a modification to the data signed by a block proposer for the `randao_reveal`. The current `randao_reveal` is a BLS signature over the current epoch number, which is predictable. This proposal incorporates the RANDAO mix of the previous epoch and the current slot number into the signed
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). The gist of the change is in `process_randao`, which now uses the RANDAO mix of
+
+MOTIVATION:
+This change creates a secure, per-slot VRF output from the proposer, with several benefits: 1. it **paves the way for secret proposer election**, which would in turn reduce MEV and completely eliminate the well-known RANDAO bias attack vector; 2. it supports other proposals like [EIP-7956](./eip-7956.md) that rely on a
+
+RATIONALE:
+### Choice of VRF Input The `randao_reveal` is effectively transformed into `VRF(sk, message)` where the `message` is the SSZ serialization of the `RandaoRevealSeed` container. - `previous_mix`: Including the RANDAO mix from the previous epoch (`previous_mix`) is the core of this proposal. Since the previous epoch's final mix is not
+
+
 === EIP-7514 ===
 TITLE: Add Max Epoch Churn Limit
 TYPE: Standards Track Core
@@ -4414,13 +4434,13 @@ TITLE: Tx Ordering via Block-level Randomness
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-05-24
-REQUIRES: 
+REQUIRES: 7998
 
 SUMMARY:
 Proposers and builders can currently permute pending transactions arbitrarily, enabling reorder‑driven MEV. This EIP introduces a consensus rule that sorts all transactions inside a block by XOR‑ing each transaction hash with fresh slot randomness. The randomness is unknown until the slot starts, so the order is deterministic once known
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Slot Randomness `R` > **Consensus‑layer prerequisite** — Companion EIP “**`EL‑VRF‑exposure`**” is needed to add
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Slot Randomness `R` We define our randomness `R` as the `randao_reveal` of the each
 
 MOTIVATION:
 Unrestricted ordering is the key enabler of sandwich and classic front‑running attacks. Deterministic ordering collapses these vectors to latency racing and information asymmetry. Clear candidate‑set and bundle semantics preserve fee markets while removing the need for trusted sequencers. Academic works shows deterministic ordering drives sandwich profits toward zero. ###
