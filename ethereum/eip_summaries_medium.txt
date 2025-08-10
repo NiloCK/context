@@ -2206,7 +2206,7 @@ This endpoint is similar to [EIP-695](./eip-695.md) but it provides the symbol i
 === EIP-7808 ===
 TITLE: Reserve Tx-Type Range for RIPs
 TYPE: Meta 
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-11-04
 REQUIRES: 2718
 
@@ -8688,7 +8688,7 @@ RATIONALE:
 === EIP-7519 ===
 TITLE: Atomic Storage Operations SCREDIT and SDEBIT
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2023-09-16
 REQUIRES: 2, 2, 0, 0, ,,  , 2, 9, 2, 9
 
