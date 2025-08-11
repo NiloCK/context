@@ -3499,7 +3499,7 @@ CREATED: 2025-05-07
 REQUIRES: 
 
 SUMMARY:
-Introduce a universal account abstraction recovery mechanism `recoverOwnership(newOwner, provider, proof)` along with recovery provider management functions for smart accounts to securely update their owner.
+Introduce a universal account abstraction recovery mechanism `recoverAccess(subject, provider, proof)` along with recovery provider management functions for smart accounts to securely update their access
 
 SPECIFICATION:
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as

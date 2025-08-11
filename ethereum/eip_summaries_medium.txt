@@ -1906,7 +1906,7 @@ SUMMARY:
 This EIP introduces a new `GAS2ETH` opcode that enables the direct conversion of gas into ether (ETH).
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. A new opcode is introduced, `GAS2ETH` (`0xFC`), which: - Pops two values from the stack:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. A new quantity is added to the calling and transaction context, the `gas2eth` limit. It
 
 MOTIVATION:
 This EIP is based on the premise that smart contract authors, compiler teams and public goods projects in general should be compensated for their contributions. Moreover, their compensation should scale with the usage of their contracts. A widely used and popular contract offers significant value to its users through
