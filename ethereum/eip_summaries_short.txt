@@ -1219,7 +1219,7 @@ MOTIVATION:
 This EIP solves a different set of unrelated important problems. - An overwhelming majority of beacon block proposers outsource the construction of the execution
 
 RATIONALE:
-### Staked builders Being a builder is a new attribution of validators. As such builders are staked in the beacon chain. This allows for
+### Staked builders Being a builder is a new attribution of validators. As such builders are staked in the beacon chain and they have
 
 
 === EIP-6493 ===

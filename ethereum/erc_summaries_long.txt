@@ -9223,6 +9223,26 @@ RATIONALE:
 It was decided to make minimal interface extension to allow easier integration of a compliant contract into the existing infrastructure. This affects the backward compatibility of the `allowance` function. However, the required changes to the `transferFrom` function implementation satisfy the requirement to explicitly authorize the spender to transfer tokens.
 
 
+=== ERC-7955 ===
+TITLE: Permissionless CREATE2 Factory
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-15
+REQUIRES: 1, 0, 1, 4, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This ERC defines a permissionless and deterministic deployment mechanism across all EVM-compatible chains. It uses the [EIP-7702](./eip-7702.md) `Set Code for EOAs (0x4)` transaction type to deploy a universal CREATE2 factory contract to a fixed address (`0xC0DE207acb0888c5409E51F27390Dad75e4ECbe7`) with known bytecode. The factory can then create any new contract to a deterministic address using the [EIP-1014](./eip-1014.md) `CREATE2 (0xf5)` opcode. It does not require preinstalls, secret keys, or chain-specific infrastructure.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Parameter | Value | | --------------------------- | -------------------------------------------------------------------- | | `DEPLOYER_PRIVATE_KEY` | `0x942ba639ec667bdded6d727ad2e483648a34b584f916e6b826fdb7b512633731` | | `CREATE2_FACTORY_INIT_CODE` | `0x7760203d3d3582360380843d373d34f580601457fd5b3d52f33d5260186008f3` | | `CREATE2_FACTORY_SALT` | `0x000000000000000000000000000000000000000000000000000000000019e078` | ### Derived Parameters | Derived Parameter | Value | | ------------------------------ | -------------------------------------------------------------------- | | `DEPLOYER_ADDRESS` | `0x962560A0333190D57009A0aAAB7Bfa088f58461C` | | `CREATE2_FACTORY_ADDRESS` | `0xC0DE945918F144DcdF063469823a4C51152Df05D` | | `CREATE2_FACTORY_RUNTIME_CODE` | `0x60203d3d3582360380843d373d34f580601457fd5b3d52f3` | | `CREATE2_FACTORY_CODE_HASH` | `0xeac13dde1a2c9b8dc8a7aded29ad0af5d57c811b746f7909ea841cbfc6ef3adc` | ### Definitions -
+
+MOTIVATION:
+Ensuring that contracts share the same address and code on multiple chains is a hard problem. It is typically done by having a known CREATE2 factory contract at a specific address that can further deterministically deploy new contracts using the `CREATE2 (0xf5)` opcode. However, there is a bootstrapping problem: how do you get a CREATE2 factory contract with a specific address and code? ### Existing Solutions There are currently three main approaches to this problem: #### 1. Nick's Method Use Nick's method to randomly generate a signature for a transaction **without** [EIP-155](./eip-155.md) replay protection that deploys the CREATE2
+
+RATIONALE:
+### Deployment Mechanism The deployment mechanism was chosen such that it is uniquely parameterized by the `DEPLOYER_ADDRESS` (which itself is derived from the `DEPLOYER_PRIVATE_KEY` and is therefore deterministic), the `CREATE2_FACTORY_INIT_CODE` and the `CREATE2_FACTORY_SALT` which are both fixed and deterministic. Additionally, since the `DEPLOYER_ADDRESS` will deploy the CREATE2 factory contract with the `CREATE2 (0xf5)` opcode, this guarantees that the address and code of the contract are deterministic. The use of a publicly known private key enables this mechanism, as anyone can permissionlessly generate a delegation signature to **any** bootstrap contract that would cause the `DEPLOYER_ADDRESS` to execute the specified
+
+
 === ERC-3722 ===
 TITLE: Poster
 TYPE: Standards Track ERC
