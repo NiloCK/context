@@ -2137,7 +2137,7 @@ SPECIFICATION:
 ### Parameters | Constant | Value | - | - | | `BLOB_BASE_COST` | `2**13` | ### Functions An `if`-clause is added to `calc_excess_blob_gas()`
 
 MOTIVATION:
-Ethereum deploys a dynamic pricing auction to set the blob base fee, lowering the fee if less gas is consumed than `TARGET_BLOB_GAS_PER_BLOCK` and raising
+Ethereum deploys a dynamic pricing auction to set the blob base fee, lowering the fee if less gas is consumed than `target_blob_gas = GAS_PER_BLOB
 
 RATIONALE:
 ### Fee-inelasticity and reserve price This proposal alleviates idiosyncrasies in the blob base fee auction. The fee update mechanism is unaware of the full
