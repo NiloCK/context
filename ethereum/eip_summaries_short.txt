@@ -7406,6 +7406,23 @@ RATIONALE:
 Making the `eth_getLogs` response verifiable adds the necessary security attributes to enable wallets to transition away from relying on trusted data providers, ultimately improving
 
 
+=== EIP-7979 ===
+TITLE: Call and Return Opcodes for the EVM
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-12-17
+REQUIRES: 3541
+
+SUMMARY:
+This is the smallest possible change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM:
+
+SPECIFICATION:
+> _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ###
+
+MOTIVATION:
+### The original control-flow facilities In 1833 Charles Babbage began the design of a steam-powered, mechanical, Turing-complete computer. Its first published description was the
+
+
 === EIP-7377 ===
 TITLE: Migration Transaction
 TYPE: Standards Track Core

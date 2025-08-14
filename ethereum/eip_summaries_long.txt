@@ -4229,7 +4229,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Glamsterdam network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion ### Considered for Inclusion * [EIP-7732](./eip-7732.md): Enshrined Proposer-Builder Separation * [EIP-7782](./eip-7782.md): Reduce Block Latency * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) * [EIP-7928](./eip-7928.md): Block-Level Access Lists ### Proposed for Inclusion * [EIP-6873](./eip-6873.md): Preimage retention * [EIP-7667](./eip-7667.md): Raise gas costs of hash functions * [EIP-7793](./eip-7793.md): Conditional Transactions * [EIP-7819](./eip-7819.md): SETDELEGATE instruction * [EIP-7843](./eip-7843.md): SLOTNUM opcode * [EIP-7919](./eip-7919.md): Pureth Meta * [EIP-5920](./eip-7791.md): PAY opcode * [EIP-7791](./eip-7791.md): GAS2ETH opcode * [EIP-7903](./eip-7903.md): Remove Initcode Size Limit *
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7732](./eip-7732.md): Enshrined Proposer-Builder Separation * [EIP-7928](./eip-7928.md): Block-Level Access Lists ### Considered for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Declined for Inclusion * [EIP-7782](./eip-7782.md): Reduce Block Latency ### Proposed for Inclusion * [EIP-2926](./eip-2926.md): Chunk-based code merkelization * [EIP-6873](./eip-6873.md): Preimage retention * [EIP-7667](./eip-7667.md): Raise gas costs of hash functions * [EIP-7793](./eip-7793.md): Conditional Transactions * [EIP-7819](./eip-7819.md): SETDELEGATE instruction * [EIP-7843](./eip-7843.md): SLOTNUM opcode * [EIP-7919](./eip-7919.md): Pureth Meta * [EIP-5920](./eip-7791.md): PAY opcode * [EIP-7791](./eip-7791.md):
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Glamsterdam network upgrade, as well as links to full specification.
@@ -7404,6 +7404,23 @@ The `eth_getLogs` endpoint is used by wallets to obtain the transaction history 
 
 RATIONALE:
 Making the `eth_getLogs` response verifiable adds the necessary security attributes to enable wallets to transition away from relying on trusted data providers, ultimately improving the wallet's privacy guarantees as it is no longer subject to the privacy policy of any given provider. ### Gas cost The gas cost produced by this scheme is significantly higher than what `LOG#` opcodes produce as of Prague, primarily due to the additional `SLOAD` / `SSTORE` and the double cost of `SHA256` opcodes compared to `KECCAK256` opcodes. The gas cost increases outweigh the savings from dropping logs blooms. If the mechanism turns out
+
+
+=== EIP-7979 ===
+TITLE: Call and Return Opcodes for the EVM
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-12-17
+REQUIRES: 3541
+
+SUMMARY:
+This is the smallest possible change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB destination` transfers control to the destination``. * `ENTERSUB` marks a `CALLSUB` destination. * `RETURNSUB` returns to the `PC` after the most recent `CALLSUB`. Code can also be prefixed with `MAGIC` bytes. The complete control flow of `MAGIC` code can be traversed in time and space linear in the size of the code, enabling better tools for validation, static analysis, and JIT and AOT compilers. Onchain, `MAGIC` code is validated at `CREATE` time
+
+SPECIFICATION:
+> _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ### `CALLSUB destination (0x..)` Transfers control to a subsidiary operation. 1. Decode the `destination` as a UTF8-encoded positive integer. 2. Push the current `PC + 1` to the `return stack`. 3. Set `PC` to `destination`. The gas cost is _mid_ (`8`). ### `ENTERSUB (0x..)` The `destination` of every `CALLSUB` MUST be an `ENTERSUB`. ### `RETURNSUB (0x..)` Returns control to the caller of a subsidiary operation. 1. Pop the `return stack` to `PC`. The gas cost
+
+MOTIVATION:
+### The original control-flow facilities In 1833 Charles Babbage began the design of a steam-powered, mechanical, Turing-complete computer. Its first published description was the _"Sketch of The Analytical Engine Invented by Charles Babbage", L. F. Menabre, Bibliothque Universelle de Genve, October, 1842, No. 82._ The translator, Ada Augusta, Countess of Lovelace, made extensive notes, including her famous computer program -- which used conditional branches and nested loops to recursively compute Bernoulli numbers. Here we find her prescient recognition of its power: > The Analytical Engine ... holds a position wholly its own ... In enabling mechanism to combine
 
 
 === EIP-7377 ===
