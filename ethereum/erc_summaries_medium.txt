@@ -9231,10 +9231,10 @@ CREATED: 2025-05-15
 REQUIRES: 1, 0, 1, 4, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This ERC defines a permissionless and deterministic deployment mechanism across all EVM-compatible chains. It uses the [EIP-7702](./eip-7702.md) `Set Code for EOAs (0x4)` transaction type to deploy a universal CREATE2 factory contract to a fixed address (`0xC0DE207acb0888c5409E51F27390Dad75e4ECbe7`) with known bytecode. The factory can then create any new contract to a
+This ERC defines a permissionless and deterministic deployment mechanism across all EVM-compatible chains. It uses the [EIP-7702](./eip-7702.md) `Set Code for EOAs (0x4)` transaction type to deploy a universal CREATE2 factory contract to a fixed address (`0xC0DEb853af168215879d284cc8B4d0A645fA9b0E`) with known bytecode. The factory can then create any new contract to a
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Parameter | Value | | --------------------------- | -------------------------------------------------------------------- | | `DEPLOYER_PRIVATE_KEY` |
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Parameter | Value | | --------------------------- | ------------------------------------------------------------------------------ | | `DEPLOYER_PRIVATE_KEY` |
 
 MOTIVATION:
 Ensuring that contracts share the same address and code on multiple chains is a hard problem. It is typically done by having a known CREATE2 factory contract at a specific address that can further deterministically deploy new contracts using the `CREATE2 (0xf5)` opcode. However, there is a bootstrapping problem:
