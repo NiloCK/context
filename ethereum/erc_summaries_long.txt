@@ -1550,6 +1550,26 @@ MOTIVATION:
 A standard interface allows any tokens on Ethereum to be re-used by other applications: from wallets to decentralized exchanges.
 
 
+=== ERC-8004 ===
+TITLE: Trustless Agents
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-08-13
+REQUIRES: 
+
+SUMMARY:
+This ERC extends the Agent‑to‑Agent (A2A) Protocol with a trust layer that allows participants to **discover, choose, and interact with agents across organizational boundaries** without pre‑existing trust. It introduces three **lightweight, on‑chain registries**—Identity, Reputation, and Validation—and leaves application‑specific logic to off‑chain components. Trust models are pluggable and tiered, with security proportional to value at risk—from low-stake tasks like ordering pizza to high-stake tasks like medical diagnosis. Developers can choose from three trust models: reputation-based systems using client feedback, stake-secured inference validation (crypto-economics), and attestations for agents running in TEEs (crypto-verifiability).
+
+SPECIFICATION:
+### Participants All participants MUST register with the Identity Registry as a generic agent. Agents can have three roles: * Server Agent (A2A Server): Offers services and executes tasks * Client Agent (A2A Client): Assigns tasks to Server Agents and provides feedback * Validator Agent (Optional): Validates tasks through crypto-economic staking mechanisms (staking validators re-executing the inference) or cryptographic verification Agents may fulfill multiple roles simultaneously without restriction. ### Identity Registry All participants register on a smart contract on an EVM chain, which acts as a single entry point. Each agent is uniquely identified by: * **AgentID:** Global
+
+MOTIVATION:
+The existing A2A protocol handles agent authentication, skills advertisement via AgentCards, direct messaging, and complete task-lifecycle orchestration. Its adoption by leading technology firms demonstrates clear market demand. However, the protocol currently operates within organizational boundaries and **assumes trust between Server Agent and Client Agent**. To foster an open, cross-organizational agent economy, we need mechanisms for discovering and trusting agents in untrusted settings. This ERC addresses this need through three core components, which can be deployed on any L2 or on Mainnet: **1\. Identity Registry** \- A minimal on-chain handle that resolves to an agent's off-chain AgentCard, providing every
+
+RATIONALE:
+**Off-chain Infrastructure** The protocol deliberately delegates complex operations off-chain to enable: * Sophisticated reputation algorithms and aggregation services * Flexible validation protocols with custom incentive mechanisms * Scalable data storage and retrieval systems **Interoperability** * CAIP-10 standard ensures chain-agnostic addressing * RFC 8615 compliance enables standard web discovery * Modular design allows integration with existing payment and validation systems **Possible future directions** * Cross-chain identifiers * Use NFT interface for agent minting, ownership and transfer * ENS support * Integrations with A2A's extensions managing payments * Incentives to provide feedback or guarantee the off-chain data availability of feedback
+
+
 === ERC-2309 ===
 TITLE: ERC-721 Consecutive Transfer Extension
 TYPE: Standards Track ERC

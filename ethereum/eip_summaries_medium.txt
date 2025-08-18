@@ -138,7 +138,7 @@ The current MIN_BASE_FEE_PER_BLOB_GAS is 1 wei. This is many orders of magnitude
 === EIP-2938 ===
 TITLE: Account Abstraction
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Withdrawn
 CREATED: 2020-09-04
 REQUIRES: 2718
 
@@ -591,10 +591,10 @@ CREATED: 2023-08-18
 REQUIRES: 7916
 
 SUMMARY:
-This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md) type to represent containers with forward-compatible Merkleization: A given field is always assigned the same stable [generalized index (gindex)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/merkle-proofs.md#generalized-merkle-tree-index) even when different container versions append new fields or drop existing fields.
+This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md) type to represent containers with forward-compatible Merkleization: A given field is always assigned the same stable [generalized index (gindex)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/merkle-proofs.md#generalized-merkle-tree-index) even when different container versions append new fields or drop existing fields.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ProgressiveContainer(active_fields)` Two new [SSZ composite types)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md#composite-types) are defined: - **progressive container**: ordered heterogeneous collection
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ProgressiveContainer(active_fields)` Two new [SSZ composite types)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md#composite-types) are defined: - **progressive container**: ordered heterogeneous collection
 
 MOTIVATION:
 SSZ containers are frequently versioned, for example across fork boundaries. When the number of fields reaches a new power of two, or a field is removed or replaced with one of a different type, the shape of the underlying Merkle tree changes, breaking verifiers of Merkle proofs for these
@@ -3750,7 +3750,7 @@ CREATED: 2025-03-01
 REQUIRES: 
 
 SUMMARY:
-Currently, the beacon block in Ethereum Consensus embed transactions within `ExecutionPayload` field of `BeaconBlockBody`. This EIP proposes to replace `ExecutionPayload` with `ExecutionPayloadHeader` in `BeaconBlockBody` and to independently transmit `ExecutionPayloadWithInclusionProof`. However, this EIP makes no change to the block import mechanism, with the exception that block availability now includes waiting
+Currently, the beacon block in Ethereum Consensus embeds transactions within `ExecutionPayload` field of `BeaconBlockBody`. This EIP proposes to replace `ExecutionPayload` with `ExecutionPayloadHeader` in `BeaconBlockBody` and to independently transmit `ExecutionPayloadWithInclusionProof`. However, this EIP makes no change to the block import mechanism, with the exception that block availability now includes waiting
 
 SPECIFICATION:
 - `ExecutionPayload` in the `BeaconBlockBody` is replaced by `ExecutionPayloadHeader` - `ExecutionPayloadWithInclusionProof` is computed by the block proposer/builder and gossiped independently on a separate new topic. Also builder `submitBlindedBlock` api is modified to respond with `ExecutionPayloadWithInclusionProof` instead. - Data availability checks for block import into forkchoice now must wait for
@@ -3759,7 +3759,7 @@ MOTIVATION:
 Ethereum protocol has an ambitious goal to grow the `gasLimit` of the execution payloads (possibly by 10X). This leads to larger messages, negatively affecting the networking and block processing pipelines of the consensus layer (CL) clients leading to following issues: 1. Higher latencies for the arrival of beacon blocks
 
 RATIONALE:
-There is another choice we could have made to go for `SignedExecutionPayload` instead of `ExecutionPayloadWithInclusionProof` and having a `SignedExecutionPayloadHeader` with builder signing these messages (validator is the builder in local block building). But without builder enshrinment tight gossip validation of `SignedExecutionPayload` would be an issue and could become a
+There is another choice we could have made to go for `SignedExecutionPayload` instead of `ExecutionPayloadWithInclusionProof` and having a `SignedExecutionPayloadHeader` with builder signing these messages (validator is the builder in local block building). But without builder enshrinement tight gossip validation of `SignedExecutionPayload` would be an issue and could become a
 
 
 === EIP-5345 ===
@@ -8112,6 +8112,26 @@ This EIP proposes a way for gas metering on `SSTORE`, using information that is 
 
 RATIONALE:
 This EIP mostly achieves what a transient storage tries to do ([EIP-1087] and [EIP-1153]), but without the complexity of introducing the concept of "dirty maps", or an extra storage struct. * We don't suffer from the optimization limitation of EIP-1087. EIP-1087 requires keeping a dirty map for storage changes,
+
+
+=== EIP-7999 ===
+TITLE: Unified multidimensional fee market
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-04
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 1, 6, ,,  , 7, 6, 9, 1, ,,  , 7, 8, 4, 0, ,,  , 7, 9, 1, 8
+
+SUMMARY:
+A unified multidimensional fee market is introduced, where each transaction specifies the maximum amount of ETH it is willing to pay for inclusion using a single `max_fee`. Upon inclusion, the protocol ensures that the transaction is able to pay the gas for all dimensions, treating the `max_fee` as fungible
+
+SPECIFICATION:
+The specification inherits its logic from [EIP-7706](./eip-7706.md), incorporating the changes necessary for facilitating one aggregate fee, a multidimensional [EIP-7918](./eip-7918.md) logic, a systematic approach to [EIP-7805](./eip-7805.md), and a stable gas normalization function, etc. ### Parameters | Constant | Value | Description | | :--- | :--- | :--- | |
+
+MOTIVATION:
+A multidimensional fee market enables precise control over resource consumption. It allows *the market* to fairly price resources according to targets and limits deemed safe by developers, and it allows resources to be consumed at maximum capacity within these limits. Directly expanding the current fee market design to the
+
+RATIONALE:
+### Why go multidimensional? Many Ethereum resources such as blobs, calldata, access, and compute are in limited supply each block, constrained by the need to, e.g., timely propagate data or run computations. Upholding the constraints on all these resources via a single meta-resource—"gas"—limits developers' ability to control both supply
 
 
 === EIP-7975 ===

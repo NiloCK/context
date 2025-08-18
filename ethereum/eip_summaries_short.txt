@@ -138,7 +138,7 @@ The current MIN_BASE_FEE_PER_BLOB_GAS is 1 wei. This is many orders of magnitude
 === EIP-2938 ===
 TITLE: Account Abstraction
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Withdrawn
 CREATED: 2020-09-04
 REQUIRES: 2718
 
@@ -591,7 +591,7 @@ CREATED: 2023-08-18
 REQUIRES: 7916
 
 SUMMARY:
-This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md) type to represent containers with forward-compatible Merkleization: A given field is always assigned the same stable
+This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md) type to represent containers with forward-compatible Merkleization: A given field is always assigned the same stable
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -3750,7 +3750,7 @@ CREATED: 2025-03-01
 REQUIRES: 
 
 SUMMARY:
-Currently, the beacon block in Ethereum Consensus embed transactions within `ExecutionPayload` field of `BeaconBlockBody`. This EIP proposes to replace `ExecutionPayload` with `ExecutionPayloadHeader` in `BeaconBlockBody`
+Currently, the beacon block in Ethereum Consensus embeds transactions within `ExecutionPayload` field of `BeaconBlockBody`. This EIP proposes to replace `ExecutionPayload` with `ExecutionPayloadHeader` in `BeaconBlockBody`
 
 SPECIFICATION:
 - `ExecutionPayload` in the `BeaconBlockBody` is replaced by `ExecutionPayloadHeader` - `ExecutionPayloadWithInclusionProof` is computed by the block proposer/builder and gossiped independently on a separate new
@@ -8112,6 +8112,26 @@ This EIP proposes a way for gas metering on `SSTORE`, using information that is 
 
 RATIONALE:
 This EIP mostly achieves what a transient storage tries to do ([EIP-1087] and [EIP-1153]), but without the complexity of introducing the concept of "dirty
+
+
+=== EIP-7999 ===
+TITLE: Unified multidimensional fee market
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-04
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 1, 6, ,,  , 7, 6, 9, 1, ,,  , 7, 8, 4, 0, ,,  , 7, 9, 1, 8
+
+SUMMARY:
+A unified multidimensional fee market is introduced, where each transaction specifies the maximum amount of ETH it is willing to pay for inclusion using
+
+SPECIFICATION:
+The specification inherits its logic from [EIP-7706](./eip-7706.md), incorporating the changes necessary for facilitating one aggregate fee, a multidimensional [EIP-7918](./eip-7918.md) logic, a systematic approach to
+
+MOTIVATION:
+A multidimensional fee market enables precise control over resource consumption. It allows *the market* to fairly price resources according to targets and limits deemed
+
+RATIONALE:
+### Why go multidimensional? Many Ethereum resources such as blobs, calldata, access, and compute are in limited supply each block, constrained by the need
 
 
 === EIP-7975 ===
