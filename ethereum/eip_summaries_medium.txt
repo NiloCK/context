@@ -7414,10 +7414,10 @@ CREATED: 2025-12-17
 REQUIRES: 3541
 
 SUMMARY:
-This is the smallest possible change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB destination` transfers control to the `destination`. * `ENTERSUB` marks a `CALLSUB` destination. * `RETURNSUB` returns to the `PC` after the most recent `CALLSUB`.
+This is the smallest possible change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB` transfers control to the `destination` on the `stack`. * `ENTERSUB` marks a `CALLSUB` destination. * `RETURNSUB` returns to the `PC` after the most
 
 SPECIFICATION:
-> _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ### `CALLSUB destination (0x..)` Transfers control to a subsidiary operation. 1. Decode the `destination` as a UTF8-encoded positive integer. 2. Push the current `PC + 1`
+> _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ### `CALLSUB (0x..)` Transfers control to a subsidiary operation. 1. Pop the `destination` on top on the `stack`. 2. Push the current `PC + 1` to
 
 MOTIVATION:
 ### The original control-flow facilities In 1833 Charles Babbage began the design of a steam-powered, mechanical, Turing-complete computer. Its first published description was by L. F. Menabre, 1842. The translator, Ada Augusta, Countess of Lovelace, made extensive notes. The notes include her famous program for recursively computing the Bernoulli
