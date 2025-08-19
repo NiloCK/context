@@ -3246,6 +3246,26 @@ RATIONALE:
 This approach can be useful for end users that do not want to or are not able to add Ether to their account. This
 
 
+=== EIP-7997 ===
+TITLE: Deterministic Factory Predeploy
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-03
+REQUIRES: 2, 1, 1, ,,  , 1, 0, 1, 4
+
+SUMMARY:
+A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains
+
+SPECIFICATION:
+### Parameters * `FACTORY_ADDRESS` = `0x0B` ### Factory Contract Upon activation of this EIP, set the code of `FACTORY_ADDRESS` to `60203610602f5760003560203603806020600037600034f5806026573d600060003e3d6000fd5b60005260206000f35b60006000fd`, corresponding to the
+
+MOTIVATION:
+There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect
+
+RATIONALE:
+### Precompile-range system contract Unlike previous system contracts, this factory cannot be deployed using a normal transaction because, as explained in the Motivation section,
+
+
 === EIP-7872 ===
 TITLE: Max blob flag for local builders
 TYPE: Meta 

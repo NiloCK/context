@@ -3246,6 +3246,26 @@ RATIONALE:
 This approach can be useful for end users that do not want to or are not able to add Ether to their account. This approach allows to use the correct `origin.tx` which may be required for important transactions like ERC-721 `setApprovalForAll`. This approach may use more gas than other approaches where the consensus client is changed or where transactions can execute from (`origin.tx`) a different account. ### Alternatives considered * Update [EIP-1559](./eip-1559) so that transactions with gasPrice = 0 are legal, but only if the comensurate amount of gas will be burnt by the block preparer in that
 
 
+=== EIP-7997 ===
+TITLE: Deterministic Factory Predeploy
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-03
+REQUIRES: 2, 1, 1, ,,  , 1, 0, 1, 4
+
+SUMMARY:
+A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains that adopt it.
+
+SPECIFICATION:
+### Parameters * `FACTORY_ADDRESS` = `0x0B` ### Factory Contract Upon activation of this EIP, set the code of `FACTORY_ADDRESS` to `60203610602f5760003560203603806020600037600034f5806026573d600060003e3d6000fd5b60005260206000f35b60006000fd`, corresponding to the following assembly: ``` #pragma target "constantinople" ;; Input: salt (32 bytes) || initcode (variable size) ;; Verify input is at least 32 bytes long. push 32 calldatasize lt jumpi @throw ;; Load salt. push 0 calldataload ;; Compute initcodesize = calldatasize - 32. push 32 calldatasize sub ;; Copy initcode to memory at position 0. dup1 push 32 push 0 calldatacopy ;; Invoke create2 with salt and initcode, forwarding all callvalue. push 0 callvalue
+
+MOTIVATION:
+There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect this number to continue to grow in line with Ethereum's rollup-centric roadmap and the general adoption of programmable blockchains. Most applications support multiple chains and aspire to support as many as possible, and their developers widely prefer to deploy contracts at identical addresses across all chains, a setup which we will call *multi-chain deterministic deployment*. This kind of deployment reduces the number of addresses that must be distributed to use the application, so that
+
+RATIONALE:
+### Precompile-range system contract Unlike previous system contracts, this factory cannot be deployed using a normal transaction because, as explained in the Motivation section, that transaction could not be guaranteed to be valid on other chains. Since the purpose of this factory is to be available in all EVM chains that a contract could be deployed to, an irregular insertion of the code into a special address seems necessary. The address `0x0b` (`0x000000000000000000000000000000000000000b`) is chosen as the next lowest address after existing precompiles, on the assumption that other EVM chains would have reserved this range for future Ethereum
+
+
 === EIP-7872 ===
 TITLE: Max blob flag for local builders
 TYPE: Meta 
@@ -3759,7 +3779,7 @@ MOTIVATION:
 Ethereum protocol has an ambitious goal to grow the `gasLimit` of the execution payloads (possibly by 10X). This leads to larger messages, negatively affecting the networking and block processing pipelines of the consensus layer (CL) clients leading to following issues: 1. Higher latencies for the arrival of beacon blocks increase, requiring larger bandwidth resources to be made available for the beacon node. 2. The greater number and size of transactions directly increase the merkelization compute time, increasing the import time of the block. We know from timing games that the block import latency greatly affects a client's performance
 
 RATIONALE:
-There is another choice we could have made to go for `SignedExecutionPayload` instead of `ExecutionPayloadWithInclusionProof` and having a `SignedExecutionPayloadHeader` with builder signing these messages (validator is the builder in local block building). But without builder enshrinement tight gossip validation of `SignedExecutionPayload` would be an issue and could become a DOS vector. The benefit of `SignedExecutionPayload` design is that it could be transmitted ahead of even the `SignedExecutionPayloadHeader` inclusion in beacon block and is especially usedful in PBS pipeline where the proposal to builder/relay latency can be reduced significantly.
+There is another choice we could have made to go for `SignedExecutionPayload` instead of `ExecutionPayloadWithInclusionProof` and having a `SignedExecutionPayloadHeader` with builder signing these messages (validator is the builder in local block building). But without builder enshrinement tight gossip validation of `SignedExecutionPayload` would be an issue and could become a DOS vector. The benefit of `SignedExecutionPayload` design is that it could be transmitted ahead of even the `SignedExecutionPayloadHeader` inclusion in beacon block and is especially useful in PBS pipeline where the proposal to builder/relay latency can be reduced significantly.
 
 
 === EIP-5345 ===
@@ -8693,7 +8713,7 @@ SUMMARY:
 This EIP proposes a new JSON-RPC method, `eth_sendRawTransactionSync`, which submits a signed raw transaction and waits synchronously for the transaction receipt or a configurable timeout before returning. This method addresses the user experience gap in high-frequency applications by offering stronger delivery guarantees than `eth_sendRawTransaction`.
 
 SPECIFICATION:
-### Method Name `eth_sendRawTransactionSync` ### Parameters | Position | Type | Description | Required | |----------|------------|-----------------------------------|----------| | 1 | `DATA` | The signed transaction data | Yes | | 2 | `QUANTITY` | Maximum wait time in milliseconds | No | #### Parameter Validation Rules - **Transaction Data**. MUST be a valid hex-encoded, RLP-encoded signed transaction (same as in `eth_sendRawTransaction`). - **Timeout**. MUST be a positive integer between 1 and the node-configured maximum timeout. ### Returns On success, node implementations MUST return the transaction receipt object as defined by the `eth_getTransactionReceipt` method. ### Error Codes The next table
+### Method Name `eth_sendRawTransactionSync` ### Parameters | Position | Type | Description | Required | |----------|------------|-----------------------------------|----------| | 1 | `DATA` | The signed transaction data | Yes | | 2 | `QUANTITY` | Maximum wait time in milliseconds | No | #### Parameter Validation Rules - **Transaction Data**. MUST be a valid hex-encoded, RLP-encoded signed transaction (same as in `eth_sendRawTransaction`). - **Timeout**. MUST be a positive integer not greater than the node-configured maximum timeout. ### Returns - **On success**. Node implementations MUST return the transaction receipt object as defined by the `eth_getTransactionReceipt` method. - **On timeout error**. Node
 
 MOTIVATION:
 Currently, Ethereum clients submit signed transactions asynchronously using `eth_sendRawTransaction`. Clients receive a transaction hash immediately but must poll repeatedly for the transaction receipt, which increases latency and complicates client-side logic. This asynchronous approach is not efficient for high-frequency blockchains or Layer 2 solutions with fast block times and low latency, where rapid transaction throughput and quick confirmation feedback are critical. The need to separately poll for receipts results in increased network overhead, slower overall transaction confirmation feedback, and more complex client implementations. ![Sync vs Async Transaction Sending](../assets/eip-7966/sync-vs-async.png) _In a low-latency blockchain, transaction receipts are often available right after
