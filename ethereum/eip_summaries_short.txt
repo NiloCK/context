@@ -8291,7 +8291,7 @@ MOTIVATION:
 Ed25519 is one of the most widely used forms of Elliptic Curve Cryptography and is one of the defaults for SSH keys, this makes
 
 RATIONALE:
-### Additional 1000 gas penality The gas penality discourages people attempting to migrate off current secp256k1 accounts, and also covers the additional overhead (in
+### Additional 1000 gas penalty The gas penalty discourages people attempting to migrate off current secp256k1 accounts, and also covers the additional overhead (in
 
 
 === EIP-2537 ===
