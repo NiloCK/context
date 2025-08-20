@@ -4991,19 +4991,19 @@ TITLE: Secondary Signature Algorithms
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-04-12
-REQUIRES: 1, 5, 5, ,,  , 6, 4, 0, 4, ,,  , 6, 4, 6, 6, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2
+REQUIRES: 1, 5, 5, ,,  , 6, 4, 0, 4, ,,  , 6, 4, 6, 6, ,,  , 6, 4, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP does 3 things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-7495](./eip-7495.md) transaction profile that can modify the signature data of a contained transaction to a different signature algorithm. - Introduces a precompile at address `0x12` for decoding these new
+This EIP does three things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-6404](./eip-6404.md) transaction profile that can modify the signature data of a contained transaction to a different signature algorithm. - Introduces a precompile at address `0x12` for decoding these newly
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. If not explicitly noted, integer encoding is always big-endian. ### Parameters | Constant | Value
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Unless explicitly noted, integer encoding MUST be in big-endian format. ### Parameters | Constant |
 
 MOTIVATION:
-As quantum computers are getting more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all contain drawbacks such as large key sizes (>1KiB), large signature sizes or long verification times. These issues make them more expensive to compute and store than the current secp256k1 curve in
+As quantum computers become more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all have certain issues, such as large key sizes (>1KiB), large signature sizes, or long verification times. These issues make them more expensive to compute and store than the currently used secp256k1 curve.
 
 RATIONALE:
-### Opaque `signature_info` type As each algorithm has unique properties, i.e. signature recovery and key sizes, a object is needed to hold every permutation of every possible key and signature. A bytearray of dynamic size would be able to achieve this goal, this does lead to a DoS vector
+### Opaque `signature_info` type As each algorithm has unique properties, e.g. signature recovery and key sizes, the object needs to hold every permutation of every possible signature and additional recovery information. A bytearray of a dynamic size would be able to achieve this goal. However, this leads to a
 
 
 === EIP-6780 ===

@@ -4991,19 +4991,19 @@ TITLE: Secondary Signature Algorithms
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-04-12
-REQUIRES: 1, 5, 5, ,,  , 6, 4, 0, 4, ,,  , 6, 4, 6, 6, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2
+REQUIRES: 1, 5, 5, ,,  , 6, 4, 0, 4, ,,  , 6, 4, 6, 6, ,,  , 6, 4, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP does 3 things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-7495](./eip-7495.md) transaction profile that can modify the signature data of a contained transaction to a different signature algorithm. - Introduces a precompile at address `0x12` for decoding these new introduced algorithms.
+This EIP does three things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-6404](./eip-6404.md) transaction profile that can modify the signature data of a contained transaction to a different signature algorithm. - Introduces a precompile at address `0x12` for decoding these newly introduced algorithms.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. If not explicitly noted, integer encoding is always big-endian. ### Parameters | Constant | Value | | - | - | | `MAX_VERIFICATION_SIZE` | `8192` (8 KiB) | | `MAX_ADDITIONAL_INFO` | `255` | | `GAS_PER_ADDITIONAL_VERIFICATION_BYTE`| `16` | | `SIGRECOVER_PRECOMPILE_ADDRESS`| `Bytes20(0x12)` | | `SIGRECOVER_PRECOMPILE_BASE_GAS` | `3000` | `SECP256K1_SIGNATURE_SIZE` and `TransactionPayload` are defined from [EIP-6404](./eip-6404.md) and `ExecutionAddress` is defined from [EIP-6466](./eip-6466.md). ### Algorithmic Transaction New Profile
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Unless explicitly noted, integer encoding MUST be in big-endian format. ### Parameters | Constant | Value | | - | - | | `MAX_ADDITIONAL_INFO` | `255` | | `GAS_PER_ADDITIONAL_VERIFICATION_BYTE`| `16` | | `SIGRECOVER_PRECOMPILE_ADDRESS`| `Bytes20(0x12)` | | `SIGRECOVER_PRECOMPILE_BASE_GAS` | `3000` | `SECP256K1_SIGNATURE_SIZE` is defined from [EIP-6404](./eip-6404.md). `ExecutionAddress` is defined from [EIP-6466](./eip-6466.md). ### Algorithmic Transaction `TransactionPayload` is defined as any type that derives its type from
 
 MOTIVATION:
-As quantum computers are getting more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all contain drawbacks such as large key sizes (>1KiB), large signature sizes or long verification times. These issues make them more expensive to compute and store than the current secp256k1 curve in use (as of 2025-04-12). This EIP provides a future-proof solution to these algorithms by adding a standardized way to represent alternative algorithms within a transaction.
+As quantum computers become more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all have certain issues, such as large key sizes (>1KiB), large signature sizes, or long verification times. These issues make them more expensive to compute and store than the currently used secp256k1 curve. This EIP provides a solution to the diversity in algorithms by adding a standardized way to represent alternative algorithms within a transaction.
 
 RATIONALE:
-### Opaque `signature_info` type As each algorithm has unique properties, i.e. signature recovery and key sizes, a object is needed to hold every permutation of every possible key and signature. A bytearray of dynamic size would be able to achieve this goal, this does lead to a DoS vector which the [Gas penalties](#gas-penalties) section solves along with the `MAX_SIZE` parameter. ### Gas penalties Having multiple different algorithms results in multiple different signature sizes, and verification costs. Hence, every signature algorithm that is more expensive than the default ECDSA secp256k1 curve, incurs an additional gas penalty, this is to
+### Opaque `signature_info` type As each algorithm has unique properties, e.g. signature recovery and key sizes, the object needs to hold every permutation of every possible signature and additional recovery information. A bytearray of a dynamic size would be able to achieve this goal. However, this leads to a DoS vector which the [Gas penalties](#gas-penalties) section solves along with the `MAX_SIZE` parameter. ### Gas penalties Having multiple different algorithms results in multiple different signature sizes and verification costs. Hence, every signature algorithm that is more expensive than the default ECDSA secp256k1 curve incurs an additional gas penalty. This
 
 
 === EIP-6780 ===
