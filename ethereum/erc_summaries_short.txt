@@ -1521,7 +1521,7 @@ TITLE: Generalized Contract-Linked Services
 TYPE: Standards Track ERC
 STATUS: Review
 CREATED: 2024-03-15
-REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7, ,,  , 6, 5, 5, 1
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7
 
 SUMMARY:
 This proposal defines a factory capable of deploying generic services linked to specific contracts, such as [ERC-4337](./eip-4337.md) accounts or [ERC-721](./eip-721.md) tokens (NFTs). These linked
@@ -1530,7 +1530,7 @@ SPECIFICATION:
 The keywords "MUST," "MUST NOT," "REQUIRED," "SHALL," "SHALL NOT," "SHOULD," "SHOULD NOT," "RECOMMENDED," "NOT RECOMMENDED," "MAY," and "OPTIONAL" in this document are to be
 
 MOTIVATION:
-Existing standards like [ERC-6551](./eip-6551.md) successfully bind smart accounts to NFTs, allowing registries to deploy accounts owned by specific token IDs. However, these standards have
+Existing projects, like token-bound accounts, successfully bind smart accounts to NFTs, allowing registries to deploy accounts owned by specific token IDs. However, these standards
 
 RATIONALE:
 The design of [ERC-7656](./eip-7656.md) is guided by several key principles that address limitations in current contract extension methods: ### Why a Unified Factory? Rather
