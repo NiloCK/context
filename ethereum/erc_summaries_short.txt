@@ -7780,7 +7780,7 @@ The main factors influencing this standard are: * **[EIP-4400](./eip-4400.md) an
 === ERC-7786 ===
 TITLE: Cross-Chain Messaging Gateway
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Last Call
 CREATED: 2024-10-14
 REQUIRES: 7930
 
