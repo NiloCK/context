@@ -4283,16 +4283,16 @@ CREATED: 2024-12-27
 REQUIRES: 2930
 
 SUMMARY:
-This EIP charges access lists 16 gas per byte for their data footprint, closing a loophole that allows circumventing [EIP-7623](./eip-7623.md) floor pricing.
+This EIP charges access lists 40 gas per non-zero byte and 10 gas per zero byte for their data footprint, closing a loophole that
 
 SPECIFICATION:
-| Parameter | Value | | -------------------------------------- | ----- | | `ACCESS_LIST_ADDRESS_COST` | `2400` | | `ACCESS_LIST_STORAGE_KEY_COST` | `1900` | | `ACCESS_LIST_DATA_COST_PER_BYTE` | `16`
+| Parameter | Value | Source | | -------------------------------------- | ----- | ------ | | `ACCESS_LIST_ADDRESS_COST` | `2400` | [EIP-2930](./eip-2930.md) | | `ACCESS_LIST_STORAGE_KEY_COST` |
 
 MOTIVATION:
 Access lists can circumvent [EIP-7623](./eip-7623.md) by filling blocks with uncharged data. Each address uses 20 bytes and each storage key uses 32 bytes, but
 
 RATIONALE:
-Adding 16 gas per byte ensures consistent pricing across all transaction data: - Address: 2720 gas (2400 + 320) - Storage key: 2412 gas
+Adding 40 gas per non-zero byte and 10 gas per zero byte ensures consistent pricing across all transaction data: - Address (20 bytes, typically
 
 
 === EIP-6988 ===
