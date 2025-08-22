@@ -1775,6 +1775,26 @@ RATIONALE:
 This standard differs from [ERC-6150](./eip-6150.md) in mainly two aspects: supporting cross-contract token reference, and allowing multiple parents. But we try to keep the naming consistent overall. In addition, we didn't include `child` relation in the interface. An original NFT exists before its derivative NFTs. Therefore we know what parent tokens to include when minting derivative NFTs, but we wouldn't know the children tokens when minting the original NFT. If we have to record the children, that means whenever we mint a derivative NFT, we need to call on its original NFT to add it as a child. However,
 
 
+=== ERC-7946 ===
+TITLE: Unidirectional Wallet Uplink aka UWULink
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-10
+REQUIRES: 1, 5, 5, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+Universal Wallet Uplink (UWULink) is a protocol that allows applications (dApps) to request a wallet to make a batch of contract calls in a single atomic transaction without establishing a two-way connection or revealing the user's address to the requester. The protocol defines a compact binary message format using Protocol Buffers suitable for low-bandwidth channels such as QR codes or NFC tags. Two modes of operation are supported: **Static Mode**, where the request payload directly contains the list of calls, and **Programmable Mode**, where the payload references a contract that generates the list of calls.
+
+SPECIFICATION:
+### Overview **UWULink** defines a protobuf message format and interpretation for transaction requests sent from a dApp to a wallet. The only operation in scope is a request for the wallet to execute an **atomic batch of contract calls** on an EVM-compatible blockchain. The wallet, upon receiving a UWULink request (for example, via a QR code scan, deep link, or NFC), will decode it, present the details to the user for confirmation, and if approved, execute the calls as a single transaction on the specified chain. Key characteristics of the protocol: - **Unidirectional Communication:** Communication is **only dApp
+
+MOTIVATION:
+dApps often require users to perform multistep interactions, such as approving a token and then executing a swap. Traditionally, accomplishing this has required multiple user confirmations or complex wallet connectivity. Recent standards like [EIP-5792] and [EIP-7702] introduced ways to batch multiple calls into one atomic operation via JSON-RPC (e.g. `wallet_sendCalls`). However, current implementations of those solutions assume an active connection between dApp and wallet (e.g. injected provider or WalletConnect session), which creates an additional layer of UX friction. There is a growing need for a **privacy-preserving, frictionless workflow** where a dApp or product can trigger complex transactions without
+
+RATIONALE:
+TBD <!-- TODO -->
+
+
 === ERC-7066 ===
 TITLE: Lockable Extension for ERC-721
 TYPE: Standards Track ERC

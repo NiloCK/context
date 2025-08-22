@@ -1775,6 +1775,26 @@ RATIONALE:
 This standard differs from [ERC-6150](./eip-6150.md) in mainly two aspects: supporting cross-contract token reference, and allowing multiple parents. But we try to keep the naming
 
 
+=== ERC-7946 ===
+TITLE: Unidirectional Wallet Uplink aka UWULink
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-10
+REQUIRES: 1, 5, 5, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+Universal Wallet Uplink (UWULink) is a protocol that allows applications (dApps) to request a wallet to make a batch of contract calls in a
+
+SPECIFICATION:
+### Overview **UWULink** defines a protobuf message format and interpretation for transaction requests sent from a dApp to a wallet. The only operation in
+
+MOTIVATION:
+dApps often require users to perform multistep interactions, such as approving a token and then executing a swap. Traditionally, accomplishing this has required multiple
+
+RATIONALE:
+TBD <!-- TODO -->
+
+
 === ERC-7066 ===
 TITLE: Lockable Extension for ERC-721
 TYPE: Standards Track ERC
