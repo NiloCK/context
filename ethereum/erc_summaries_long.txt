@@ -1558,16 +1558,16 @@ CREATED: 2025-08-13
 REQUIRES: 
 
 SUMMARY:
-This ERC extends the Agent‑to‑Agent (A2A) Protocol with a trust layer that allows participants to **discover, choose, and interact with agents across organizational boundaries** without pre‑existing trust. It introduces three **lightweight, on‑chain registries**—Identity, Reputation, and Validation—and leaves application‑specific logic to off‑chain components. Trust models are pluggable and tiered, with security proportional to value at risk—from low-stake tasks like ordering pizza to high-stake tasks like medical diagnosis. Developers can choose from three trust models: reputation-based systems using client feedback, stake-secured inference validation (crypto-economics), and attestations for agents running in TEEs (crypto-verifiability).
+This ERC extends the Agent‑to‑Agent (A2A) Protocol <!-- TODO: where is the A2A protocol defined? --> with a trust layer that allows participants to **discover, choose, and interact with agents across organizational boundaries** without pre‑existing trust. It introduces three **lightweight, on‑chain registries**—Identity, Reputation, and Validation—and leaves application‑specific logic to off‑chain components. Trust models are pluggable and tiered, with security proportional to value at risk—from low-stake tasks like ordering pizza to high-stake tasks like medical diagnosis. Developers can choose from three trust models: reputation-based systems using client feedback, stake-secured inference validation (crypto-economics), and attestations for agents running in TEEs
 
 SPECIFICATION:
-### Participants All participants MUST register with the Identity Registry as a generic agent. Agents can have three roles: * Server Agent (A2A Server): Offers services and executes tasks * Client Agent (A2A Client): Assigns tasks to Server Agents and provides feedback * Validator Agent (Optional): Validates tasks through crypto-economic staking mechanisms (staking validators re-executing the inference) or cryptographic verification Agents may fulfill multiple roles simultaneously without restriction. ### Identity Registry All participants register on a smart contract on an EVM chain, which acts as a single entry point. Each agent is uniquely identified by: * **AgentID:** Global
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Participants <!-- TODO: define "participant"; does it mean a human, contract, etc.? --> All participants MUST register with the Identity Registry as a generic agent. Agents can have three roles: * Server Agent (A2A Server): Offers services and executes tasks * Client Agent (A2A Client): Assigns tasks to Server Agents and provides feedback * Validator Agent (Optional): Validates tasks through crypto-economic staking mechanisms
 
 MOTIVATION:
-The existing A2A protocol handles agent authentication, skills advertisement via AgentCards, direct messaging, and complete task-lifecycle orchestration. Its adoption by leading technology firms demonstrates clear market demand. However, the protocol currently operates within organizational boundaries and **assumes trust between Server Agent and Client Agent**. To foster an open, cross-organizational agent economy, we need mechanisms for discovering and trusting agents in untrusted settings. This ERC addresses this need through three core components, which can be deployed on any L2 or on Mainnet: **1\. Identity Registry** \- A minimal on-chain handle that resolves to an agent's off-chain AgentCard, providing every
+The existing A2A protocol handles agent authentication, skills advertisement via AgentCards<!-- TODO: what's an AgentCard -->, direct messaging, and complete task-lifecycle orchestration. Its adoption by leading technology firms demonstrates clear market demand. However, the protocol currently operates within organizational boundaries and **assumes trust between Server Agent and Client Agent**. To foster an open, cross-organizational agent economy, we need mechanisms for discovering and trusting agents in untrusted settings. This ERC addresses this need through three core components, which can be deployed on any L2 or on Mainnet: **1\. Identity Registry** \- A minimal on-chain handle that resolves to an
 
 RATIONALE:
-**Off-chain Infrastructure** The protocol deliberately delegates complex operations off-chain to enable: * Sophisticated reputation algorithms and aggregation services * Flexible validation protocols with custom incentive mechanisms * Scalable data storage and retrieval systems **Interoperability** * CAIP-10 standard ensures chain-agnostic addressing * RFC 8615 compliance enables standard web discovery * Modular design allows integration with existing payment and validation systems **Possible future directions** * Cross-chain identifiers * Use NFT interface for agent minting, ownership and transfer * ENS support * Integrations with A2A's extensions managing payments * Incentives to provide feedback or guarantee the off-chain data availability of feedback
+**Off-chain Infrastructure** The protocol deliberately delegates complex operations off-chain to enable: * Sophisticated reputation algorithms and aggregation services * Flexible validation protocols with custom incentive mechanisms * Scalable data storage and retrieval systems **Interoperability** * CAIP 10 standard ensures chain-agnostic addressing * RFC 8615 compliance enables standard web discovery * Modular design allows integration with existing payment and validation systems **Possible future directions** * Cross-chain identifiers * Use NFT interface for agent minting, ownership and transfer * ENS support * Integrations with A2A's extensions managing payments * Incentives to provide feedback or guarantee the off-chain data availability of
 
 
 === ERC-2309 ===
@@ -4225,6 +4225,26 @@ With NFTs being a widespread form of tokens in the Ethereum ecosystem and being 
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. **How to name the proposal?**\ In an effort to provide as much information about the proposal we identified the most important aspect of the proposal; the parent centered control over nesting. The child token's role is only to be able to be `Nestable` and support a token owning it. This is how we landed on the `Parent-Centered` part of the title. 2. **Why is automatically accepting a child using [EIP-712](./eip-712.md) permit-style signatures not a part of this proposal?**\ For consistency. This proposal extends ERC-721 which already uses 1 transaction
+
+
+=== ERC-7770 ===
+TITLE: Fractional Reserve Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-09-17
+REQUIRES: 20
+
+SUMMARY:
+We propose a new token standard for synthetic assets that are only partially redeemable to their underlying asset, but fully backed by other collateral assets. The standard defines an interface to mint fractional reserve assets, and a standard to reflect economic risk related data to the token holders and lenders.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The standard has the following requirements: * **MUST** be [ERC-20](./eip-20.md) compatible. ### Interface ``` interface IERCXXX is IERC20 { // events event MintFractionalReserve(address indexed minter, address to, uint256 amount); event BurnFractionalReserve(address indexed burner, address from, uint256 amount); event SetSegregatedAccount(address account, bool segregated); // functions // setters function fractionalReserveMint(address _to, uint256 _amount) external; function fractionalReserveBurn(address _from, uint256 _amount) external; // getters function totalBorrowedSupply() external view
+
+MOTIVATION:
+The Cambrian explosion of new L1s and L2s gave rise to bridged assets which are synthetic by nature. Indeed, ETH on Arbitrum L2, or WETH on Binance Smart Chain are not fully fungible with their mainnet counterpart. However, these assets are fully backed by their mainnet counterpart and guaranteed to be redeemable to their mainnet underlying asset, albeit with certain time delay. Fractional reserve tokens can allow an ecosystem (chains, L2s, and other networks of economic activity) to increase its supply by allowing users to mint the asset not only by bridging it to the ecosystem, but also
+
+RATIONALE:
+The standard aims to standardise how multiple lending markets and risk providers can interact with a fractional reserve token. The actual lending operation should be done carefully by trusted entities, and it is the token owner's responsibility to make sure the parties who have fractional reserve minting credentials are reliable. At the core of the coordination relies the need to understand how much additional supply is available for borrow, and at what interest rate. The additional borrowable supply is deduced from the required reserve ratio, and the total, borrowable and segregated supply. Lower reserve ratio gives rise to
 
 
 === ERC-7590 ===

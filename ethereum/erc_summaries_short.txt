@@ -1558,13 +1558,13 @@ CREATED: 2025-08-13
 REQUIRES: 
 
 SUMMARY:
-This ERC extends the Agent‑to‑Agent (A2A) Protocol with a trust layer that allows participants to **discover, choose, and interact with agents across organizational boundaries**
+This ERC extends the Agent‑to‑Agent (A2A) Protocol <!-- TODO: where is the A2A protocol defined? --> with a trust layer that allows participants to
 
 SPECIFICATION:
-### Participants All participants MUST register with the Identity Registry as a generic agent. Agents can have three roles: * Server Agent (A2A Server):
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-The existing A2A protocol handles agent authentication, skills advertisement via AgentCards, direct messaging, and complete task-lifecycle orchestration. Its adoption by leading technology firms demonstrates
+The existing A2A protocol handles agent authentication, skills advertisement via AgentCards<!-- TODO: what's an AgentCard -->, direct messaging, and complete task-lifecycle orchestration. Its adoption
 
 RATIONALE:
 **Off-chain Infrastructure** The protocol deliberately delegates complex operations off-chain to enable: * Sophisticated reputation algorithms and aggregation services * Flexible validation protocols with custom
@@ -4225,6 +4225,26 @@ With NFTs being a widespread form of tokens in the Ethereum ecosystem and being 
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. **How to name the proposal?**\ In an effort to provide as much information about the
+
+
+=== ERC-7770 ===
+TITLE: Fractional Reserve Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-09-17
+REQUIRES: 20
+
+SUMMARY:
+We propose a new token standard for synthetic assets that are only partially redeemable to their underlying asset, but fully backed by other collateral
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The Cambrian explosion of new L1s and L2s gave rise to bridged assets which are synthetic by nature. Indeed, ETH on Arbitrum L2, or
+
+RATIONALE:
+The standard aims to standardise how multiple lending markets and risk providers can interact with a fractional reserve token. The actual lending operation should
 
 
 === ERC-7590 ===
