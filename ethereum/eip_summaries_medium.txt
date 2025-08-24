@@ -6215,7 +6215,7 @@ Roughly speaking, reducing the gas cost of Calldata leads to potentially larger 
 === EIP-7823 ===
 TITLE: Set upper bounds for MODEXP
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-11-11
 REQUIRES: 198
 
