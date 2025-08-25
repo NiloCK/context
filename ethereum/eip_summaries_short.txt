@@ -517,7 +517,7 @@ SPECIFICATION:
 On the consensus layer, a new parameter is added to the configuration: ``` SLOT_SCHEDULE: - EPOCH: 348618 SECONDS_PER_SLOT: 12 - EPOCH: 355368 SECONDS_PER_SLOT: 6
 
 MOTIVATION:
-- **Protocol Carrying Capacity** It is impractical to increase block sizes beyond 10MiB without substaintial networking changes. However it is practical to decrease slot
+- **Protocol Carrying Capacity** It is impractical to increase block sizes beyond 10MiB without substantial networking changes. However it is practical to decrease slot
 
 RATIONALE:
 This proposal balances user experience, economic efficiency, and network stability: - UX & Finality: Halving slot time directly reduces confirmation latency and halves epoch
@@ -600,7 +600,7 @@ MOTIVATION:
 SSZ containers are frequently versioned, for example across fork boundaries. When the number of fields reaches a new power of two, or a field
 
 RATIONALE:
-### Why `active_fields`? `active_fields` conceptually creates a single Merkle tree shape across all prior, current, and future versions, where each field (as identified by
+### Why `active_fields`? The `active_fields` commits to the specific tree shape and allows verifiers (e.g., based on [EIP-4788](./eip-4788.md)) to distinguish a removed field from
 
 
 === EIP-6475 ===

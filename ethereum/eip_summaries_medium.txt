@@ -517,7 +517,7 @@ SPECIFICATION:
 On the consensus layer, a new parameter is added to the configuration: ``` SLOT_SCHEDULE: - EPOCH: 348618 SECONDS_PER_SLOT: 12 - EPOCH: 355368 SECONDS_PER_SLOT: 6 ``` The parameters and schedules above are purely illustrative. Actual values and schedules are beyond the scope of this specification. ### Adjustment to gas and
 
 MOTIVATION:
-- **Protocol Carrying Capacity** It is impractical to increase block sizes beyond 10MiB without substaintial networking changes. However it is practical to decrease slot time to achieve similar effect while also improving the UX at same time. - **Enhanced UX**: Confirmations now arrive in ~6 s instead of 12
+- **Protocol Carrying Capacity** It is impractical to increase block sizes beyond 10MiB without substantial networking changes. However it is practical to decrease slot time to achieve similar effect while also improving the UX at same time. - **Enhanced UX**: Confirmations now arrive in ~6 s instead of 12
 
 RATIONALE:
 This proposal balances user experience, economic efficiency, and network stability: - UX & Finality: Halving slot time directly reduces confirmation latency and halves epoch duration, delivering faster feedback to users and speeding up Casper-FFG finality. - Economic Efficiency: Increased block frequency tightens DEX price spreads, lowers slippage, and diminishes
@@ -600,7 +600,7 @@ MOTIVATION:
 SSZ containers are frequently versioned, for example across fork boundaries. When the number of fields reaches a new power of two, or a field is removed or replaced with one of a different type, the shape of the underlying Merkle tree changes, breaking verifiers of Merkle proofs for these
 
 RATIONALE:
-### Why `active_fields`? `active_fields` conceptually creates a single Merkle tree shape across all prior, current, and future versions, where each field (as identified by its name) is assigned a stable gindex and can either be present or absent. This allows appending new fields or dropping existing fields as the
+### Why `active_fields`? The `active_fields` commits to the specific tree shape and allows verifiers (e.g., based on [EIP-4788](./eip-4788.md)) to distinguish a removed field from a `0` value. ### Why is `active_fields` limited to 256 bits? 256 bits (1 word) allows the mix-in to be simple, consistent with the length
 
 
 === EIP-6475 ===
