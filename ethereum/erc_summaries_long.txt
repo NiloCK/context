@@ -4867,18 +4867,18 @@ RATIONALE:
 === ERC-4337 ===
 TITLE: Account Abstraction Using Alt Mempool
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2021-09-29
-REQUIRES: 7, 1, 2, ,,  , 7, 5, 6, 2
+REQUIRES: 712
 
 SUMMARY:
 An account abstraction proposal which completely avoids the need for consensus-layer protocol changes. Instead of adding new protocol features and changing the bottom-layer transaction type, this proposal instead introduces a higher-layer pseudo-transaction object called a `UserOperation`. Users send `UserOperation` objects into a separate mempool. A special class of actor called bundlers package up a set of these objects into a transaction making a `handleOps` call to a special contract, and that transaction then gets included in a block.
 
 SPECIFICATION:
-### Definitions * **UserOperation** - a structure that describes a transaction to be sent on behalf of a user. To avoid confusion, it is not named "transaction". * Like a transaction, it contains `to`, `calldata`, `maxFeePerGas`, `maxPriorityFeePerGas`, `nonce`, `signature`. * Unlike a transaction, it contains several other fields, described below. * Notably, the `signature` field usage is not defined by the protocol, but by the Smart Contract Account implementation. * **Sender** - the Smart Contract Account sending a `UserOperation`. * **EntryPoint** - a singleton contract to execute bundles of `UserOperations`. Bundlers MUST whitelist the supported `EntryPoint`. * **Bundler**
+### Definitions * **UserOperation** - a structure that describes a transaction to be sent on behalf of a user. To avoid confusion, it is not named "transaction". * Like a transaction, it contains `to`, `calldata`, `maxFeePerGas`, `maxPriorityFeePerGas`, `nonce`, `signature`. * Unlike a transaction, it contains several other fields, described below. * Notably, the `signature` field usage is not defined by the protocol, but by the Smart Contract Account implementation. * **Sender** - the Smart Contract Account sending a `UserOperation`. * **EntryPoint** - a singleton contract to execute bundles of `UserOperations`. Bundlers should whitelist the supported `EntryPoint`. * **Bundler**
 
 MOTIVATION:
-See also `https://ethereum-magicians.org/t/implementing-account-abstraction-as-part-of-eth1-x/4020` and the links therein for historical work and motivation, and [EIP-2938](./eip-2938.md) for a consensus layer proposal for implementing the same goal. This proposal takes a different approach, avoiding any adjustments to the consensus layer. It seeks to achieve the following goals: * **Achieve the key goal of Account Abstraction**: allow users to use Smart Contract Accounts containing arbitrary verification logic instead of EOAs as their primary account. Completely remove any need at all for users to also have EOAs, as required by both status quo Smart Contract Accounts and [EIP-7702](./eip-7702.md). * **Decentralization** * Allow any
+Historically, introducing Account Abstraction has been a long-standing goal of the Ethereum protocol. A number of proposals have been thoroughly discussed, but so far none of them have been implemented in the protocol. This proposal takes a different approach, avoiding any adjustments to the consensus layer. It seeks to achieve the following goals: * **Achieve the key goal of Account Abstraction**: allow users to use Smart Contract Accounts containing arbitrary verification logic instead of EOAs as their primary account. Completely remove any need at all for users to also have EOAs, as required by both status quo Smart
 
 RATIONALE:
 The main challenge with a purely "Smart Contract Accounts" based Account Abstraction system is DoS safety: how can a block builder including an operation make sure that it will actually pay fees, without having to first execute the entire operation? Requiring the block builder to execute the entire operation opens a DoS attack vector, as an attacker could easily send many operations that pretend to pay a fee but then revert at the last moment after a long execution. Similarly, to prevent attackers from cheaply clogging the mempool, nodes in the P2P network need to check if an
