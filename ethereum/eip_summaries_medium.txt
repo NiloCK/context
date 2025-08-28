@@ -724,7 +724,7 @@ MOTIVATION:
 SSZ containers are frequently versioned, for example across fork boundaries. When the number of fields reaches a new power of two, or a field is removed or replaced with one of a different type, the shape of the underlying Merkle tree changes, breaking verifiers of Merkle proofs for these
 
 RATIONALE:
-### Why `active_fields`? The `active_fields` commits to the specific tree shape and allows verifiers (e.g., based on [EIP-4788](./eip-4788.md)) to distinguish a removed field from a `0` value. ### Why is `active_fields` limited to 256 bits? 256 bits (1 word) allows the mix-in to be simple, consistent with the length
+### Why is `active_fields` limited to 256 bits? 256 bits (1 word) allows the mix-in to be simple, consistent with the length mix-in for lists, and is practically sufficient. An alternate design with a `ProgressiveBitlist` mix-in was explored, however deemed too over-engineered as it it would effectively require introducing
 
 
 === EIP-7587 ===
