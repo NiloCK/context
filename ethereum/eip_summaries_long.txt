@@ -2665,10 +2665,10 @@ CREATED: 2025-08-03
 REQUIRES: 2, 1, 1, ,,  , 1, 0, 1, 4
 
 SUMMARY:
-A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains that adopt it.
+A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains. This benefits developer experience, user experience, and security, in particular for multi-chain and cross-chain applications, including account abstraction.
 
 SPECIFICATION:
-### Parameters * `FACTORY_ADDRESS` = `0x0B` ### Factory Contract Upon activation of this EIP, set the code of `FACTORY_ADDRESS` to `60203610602f5760003560203603806020600037600034f5806026573d600060003e3d6000fd5b60005260206000f35b60006000fd`, corresponding to the following assembly: ``` #pragma target "constantinople" ;; Input: salt (32 bytes) || initcode (variable size) ;; Verify input is at least 32 bytes long. push 32 calldatasize lt jumpi @throw ;; Load salt. push 0 calldataload ;; Compute initcodesize = calldatasize - 32. push 32 calldatasize sub ;; Copy initcode to memory at position 0. dup1 push 32 push 0 calldatacopy ;; Invoke create2 with salt and initcode, forwarding all callvalue. push 0 callvalue
+### Parameters * `FACTORY_ADDRESS` = `0x0B` ### Factory Contract Upon activation of this EIP, the account at `FACTORY_ADDRESS` becomes a contract that, when called, invokes the `CREATE2` instruction ([EIP-1014](./eip-1014.md)) with a salt equal to the first 32 bytes of the call's input data, init code equal to the remaining data, and value equal to the call's value. If input data is smaller than 32 bytes, the call reverts with empty return data. If creation fails (`CREATE2` outputs `0`), the call reverts with return data equal to that of the creation frame. Specifically, the code of `FACTORY_ADDRESS` is set
 
 MOTIVATION:
 There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect this number to continue to grow in line with Ethereum's rollup-centric roadmap and the general adoption of programmable blockchains. Most applications support multiple chains and aspire to support as many as possible, and their developers widely prefer to deploy contracts at identical addresses across all chains, a setup which we will call *multi-chain deterministic deployment*. This kind of deployment reduces the number of addresses that must be distributed to use the application, so that

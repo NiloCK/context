@@ -2665,10 +2665,10 @@ CREATED: 2025-08-03
 REQUIRES: 2, 1, 1, ,,  , 1, 0, 1, 4
 
 SUMMARY:
-A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains
+A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains.
 
 SPECIFICATION:
-### Parameters * `FACTORY_ADDRESS` = `0x0B` ### Factory Contract Upon activation of this EIP, set the code of `FACTORY_ADDRESS` to `60203610602f5760003560203603806020600037600034f5806026573d600060003e3d6000fd5b60005260206000f35b60006000fd`, corresponding to the
+### Parameters * `FACTORY_ADDRESS` = `0x0B` ### Factory Contract Upon activation of this EIP, the account at `FACTORY_ADDRESS` becomes a contract that, when called,
 
 MOTIVATION:
 There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect
