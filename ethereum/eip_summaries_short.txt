@@ -7186,7 +7186,7 @@ RATIONALE:
 === EIP-7703 ===
 TITLE: Increase calldata cost
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-05-07
 REQUIRES: 
 
