@@ -4890,7 +4890,7 @@ CREATED: 2020-08-25
 REQUIRES: 1, 6, 1, ,,  , 1, 7, 0
 
 SUMMARY:
-Code merkleization, along with binarification of the trie and gas cost bump of state accessing opcodes, are considered as the main levers for decreasing
+Code merkleization, along with binarification of the trie and gas cost bump of state-accessing opcodes, are considered as the main levers for decreasing block
 
 SPECIFICATION:
 What follows is structured to have two sections: 1. How a given contract code is split into chunks and then merkleized 2. How to
@@ -8919,10 +8919,10 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-With [EIP-6404](./eip-6404.md) SSZ transactions, [EIP-6466](./eip-6466.md) SSZ receipts, and [EIP-6465](./eip-6465.md) SSZ withdrawals, all Merkle-Patricia Trie (MPT) besides the state trie are converted to SSZ. This
+With [EIP-6404](./eip-6404.md) SSZ transactions, [EIP-6466](./eip-6466.md) SSZ receipts, and [EIP-6465](./eip-6465.md) SSZ withdrawals, all Merkle-Patricia Tries (MPT) besides the state trie are converted to SSZ. This
 
 RATIONALE:
-This transition completes the transition to SSZ for everything except the execution state trie. ### Future - With SSZ `Log`, the withdrawals mechanism and
+This completes the transition to SSZ for everything except the execution state trie. ### Future - With SSZ `Log`, the withdrawals mechanism and validator
 
 
 === EIP-2025 ===

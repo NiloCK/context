@@ -4890,7 +4890,7 @@ CREATED: 2020-08-25
 REQUIRES: 1, 6, 1, ,,  , 1, 7, 0
 
 SUMMARY:
-Code merkleization, along with binarification of the trie and gas cost bump of state accessing opcodes, are considered as the main levers for decreasing block witness sizes in stateless or partial-stateless Eth1x roadmaps. Here we specify a fixed-sized chunk approach to code merkleization and outline how the transition of
+Code merkleization, along with binarification of the trie and gas cost bump of state-accessing opcodes, are considered as the main levers for decreasing block witness sizes in stateless or partial-stateless Eth1x roadmaps. Here we specify a fixed-sized chunk approach to code merkleization and outline how the transition of existing
 
 SPECIFICATION:
 What follows is structured to have two sections: 1. How a given contract code is split into chunks and then merkleized 2. How to merkleize all existing contract codes during a hardfork ### Constants and Definitions #### Constants - `CHUNK_SIZE`: 31 (bytes) - `VERSION_KEY`: `max(u256)` - `VERSION`: 0 -
@@ -8919,10 +8919,10 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Gas amounts The different kinds of gas amounts are combined into a single structure,
 
 MOTIVATION:
-With [EIP-6404](./eip-6404.md) SSZ transactions, [EIP-6466](./eip-6466.md) SSZ receipts, and [EIP-6465](./eip-6465.md) SSZ withdrawals, all Merkle-Patricia Trie (MPT) besides the state trie are converted to SSZ. This enables the surrounding data structure, the execution block itself, to also convert to SSZ, achieving a unified block representation across both Consensus Layer and Execution
+With [EIP-6404](./eip-6404.md) SSZ transactions, [EIP-6466](./eip-6466.md) SSZ receipts, and [EIP-6465](./eip-6465.md) SSZ withdrawals, all Merkle-Patricia Tries (MPT) besides the state trie are converted to SSZ. This enables the surrounding data structure, the execution block itself, to also convert to SSZ, achieving a unified block representation across both Consensus Layer and Execution
 
 RATIONALE:
-This transition completes the transition to SSZ for everything except the execution state trie. ### Future - With SSZ `Log`, the withdrawals mechanism and validator requests could be redefined to be based on logs (similar to deposits, originally, but without the delay), possibly removing the need for `withdrawals_root` and
+This completes the transition to SSZ for everything except the execution state trie. ### Future - With SSZ `Log`, the withdrawals mechanism and validator requests could be redefined to be based on logs (similar to deposits, originally, but without the delay), possibly removing the need for `withdrawals_root` and `requests_hash`.
 
 
 === EIP-2025 ===
