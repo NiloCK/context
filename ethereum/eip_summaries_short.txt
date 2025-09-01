@@ -955,7 +955,7 @@ MOTIVATION:
 There is much interest in third-party-pay transactions on Ethereum and competing networks. Other proposals require changes to the Ethereum client, that transactions be sent
 
 RATIONALE:
-This approach can be useful for end users that do not want to or are not able to add Ether to their account. This
+This approach can be useful for end users who do not want to or are not able to add Ether to their account. This
 
 
 === EIP-2294 ===
