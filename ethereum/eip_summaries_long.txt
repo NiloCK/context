@@ -388,6 +388,26 @@ RATIONALE:
 ### Why Enumerate Precompiles? (And in General, Why Track a Particular Config Item?) The purpose of this specification is to enable nodes to advertise, prior to a fork, that they have the correct configurations loaded and ready. Past testnet and mainnet forks have revealed clients with incorrect precompile sets, chain IDs, deposit contract addresses, and other configuration errors. For precompiles in particular there has been discussion about removing or replacing precompiles in future forks, so a full enumeration of precompiles will reflect removal. Generally, if a configurable variable or constant causes a client to diverge at a fork—whether
 
 
+=== EIP-8016 ===
+TITLE: SSZ CompatibleUnion
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-28
+REQUIRES: 7, 4, 9, 5, ,,  , 7, 9, 1, 6
+
+SUMMARY:
+This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md) type to represent unions with forward-compatible Merkleization: A given field is always assigned the same stable [generalized index (gindex)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/merkle-proofs.md#generalized-merkle-tree-index) across all type options.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### `CompatibleUnion({selector: type})` A new [SSZ composite types)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md#composite-types) is defined: - **compatible union**: union type containing one of the given subtypes with compatible Merkleization - notation `CompatibleUnion({selector: type})`, e.g. `CompatibleUnion({1: Square, 2: Circle})` Compatible unions are always considered ["variable-size"](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md#variable-size-and-fixed-size), even when all type options share the same fixed length. The [default value](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md#default-values) is defined as: | Type | Default Value | | ----------------------------------- |
+
+MOTIVATION:
+Certain types, e.g., transactions, allow multiple variants carving out slightly different feature sets. Merkleization equivalence is still desirable, as it allows verifiers to check common fields across variants. These types should still efficiently deserialize into one of their possible variants corresponding to its known tree shape. In programming languages, this is typically achieved by tagged unions. If multiple versions of an SSZ container coexist at the same time, for example to represent transaction types, the same field may be assigned to a different gindex in each version. This unnecessarily complicates verifiers and introduces a maintenance burden, as the
+
+RATIONALE:
+### Why are `CompatibleUnion` selectors limited to `1 ... 127`? Reserving `0` prevents issues with incomplete initialization, and can possibly be used in a future EIP to denote optionality. Reserving selectors above `127` (i.e., highest bit is set) enables future backwards compatible extensions. The range `1 ... 127` is sufficient to satisfy current demand. ### Why not field collections? An alternative design was explored where the `active_fields` bitvector was emitted. While that works in principle, it becomes very inefficient to parse when `ProgressiveContainer` are nested, as the parser cannot immediately determine the overall tree shape. Further, the bitvector
+
+
 === EIP-3855 ===
 TITLE: PUSH0 instruction
 TYPE: Standards Track Core
@@ -471,7 +491,7 @@ Below is the rationale for both general design directions of the EIP, as well as
 === EIP-7823 ===
 TITLE: Set upper bounds for MODEXP
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2024-11-11
 REQUIRES: 198
 
@@ -718,10 +738,10 @@ SUMMARY:
 This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md) type to represent containers with forward-compatible Merkleization: A given field is always assigned the same stable [generalized index (gindex)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/merkle-proofs.md#generalized-merkle-tree-index) even when different container versions append new fields or drop existing fields.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ProgressiveContainer(active_fields)` Two new [SSZ composite types)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md#composite-types) are defined: - **progressive container**: ordered heterogeneous collection of values with stable Merkleization - python dataclass notation with key-type pairs, e.g. ```python class Square(ProgressiveContainer(active_fields=[1, 0, 1])): side: uint16 # Merkleized at field index #0 (location of first 1 in `active_fields`) color: uint8 # Merkleized at field index #2 (location of second 1 in `active_fields`) class Circle(ProgressiveContainer(active_fields=[0, 1,
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ProgressiveContainer(active_fields)` A new [SSZ composite types)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md#composite-types) is defined: - **progressive container**: ordered heterogeneous collection of values with stable Merkleization - python dataclass notation with key-type pairs, e.g. ```python class Square(ProgressiveContainer(active_fields=[1, 0, 1])): side: uint16 # Merkleized at field index #0 (location of first 1 in `active_fields`) color: uint8 # Merkleized at field index #2 (location of second 1 in `active_fields`) class Circle(ProgressiveContainer(active_fields=[0, 1,
 
 MOTIVATION:
-SSZ containers are frequently versioned, for example across fork boundaries. When the number of fields reaches a new power of two, or a field is removed or replaced with one of a different type, the shape of the underlying Merkle tree changes, breaking verifiers of Merkle proofs for these containers. Deploying a new verifier may involve security councils to upgrade smart contract logic, or require firmware updates for embedded devices. This effort is needed even when no semantic changes apply to the fields that the verifier is interested in. Further, if multiple versions of an SSZ container coexist
+SSZ containers are frequently versioned, for example across fork boundaries. When the number of fields reaches a new power of two, or a field is removed or replaced with one of a different type, the shape of the underlying Merkle tree changes, breaking verifiers of Merkle proofs for these containers. Deploying a new verifier may involve security councils to upgrade smart contract logic, or require firmware updates for embedded devices. This effort is needed even when no semantic changes apply to the fields that the verifier is interested in. Progressive containers address these shortcomings by: - Using the
 
 RATIONALE:
 ### Why is `active_fields` limited to 256 bits? 256 bits (1 word) allows the mix-in to be simple, consistent with the length mix-in for lists, and is practically sufficient. An alternate design with a `ProgressiveBitlist` mix-in was explored, however deemed too over-engineered as it it would effectively require introducing caches to pre-compute the mix-in's `hash_tree_root` to avoid repeated computations, and also makes verifier logic more complex than necessary. Even though the 256 field limit includes all fields (including deprecated ones), it is unlikely that many progressive containers come close to reach 256 fields (`BeaconState` currently reaches around 40
@@ -1955,7 +1975,7 @@ TITLE: SSZ receipts
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-02-08
-REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
+REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 0, 1, 6
 
 SUMMARY:
 This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) receipts to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md)
@@ -4192,6 +4212,26 @@ RATIONALE:
 The addition of a single parameter instead of introducing a whole new endpoint was the simplest change that would be easiest to get integrated. For backward compatibility we decided to not include the base fee in the response for pre-1559 blocks.
 
 
+=== EIP-8012 ===
+TITLE: Generalized consolidation requests
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-22
+REQUIRES: 
+
+SUMMARY:
+This EIP redefines the field `target_pubkey` from consolidations requests into a general array of 48 bytes that can be interpreted separately by the consensus layer.
+
+SPECIFICATION:
+### Constants #### Consensus Layer | NAME | Value | Comment | | - | - | - | | `MAGIC_PREFIX` | `0xEF0A11` | 3 byte prefix to all generalized consolidation requests | ### Execution Layer No changes are expected ### Consensus Layer This EIP does not establish any changes on the consensus layer, but rather standardizes how consolidation requests are to be treated in the future. When receiving a `ConsolidationRequest` type object on the consensus layer, the `target_pubkey` field is to be treated differently. If it coincides with the BLS publick key of an existing active validator
+
+MOTIVATION:
+The current contract to send consolidation requests is not optimized in that the exact same contract, with the exact same calldata and engine API, can be used to transmit more general messages from the EL to the CL without changes on the EL side. In particular, avoiding any cross layer coordination in the event of an CL hard fork. As a possible application, we could use the same contract to allow any existing validator to become a builder as in [EIP-7732](./eip-7732.md).
+
+RATIONALE:
+The proposed reinterpretation of the existing contract enables new implementations in the consensus layer without requireing a hard fork in the execution layer.
+
+
 === EIP-7675 ===
 TITLE: Retroactively Included EIPs
 TYPE: Meta 
@@ -6305,7 +6345,7 @@ TITLE: SSZ transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-01-30
-REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
+REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 0, 1, 6
 
 SUMMARY:
 This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) transactions to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
@@ -6735,7 +6775,7 @@ CREATED: 2022-02-03
 REQUIRES: 
 
 SUMMARY:
-This EIP renames the `SELFDESCRUCT` opcode to `SENDALL`, and replaces its functionality. The new functionality will be only to send all Ether in the account to the caller. In order to give apps more warning even if their developers are completely unaware of the EIP process, this version will exponentially increase the gas costs of the opcode, so any developer has time to see this change and react by implementing a version of their contract that does not rely on `SELFDESTRUCT` .
+This EIP renames the `SELFDESTRUCT` opcode to `SENDALL`, and replaces its functionality. The new functionality will be only to send all Ether in the account to the caller. In order to give apps more warning even if their developers are completely unaware of the EIP process, this version will exponentially increase the gas costs of the opcode, so any developer has time to see this change and react by implementing a version of their contract that does not rely on `SELFDESTRUCT` .
 
 SPECIFICATION:
 ### Constants | Name | Value | Comment | |------|-------|---------| | `OLD_SELFDESTRUCT_COST` | 5000 | Current gas cost of `SELFDESTRUCT` opcode | | `HARD_FORK_BLOCK` | TBD | (Shanghai HF block height) | | `DOUBLING_SLOTS` | `2**16` | (Time for gas price to double, ca. 9 days) | | `DOUBLINGS_BEFORE_SENDALL` | `13` | `SELFDESTRUCT` will be converted to `SENDALL` at `HARD_FORK_BLOCK + DOUBLING_SLOTS * DOUBLINGS_BEFORE_SENDALL` | * If `HARD_FORK_BLOCK <= slot < HARD_FORK_BLOCK + DOUBLING_SLOTS * DOUBLINGS_BEFORE_SENDALL` * `SELFDESTRUCT` functionality remains unchanged * `SELFDESTRUCT` gas cost is now `OLD_SELFDESTRUCT_COST * 2 ** ((slot - HARD_FORK_BLOCK) // DOUBLING_SLOTS)` * For

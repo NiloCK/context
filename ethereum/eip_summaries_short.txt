@@ -388,6 +388,26 @@ RATIONALE:
 ### Why Enumerate Precompiles? (And in General, Why Track a Particular Config Item?) The purpose of this specification is to enable nodes to advertise,
 
 
+=== EIP-8016 ===
+TITLE: SSZ CompatibleUnion
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-28
+REQUIRES: 7, 4, 9, 5, ,,  , 7, 9, 1, 6
+
+SUMMARY:
+This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md) type to represent unions with forward-compatible Merkleization: A given field is always assigned the same stable
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Certain types, e.g., transactions, allow multiple variants carving out slightly different feature sets. Merkleization equivalence is still desirable, as it allows verifiers to check
+
+RATIONALE:
+### Why are `CompatibleUnion` selectors limited to `1 ... 127`? Reserving `0` prevents issues with incomplete initialization, and can possibly be used in a
+
+
 === EIP-3855 ===
 TITLE: PUSH0 instruction
 TYPE: Standards Track Core
@@ -471,7 +491,7 @@ Below is the rationale for both general design directions of the EIP, as well as
 === EIP-7823 ===
 TITLE: Set upper bounds for MODEXP
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2024-11-11
 REQUIRES: 198
 
@@ -1955,7 +1975,7 @@ TITLE: SSZ receipts
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-02-08
-REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
+REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 0, 1, 6
 
 SUMMARY:
 This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) receipts to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md)
@@ -4192,6 +4212,26 @@ RATIONALE:
 The addition of a single parameter instead of introducing a whole new endpoint was the simplest change that would be easiest to get integrated.
 
 
+=== EIP-8012 ===
+TITLE: Generalized consolidation requests
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-22
+REQUIRES: 
+
+SUMMARY:
+This EIP redefines the field `target_pubkey` from consolidations requests into a general array of 48 bytes that can be interpreted separately by the consensus
+
+SPECIFICATION:
+### Constants #### Consensus Layer | NAME | Value | Comment | | - | - | - | | `MAGIC_PREFIX` | `0xEF0A11` |
+
+MOTIVATION:
+The current contract to send consolidation requests is not optimized in that the exact same contract, with the exact same calldata and engine API,
+
+RATIONALE:
+The proposed reinterpretation of the existing contract enables new implementations in the consensus layer without requireing a hard fork in the execution layer.
+
+
 === EIP-7675 ===
 TITLE: Retroactively Included EIPs
 TYPE: Meta 
@@ -6305,7 +6345,7 @@ TITLE: SSZ transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-01-30
-REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
+REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 0, 1, 6
 
 SUMMARY:
 This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) transactions to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
@@ -6735,7 +6775,7 @@ CREATED: 2022-02-03
 REQUIRES: 
 
 SUMMARY:
-This EIP renames the `SELFDESCRUCT` opcode to `SENDALL`, and replaces its functionality. The new functionality will be only to send all Ether in the
+This EIP renames the `SELFDESTRUCT` opcode to `SENDALL`, and replaces its functionality. The new functionality will be only to send all Ether in the
 
 SPECIFICATION:
 ### Constants | Name | Value | Comment | |------|-------|---------| | `OLD_SELFDESTRUCT_COST` | 5000 | Current gas cost of `SELFDESTRUCT` opcode | | `HARD_FORK_BLOCK`
