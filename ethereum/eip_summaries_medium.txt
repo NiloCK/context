@@ -3071,14 +3071,14 @@ RATIONALE:
 
 
 === EIP-7976 ===
-TITLE: Increase calldata floor cost
+TITLE: Increase Calldata Floor Cost
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-06-18
 REQUIRES: 7623
 
 SUMMARY:
-Following the implementation of [EIP-7623](./eip-7623.md), this EIP proposes a further adjustment to calldata pricing by raising the floor cost from 10/40 to 15/60 gas per zero/non-zero byte. This change aims to provide additional reduction in maximum block size and variance while maintaining compatibility with regular user transactions that involve
+This EIP proposes an adjustment to calldata pricing by raising the floor cost from 10/40 to 15/60 gas per zero/non-zero calldata byte. This reduces the worst-case block size by ~33% with minimal impact.
 
 SPECIFICATION:
 | Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `15` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`. Let `isContractCreation` be a boolean indicating the respective event. Let `execution_gas_used` be the gas used for EVM execution with the gas
@@ -5435,13 +5435,13 @@ CREATED: 2024-12-27
 REQUIRES: 2930
 
 SUMMARY:
-This EIP charges access lists 40 gas per non-zero byte and 10 gas per zero byte for their data footprint, closing a loophole that allows circumventing [EIP-7623](./eip-7623.md) floor pricing.
+This EIP charges access lists for their data footprint, closing a loophole that allows circumventing [EIP-7623](./eip-7623.md) floor pricing. This effectively reduces the worst-case block size by ~21% with minimal impact on users.
 
 SPECIFICATION:
-| Parameter | Value | Source | | -------------------------------------- | ----- | ------ | | `ACCESS_LIST_ADDRESS_COST` | `2400` | [EIP-2930](./eip-2930.md) | | `ACCESS_LIST_STORAGE_KEY_COST` | `1900` | [EIP-2930](./eip-2930.md) | | `ACCESS_LIST_NONZERO_BYTE_COST` | `40` | **New in this EIP** | | `ACCESS_LIST_ZERO_BYTE_COST` | `10` | **New in this EIP** | Let
+| Parameter | Value | Source | | -------------------------------------- | ----- | ------ | | `ACCESS_LIST_ADDRESS_COST` | `2400` | [EIP-2930](./eip-2930.md) | | `ACCESS_LIST_STORAGE_KEY_COST` | `1900` | [EIP-2930](./eip-2930.md) | | `TOTAL_COST_FLOOR_PER_TOKEN` | `10` | [EIP-7623](./eip-7623.md) | Let `access_list_nonzero_bytes` and `access_list_zero_bytes` be the count of non-zero and zero bytes respectively in
 
 MOTIVATION:
-Access lists can circumvent [EIP-7623](./eip-7623.md) by filling blocks with uncharged data. Each address uses 20 bytes and each storage key uses 32 bytes, but these are not charged for their data footprint. This allows transactions to achieve larger block sizes than intended by combining access lists with calldata.
+Access lists are only priced for storage but not for their data. Furthermore, access lists can circumvent the [EIP-7623](./eip-7623.md) floor pricing by contributing to EVM gas while still leaving a non-negligible data footprint. This enables to achieve the maximal possible block size by combining access lists with calldata at
 
 RATIONALE:
 Adding 40 gas per non-zero byte and 10 gas per zero byte ensures consistent pricing across all transaction data: - Address (20 bytes, typically mostly non-zero): ~3200 gas (2400 + 800 assuming all non-zero) - Storage key (32 bytes, typically mostly non-zero): ~3180 gas (1900 + 1280 assuming all
