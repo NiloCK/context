@@ -80,10 +80,10 @@ CREATED: 2020-07-11
 REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0
 
 SUMMARY:
-Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `8,000`. If a non-create transation has `value > 0` and targets a **non-existent** account add `GAS_NEW_ACCOUNT` = `25,000` to align with `CALL` account creation and price in state growth. This additional `GAS_NEW_ACCOUNT` cost is not applied in the case of a
+Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `8,000`. If a non-create transaction has `value > 0` and targets a **non-existent** account add `GAS_NEW_ACCOUNT = 25,000` to align with `CALL` account creation and price in state growth. This additional `GAS_NEW_ACCOUNT` cost is not applied in the case of a
 
 SPECIFICATION:
-After `FORK_BLOCK`, set `TX_BASE_COST` = 8,000; apply `GAS_NEW_ACCOUNT` as specified. If the transaction has `value > 0` and is sending to a non-existent account (as per [EIP-161](./eip-161.md)) and not a precompile; so results in account creation, then the `GAS_NEW_ACCOUNT` cost is additionally applied as per `CALL`; resulting in an
+After `FORK_BLOCK`, set the following parameters and rules. ### Parameters | Name | Value | Description | | ----------------- | ------ | ------------------------------------------------------------------------- | | `TX_BASE_COST` | 8,000 | Base cost of any transaction | | `GAS_NEW_ACCOUNT` | 25,000 | Surcharge when a **value‑transferring** transaction creates a new account
 
 MOTIVATION:
 The current `21,000` intrinsic gas is a legacy constant. It no longer matches the work all transactions must perform under warm/cold accounting. When decomposed into signature recovery, warming `sender` and `to`, and two warm writes for nonce and balance, the common path totals `8,000` gas. Top‑level value transfers that
@@ -744,7 +744,7 @@ MOTIVATION:
 SSZ containers are frequently versioned, for example across fork boundaries. When the number of fields reaches a new power of two, or a field is removed or replaced with one of a different type, the shape of the underlying Merkle tree changes, breaking verifiers of Merkle proofs for these
 
 RATIONALE:
-### Why is `active_fields` limited to 256 bits? 256 bits (1 word) allows the mix-in to be simple, consistent with the length mix-in for lists, and is practically sufficient. An alternate design with a `ProgressiveBitlist` mix-in was explored, however deemed too over-engineered as it it would effectively require introducing
+### Why is `active_fields` limited to 256 bits? 256 bits (1 word) allows the mix-in to be simple, consistent with the length mix-in for lists, and is practically sufficient. An alternate design with a `ProgressiveBitlist` mix-in was explored, however deemed too over-engineered as it would effectively require introducing caches
 
 
 === EIP-7587 ===

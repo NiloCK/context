@@ -80,10 +80,10 @@ CREATED: 2020-07-11
 REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0
 
 SUMMARY:
-Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `8,000`. If a non-create transation has `value > 0` and targets a **non-existent** account add `GAS_NEW_ACCOUNT`
+Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `8,000`. If a non-create transaction has `value > 0` and targets a **non-existent** account add `GAS_NEW_ACCOUNT
 
 SPECIFICATION:
-After `FORK_BLOCK`, set `TX_BASE_COST` = 8,000; apply `GAS_NEW_ACCOUNT` as specified. If the transaction has `value > 0` and is sending to a non-existent account
+After `FORK_BLOCK`, set the following parameters and rules. ### Parameters | Name | Value | Description | | ----------------- | ------ | ------------------------------------------------------------------------- |
 
 MOTIVATION:
 The current `21,000` intrinsic gas is a legacy constant. It no longer matches the work all transactions must perform under warm/cold accounting. When decomposed
