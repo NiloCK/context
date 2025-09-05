@@ -4020,13 +4020,13 @@ RATIONALE:
 
 === EIP-7594 ===
 TITLE: PeerDAS - Peer Data Availability Sampling
-TYPE: Standards Track Networking
+TYPE: Standards Track Core
 STATUS: Review
 CREATED: 2024-01-12
 REQUIRES: 4844
 
 SUMMARY:
-PeerDAS (Peer Data Availability Sampling) is a networking protocol that allows beacon nodes to perform data availability sampling (DAS) to ensure that blob data has been made available while downloading only a subset of the data. PeerDAS utilizes gossip for distribution, discovery for finding peers of particular data custody,
+PeerDAS (Peer Data Availability Sampling) is a networking protocol that allows nodes to perform data availability sampling (DAS) to ensure that blob data has been made available while downloading only a subset of the data. PeerDAS utilizes gossip for distribution, discovery for finding peers of particular data custody, and
 
 SPECIFICATION:
 We extend the blobs introduced in EIP-4844 using a one-dimensional erasure coding extension. Each row consists of the blob data combined with its erasure code. It is subdivided into cells, which are the smallest units that can be authenticated with their respective blob's KZG commitments. Each column, associated with
@@ -4035,7 +4035,7 @@ MOTIVATION:
 DAS is a method of scaling data availability beyond the levels of [EIP-4844](./eip-4844.md) by not requiring all nodes to download all data while still ensuring that all of the data has been made available. Providing additional data availability helps bring scale to Ethereum users in the context of layer
 
 RATIONALE:
-TBD
+### Why use DAS to scale the DA layer? PeerDAS is a DAS scheme that requires nodes to only download a small constant fraction of the data to satisfy a local availability check. With the current parameters, this is 1/8 of the total data (i.e. blobs in a block),
 
 
 === EIP-3026 ===
@@ -6697,6 +6697,26 @@ Both Ethereum's Proof of Work and Proof of Stake designs assume that block produ
 
 RATIONALE:
 ### Keeping gasLimit in Block Headers While it would be possible to remove the `gasLimit` field from block headers, it would change the data structure to be hashed, which could lead to unintended consequences. It is therefore easier to leave the gasLimit as part of block headers. ### Chosen
+
+
+=== EIP-8013 ===
+TITLE: Static relative jumps and calls for the EVM
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-19
+REQUIRES: 7979
+
+SUMMARY:
+Five new EVM jump instructions are introduced (`RJUMP`, `RJUMPI`, `RJUMPV`, `RJUMPSUB`, and `RJUMPSUBV`) which encode destinations as signed immediate values. These can be useful in almost all `JUMP` and `JUMPI` use cases and offer improvements in cost, performance, and static analysis.
+
+SPECIFICATION:
+We introduce five new instructions, each taking either a two-byte relative offset or else a table of offsets as immediate arguments. 1) relative jump: * `RJUMP (0xe0) relative_offset` * sets the `PC` to `PC_post_instruction + relative_offset`, where * `relative_offset` is encoded as a 16-bit **signed** (two's-complement) big-endian value. 2)
+
+MOTIVATION:
+A recurring discussion topic is that the EVM only has a mechanism for dynamic jumps. They provide a very flexible architecture with only 2 (!) instructions. This flexibility comes at a cost however: it makes analysis of code more complicated, often intractable, and it also (partially) resulted in the
+
+RATIONALE:
+### Relative addressing We chose relative addressing in order to support code which is relocatable. This also means a code snippet can be injected. A technique seen used prior to this EIP to achieve the same goal was to inject code like `PUSHn PC ADD JUMPI`. We do not
 
 
 === EIP-155 ===

@@ -4020,22 +4020,22 @@ RATIONALE:
 
 === EIP-7594 ===
 TITLE: PeerDAS - Peer Data Availability Sampling
-TYPE: Standards Track Networking
+TYPE: Standards Track Core
 STATUS: Review
 CREATED: 2024-01-12
 REQUIRES: 4844
 
 SUMMARY:
-PeerDAS (Peer Data Availability Sampling) is a networking protocol that allows beacon nodes to perform data availability sampling (DAS) to ensure that blob data has been made available while downloading only a subset of the data. PeerDAS utilizes gossip for distribution, discovery for finding peers of particular data custody, and peer requests for sampling.
+PeerDAS (Peer Data Availability Sampling) is a networking protocol that allows nodes to perform data availability sampling (DAS) to ensure that blob data has been made available while downloading only a subset of the data. PeerDAS utilizes gossip for distribution, discovery for finding peers of particular data custody, and peer requests for sampling.
 
 SPECIFICATION:
-We extend the blobs introduced in EIP-4844 using a one-dimensional erasure coding extension. Each row consists of the blob data combined with its erasure code. It is subdivided into cells, which are the smallest units that can be authenticated with their respective blob's KZG commitments. Each column, associated with a specific gossip subnet, consists of the cells from all rows for a specific index. Each node is responsible for maintaining and custodying a deterministic set of column subnets and data as a function of their node ID. Nodes find and maintain a diverse peer set and sample columns
+We extend the blobs introduced in EIP-4844 using a one-dimensional erasure coding extension. Each row consists of the blob data combined with its erasure code. It is subdivided into cells, which are the smallest units that can be authenticated with their respective blob's KZG commitments. Each column, associated with a specific gossip subnet, consists of the cells from all rows for a specific index. Each node is responsible for maintaining a deterministic set of column subnets and custodying their data as a function of their node ID. Nodes find and maintain a diverse peer set and sample columns
 
 MOTIVATION:
 DAS is a method of scaling data availability beyond the levels of [EIP-4844](./eip-4844.md) by not requiring all nodes to download all data while still ensuring that all of the data has been made available. Providing additional data availability helps bring scale to Ethereum users in the context of layer 2 systems called "roll-ups" whose dominant bottleneck is layer 1 data availability.
 
 RATIONALE:
-TBD
+### Why use DAS to scale the DA layer? PeerDAS is a DAS scheme that requires nodes to only download a small constant fraction of the data to satisfy a local availability check. With the current parameters, this is 1/8 of the total data (i.e. blobs in a block), which can in the future be decreased to 1/16 or even 1/32 by reducing the size of samples (increasing the number of columns). In this way, PeerDAS allows for securely scaling the blob throughput of the network without compromising decentralization, i.e., without increasing node's bandwidth and storage requirements. ###
 
 
 === EIP-3026 ===
@@ -6697,6 +6697,26 @@ Both Ethereum's Proof of Work and Proof of Stake designs assume that block produ
 
 RATIONALE:
 ### Keeping gasLimit in Block Headers While it would be possible to remove the `gasLimit` field from block headers, it would change the data structure to be hashed, which could lead to unintended consequences. It is therefore easier to leave the gasLimit as part of block headers. ### Chosen Gas Limit The `12,500,000` value is being proposed as it's the current block gas limit as of time of writing this EIP. The actual amount could be altered with a subsequent EIP to avoid deviating from the core intent of this EIP.
+
+
+=== EIP-8013 ===
+TITLE: Static relative jumps and calls for the EVM
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-19
+REQUIRES: 7979
+
+SUMMARY:
+Five new EVM jump instructions are introduced (`RJUMP`, `RJUMPI`, `RJUMPV`, `RJUMPSUB`, and `RJUMPSUBV`) which encode destinations as signed immediate values. These can be useful in almost all `JUMP` and `JUMPI` use cases and offer improvements in cost, performance, and static analysis.
+
+SPECIFICATION:
+We introduce five new instructions, each taking either a two-byte relative offset or else a table of offsets as immediate arguments. 1) relative jump: * `RJUMP (0xe0) relative_offset` * sets the `PC` to `PC_post_instruction + relative_offset`, where * `relative_offset` is encoded as a 16-bit **signed** (two's-complement) big-endian value. 2) conditional relative jump: * `RJUMPI (0xe1) relative_offset` * pops a value (`condition`) from the stack, and * sets the `PC` to `PC_post_instruction + ((condition == 0) ? 0 : relative_offset)`. 3) relative jump via jump table: * `RJUMPV (0xe2) max_index relative_offset+` * pops a value (`case`) from the stack,
+
+MOTIVATION:
+A recurring discussion topic is that the EVM only has a mechanism for dynamic jumps. They provide a very flexible architecture with only 2 (!) instructions. This flexibility comes at a cost however: it makes analysis of code more complicated, often intractable, and it also (partially) resulted in the need to have the `JUMPDEST` marker. In a great many cases control flow is actually static and there is no need for any dynamic behaviour, though not every use case can be solved by static jumps. There are various ways to reduce the need for dynamic jumps, some examples:
+
+RATIONALE:
+### Relative addressing We chose relative addressing in order to support code which is relocatable. This also means a code snippet can be injected. A technique seen used prior to this EIP to achieve the same goal was to inject code like `PUSHn PC ADD JUMPI`. We do not see any significant downside to relative addressing and it allows us to also deprecate the `PC` instruction. ### Immediate size The signed 16-bit immediate means that the largest jump distance possible is 32767. In the case the bytecode at `PC=0` starts with an `RJUMP`, it will be possible to
 
 
 === EIP-155 ===
