@@ -77,19 +77,19 @@ TITLE: Reduce intrinsic transaction gas
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2020-07-11
-REQUIRES: 
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0
 
 SUMMARY:
-Reduce the intrinsic cost of a transaction from `21,000` to `7,000` gas.
+Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `8,000`. If a non-create transation has `value > 0` and targets a **non-existent** account add `GAS_NEW_ACCOUNT`
 
 SPECIFICATION:
-After `block.number >= FORK_BLOCK`, enforce an intrinsic gas cost of `7,000`.
+After `FORK_BLOCK`, set `TX_BASE_COST` = 8,000; apply `GAS_NEW_ACCOUNT` as specified. If the transaction has `value > 0` and is sending to a non-existent account
 
 MOTIVATION:
-The current `21,000` gas intrinsic cost of a transaction makes sending ETH very costly, often times prohibitively costly for small amounts (tens of USD).
+The current `21,000` intrinsic gas is a legacy constant. It no longer matches the work all transactions must perform under warm/cold accounting. When decomposed
 
 RATIONALE:
-The proliferation of calls to DeFi smart-contracts had substantially increased the cost of making transactions, since such calls are usually both time sensitive and
+Price only what every transaction always does: ECDSA recovery, warming `sender` and `to`, and two warm writes. That sums to `8,000` gas. Anything not
 
 
 === EIP-2046 ===
