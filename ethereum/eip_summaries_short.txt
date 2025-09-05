@@ -75,7 +75,7 @@ RATIONALE:
 === EIP-2780 ===
 TITLE: Reduce intrinsic transaction gas
 TYPE: Standards Track Core
-STATUS: Withdrawn
+STATUS: Draft
 CREATED: 2020-07-11
 REQUIRES: 
 
