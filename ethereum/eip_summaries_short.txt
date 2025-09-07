@@ -901,7 +901,7 @@ The transaction must fill the entire block to prevent MEV attacks. While some ca
 === EIP-7639 ===
 TITLE: eth/70 - Cease serving history before PoS
 TYPE: Standards Track Networking
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-02-13
 REQUIRES: 
 
