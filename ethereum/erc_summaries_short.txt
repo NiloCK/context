@@ -8907,13 +8907,13 @@ CREATED: 2022-12-12
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 0, 1, 4, ,,  , 1, 1, 5, 5
 
 SUMMARY:
-ETH is designed with *transfer-and-call* as the default behavior in a transaction. Unfortunately, [ERC-20](./eip-20.md) is not designed with that pattern in mind and newer
+The default transaction behavior of ETH is *transfer-and-call*, but the widely used [ERC-20](./eip-20.md) standard isn't compatible with this pattern. This incompatibility forces applications to
 
 SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to
 
 MOTIVATION:
-When users approve their tokens to a contract, they trust that: * it only spends the tokens with their permission (from `msg.sender` or `ecrecover`)
+When users approve their tokens to a contract, they expect that: * it only spends the tokens with their permission (from `msg.sender` or `ecrecover`)
 
 RATIONALE:
 The `Permit` type signature is not supported since the purpose of the Universal Token Router is to eliminate all interactive `approve` signatures for new
