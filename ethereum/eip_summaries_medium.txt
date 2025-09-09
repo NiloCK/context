@@ -35,7 +35,7 @@ MOTIVATION:
 Ed25519 is one of the most widely used forms of Elliptic Curve Cryptography and is one of the defaults for SSH keys, this makes it a good contender to be able to sign transactions with. It also provides an algorithm to write test cases against during the implementation phase
 
 RATIONALE:
-### Additional 1000 gas penalty The gas penalty discourages people attempting to migrate off current secp256k1 accounts, and also covers the additional overhead (in regards to hashing) that the ed25519 curve applies. ### Why Ed25519? Ed25519 has significant tooling backing it, this makes it a good candidate for using
+### Additional 1000 gas penalty The gas penalty discourages people from attempting to migrate off current secp256k1 accounts, and also covers the additional overhead (in regards to hashing) that the ed25519 curve applies. ### Why Ed25519? Ed25519 has significant tooling backing it, this makes it a good candidate for
 
 
 === EIP-607 ===
@@ -5408,6 +5408,26 @@ As concepts of relaying, meta-transactions, gas fees, and account abstraction ga
 
 RATIONALE:
 Consider a solidity smart contract that wants to know how much gas the entire transaction or a part of it had consumed. It is not entirely possible with the current EVM. With proposed changes, using a pseudo-Solidity syntax, this information would be easily available: ``` function keepTrackOfGas(string memory message,
+
+
+=== EIP-8015 ===
+TITLE: Remove `deposit` and `eth1data` fields
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-22
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP removes the legacy `deposits` and `eth1_data` fields from the `BeaconBlockBody` structure after [EIP-6110](./eip-6110.md) has been fully finalized. These fields become obsolete once all validators have transitioned to the new in-protocol deposit processing mechanism introduced in EIP-6110.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Consensus Layer #### Activation Conditions This EIP SHALL only be activated when both of
+
+MOTIVATION:
+EIP-6110 introduced in-protocol deposit processing by moving validator deposits to the execution layer as part of the EIP-7685 request framework. This change eliminated the need for the consensus layer's proposer voting mechanism for deposits. However, during the transition period, both the legacy deposit mechanism (using `deposits` and `eth1_data` fields)
+
+RATIONALE:
+### Timing of Removal The fields are removed after EIP-6110 finalization to ensure: - All pending deposits from the legacy system have been processed - No validator can be affected by the removal - The transition is complete and irreversible - State consistency is maintained across all honest nodes
 
 
 === EIP-2970 ===

@@ -35,7 +35,7 @@ MOTIVATION:
 Ed25519 is one of the most widely used forms of Elliptic Curve Cryptography and is one of the defaults for SSH keys, this makes
 
 RATIONALE:
-### Additional 1000 gas penalty The gas penalty discourages people attempting to migrate off current secp256k1 accounts, and also covers the additional overhead (in
+### Additional 1000 gas penalty The gas penalty discourages people from attempting to migrate off current secp256k1 accounts, and also covers the additional overhead
 
 
 === EIP-607 ===
@@ -5408,6 +5408,26 @@ As concepts of relaying, meta-transactions, gas fees, and account abstraction ga
 
 RATIONALE:
 Consider a solidity smart contract that wants to know how much gas the entire transaction or a part of it had consumed. It is
+
+
+=== EIP-8015 ===
+TITLE: Remove `deposit` and `eth1data` fields
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-22
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP removes the legacy `deposits` and `eth1_data` fields from the `BeaconBlockBody` structure after [EIP-6110](./eip-6110.md) has been fully finalized. These fields become obsolete once
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+EIP-6110 introduced in-protocol deposit processing by moving validator deposits to the execution layer as part of the EIP-7685 request framework. This change eliminated the
+
+RATIONALE:
+### Timing of Removal The fields are removed after EIP-6110 finalization to ensure: - All pending deposits from the legacy system have been processed
 
 
 === EIP-2970 ===

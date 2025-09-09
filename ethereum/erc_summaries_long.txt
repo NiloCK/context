@@ -1479,7 +1479,7 @@ RATIONALE:
 === ERC-7857 ===
 TITLE: AI Agents NFT with Private Metadata
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-01-02
 REQUIRES: 
 
@@ -1499,7 +1499,7 @@ The design choices in this standard are motivated by several key requirements: 1
 === ERC-7908 ===
 TITLE: HD wallet In Treasury Management
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-07
 REQUIRES: 
 
@@ -1507,7 +1507,7 @@ SUMMARY:
 This proposal aims to provide a standardized method for on-chain treasury management of institutional assets, ensuring secure private key generation, hierarchical management, and departmental permission isolation while supporting asset security and transaction efficiency in multi-chain environments. By defining a unified derivation path and security mechanisms, this proposal offers an efficient and secure solution for treasury management.
 
 SPECIFICATION:
-### Derivation Path For secure on-chain treasury account key management, implementations **MUST** use the following hierarchical deterministic (HD) path: ```latex m/44'/60'/entity_id' / department_id' / account_index ``` Path Components: 1. **Master Key (**`m`**)** - **SHALL** represent the root HD wallet private key. 2. **BIP-44 Compliance Layer (`44'`)** - **MUST** use `44'` (hardened) to indicate BIP-44 compliance. 3. **Coin Type Layer ( `60'` )** - **SHALL** use `60'` (hardened) for Ethereum and EVM-compatible chains. 4. **Entity Identifier ( `entity_id'`**) - **MUST** be derived by hashing the subsidiary name into a hardened index. - **MUST NOT** reuse the same `entity_id'` across
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Derivation Path For secure on-chain treasury account key management, implementations MUST use the following hierarchical deterministic (HD) path: ```latex m/44'/60'/entity_id' / department_id' / account_index ``` Path Components: 1. **Master Key (**`m`**)** - SHALL represent the root HD wallet private key. 2. **[BIP 44](https://github.com/bitcoin/bips/blob/0278bf3d7111bab8f0ef8dd08f16fd7b5ac6cbd6/bip-0044.mediawiki) Compliance Layer (`44'`)** - MUST use `44'` (hardened) to indicate BIP 44 compliance. 3. **Coin Type Layer ( `60'` )**
 
 MOTIVATION:
 With the rapid development of blockchain and DeFi, secure management of on-chain assets has become critical. Traditional private key management struggles to meet the security demands of large organizations in complex scenarios, where hierarchical key management, permission controls, and multi-signature mechanisms are essential. This proposal provides a standardized solution for institutional treasury management, ensuring asset security and transaction efficiency.
@@ -6507,7 +6507,7 @@ RATIONALE:
 === ERC-7858 ===
 TITLE: Expirable NFTs and SBTs
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-01-04
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
@@ -6515,10 +6515,10 @@ SUMMARY:
 Introduces an extension for [ERC-721](./eip-721.md) Non-Fungible Tokens (NFTs) and Soulbound Tokens (SBTs) that adds an expiration mechanism, allowing tokens to become invalid after a predefined period. This additional layer of functionality ensures that the expiration mechanism does not interfere with existing NFTs or SBTs, preserving transferability for NFTs and compatibility with current DApps such as NFT Marketplace. Expiration can be defined using either block height or timestamp, offering flexibility for various use cases.
 
 SPECIFICATION:
-The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Interface ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity >=0.8.0 <0.9.0; /** * @title ERC-7858: Expirable NFTs and SBTs * @notice unique/granular expiry */ // import "./IERC721.sol"; // The EIP-165 identifier of this interface is `0x3ebdfa31`. interface IERC7858 /**is IERC721 */ { enum EXPIRY_TYPE { BLOCKS_BASED, // block.number TIME_BASED // block.timestamp } /** * @dev Emitted when the expiration date of a token is set or
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. Compatible implementations MUST implement the `IERC7858` interface and MUST inherit from [ERC-721](./eip-721.md)'s interface. All functions defined in the interface MUST be present and all function behavior MUST meet the interface specification requirements. ### Interface ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity >=0.8.0 <0.9.0; /** * @title ERC-7858: Expirable NFTs and SBTs * @notice unique/granular expiry */ // import "./IERC721.sol"; // The EIP-165 identifier of this interface
 
 MOTIVATION:
-Before this EIP, NFTs and SBTs implemented expiration mechanisms via custom mappings. However, this approach presents challenges, such as inconsistent integration with other smart contracts, the custom [ERC-721](./eip-721.md) implementations might misbehave when used in NFT marketplaces. This EIP addresses these issues by providing a built-in expiration mechanism and interfaces that are compatible with existing infrastructure. It supports both per-token and epoch-based expiry, allowing developers to choose the appropriate expiry type for their use cases, including: - Access and Authentication - Authentication for Identity and Access Management (IAM) - Membership for Membership Management System (MMS) - Ticket and Press
+Before this EIP, NFTs and SBTs implemented expiration mechanisms via custom mappings. However, this approach presents challenges, such as: inconsistent integration with other smart contracts, and the custom [ERC-721](./eip-721.md) implementations might misbehave when used in NFT marketplaces. This EIP addresses these issues by providing a built-in expiration mechanism and interfaces that are compatible with existing infrastructure. It supports both per-token and epoch-based expiry, allowing developers to choose the appropriate expiry type for their use cases, including: - Access and Authentication - Authentication for Identity and Access Management (IAM) - Membership for Membership Management System (MMS) - Ticket and
 
 RATIONALE:
 ### First, do no harm Introducing expirability as an additional layer of functionality ensures it doesn’t interfere with existing use cases or applications. For non-SBT tokens, transferability remains intact, maintaining compatibility with current systems. Expired tokens are simply flagged as unusable during validity checks, treating expiration as an enhancement rather than a fundamental change. ### Expiry Types Defining expiration by either block height (`block.number`) or block timestamp (`block.timestamp`) offers flexibility for various use cases. Block-based expiration suits applications that rely on network activity and require precise consistency, while time-based expiration is ideal for networks with variable block intervals.
@@ -9059,12 +9059,12 @@ This specification is extending and clarifying current custom lists such as from
 === ERC-7829 ===
 TITLE: Data Asset NFT
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-29
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
 SUMMARY:
-This proposal is an extension of [ERC-721](./eip-721.md). This proposal introduces a new role, Reader, who is granted by the Owner and allows multiple Readers for a single NFT. Additionally, this proposal extends the metadata interface of ERC-721, requiring that metadata should include at least a commitment, size, expire time, and uploader's address. This proposal also proposes a storage proof mechanism to ensure the correctness of metadata information.
+This proposal extends the [ERC-721](./eip-721.md) standard to support Data Assets which refers to digital products created by creators. This proposal introduces a modular Data Availability (DA) layer that safeguards on-chain data integrity, preventing value discrepancies caused by off-chain data loss, tampering, or expiration. Furthermore, this proposal introduces a new role, Reader, where a single token can have multiple Readers. This solution reflects the inherent replicability of Data Assets, namely that each piece of data can be replicated multiple times and accessed by multiple users, thus amplifying the value of the Data Assets.
 
 SPECIFICATION:
 ### Terms In this proposal, we divide data assets into three parts: - Storage Metadata: Includes commitment, size, expire, and uploader's address. Stored and maintained by storage contracts on the blockchain. - Permission Metadata: Includes information on ownership and reading rights, as well as which addresses can modify this information. Stored and maintained by permission contracts on the blockchain. - Data Content: Data uploaded by users to the storage system. Data content is stored in off-chain storage nodes. **Every compliant data permission contract must implement the Interface**: The data permission contract is an extension of ERC-721, adding the
@@ -9073,7 +9073,7 @@ MOTIVATION:
 ERC-721 proposed NFTs to represent the ownership of digital or physical assets. Currently, the NFT metadata is considered the NFT content, and its scarcity determines the value of the NFT. NFT owners can convert the content value of NFTs into revenue by transferring the ownership of NFTs. However, due to the high transaction fees, storage costs, and other expenses, NFTs are currently only able to represent the ownership of high-value assets, which limits the range of assets that NFTs can represent. This is especially true for Data Assets, which refers to digital products created by creators, such as
 
 RATIONALE:
-![arc](../assets/eip-7829/architect.svg) The biggest challenge for data asset NFTs is the visibility but inaccessibility of data content: after establishing access control permissions for NFT data content, i.e., accessing data content requires certain access permissions, how can users without data access permissions ensure that the data content exists when obtaining access permissions? To prevent users from making incorrect operations unknowingly, it is necessary to upload information about the data content to the chain, specifically, the expire of the data content should be uploaded to the chain. Users can access the expire of the data content to judge whether their NFT
+![arc](../assets/eip-7829/architect.svg) ### Data Asset NFT Integrity The DA Layer is responsible for off-chain storage of Data Content and on-chain storage of Storage Metadata, and ensures the integrity of Data Assets through periodically submiting and verifing **storage proofs**. To optimize gas costs, we adopt an **optimistic proof approach**, significantly reducing verification expenses. **Proof Cycle Workflow**: 1. **Proof Generation & Aggregation**: - The **DA Provider** generates storage proofs for sampled data content, aggregates them into a single **aggregated proof**, and submits it to the **DA Contract**. - The **DA Contract** verifies the correctness of the aggregated proof. 2. **Fraud Proof
 
 
 === ERC-2942 ===
@@ -9637,7 +9637,7 @@ RATIONALE:
 === ERC-7878 ===
 TITLE: Bequeathable Contracts
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-02-01
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
 
@@ -10223,6 +10223,26 @@ Tokenization is one of the most important trends by which to use and control dig
 
 RATIONALE:
 ### Metadata generation This token standard is designed to represent semi-fungible assets, which are most suited for financial instruments rather than collectibles or in-game items. For maximum transparency and safety of digital assets, we strongly recommend that all implementations should generate metadata directly from contract code rather than giving out an off-chain server URL. ### Design decision: Value transfer from token to address The 'value' of a token is a property of the token and is not linked to an address, so to transfer the value to an address would be actually transferring it to a token owned
+
+
+=== ERC-8001 ===
+TITLE: Agent Coordination Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-08-02
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 5, 2, 6, 7
+
+SUMMARY:
+[ERC-8001](./eip-8001.md) defines a minimal, single-chain primitive for **multi-party agent coordination**. An initiator posts an intent and each participant provides a verifiable acceptance attestation. Once the required set of acceptances is present and fresh, the intent is executable. The standard specifies typed data, lifecycle, mandatory events, and verification rules compatible with [EIP-712], [ERC-1271], [EIP-2098], and [EIP-5267]. [ERC-8001](./eip-8001.md) omits privacy, reputation, threshold policies, bonding, and cross-chain semantics. Those are expected as optional modules that reference this specification.
+
+SPECIFICATION:
+The keywords “MUST”, “SHOULD”, and “MAY” are to be interpreted as described in RFC 2119 and RFC 8174. Implementations MUST expose the following canonical status codes for `getCoordinationStatus`: ### Status Codes Implementations MUST use the canonical enum defined above: ```solidity enum Status { None, Proposed, Ready, Executed, Cancelled, Expired } ``` - `None` = default zero state (intent not found) - `Proposed` = intent proposed, not all acceptances yet - `Ready` = all participants have accepted, intent executable - `Executed` = intent successfully executed - `Cancelled` = intent explicitly cancelled - `Expired` = intent expired before execution ###
+
+MOTIVATION:
+Agents in DeFi/MEV often need to act together without a trusted coordinator. Existing intent standards (e.g., [ERC-7521](./eip-7521.md), [ERC-7683](./eip-7683.md)) define single-initiator flows and do not specify multi-party agreement. [ERC-8001](./eip-8001.md) specifies the smallest on-chain primitive for that gap: an initiator's [EIP-712](./eip-712.md) intent plus per-participant [EIP-712](./eip-712.md)/[EIP-1271](./eip-1271.md) acceptances. The intent becomes executable only when the required set of acceptances is present and unexpired. Canonical (sorted-unique) participant lists and standard typed data provide replay safety and wallet compatibility. Privacy, thresholds, bonding, and cross-chain are left to modules.
+
+RATIONALE:
+- Sorted participant lists remove hash malleability and allow off-chain deduplication. - Separation of intent and acceptance allows off-chain collation and a single on-chain check. - Keeping [ERC-8001](./eip-8001.md) single-chain avoids coupling to bridge semantics and keeps the primitive audit-friendly. - Wallet friendliness: EIP-712 arrays let signers see actual participant addresses.
 
 
 === ERC-5380 ===

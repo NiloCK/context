@@ -35,7 +35,7 @@ MOTIVATION:
 Ed25519 is one of the most widely used forms of Elliptic Curve Cryptography and is one of the defaults for SSH keys, this makes it a good contender to be able to sign transactions with. It also provides an algorithm to write test cases against during the implementation phase of [EIP-7932](./eip-7932.md).
 
 RATIONALE:
-### Additional 1000 gas penalty The gas penalty discourages people attempting to migrate off current secp256k1 accounts, and also covers the additional overhead (in regards to hashing) that the ed25519 curve applies. ### Why Ed25519? Ed25519 has significant tooling backing it, this makes it a good candidate for using as a "dummy" algorithm. This allows it to be an algorithm for client teams to easily test [EIP-7932](./eip-7932.md). It may also be useful for signing in Hardware security modules in server environments designed for serving as [ERC-4337](./eip-4337.md) bundlers. It may also improve interoperability with other components such as TPM
+### Additional 1000 gas penalty The gas penalty discourages people from attempting to migrate off current secp256k1 accounts, and also covers the additional overhead (in regards to hashing) that the ed25519 curve applies. ### Why Ed25519? Ed25519 has significant tooling backing it, this makes it a good candidate for using as a "dummy" algorithm. This allows it to be an algorithm for client teams to easily test [EIP-7932](./eip-7932.md). It may also be useful for signing in Hardware security modules in server environments designed for serving as [ERC-4337](./eip-4337.md) bundlers. It may also improve interoperability with other components such as
 
 
 === EIP-607 ===
@@ -4092,7 +4092,7 @@ SPECIFICATION:
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Notable changes from the hexary structure - The account and storage tries are merged into a single trie. - RLP is no longer used. - The account's code is chunked and included in the tree. - Account data (e.g., balance, nonce, first storage slots, first code-chunks) is co-located in the tree to reduce branch openings. ### Tree structure The proposed Binary Tree stores key-value
 
 MOTIVATION:
-Ethereum's long-term goal is to allow blocks to be proved with validity proof so that chain verification is as simple and fast as possible. One of the most challenging parts of achieving that goal is proving the state of the tree, which is required for EVM execution. The current Merkle-Patricia Trie (MPT) design isn't friendly for validity proofs for many reasons, such as using RLP for node encoding, Keccak as a hashing function, being a "tree of trees", and not including accounts code as part of the state. Apart from requiring a state tree design that is friendly
+Ethereum's long-term goal is to allow blocks to be proved with validity proof so that chain verification is as simple and fast as possible. One of the most challenging parts of achieving that goal is proving the state of the tree, which is required for EVM execution. The current Merkle-Patricia Trie (MPT) design isn't friendly to validity proofs for many reasons, such as using RLP for node encoding, Keccak as a hashing function, being a "tree of trees", and not including accounts code as part of the state. Apart from requiring a state tree design that is friendly
 
 RATIONALE:
 This EIP defines a new Binary Tree that starts empty. Only new state changes are stored in the tree. The MPT continues to exist but is frozen. This sets the stage for a future hard fork that migrates the MPT data to this Binary Tree ([EIP-7748](./eip-7748.md)). ### Single tree design The proposal uses a single-layer tree structure with 32-byte keys and values for several reasons: - **Simplicity**: working with the abstraction of a key/value store makes it easier to write code dealing with the tree (e.g. database reading/writing, caching, syncing, proof creation, and verification) and upgrade it to
@@ -5410,6 +5410,26 @@ RATIONALE:
 Consider a solidity smart contract that wants to know how much gas the entire transaction or a part of it had consumed. It is not entirely possible with the current EVM. With proposed changes, using a pseudo-Solidity syntax, this information would be easily available: ``` function keepTrackOfGas(string memory message, uint256 number) public { ... uint gasUsed = msg.gasLimit - gasleft(); } ``` This is an extremely common use case, and multiple implementations suffer from not taking the non-accessible expenses into consideration. The state-of-the-art solution for the `gasUsed` problem is to access 'gasleft()' as the first line of your
 
 
+=== EIP-8015 ===
+TITLE: Remove `deposit` and `eth1data` fields
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-22
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP removes the legacy `deposits` and `eth1_data` fields from the `BeaconBlockBody` structure after [EIP-6110](./eip-6110.md) has been fully finalized. These fields become obsolete once all validators have transitioned to the new in-protocol deposit processing mechanism introduced in EIP-6110.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Consensus Layer #### Activation Conditions This EIP SHALL only be activated when both of the following conditions are met: 1. EIP-6110 has been fully finalized: `state.eth1_deposit_index == state.deposit_requests_start_index` 2. EIP-7732 is in effect #### BeaconBlockBody Modifications The `BeaconBlockBody` container is modified to remove the following fields: **Removed fields:** - `deposits: List[Deposit, MAX_DEPOSITS]` - `eth1_data: Eth1Data` The updated `BeaconBlockBody` structure becomes: ```python class BeaconBlockBody(Container):
+
+MOTIVATION:
+EIP-6110 introduced in-protocol deposit processing by moving validator deposits to the execution layer as part of the EIP-7685 request framework. This change eliminated the need for the consensus layer's proposer voting mechanism for deposits. However, during the transition period, both the legacy deposit mechanism (using `deposits` and `eth1_data` fields) and the new mechanism coexist to ensure smooth migration. Once EIP-6110 has been fully finalized and the transition period is complete (when `state.eth1_deposit_index == state.deposit_requests_start_index`), the legacy deposit fields become permanently unused and can be safely removed. This cleanup provides several benefits: - **Simplified validation**: Removes deprecated validation logic
+
+RATIONALE:
+### Timing of Removal The fields are removed after EIP-6110 finalization to ensure: - All pending deposits from the legacy system have been processed - No validator can be affected by the removal - The transition is complete and irreversible - State consistency is maintained across all honest nodes ### Dependency on EIP-7732 This EIP requires EIP-7732 because: - EIP-7732 already modified the `BeaconBlockBody` structure significantly - It provides the architectural foundation for simplified block bodies - The timing aligns with the broader consensus layer improvements
+
+
 === EIP-2970 ===
 TITLE: IS_STATIC opcode
 TYPE: Standards Track Core
@@ -6117,7 +6137,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Constants | Parameter | value | Description | | ---------------------------- | ----- | -------------------------------------------------------------- | | `CONVERSION_START_TIMESTAMP` | `TBD` | Timestamp at which the conversion starts. | | `CONVERSION_STRIDE` | `TBD` | Maximum number of _conversion units_ to be converted per block | A _conversion unit_ is: - A contract storage slot. - An account data (e.g. balance, nonce, code-hash) and code (if
 
 MOTIVATION:
-The accounts state is too large to wait for transactions to organically move all of them to the VKT through the Overlay Tree. Thus, we need a strategy to convert all the state within a reasonable time. The state conversion completion allows removing the Overlay Tree abstraction introduced in [EIP-7612](./eip-7612.md) and use directly the VKT for all state access.
+The accounts state is too large to wait for transactions to organically move all of them to the VKT through the Overlay Tree. Thus, we need a strategy to convert all the state within a reasonable time. The state conversion completion allows removing the Overlay Tree abstraction introduced in [EIP-7612](./eip-7612.md) and to use directly the VKT for all state access.
 
 RATIONALE:
 ### State conversion step position in block execution Performing the conversion step before the block txs execution has some benefits: - If the state conversion step is done after txs execution, there's a possibility that txs execution writes overlap with converted key-values, having to care about them becoming stale in the same block. With the proposed ordering, they can only become stale by writes of previous blocks. - It can reduce the complexity of optimizations, such as frontrunning the state conversion for the next block before it arrives. ### `CONVERSION_STRIDE` proposed value Performance benchmarks were done to achieve

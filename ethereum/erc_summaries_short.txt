@@ -1479,7 +1479,7 @@ RATIONALE:
 === ERC-7857 ===
 TITLE: AI Agents NFT with Private Metadata
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-01-02
 REQUIRES: 
 
@@ -1499,7 +1499,7 @@ The design choices in this standard are motivated by several key requirements: 1
 === ERC-7908 ===
 TITLE: HD wallet In Treasury Management
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-07
 REQUIRES: 
 
@@ -1507,7 +1507,7 @@ SUMMARY:
 This proposal aims to provide a standardized method for on-chain treasury management of institutional assets, ensuring secure private key generation, hierarchical management, and departmental
 
 SPECIFICATION:
-### Derivation Path For secure on-chain treasury account key management, implementations **MUST** use the following hierarchical deterministic (HD) path: ```latex m/44'/60'/entity_id' / department_id' /
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
 With the rapid development of blockchain and DeFi, secure management of on-chain assets has become critical. Traditional private key management struggles to meet the
@@ -6507,7 +6507,7 @@ RATIONALE:
 === ERC-7858 ===
 TITLE: Expirable NFTs and SBTs
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-01-04
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
@@ -6518,7 +6518,7 @@ SPECIFICATION:
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be
 
 MOTIVATION:
-Before this EIP, NFTs and SBTs implemented expiration mechanisms via custom mappings. However, this approach presents challenges, such as inconsistent integration with other smart
+Before this EIP, NFTs and SBTs implemented expiration mechanisms via custom mappings. However, this approach presents challenges, such as: inconsistent integration with other smart
 
 RATIONALE:
 ### First, do no harm Introducing expirability as an additional layer of functionality ensures it doesn’t interfere with existing use cases or applications. For
@@ -9059,12 +9059,12 @@ This specification is extending and clarifying current custom lists such as from
 === ERC-7829 ===
 TITLE: Data Asset NFT
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-29
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
 SUMMARY:
-This proposal is an extension of [ERC-721](./eip-721.md). This proposal introduces a new role, Reader, who is granted by the Owner and allows multiple Readers
+This proposal extends the [ERC-721](./eip-721.md) standard to support Data Assets which refers to digital products created by creators. This proposal introduces a modular Data
 
 SPECIFICATION:
 ### Terms In this proposal, we divide data assets into three parts: - Storage Metadata: Includes commitment, size, expire, and uploader's address. Stored and
@@ -9073,7 +9073,7 @@ MOTIVATION:
 ERC-721 proposed NFTs to represent the ownership of digital or physical assets. Currently, the NFT metadata is considered the NFT content, and its scarcity
 
 RATIONALE:
-![arc](../assets/eip-7829/architect.svg) The biggest challenge for data asset NFTs is the visibility but inaccessibility of data content: after establishing access control permissions for NFT data
+![arc](../assets/eip-7829/architect.svg) ### Data Asset NFT Integrity The DA Layer is responsible for off-chain storage of Data Content and on-chain storage of Storage Metadata, and
 
 
 === ERC-2942 ===
@@ -9637,7 +9637,7 @@ RATIONALE:
 === ERC-7878 ===
 TITLE: Bequeathable Contracts
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-02-01
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
 
@@ -10223,6 +10223,26 @@ Tokenization is one of the most important trends by which to use and control dig
 
 RATIONALE:
 ### Metadata generation This token standard is designed to represent semi-fungible assets, which are most suited for financial instruments rather than collectibles or in-game
+
+
+=== ERC-8001 ===
+TITLE: Agent Coordination Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-08-02
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 5, 2, 6, 7
+
+SUMMARY:
+[ERC-8001](./eip-8001.md) defines a minimal, single-chain primitive for **multi-party agent coordination**. An initiator posts an intent and each participant provides a verifiable acceptance attestation. Once
+
+SPECIFICATION:
+The keywords “MUST”, “SHOULD”, and “MAY” are to be interpreted as described in RFC 2119 and RFC 8174. Implementations MUST expose the following canonical
+
+MOTIVATION:
+Agents in DeFi/MEV often need to act together without a trusted coordinator. Existing intent standards (e.g., [ERC-7521](./eip-7521.md), [ERC-7683](./eip-7683.md)) define single-initiator flows and do not
+
+RATIONALE:
+- Sorted participant lists remove hash malleability and allow off-chain deduplication. - Separation of intent and acceptance allows off-chain collation and a single on-chain
 
 
 === ERC-5380 ===
