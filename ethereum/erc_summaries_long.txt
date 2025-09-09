@@ -2349,6 +2349,26 @@ RATIONALE:
 The interface defined in this standard is designed to be mostly compatible with most popular programmable accounts in use right now, to minimize the need for changes to existing tooling.
 
 
+=== ERC-7969 ===
+TITLE: DomainKeys Identified Mail (DKIM) Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-06-11
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes a standard interface for registering and validating DomainKeys Identified Mail (DKIM) public key hashes on the Ethereum blockchain. The interface allows domain owners to register their DKIM public key hashes and enables third parties to verify the validity of these hashes. The registry operates by storing hashes of both domain names and DKIM public keys, creating a mapping that enables on-chain verification of DKIM signatures. Domain owners register their DKIM public key hashes by extracting the public key from their DNS TXT records (as specified in [RFC 6376](https://www.rfc-editor.org/rfc/rfc6376)), computing the hash, and submitting it to
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface ```solidity pragma solidity ^0.8.25; /// @title ERC-XXX DKIM Registry Interface /// @dev See https://eips.ethereum.org/EIPS/eip-xxx /// Note: the ERC-165 identifier for this interface is 0xdee3d600. interface IDKIMRegistry { event KeyHashRegistered(bytes32 domainHash, bytes32 keyHash); event KeyHashRevoked(bytes32 domainHash); function isKeyHashValid( bytes32 domainHash, bytes32 keyHash ) external view returns (bool); } ``` ### Domain Hash The `domainHash` parameter MUST be the hash of the lowercase domain name or subdomain name. For
+
+MOTIVATION:
+With the growing adoption of Account Abstraction [ERC-4337] and the emergence of ZK Email Technology, there is a need for a standardized way to verify email ownership on-chain. This EIP provides a crucial building block for these technologies by enabling the verification of DKIM signatures through on-chain registries. [ERC-4337]: ./eip-4337.md This standard enables several important use cases: 1. **Account Abstraction**: When combined with zkEmail, this registry enables email-based account abstraction. Users can prove ownership of their email address through DKIM signatures, allowing them to: - Create and manage smart contract wallets - Sign transactions using their email credentials
+
+RATIONALE:
+The interface is designed to be simple and focused on the core functionality of DKIM public key hash registration and validation. The use of keccak256 hashing for both domain names and public keys ensures consistent and secure handling of the data. The events allow for efficient tracking of key registrations and revocations, which is important for maintaining the integrity of the registry.
+
+
 === ERC-5585 ===
 TITLE: ERC-721 NFT Authorization
 TYPE: Standards Track ERC

@@ -2349,6 +2349,26 @@ RATIONALE:
 The interface defined in this standard is designed to be mostly compatible with most popular programmable accounts in use right now, to minimize the
 
 
+=== ERC-7969 ===
+TITLE: DomainKeys Identified Mail (DKIM) Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-06-11
+REQUIRES: 
+
+SUMMARY:
+This EIP proposes a standard interface for registering and validating DomainKeys Identified Mail (DKIM) public key hashes on the Ethereum blockchain. The interface allows
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+
+MOTIVATION:
+With the growing adoption of Account Abstraction [ERC-4337] and the emergence of ZK Email Technology, there is a need for a standardized way to
+
+RATIONALE:
+The interface is designed to be simple and focused on the core functionality of DKIM public key hash registration and validation. The use of
+
+
 === ERC-5585 ===
 TITLE: ERC-721 NFT Authorization
 TYPE: Standards Track ERC
