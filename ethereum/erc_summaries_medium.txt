@@ -3287,7 +3287,7 @@ MOTIVATION:
 Real World Assets (RWAs) represent a significant opportunity to bridge traditional finance and decentralized finance (DeFi). By tokenizing assets like real estate, corporate bonds, commodities, art, or securities, we can unlock benefits such as fractional ownership, programmable compliance, enhanced liquidity through secondary markets for traditionally illiquid assets and integration
 
 RATIONALE:
-* **Minimalism:** Defines only the essential functions (`forceTransfer`, `setFrozen`, `isUserAllowed`, `isTransferAllowed`, `getFrozen`) and associated events/errors needed for common RWA compliance and control patterns, avoiding mandated complexity or opinionated features. The reason to introduce specific errors (`ERC7943NotAllowedUser`, `ERC7943NotAllowedTransfer` and `ERC7943InsufficientUnfrozenBalance`) is to provide completeness with the introduced functionalities (`isUserAllowed`, `isTransferAllowed`
+* **Minimalism:** Defines only the essential functions (`forcedTransfer`, `setFrozenTokens`, `isUserAllowed`, `canTransfer`, `getFrozenTokens`) and associated events/errors needed for common RWA compliance and control patterns, avoiding mandated complexity or opinionated features. The reason to introduce specific errors (`ERC7943NotAllowedUser` and `ERC7943InsufficientUnfrozenBalance`) is to provide completeness with the introduced functionalities (`isUserAllowed` and `getFrozenTokens`).
 
 
 === ERC-2390 ===
