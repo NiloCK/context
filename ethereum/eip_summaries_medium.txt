@@ -4600,7 +4600,7 @@ By reusing the execution context's refund counter we can reuse its 50% DoS prote
 === EIP-7783 ===
 TITLE: Add Controlled Gas Limit Increase Strategy
 TYPE: Informational 
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-10-06
 REQUIRES: 
 
