@@ -5799,6 +5799,26 @@ MOTIVATION:
 ERC20 was designed as a standard interface allowing any token on Ethereum to be handled by other applications: from wallets to decentralized exchanges. This has been extremely powerful, but future developments in the industry of tokenization are bringing new challenges. For example it is already hard to know exactly why an ERC20 transfer failed, and it will become even harder when many tokens add their own transfer rules to the mix; we propose that it should be trivial to determine before a tx is sent, whether the transfer should turn out valid or invalid, and why (unless conditions
 
 
+=== ERC-7893 ===
+TITLE: DeFi Protocol Solvency Proof Mechanism
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-30
+REQUIRES: 2, 0, ,,  , 1, 6, 5
+
+SUMMARY:
+A standardized interface that enables DeFi protocols to implement verifiable solvency proofs through smart contracts. This interface works by defining structured data types for assets and liabilities, with oracle-validated price feeds tracking token values in real-time. The technical implementation calculates solvency ratios using configurable risk thresholds (105% minimum solvency ratio), maintains historical metrics for trend analysis, and emits structured events upon threshold breaches. The interface standardizes methods for querying current financial health, retrieving historical data points, and updating protocol positions, all while enforcing proper validation and security controls.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ![main](../assets/eip-7893/svg/main.svg) ### Core Interfaces The standard defines a comprehensive interface for solvency verification. Key features include: 1. Asset and Liability Management - Protocol assets tracking - Protocol liabilities tracking - Real-time value updates ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity ^0.8.20; /** * @title ISolvencyProof * @author Sean Luis (@SeanLuis) <seanluis47@gmail.com> * @notice Standard Interface for DeFi Protocol Solvency (EIP-DRAFT) * @dev Interface for the
+
+MOTIVATION:
+The DeFi ecosystem currently lacks standardization in financial health reporting, leading to: 1. Inconsistent reporting methodologies across protocols 2. Limited transparency in real-time financial status 3. Absence of standardized early warning systems 4. Complex and time-consuming audit processes 5. Difficulty in assessing cross-protocol risks This proposal directly addresses these challenges through a comprehensive interface that standardizes solvency reporting and monitoring: - **Standardized Methodology**: By providing a common interface with well-defined asset/liability structures and mathematical models, this EIP eliminates reporting inconsistencies that currently prevent clear comparisons between protocols. - **Real-time Transparency**: The proposed event system and query functions enable
+
+RATIONALE:
+The standard's design prioritizes: 1. Reliability through robust calculations 2. Efficiency via optimized data structures 3. Flexibility through modular design 4. Transparency via standardized metrics ### Data Structure Design Rationale The interface defines two primary data structures (`ProtocolAssets` and `ProtocolLiabilities`) with specific attributes: 1. **Array-based token tracking** was selected over mapping-based approaches for: - More efficient state retrieval for monitoring systems - Better compatibility with historical tracking requirements - Simplified batch updates in volatile market conditions 2. **Timestamp embedding** within structures rather than separate mappings provides: - Atomic updates with data consistency guarantees - Protection against partial-update scenarios
+
+
 === ERC-7405 ===
 TITLE: Portable Smart Contract Accounts
 TYPE: Standards Track ERC

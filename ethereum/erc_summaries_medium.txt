@@ -5799,6 +5799,26 @@ MOTIVATION:
 ERC20 was designed as a standard interface allowing any token on Ethereum to be handled by other applications: from wallets to decentralized exchanges. This has been extremely powerful, but future developments in the industry of tokenization are bringing new challenges. For example it is already hard to know exactly
 
 
+=== ERC-7893 ===
+TITLE: DeFi Protocol Solvency Proof Mechanism
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-30
+REQUIRES: 2, 0, ,,  , 1, 6, 5
+
+SUMMARY:
+A standardized interface that enables DeFi protocols to implement verifiable solvency proofs through smart contracts. This interface works by defining structured data types for assets and liabilities, with oracle-validated price feeds tracking token values in real-time. The technical implementation calculates solvency ratios using configurable risk thresholds (105% minimum solvency
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ![main](../assets/eip-7893/svg/main.svg) ### Core Interfaces The standard defines a comprehensive interface for solvency verification. Key features
+
+MOTIVATION:
+The DeFi ecosystem currently lacks standardization in financial health reporting, leading to: 1. Inconsistent reporting methodologies across protocols 2. Limited transparency in real-time financial status 3. Absence of standardized early warning systems 4. Complex and time-consuming audit processes 5. Difficulty in assessing cross-protocol risks This proposal directly addresses these
+
+RATIONALE:
+The standard's design prioritizes: 1. Reliability through robust calculations 2. Efficiency via optimized data structures 3. Flexibility through modular design 4. Transparency via standardized metrics ### Data Structure Design Rationale The interface defines two primary data structures (`ProtocolAssets` and `ProtocolLiabilities`) with specific attributes: 1. **Array-based token tracking** was selected
+
+
 === ERC-7405 ===
 TITLE: Portable Smart Contract Accounts
 TYPE: Standards Track ERC

@@ -5799,6 +5799,26 @@ MOTIVATION:
 ERC20 was designed as a standard interface allowing any token on Ethereum to be handled by other applications: from wallets to decentralized exchanges. This
 
 
+=== ERC-7893 ===
+TITLE: DeFi Protocol Solvency Proof Mechanism
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-30
+REQUIRES: 2, 0, ,,  , 1, 6, 5
+
+SUMMARY:
+A standardized interface that enables DeFi protocols to implement verifiable solvency proofs through smart contracts. This interface works by defining structured data types for
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The DeFi ecosystem currently lacks standardization in financial health reporting, leading to: 1. Inconsistent reporting methodologies across protocols 2. Limited transparency in real-time financial
+
+RATIONALE:
+The standard's design prioritizes: 1. Reliability through robust calculations 2. Efficiency via optimized data structures 3. Flexibility through modular design 4. Transparency via standardized
+
+
 === ERC-7405 ===
 TITLE: Portable Smart Contract Accounts
 TYPE: Standards Track ERC
