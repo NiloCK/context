@@ -376,7 +376,7 @@ CREATED: 2025-03-18
 REQUIRES: 
 
 SUMMARY:
-This document describes an RPC method that provides node-relevant configuration data for the current, next and last known forks.
+This document describes an RPC method that provides node-relevant configuration data for the current, next, and last known forks.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Clients MUST expose a new RPC method to report the current functional configuration and the expected next configuration via the standard JSON-RPC port. Clients MAY also expose this method through the Engine API. Clients MAY use these configuration objects to manage their per-fork configurations, though they SHOULD NOT simply return unprocessed configuration data. When reporting the current, next and last configurations, clients MUST include
@@ -385,7 +385,7 @@ MOTIVATION:
 Throughout Ethereum's history, there have been multiple instances where a client was not correctly configured for an upcoming hard fork, causing it to fall out of consensus when the fork boundary was crossed. Most incidents have been minor, such as a single client forking the chain in proof-of-work or having its blocks orphaned in proof-of-stake. The most significant occurrence was during the Pectra activation on the Holešky testnet. Four out of six clients on the network had an incorrect configuration for the deposits contract. Instead of being orphaned, the incorrect chain was justified, and the side effects persist
 
 RATIONALE:
-### Why Enumerate Precompiles? (And in General, Why Track a Particular Config Item?) The purpose of this specification is to enable nodes to advertise, prior to a fork, that they have the correct configurations loaded and ready. Past testnet and mainnet forks have revealed clients with incorrect precompile sets, chain IDs, deposit contract addresses, and other configuration errors. For precompiles in particular there has been discussion about removing or replacing precompiles in future forks, so a full enumeration of precompiles will reflect removal. Generally, if a configurable variable or constant causes a client to diverge at a fork—whether
+### Why Enumerate Precompiles? (And in General, Why Track a Particular Config Item?) The purpose of this specification is to enable nodes to advertise, prior to a fork, that they have the correct configurations loaded and ready. Past testnet and Ethereum Mainnet forks have revealed clients with incorrect precompile sets, chain IDs, deposit contract addresses, and other configuration errors. For precompiles in particular there has been discussion about removing or replacing precompiles in future forks, so a full enumeration of precompiles will reflect removal. Generally, if a configurable variable or constant causes a client to diverge at a
 
 
 === EIP-8016 ===

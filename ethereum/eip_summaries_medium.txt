@@ -376,7 +376,7 @@ CREATED: 2025-03-18
 REQUIRES: 
 
 SUMMARY:
-This document describes an RPC method that provides node-relevant configuration data for the current, next and last known forks.
+This document describes an RPC method that provides node-relevant configuration data for the current, next, and last known forks.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Clients MUST expose a new RPC method to report the current functional configuration and the
@@ -385,7 +385,7 @@ MOTIVATION:
 Throughout Ethereum's history, there have been multiple instances where a client was not correctly configured for an upcoming hard fork, causing it to fall out of consensus when the fork boundary was crossed. Most incidents have been minor, such as a single client forking the chain in proof-of-work or
 
 RATIONALE:
-### Why Enumerate Precompiles? (And in General, Why Track a Particular Config Item?) The purpose of this specification is to enable nodes to advertise, prior to a fork, that they have the correct configurations loaded and ready. Past testnet and mainnet forks have revealed clients with incorrect precompile sets,
+### Why Enumerate Precompiles? (And in General, Why Track a Particular Config Item?) The purpose of this specification is to enable nodes to advertise, prior to a fork, that they have the correct configurations loaded and ready. Past testnet and Ethereum Mainnet forks have revealed clients with incorrect precompile
 
 
 === EIP-8016 ===

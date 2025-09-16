@@ -376,7 +376,7 @@ CREATED: 2025-03-18
 REQUIRES: 
 
 SUMMARY:
-This document describes an RPC method that provides node-relevant configuration data for the current, next and last known forks.
+This document describes an RPC method that provides node-relevant configuration data for the current, next, and last known forks.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
