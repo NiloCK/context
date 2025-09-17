@@ -5658,7 +5658,7 @@ SPECIFICATION:
 > _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ###
 
 MOTIVATION:
-### The original control-flow facilities In 1833 Charles Babbage began the design of a steam-powered, mechanical, Turing-complete computer. Its first published description was by
+### The original control-flow facilities #### Babbage, 1833: Jumps and conditional jumps In 1833 Charles Babbage began the design of a steam-powered, mechanical, Turing-complete
 
 
 === EIP-7793 ===
