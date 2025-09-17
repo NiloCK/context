@@ -4372,6 +4372,26 @@ RATIONALE:
 This design was motivated by a few factors: 1. The issue of offering incentives for votes is an inevitability. There is no mechanism that
 
 
+=== ERC-7950 ===
+TITLE: Encode chain id with transaction hash
+TYPE: Standards Track ERC
+STATUS: Last Call
+CREATED: 2025-05-22
+REQUIRES: 155
+
+SUMMARY:
+This standard proposes a way to encode the combination of a chain ID and a transaction hash into one string.
+
+SPECIFICATION:
+The encoded string has three components: - A chain ID, denoted as `chainId`. The used chain id MUST be based on [EIP-155](./eip-155.md) and the
+
+MOTIVATION:
+Looking up a transaction by its hash always requires the context of the chain - a transaction hash alone is not enough to identify
+
+RATIONALE:
+The chain ID is the most important detail when routing queries based on this standard and is therefore the first element in the string.
+
+
 === ERC-5827 ===
 TITLE: Auto-renewable allowance extension
 TYPE: Standards Track ERC

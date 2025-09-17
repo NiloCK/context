@@ -4372,6 +4372,26 @@ RATIONALE:
 This design was motivated by a few factors: 1. The issue of offering incentives for votes is an inevitability. There is no mechanism that can prevent users from colluding off-chain to vote a certain direction, and with enough obfuscation, can be completely hidden from the community's view. The solution
 
 
+=== ERC-7950 ===
+TITLE: Encode chain id with transaction hash
+TYPE: Standards Track ERC
+STATUS: Last Call
+CREATED: 2025-05-22
+REQUIRES: 155
+
+SUMMARY:
+This standard proposes a way to encode the combination of a chain ID and a transaction hash into one string.
+
+SPECIFICATION:
+The encoded string has three components: - A chain ID, denoted as `chainId`. The used chain id MUST be based on [EIP-155](./eip-155.md) and the chain ID repository stated in that EIP. - A transaction hash, denoted as `txHash`. The hash MUST include the `0x` prefix. - A static string
+
+MOTIVATION:
+Looking up a transaction by its hash always requires the context of the chain - a transaction hash alone is not enough to identify the used chain. If the chain information is included in the string itself, finding the right chain for the transaction is easy. Such strings can
+
+RATIONALE:
+The chain ID is the most important detail when routing queries based on this standard and is therefore the first element in the string. The transaction hash is the second most important element. The suffix `tx` is used to differentiate from, for example, addresses. Without the `tx` it would
+
+
 === ERC-5827 ===
 TITLE: Auto-renewable allowance extension
 TYPE: Standards Track ERC

@@ -4480,7 +4480,7 @@ BLAKE2 is an excellent candidate for precompilation. BLAKE2 is heavily optimized
 === EIP-7825 ===
 TITLE: Transaction Gas Limit Cap
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-11-23
 REQUIRES: 
 
@@ -4823,6 +4823,26 @@ For many years, Ethereum used Meta EIPs to document network upgrades. Recently, 
 
 RATIONALE:
 The EIP repository is well known within the Ethereum community, and Meta EIPs have historically been useful to clearly list the EIPs included in a specific network upgrade. While the specification process for the execution and consensus layers differ, there is value in having a single, harmonized, list of
+
+
+=== EIP-8025 ===
+TITLE: Optional Execution Proofs
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-09-17
+REQUIRES: 
+
+SUMMARY:
+Optional execution proofs allow beacon nodes to verify the validity of the execution payload within a beacon block without running an execution layer client. The execution proofs are sent over the consensus layer's peer-to-peer network.
+
+SPECIFICATION:
+This is a consensus layer change only. Validators will now be able to enable two new modes: - zkEVM Proof generating - Stateless validation When a proof generating node receives a beacon block, they will create the necessary proofs for the execution payload in the block and re-propagate them
+
+MOTIVATION:
+Optional execution proofs reduce the hardware and bandwidth requirements that are needed for an attester to verify a beacon block. Moreover, the cost to verify to a block no longer grows with the gas limit. Since these are optional, protocol upgrades cannot be based on the improvements in this
+
+RATIONALE:
+<-- TODO -->
 
 
 === EIP-7698 ===
@@ -5565,6 +5585,26 @@ EVM is lacking bitwise shifting operators, but supports other logical and arithm
 
 RATIONALE:
 Instruction operands were chosen to fit the more natural use case of shifting a value already on the stack. This means the operand order is swapped compared to most arithmetic instructions.
+
+
+=== EIP-8024 ===
+TITLE: Backward compatible SWAPN, DUPN, EXCHANGE
+TYPE: Standards Track Core
+STATUS: Review
+CREATED: 2025-08-16
+REQUIRES: 
+
+SUMMARY:
+Currently, `SWAP*` and `DUP*` instructions are limited to a stack depth of 16. Introduce three new instructions, `SWAPN`, `DUPN` and `EXCHANGE` which lift this limitation and allow accessing the stack at higher depths.
+
+SPECIFICATION:
+We introduce three new instructions: - `DUPN` (`0xe6`) - `SWAPN` (`0xe7`) - `EXCHANGE` (`0xe8`) Each instruction carries one or two immediate operands. Informally, using 1-based indexing, the semantics are: - `DUPN n`: The `n`'th stack item is duplicated at the top of the stack. - `SWAPN n`: The `n
+
+MOTIVATION:
+While the stack is 1024 items deep, easy access is only possible for the top 16 items. Supporting more local variables is possible via manually keeping them in memory or through a "stack to memory elevation" in a compiler. This can result in complex and inefficient code. Furthermore, implementing
+
+RATIONALE:
+### Use of an immediate operand Allowing dynamic selection of the arguments to swap or dup could be used to prevent static analysis of the contents of the stack. Since static analysis is an important tool for security auditors we want to do what we can to make their
 
 
 === EIP-2026 ===
@@ -6548,7 +6588,7 @@ Ethereum does not have an official Stratum implementation yet. It officially sup
 === EIP-7934 ===
 TITLE: RLP Execution Block Size Limit
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-04-16
 REQUIRES: 
 
@@ -7383,7 +7423,7 @@ RATIONALE:
 === EIP-7917 ===
 TITLE: Deterministic proposer lookahead
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-24
 REQUIRES: 
 
