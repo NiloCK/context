@@ -8686,7 +8686,7 @@ Ethereum nodes have been moving away from providing read-write functionality suc
 === EIP-7883 ===
 TITLE: ModExp Gas Cost Increase
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-02-11
 REQUIRES: 2565
 
