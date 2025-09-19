@@ -282,7 +282,7 @@ SUMMARY:
 This EIP introduces Block-Level Access Lists (BALs) that record all accounts and storage locations accessed during block execution, along with their post-execution values. BALs
 
 SPECIFICATION:
-### Block Structure Modification We introduce a new field to the block header: ```python class Header: # Existing fields ... block_access_list_hash: Hash32 ``` The
+### Block Structure Modification We introduce a new field to the block header, `block_access_list_hash`, which contains the Keccak-256 hash of the RLP-encoded block access
 
 MOTIVATION:
 Transaction execution cannot be parallelized without knowing in advance which addresses and storage slots will be accessed. While [EIP-2930](./eip-2930.md) introduced optional transaction access lists,
@@ -2033,7 +2033,7 @@ RATIONALE:
 === EIP-7892 ===
 TITLE: Blob Parameter Only Hardforks
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-02-28
 REQUIRES: 7840
 

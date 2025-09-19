@@ -282,7 +282,7 @@ SUMMARY:
 This EIP introduces Block-Level Access Lists (BALs) that record all accounts and storage locations accessed during block execution, along with their post-execution values. BALs enable parallel disk reads, parallel transaction validation, and executionless state updates.
 
 SPECIFICATION:
-### Block Structure Modification We introduce a new field to the block header: ```python class Header: # Existing fields ... block_access_list_hash: Hash32 ``` The block body includes a `BlockAccessList` containing all account accesses and state changes. ### RLP Data Structures BALs use RLP encoding following the pattern: `address ->
+### Block Structure Modification We introduce a new field to the block header, `block_access_list_hash`, which contains the Keccak-256 hash of the RLP-encoded block access list. When no state changes are present, this field is the hash of an empty rlp list `0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347`, i.e. `keccak256(rlp.encode([]))`. ```python class Header: # Existing
 
 MOTIVATION:
 Transaction execution cannot be parallelized without knowing in advance which addresses and storage slots will be accessed. While [EIP-2930](./eip-2930.md) introduced optional transaction access lists, they are not enforced. This proposal enforces access lists at the block level, enabling: - Parallel disk reads and transaction execution - State reconstruction without
@@ -738,7 +738,7 @@ SUMMARY:
 This EIP introduces a new [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md) type to represent containers with forward-compatible Merkleization: A given field is always assigned the same stable [generalized index (gindex)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/merkle-proofs.md#generalized-merkle-tree-index) even when different container versions append new fields or drop existing fields.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ProgressiveContainer(active_fields)` A new [SSZ composite types)](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md#composite-types) is defined: - **progressive container**: ordered heterogeneous collection
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `ProgressiveContainer(active_fields)` A new [SSZ composite types](https://github.com/ethereum/consensus-specs/blob/ad36024441cf910d428d03f87f331fbbd2b3e5f1/ssz/simple-serialize.md#composite-types) is defined: - **progressive container**: ordered heterogeneous collection
 
 MOTIVATION:
 SSZ containers are frequently versioned, for example across fork boundaries. When the number of fields reaches a new power of two, or a field is removed or replaced with one of a different type, the shape of the underlying Merkle tree changes, breaking verifiers of Merkle proofs for these
@@ -2033,7 +2033,7 @@ RATIONALE:
 === EIP-7892 ===
 TITLE: Blob Parameter Only Hardforks
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-02-28
 REQUIRES: 7840
 
