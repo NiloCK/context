@@ -21,7 +21,7 @@ These limits have been: - proposed by [EVMC] - implemented partially by certain 
 === EIP-7980 ===
 TITLE: Ed25519 transaction support
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Withdrawn
 CREATED: 2025-06-25
 REQUIRES: 7932
 
@@ -1728,7 +1728,7 @@ The addition of a single parameter instead of introducing a whole new endpoint w
 === EIP-7851 ===
 TITLE: Deactivate/Reactivate a Delegated EOA's Key
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-12-27
 REQUIRES: 7702
 
@@ -2757,7 +2757,7 @@ By adding a flag for the local block builder, they are able to specify how many 
 === EIP-3670 ===
 TITLE: EOF - Code Validation
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2021-06-23
 REQUIRES: 3540
 
