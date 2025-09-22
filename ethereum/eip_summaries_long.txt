@@ -2363,6 +2363,26 @@ MOTIVATION:
 Ever since the first bitcoin mining ASIC was released, many new Proof of Work algorithms have been created with the intention of being “ASIC-resistant”. The goal of “ASIC-resistance” is to resist the centralization of PoW mining power such that these coins couldn’t be so easily manipulated by a few players. Ethereum's approach is to incentivize a geographically-distributed community of miners with a low barrier to entry on commodity hardware. As stated in the [Yellow Paper](https://ethereum.github.io/yellowpaper/paper.pdf): > 11.5. Mining Proof-of-Work. The mining proof-ofwork (PoW) exists as a cryptographically secure nonce that proves beyond reasonable doubt that a particular amount
 
 
+=== EIP-8007 ===
+TITLE: Glamsterdam Gas Repricings
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2025-08-21
+REQUIRES: 2, 7, 8, 0, ,,  , 7, 6, 6, 7, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1
+
+SUMMARY:
+This Meta EIP documents all the proposals for Glamsterdam related to the gas repricing effort. The goal of this effort is to harmonize gas costs across the EVM, thereby reducing the impact of specific bottlenecks on scaling. Proposals include changes to the cost of single EVM operations, as well as bigger changes to the gas model. This Meta EIP is purely informational and does not aim to have an active role in the governance process for the Glamsterdam fork. Instead, it serves as a directory for all repricing-related proposals, helping to organize the work and keeping the community
+
+SPECIFICATION:
+This Meta EIP includes two types of EIPs, namely, core and possible additions. This list will continue to be updated as more gas repricing EIPs are proposed. ### Core EIPs | EIP | Description | Type | Status | | ------------------------- | ------------------------------------------------------------------------------------------ | ------------------ | ---------------------- | | [EIP-7778](./eip-7778.md) | Prevent Block Gas Limit Circumvention by Excluding Refunds from Block Gas Accounting. | General Accounting | Proposed for Inclusion | | [EIP-7904](./eip-7904.md) | Gas Cost Repricing to reflect computational complexity and transaction throughput increase | Compute | Pending | | [EIP-7981](./eip-7981.md) | Introduce floor pricing for access
+
+MOTIVATION:
+The main objective of the Glamsterdam fork is to improve L1 scalability. A crucial aspect of this initiative is to create a better alignment between gas costs and actual resource usage. Currently, the gas model often misprices operations, resulting in inefficiencies and unintended incentives. For instance, within the pure compute operations, there is a high variance in execution time per gas unit, which indicates that a single unit of computation is not priced equally across the various opcodes. By standardizing gas costs across EVM operations and other resources, we can reduce bottlenecks and enhance the utilization of EVM
+
+RATIONALE:
+Discussed in the individual EIPs.
+
+
 === EIP-5593 ===
 TITLE: Restrict Ethereum Provider API Injection
 TYPE: Standards Track Interface
@@ -7059,6 +7079,26 @@ In general, it is good practice to reserve a certain memory area for the output 
 
 RATIONALE:
 This way of dealing with the problem requires a minimal change to the Ethereum Virtual Machine. Other means of achieving a similar goal would have changed the opcodes themselves or the number of their arguments. Another possibility would have been to only change the gas mechanics if `output_size` is equal to `2**256-1`. Since the main difficulty in the implementation is that memory has to be enlarged at two points in the code around `CALL`, this would not have been a simplification. At an earlier stage, it was proposed to also add the size of the returned data on
+
+
+=== EIP-8011 ===
+TITLE: Multidimensional Gas Metering
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-22
+REQUIRES: 
+
+SUMMARY:
+This proposal introduces multidimensional gas metering, changing the way we account for gas used at the block level. This enables Ethereum to increase throughput and better control excessive resource usage, with minimal changes to the protocol and the UX. During transaction execution, gas is metered for each resource dimension, such as compute and state. At the transaction level, everything remains unchanged. A transaction still pays fees according to the sum of gas used across all resources and still has a single gas limit imposed on this same sum. However, at the block level, only the gas used in
+
+SPECIFICATION:
+### Operation gas costs Under the multidimensional metering model, EVM operations are assigned a cost vector whose components correspond to their gas cost on each resource dimension. Each cost has 6 dimensions: `gas_cost_vector = (compute_cost, access_cost, size_cost, memory_cost, state_cost, history_cost)`. #### Pure compute operations The operations listed in [compute_ops](../assets/eip-8011/compute_ops.md) are assigned a `gas_cost_vector` equal to `(gas_cost, 0, 0, 0, 0, 0)`, where `gas_cost` is the operation's gas cost. #### Compute and memory operations The operations listed in [compute_mem_ops](../assets/eip-8011/compute_mem_ops.md) are assigned a `gas_cost_vector` equal to `(compute_cost, 0, 0, memory_cost, 0, 0)`, where `memory_cost` is the operation's memory expansion cost
+
+MOTIVATION:
+This proposal separates *transaction pricing* (i.e., the way of measuring consumption of resources by transactions) from *block metering* (i.e., the way of controlling resource limits and ensure that blocks do not overload the network). More concretely, it introduces a multidimensional metering scheme that accounts for the different EVM resources while keeping the pricing model unchanged. There are four main benefits of the proposal: 1. Throughput gains: By decoupling resource limits, blocks can carry transactions that stress distinct resources simultaneously, improving packing efficiency. 2. Finer-grained control over excessive resource usage: metering gas costs independently for each resource allows us
+
+RATIONALE:
+### Why are we choosing this resource split? Ethereum’s slot-based structure introduces a strict temporal constraint: all attestations must be processed, aggregated, and propagated within a single slot. This fact makes time a fundamental resource. To maintain network health, validators must execute blocks, validate them, and gossip attestations quickly enough to avoid missed slots and penalties. Each type of resource contributes differently to this bottleneck: - Execution time affects how quickly validators can process blocks and produce attestations. - Data size influences how long it takes to propagate blocks and blobs across the peer-to-peer network. - Memory usage
 
 
 === EIP-214 ===

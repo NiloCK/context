@@ -2363,6 +2363,26 @@ MOTIVATION:
 Ever since the first bitcoin mining ASIC was released, many new Proof of Work algorithms have been created with the intention of being “ASIC-resistant”.
 
 
+=== EIP-8007 ===
+TITLE: Glamsterdam Gas Repricings
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2025-08-21
+REQUIRES: 2, 7, 8, 0, ,,  , 7, 6, 6, 7, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1
+
+SUMMARY:
+This Meta EIP documents all the proposals for Glamsterdam related to the gas repricing effort. The goal of this effort is to harmonize gas
+
+SPECIFICATION:
+This Meta EIP includes two types of EIPs, namely, core and possible additions. This list will continue to be updated as more gas repricing
+
+MOTIVATION:
+The main objective of the Glamsterdam fork is to improve L1 scalability. A crucial aspect of this initiative is to create a better alignment
+
+RATIONALE:
+Discussed in the individual EIPs.
+
+
 === EIP-5593 ===
 TITLE: Restrict Ethereum Provider API Injection
 TYPE: Standards Track Interface
@@ -7059,6 +7079,26 @@ In general, it is good practice to reserve a certain memory area for the output 
 
 RATIONALE:
 This way of dealing with the problem requires a minimal change to the Ethereum Virtual Machine. Other means of achieving a similar goal would
+
+
+=== EIP-8011 ===
+TITLE: Multidimensional Gas Metering
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-08-22
+REQUIRES: 
+
+SUMMARY:
+This proposal introduces multidimensional gas metering, changing the way we account for gas used at the block level. This enables Ethereum to increase throughput
+
+SPECIFICATION:
+### Operation gas costs Under the multidimensional metering model, EVM operations are assigned a cost vector whose components correspond to their gas cost on
+
+MOTIVATION:
+This proposal separates *transaction pricing* (i.e., the way of measuring consumption of resources by transactions) from *block metering* (i.e., the way of controlling resource
+
+RATIONALE:
+### Why are we choosing this resource split? Ethereum’s slot-based structure introduces a strict temporal constraint: all attestations must be processed, aggregated, and propagated
 
 
 === EIP-214 ===
