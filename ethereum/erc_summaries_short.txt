@@ -3278,7 +3278,7 @@ CREATED: 2025-06-10
 REQUIRES: 165
 
 SUMMARY:
-This EIP proposes the Universal RWA (uRWA) standard, an interface for tokenized Real World Assets (RWAs) such as securities, real estate, commodities, or other
+This EIP proposes the Universal RWA (uRWA) standard, a set of interfaces for tokenized Real World Assets (RWAs) such as securities, real estate, commodities,
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
