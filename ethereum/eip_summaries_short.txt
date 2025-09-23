@@ -4666,17 +4666,17 @@ RATIONALE:
 
 
 === EIP-7935 ===
-TITLE: Set default gas limit to XX0M
+TITLE: Set default gas limit to 60M
 TYPE: Informational 
 STATUS: Draft
 CREATED: 2025-04-22
 REQUIRES: 
 
 SUMMARY:
-<!--TODO: Fill in recommended gas limit--> The gas limit on mainnet is currently 36M. This should be significantly increased to XX0Mby the time Fusaka
+The gas limit on mainnet is currently 36M. This should be significantly increased to 60M by the time Fusaka is released by execution layer
 
 SPECIFICATION:
-Execution layer clients have different configuration formats. They should all update the gas limit value generated in their default configurations to XX0M.
+Execution layer clients have different configuration formats. They should all update the gas limit value generated in their default configurations to 60M.
 
 MOTIVATION:
 There is currently great interest in scaling L1 execution. This can likely be done to some extent without implementing any new features. However, it

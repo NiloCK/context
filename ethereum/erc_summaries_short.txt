@@ -1479,7 +1479,7 @@ RATIONALE:
 === ERC-7857 ===
 TITLE: AI Agents NFT with Private Metadata
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-01-02
 REQUIRES: 
 
@@ -7920,7 +7920,7 @@ The goal of this standard envolves only the transport of submitted transactions,
 === ERC-6909 ===
 TITLE: Minimal Multi-Token Interface
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-04-19
 REQUIRES: 165
 
