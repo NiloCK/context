@@ -371,7 +371,7 @@ RATIONALE:
 === EIP-7910 ===
 TITLE: eth_config JSON-RPC Method
 TYPE: Standards Track Interface
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-18
 REQUIRES: 
 
@@ -4668,7 +4668,7 @@ RATIONALE:
 === EIP-7935 ===
 TITLE: Set default gas limit to 60M
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-04-22
 REQUIRES: 
 
@@ -8497,7 +8497,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### System logs list A new list is introduced to track all block level logs emitted from system interactions. The definition uses the `Log` SSZ type from [EIP-6466](./eip-6466.md). ```python system_logs = ProgressiveList[Log]( log_0, log_1, log_2, ...) ``` ### Priority fee processing [EIP-1559](./eip-1559.md) priority fees SHALL no longer be credited after each individual transaction. Instead, they SHALL be summed up and credited after all transactions
 
 MOTIVATION:
-With [EIP-7708](./eip-7708.md) wallets gain the ability to use eth_getLogs to track changes to their ETH balance. However, the ETH balance may change without an explicit transaction, through block production and withdrawals. By having such operations emit block-level system logs, eth_Logs provides a complete picture of ETH balance changes.
+With [EIP-7708](./eip-7708.md) wallets gain the ability to use eth_getLogs to track changes to their ETH balance. However, the ETH balance may change without an explicit transaction, through block production and withdrawals. By having such operations emit block-level system logs, eth_getLogs provides a complete picture of ETH balance changes.
 
 RATIONALE:
 Together with [EIP-7708](./eip-7708.md) this EIP provides the ability for wallets to compute the exact ETH balance from logs without requiring download of every single block header and all withdrawals. The block reward from priority fees no longer has to be summed up by processing all receipts and can be obtained from the system logs root, making it efficiently provable. Batched crediting of priority fees improves parallel execution of transactions, as a transaction can no longer start with insufficient fees and only become eligible for execution after incremental priority fees have been credited. ### Alternatives / Future - Instead

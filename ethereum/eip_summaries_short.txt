@@ -371,7 +371,7 @@ RATIONALE:
 === EIP-7910 ===
 TITLE: eth_config JSON-RPC Method
 TYPE: Standards Track Interface
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-18
 REQUIRES: 
 
@@ -4668,7 +4668,7 @@ RATIONALE:
 === EIP-7935 ===
 TITLE: Set default gas limit to 60M
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-04-22
 REQUIRES: 
 
