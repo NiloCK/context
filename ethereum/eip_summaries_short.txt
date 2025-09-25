@@ -4357,12 +4357,12 @@ SPECIFICATION:
 === EIP-7607 ===
 TITLE: Hardfork Meta - Fusaka
 TYPE: Meta 
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-02-01
 REQUIRES: 7600
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Proposed, Considered, Scheduled & Declined for Inclusion in the Fulu/Osaka network upgrade.
+This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Fulu/Osaka network upgrade.
 
 SPECIFICATION:
 Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Proposed for Inclusion` and `Declined for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for
