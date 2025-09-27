@@ -7651,7 +7651,7 @@ SPECIFICATION:
 > _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ### `CALLSUB (0x..)` Transfers control to a subsidiary operation. 1. Pop the `destination` on top on the `stack`. 2. Push the current `PC + 1` to
 
 MOTIVATION:
-Dynamic jumps must die. ### The original control-flow facilities #### Babbage, 1833: Jumps and conditional jumps In 1833 Charles Babbage began the design of a steam-powered, mechanical, Turing-complete computer. Programs were to be encoded on punch cards which controlled a system of rods, gears and other machinery to implement
+***Dynamic jumps must die.*** ### The original control-flow facilities #### Babbage, 1833: Jumps and conditional jumps In 1833 Charles Babbage began the design of a steam-powered, mechanical, Turing-complete computer. Programs were to be encoded on punch cards which controlled a system of rods, gears and other machinery to implement
 
 RATIONALE:
 ### Why no static relative jumps? This would of course break the promise of "the smallest possible change." [EIP-8013: Static relative jumps and calls for the EVM](./eip-8013) is available if we want its size and performance advantages. It proposes five new EVM jump instructions (RJUMP, RJUMPI, RJUMPV, RJUMPSUB, and
