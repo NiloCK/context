@@ -3103,7 +3103,7 @@ CREATED: 2022-12-13
 REQUIRES: 
 
 SUMMARY:
-The Smart Derivative Contract (SDC) allows fully automizing and securing a financial product's - e.g. a financial derivative or bond - complete trade life cycle. The SDC leverages the advantages of smart contracts to remove many of the frictions associated with the classical derivative life cycle. Most notably, the
+The Smart Derivative Contract (SDC) allows fully automizing and securing a financial product's - e.g. a financial derivative or bond - complete trade life cycle.[^1] The SDC leverages the advantages of smart contracts to remove many of the frictions associated with the classical derivative life cycle. Most notably, the
 
 SPECIFICATION:
 The methods and event are separated into different interfaces: - `ISDCTrade` - events and functions related to trade inception, confirmation and termination. - `ISDCSettlement` - events and functions related to the settlement life-cycle of a trade. - `IAsyncTransferCallback` - events and the callback function `afterTransfer` for settlements that utilize
