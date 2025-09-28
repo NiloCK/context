@@ -881,7 +881,7 @@ In the software security industry, it is a widely accepted practice to use a com
 === EIP-7797 ===
 TITLE: Double speed for hash_tree_root
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-10-23
 REQUIRES: 
 
@@ -2831,7 +2831,7 @@ This endpoint is similar to [EIP-695](./eip-695.md) but it provides the symbol i
 === EIP-7830 ===
 TITLE: Contract size limit increase for EOF
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-11-29
 REQUIRES: 1, 7, 0, ,,  , 3, 5, 4, 0, ,,  , 3, 8, 6, 0
 
@@ -8105,7 +8105,7 @@ The invalid instruction can be used as a distinct reason to abort execution.
 === EIP-7698 ===
 TITLE: EOF - Creation transaction
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-04-24
 REQUIRES: 3540
 
