@@ -3815,7 +3815,7 @@ Roughly speaking, reducing the gas cost of Calldata leads to potentially larger 
 === EIP-7825 ===
 TITLE: Transaction Gas Limit Cap
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-11-23
 REQUIRES: 
 
@@ -4049,7 +4049,7 @@ N/A
 === EIP-7917 ===
 TITLE: Deterministic proposer lookahead
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-03-24
 REQUIRES: 
 
@@ -4186,7 +4186,7 @@ Refer to the individual EIPs.
 === EIP-7594 ===
 TITLE: PeerDAS - Peer Data Availability Sampling
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-01-12
 REQUIRES: 4844
 
@@ -6624,7 +6624,7 @@ RATIONALE:
 === EIP-7939 ===
 TITLE: Count leading zeros (CLZ) opcode
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-04-28
 REQUIRES: 
 
@@ -6644,7 +6644,7 @@ RATIONALE:
 === EIP-7934 ===
 TITLE: RLP Execution Block Size Limit
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-04-16
 REQUIRES: 
 
@@ -7680,7 +7680,7 @@ RATIONALE:
 === EIP-7918 ===
 TITLE: Blob base fee bounded by execution cost
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-03-25
 REQUIRES: 4, 8, 4, 4, ,,  , 7, 8, 4, 0
 
@@ -7800,7 +7800,7 @@ EIP-1052 In order to include the function of `BALANCE`, let the `EXTCODEHASH` of
 === EIP-7935 ===
 TITLE: Set default gas limit to 60M
 TYPE: Informational 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-04-22
 REQUIRES: 
 
