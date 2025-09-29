@@ -9179,7 +9179,7 @@ MOTIVATION:
 The MODEXP precompile has been a source of numerous consensus bugs. Many of them were due to specifically crafted cases using impractical input lengths. Its pricing function is also quite complex given its nature of unbounded inputs. While we don't suggest to rework the pricing function, it may be
 
 RATIONALE:
-### Limit This upper bound allows the existing use cases of MODEXP: 1. RSA verification with up to 8192 bit keys. Commonly used ones are 1024/2048/4196 bits. 2. Elliptic curve related use cases are usually less than 384 bits. ### EVMMAX Replacing the precompile with EVM code using an
+### Limit This upper bound allows the existing use cases of MODEXP: 1. RSA verification with up to 8192 bit keys. Commonly used ones are 1024/2048/4096 bits. 2. Elliptic curve related use cases are usually less than 384 bits. ### EVMMAX Replacing the precompile with EVM code using an
 
 
 === EIP-3508 ===
