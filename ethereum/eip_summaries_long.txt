@@ -3855,7 +3855,7 @@ RATIONALE:
 === EIP-7951 ===
 TITLE: Precompile for secp256r1 Curve Support
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-05-27
 REQUIRES: 
 
