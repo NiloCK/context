@@ -9165,7 +9165,7 @@ It is very unlikely that any precompile will need to access or modify a contract
 === EIP-7823 ===
 TITLE: Set upper bounds for MODEXP
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-11-11
 REQUIRES: 198
 
