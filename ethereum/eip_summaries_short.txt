@@ -664,6 +664,26 @@ RATIONALE:
 ### Blocks and Epochs Blocks and epochs serve as natural trigger points for upgrades, as they represent the levels at which state transitions occur
 
 
+=== EIP-7619 ===
+TITLE: Precompile Falcon512 generic verifier
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2023-07-03
+REQUIRES: 
+
+SUMMARY:
+Include a precompiled signature verification function using Falcon-512. Falcon-512 is a candidate for standardization by the National Institute of Standards and Technology (NIST) and
+
+SPECIFICATION:
+A clean implementation for Falcon-512 algorithm was brought from the PQClean project. The precompiled signature verification function runs at address `0x65`. The required inputs
+
+MOTIVATION:
+The advent of quantum computing threatens blockchain protocols and networks because they utilize non-quantum resistant cryptographic algorithms. When quantum computers become robust enough to
+
+RATIONALE:
+Falcon-512 is a good candidate for a new signature implementation. Key sizes in Falcon-512 are relatively small compared to other post-quantum signature algorithms. The
+
+
 === EIP-7937 ===
 TITLE: EVM64 - 64-bit mode EVM opcodes
 TYPE: Standards Track Core
@@ -7460,7 +7480,7 @@ RATIONALE:
 === EIP-7870 ===
 TITLE: Hardware and Bandwidth Recommendations
 TYPE: Informational 
-STATUS: Review
+STATUS: Living
 CREATED: 2025-01-26
 REQUIRES: 
 
@@ -8008,7 +8028,7 @@ RATIONALE:
 === EIP-7892 ===
 TITLE: Blob Parameter Only Hardforks
 TYPE: Informational 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-02-28
 REQUIRES: 7840
 
@@ -8265,6 +8285,26 @@ Contracts conforming to the EVM Object Format (EOF) are going to be validated at
 
 RATIONALE:
 The `0xEF` byte was chosen because it resembles **E**xecutable **F**ormat. Contracts using unassigned opcodes are generally understood to be at risk of changing semantics.
+
+
+=== EIP-8032 ===
+TITLE: Tree-Depth-Based Storage Gas Pricing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-09-29
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces a mechanism to dynamically price SSTORE operations based on the storage size of a contract. A new optional depth field is
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Ethereum's state size is a growing concern, as it directly impacts node synchronization times, hardware requirements, and overall network health. The current gas model
+
+RATIONALE:
+The intent is to create friction in when growing the state size of a contract, thus limiting the number of such contracts. Going over
 
 
 === EIP-6800 ===

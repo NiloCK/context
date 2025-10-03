@@ -664,6 +664,26 @@ RATIONALE:
 ### Blocks and Epochs Blocks and epochs serve as natural trigger points for upgrades, as they represent the levels at which state transitions occur on Ethereum. ### Terminal Total Difficulty For the Terminal Total Difficulty mechanism, the rationale can be found in [EIP-3675](./eip-3675.md). ### Timestamps Due to the possibility
 
 
+=== EIP-7619 ===
+TITLE: Precompile Falcon512 generic verifier
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2023-07-03
+REQUIRES: 
+
+SUMMARY:
+Include a precompiled signature verification function using Falcon-512. Falcon-512 is a candidate for standardization by the National Institute of Standards and Technology (NIST) and is quantum resistant with security level I.
+
+SPECIFICATION:
+A clean implementation for Falcon-512 algorithm was brought from the PQClean project. The precompiled signature verification function runs at address `0x65`. The required inputs are: - `public key` - Falcon Public key of 897 bytes - `signature` - 666 bytes (max size) - `message` - an arbitrary number of
+
+MOTIVATION:
+The advent of quantum computing threatens blockchain protocols and networks because they utilize non-quantum resistant cryptographic algorithms. When quantum computers become robust enough to run Shor’s algorithm (a quantum algorithm to find the prime factors of an integer) on a large scale, the most used asymmetric algorithms, utilized for
+
+RATIONALE:
+Falcon-512 is a good candidate for a new signature implementation. Key sizes in Falcon-512 are relatively small compared to other post-quantum signature algorithms. The following table shows a summary of the typical values for keys and the approximate amount of time taken per second to execute signature verifications as
+
+
 === EIP-7937 ===
 TITLE: EVM64 - 64-bit mode EVM opcodes
 TYPE: Standards Track Core
@@ -7460,7 +7480,7 @@ RATIONALE:
 === EIP-7870 ===
 TITLE: Hardware and Bandwidth Recommendations
 TYPE: Informational 
-STATUS: Review
+STATUS: Living
 CREATED: 2025-01-26
 REQUIRES: 
 
@@ -8008,7 +8028,7 @@ RATIONALE:
 === EIP-7892 ===
 TITLE: Blob Parameter Only Hardforks
 TYPE: Informational 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-02-28
 REQUIRES: 7840
 
@@ -8265,6 +8285,26 @@ Contracts conforming to the EVM Object Format (EOF) are going to be validated at
 
 RATIONALE:
 The `0xEF` byte was chosen because it resembles **E**xecutable **F**ormat. Contracts using unassigned opcodes are generally understood to be at risk of changing semantics. Hence using the unassigned `0xEF` should have lesser effects, than choosing an assigned opcode, such as `0xFD` (`REVERT`), `0xFE` (`INVALID)`, or `0xFF` (`SELFDESTRUCT`). Arguably while
+
+
+=== EIP-8032 ===
+TITLE: Tree-Depth-Based Storage Gas Pricing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-09-29
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces a mechanism to dynamically price SSTORE operations based on the storage size of a contract. A new optional depth field is added to the account RLP, which tracks an approximation of the storage trie's depth. The gas cost for SSTORE will be augmented by a factor
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants and parameters |Name|Value|Description| |-|:-:|-| |`FORK_TIMESTAMP`| TBD | Fork activation timestamp | |`EXP_FACTOR` |
+
+MOTIVATION:
+Ethereum's state size is a growing concern, as it directly impacts node synchronization times, hardware requirements, and overall network health. The current gas model for storage operations does not fully account for the long-term cost of maintaining that state indefinitely. This has led to a situation where it is
+
+RATIONALE:
+The intent is to create friction in when growing the state size of a contract, thus limiting the number of such contracts. Going over the limit, some contract developers might want to use another contract to start fresh, which comes at the cost of paying for contract creation, and
 
 
 === EIP-6800 ===
