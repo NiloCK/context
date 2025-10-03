@@ -1599,7 +1599,7 @@ RATIONALE:
 === EIP-7883 ===
 TITLE: ModExp Gas Cost Increase
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-02-11
 REQUIRES: 2565
 
