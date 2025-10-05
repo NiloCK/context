@@ -2311,7 +2311,7 @@ CREATED: 2025-04-12
 REQUIRES: 1, 5, 5, ,,  , 6, 4, 0, 4, ,,  , 6, 4, 6, 6, ,,  , 6, 4, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP does three things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-6404](./eip-6404.md) transaction profile that
+This EIP does three things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-6404](./eip-6404.md) transaction profile &
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -5731,7 +5731,7 @@ This is a minimally disruptive way to remove the need to handle blooms from clie
 === EIP-7896 ===
 TITLE: ABI attachment in `wallet_sendCalls`
 TYPE: Standards Track Interface
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-02-27
 REQUIRES: 5792
 
