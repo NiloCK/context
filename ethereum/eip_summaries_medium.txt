@@ -3162,7 +3162,7 @@ Perpetually valid signed voluntary exits allow simpler staking operation designs
 === EIP-7910 ===
 TITLE: eth_config JSON-RPC Method
 TYPE: Standards Track Interface
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-03-18
 REQUIRES: 
 
@@ -8230,7 +8230,7 @@ SUMMARY:
 This EIP introduces a new Merkle tree shape for [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md) types that results in fewer hashes when only a small number of leaves is used. The new tree shape grows progressively with increased leaf count and no longer has a bounded capacity. It also offers forward compatibility:
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Progressive Merkle tree The [SSZ Merkleization specification)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md#merkleization) is extended with a helper function: -
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Progressive Merkle tree The [SSZ Merkleization specification](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md#merkleization) is extended with a helper function: -
 
 MOTIVATION:
 Current SSZ `List[type, N]` types require a predefined capacity `N`, which leads to several issues: - Inefficient hashing: Lists often contain far fewer elements than their maximum capacity (e.g., [`Transaction`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/bellatrix/beacon-chain.md#custom-types)), resulting in unnecessary zero-padding and dozens of extra hash computations. This is exacerbated when nesting `List[type, N]`, e.g., in

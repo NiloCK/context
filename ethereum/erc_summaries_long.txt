@@ -1699,12 +1699,12 @@ This method allows contracts written without the [ERC-5169](./eip-5169.md) inter
 === ERC-7656 ===
 TITLE: Generalized Contract-Linked Services
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-03-15
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7
 
 SUMMARY:
-This proposal defines a factory capable of deploying generic services linked to specific contracts, such as [ERC-4337](./eip-4337.md) accounts or [ERC-721](./eip-721.md) tokens (NFTs). These linked services extend the functionalities of the target contract, operating under the ownership of the contract's or NFT's owner without requiring modifications to the original contract's code. As a secondary effect, this proposal helps fighting the proliferation of ERCs that require changes to the basic standards.
+This proposal defines a factory capable of deploying generic services linked to specific contracts, such as [ERC-4337](./eip-4337.md) accounts or [ERC-721](./eip-721.md) tokens (NFTs). These linked services extend the functionalities of the target contract, operating under the ownership of the contract's or NFT's owner without requiring modifications to the original contract's code. This approach enables extending existing contracts with new capabilities while maintaining backward compatibility with deployed instances.
 
 SPECIFICATION:
 The keywords "MUST," "MUST NOT," "REQUIRED," "SHALL," "SHALL NOT," "SHOULD," "SHOULD NOT," "RECOMMENDED," "NOT RECOMMENDED," "MAY," and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The `IERC7656Factory` interface is defined as follows: ```solidity interface IERC7656Factory { event Created( address contractAddress, address indexed implementation, bytes32 salt, uint256 chainId, bytes12 mode, address indexed linkedContract, uint256 indexed linkedId ); error CreationFailed(); function create( address implementation, bytes32 salt, uint256 chainId, bytes12 mode, address linkedContract, uint256 linkedId ) external returns (address); function compute( address implementation, bytes32 salt, uint256 chainId, bytes12 mode, address linkedContract, uint256 linkedId
@@ -3720,7 +3720,7 @@ The `Permit` type signature is not supported since the purpose of the Universal 
 === ERC-7950 ===
 TITLE: Encode chain id with transaction hash
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-05-22
 REQUIRES: 155
 
@@ -4780,7 +4780,7 @@ The chosen objectives for a standard for token errors are to provide context abo
 === ERC-7291 ===
 TITLE: Purpose bound money
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-06-24
 REQUIRES: 1, 6, 5, ,,  , 1, 7, 3, ,,  , 1, 1, 5, 5
 
@@ -6418,7 +6418,7 @@ This EIP aims to allow tracing all licenses to an NFT to facilitate right manage
 === ERC-8001 ===
 TITLE: Agent Coordination Framework
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-08-02
 REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 5, 2, 6, 7
 

@@ -1699,7 +1699,7 @@ This method allows contracts written without the [ERC-5169](./eip-5169.md) inter
 === ERC-7656 ===
 TITLE: Generalized Contract-Linked Services
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-03-15
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7
 
@@ -3720,7 +3720,7 @@ The `Permit` type signature is not supported since the purpose of the Universal 
 === ERC-7950 ===
 TITLE: Encode chain id with transaction hash
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-05-22
 REQUIRES: 155
 
@@ -4780,7 +4780,7 @@ The chosen objectives for a standard for token errors are to provide context abo
 === ERC-7291 ===
 TITLE: Purpose bound money
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2023-06-24
 REQUIRES: 1, 6, 5, ,,  , 1, 7, 3, ,,  , 1, 1, 5, 5
 
@@ -6418,7 +6418,7 @@ This EIP aims to allow tracing all licenses to an NFT to facilitate right manage
 === ERC-8001 ===
 TITLE: Agent Coordination Framework
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-08-02
 REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 5, 2, 6, 7
 

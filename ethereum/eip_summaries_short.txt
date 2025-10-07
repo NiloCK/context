@@ -3162,7 +3162,7 @@ Perpetually valid signed voluntary exits allow simpler staking operation designs
 === EIP-7910 ===
 TITLE: eth_config JSON-RPC Method
 TYPE: Standards Track Interface
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-03-18
 REQUIRES: 
 
