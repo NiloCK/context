@@ -1528,6 +1528,26 @@ RATIONALE:
 ### PENALTY_ADJUSTMENT_FACTOR This variable impacts the sensitivity of the `NET_EXCESS_PENALTIES`. Given stable participation, the `penalty_factor` is one. If participation decreases, the `penalty_factor` will temporarily
 
 
+=== EIP-8038 ===
+TITLE: State-access gas cost increase
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-03
+REQUIRES: 2, 9, 2, 6, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 2
+
+SUMMARY:
+This EIP updates the gas cost of state-access operations to reflect Ethereum’s larger state and the consequent slowdown of these operations. It raises the
+
+SPECIFICATION:
+Upon activation of this EIP, the following parameters of the gas model are updated: | **Parameter** | **Current value** | **New value** | **Increase**
+
+MOTIVATION:
+The gas price of accessing state has not been updated for quite some time. [EIP-2929](eip-2929.md) was included in the Berlin fork in March 2021
+
+RATIONALE:
+### Benchmarking This proposal does not yet have finalized numbers. To achieve this, we require stateful benchmarks, which are currently in development. Once we
+
+
 === EIP-1588 ===
 TITLE: Hardfork Meta: Ethereum ProgPoW
 TYPE: Meta 
@@ -4203,6 +4223,26 @@ RATIONALE:
 Refer to the individual EIPs.
 
 
+=== EIP-8030 ===
+TITLE: P256 transaction support
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-09-20
+REQUIRES: 7932
+
+SUMMARY:
+This EIP adds a new [EIP-7932](./eip-7932.md) algorithm of type `0x0` for supporting P256 signatures.
+
+SPECIFICATION:
+This EIP defines a new [EIP-7932](../../EIPS/eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE`
+
+MOTIVATION:
+P256 (a.k.a secp256r1) is a widely-used NIST standardized algorithm that already has a presence within the Ethereum codebase. This makes it a great algorithm
+
+RATIONALE:
+### Additional 500 gas penalty Much of this proposal is drawn from RIP-7212. Some of the test cases in RIP-7212 show that P256 is
+
+
 === EIP-7594 ===
 TITLE: PeerDAS - Peer Data Availability Sampling
 TYPE: Standards Track Core
@@ -4377,7 +4417,7 @@ SPECIFICATION:
 === EIP-7607 ===
 TITLE: Hardfork Meta - Fusaka
 TYPE: Meta 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-02-01
 REQUIRES: 7600
 
@@ -4496,7 +4536,7 @@ TITLE: Glamsterdam Gas Repricings
 TYPE: Meta 
 STATUS: Draft
 CREATED: 2025-08-21
-REQUIRES: 2, 7, 8, 0, ,,  , 7, 6, 6, 7, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1
+REQUIRES: 2, 7, 8, 0, ,,  , 7, 6, 6, 7, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This Meta EIP documents all the proposals for Glamsterdam related to the gas repricing effort. The goal of this effort is to harmonize gas

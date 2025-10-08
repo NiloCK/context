@@ -8383,21 +8383,21 @@ The design of this Grant Registry Contract is driven by the need for a flexible 
 === ERC-8004 ===
 TITLE: Trustless Agents
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-08-13
 REQUIRES: 
 
 SUMMARY:
-This ERC extends the Agent‑to‑Agent (A2A) Protocol <!-- TODO: where is the A2A protocol defined? --> with a trust layer that allows participants to
+This protocol proposes to use blockchains to **discover, choose, and interact with agents across organizational boundaries** without pre-existing trust, thus **enabling open-ended agent economies**.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-The existing A2A protocol handles agent authentication, skills advertisement via AgentCards<!-- TODO: what's an AgentCard -->, direct messaging, and complete task-lifecycle orchestration. Its adoption
+MCP allows servers to list and offer their capabilities (prompts, resources, tools, and completions), while A2A handles agent authentication, skills advertisement via AgentCards, direct
 
 RATIONALE:
-**Off-chain Infrastructure** The protocol deliberately delegates complex operations off-chain to enable: * Sophisticated reputation algorithms and aggregation services * Flexible validation protocols with custom
+* **Agent communication protocols**: MCP and A2A are popular, and other protocols could emerge. For this reason, this protocol links from the blockchain to
 
 
 === ERC-5007 ===

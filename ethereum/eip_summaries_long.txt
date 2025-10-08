@@ -1528,6 +1528,26 @@ RATIONALE:
 ### PENALTY_ADJUSTMENT_FACTOR This variable impacts the sensitivity of the `NET_EXCESS_PENALTIES`. Given stable participation, the `penalty_factor` is one. If participation decreases, the `penalty_factor` will temporarily increase above one until `net_excess_penalties` catches up. If participation increases, the `penalty_factor` will temporarily be zero until `net_excess_penalties` catches up. The `PENALTY_ADJUSTMENT_FACTOR` regulates how fast `net_excess_penalties` catches up. In other words, the `PENALTY_ADJUSTMENT_FACTOR` determines the frequency that the penalty_factor is not one. A high `PENALTY_ADJUSTMENT_FACTOR` causes the `net_excess_penalties` to adjust slower. A low `PENALTY_ADJUSTMENT_FACTOR` causes the `net_excess_penalties` to react more sensitively to changes in participation. ### `MAX_PENALTY_FACTOR` The `MAX_PENALTY_FACTOR` puts a ceiling onto the
 
 
+=== EIP-8038 ===
+TITLE: State-access gas cost increase
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-03
+REQUIRES: 2, 9, 2, 6, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 2
+
+SUMMARY:
+This EIP updates the gas cost of state-access operations to reflect Ethereum’s larger state and the consequent slowdown of these operations. It raises the base costs for `GAS_STORAGE_UPDATE`, `GAS_COLD_SLOAD`, and `GAS_COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`. The design coordinates with EIP-8032: before EIP-8032, parameters assume worst-case contract size; after EIP-8032, they assume worst-case up to `ACTIVATION_THRESHOLD`, with additional depth-based scaling beyond.
+
+SPECIFICATION:
+Upon activation of this EIP, the following parameters of the gas model are updated: | **Parameter** | **Current value** | **New value** | **Increase** |**Operations affected** | |:---:|:---:|:---:|:---:|:---:| | `GAS_STORAGE_UPDATE` | 5,000 | TBD | TBD | `SSTORE` | | `GAS_COLD_SLOAD` | 2,100 | TBD | TBD | `SSTORE` and `SLOAD` | | `GAS_COLD_ACCOUNT_ACCESS` | 2,600 | TBD | TBD | `*CALL` opcodes, `BALANCE`, `SELFDESTRUCT` and `EXT*` opcodes | | `GAS_WARM_ACCESS` | 100 | TBD | TBD | `SSTORE`, `SLOAD`, `*CALL` opcodes, `BALANCE` and `EXT*` opcodes | <-- TODO --> Besides these parameter changes, the gas cost formula
+
+MOTIVATION:
+The gas price of accessing state has not been updated for quite some time. [EIP-2929](eip-2929.md) was included in the Berlin fork in March 2021 and raised the costs of state-accessing opcodes. Yet, since then, Ethereum's state has grown significantly, thus deteriorating the performance of these operations. This proposal further raises state access costs to better align them with the current performance of state access operations, in relation to other operations. Additionally, `EXTCODESIZE` and `EXTCODECOPY` have the same access cost as `BALANCE` and `EXTCODEHASH`. However, `EXTCODESIZE` and `EXTCODECOPY` require two database reads - first to load the account object
+
+RATIONALE:
+### Benchmarking This proposal does not yet have finalized numbers. To achieve this, we require stateful benchmarks, which are currently in development. Once we collect that data, we will set the final numbers. <-- TODO --> ### Special case for `EXTCODESIZE` and `EXTCODECOPY` Differently from other account read operations, `EXTCODESIZE` and `EXTCODECOPY` make two reads to the database. The first read is the same, where the object of the target account is loaded. This object includes the account's `nonce`, `balance`, `codeHash` and `storageRoot`. Then, these operations do another read to collect either the code size of the bytecode
+
+
 === EIP-1588 ===
 TITLE: Hardfork Meta: Ethereum ProgPoW
 TYPE: Meta 
@@ -4203,6 +4223,26 @@ RATIONALE:
 Refer to the individual EIPs.
 
 
+=== EIP-8030 ===
+TITLE: P256 transaction support
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-09-20
+REQUIRES: 7932
+
+SUMMARY:
+This EIP adds a new [EIP-7932](./eip-7932.md) algorithm of type `0x0` for supporting P256 signatures.
+
+SPECIFICATION:
+This EIP defines a new [EIP-7932](../../EIPS/eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE` | `Bytes1(0x0)` | | `GAS_PENALTY`| `500` | | `MAX_SIZE` | `128` | ```python N = 0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551 def verify(signature_info: bytes, payload_hash: Hash32) -> Bytes: assert(len(signature_info) == 128) (r, s, x, y) = (signature_info[0:32], signature_info[32:64], signature_info[64:96], signature_info[96:128]) # This is similar to [EIP-2](./eip-2.md)'s malleability verification. assert(s <= N/2) # This is defined in []() assert(P256Verify(payload_hash, r, s, x, y)) return x.to_bytes(32, "big") + y.to_bytes(32, "big") ``` ### `P256Verify` Function The `P256Verify` function is identical to the
+
+MOTIVATION:
+P256 (a.k.a secp256r1) is a widely-used NIST standardized algorithm that already has a presence within the Ethereum codebase. This makes it a great algorithm to write test cases against implementations of [EIP-7932](./eip-7932.md).
+
+RATIONALE:
+### Additional 500 gas penalty Much of this proposal is drawn from RIP-7212. Some of the test cases in RIP-7212 show that P256 is slower than secp256k1 and as such, a small penalty has been added to combat the slowdown of verification. ### Why P256? P256 or secp256r1, is used globally but (more importantly) has an existing implementation in all execution clients. This allows easy implementation of a known-safe algorithm, which is perfect for a test algorithm.
+
+
 === EIP-7594 ===
 TITLE: PeerDAS - Peer Data Availability Sampling
 TYPE: Standards Track Core
@@ -4377,7 +4417,7 @@ SPECIFICATION:
 === EIP-7607 ===
 TITLE: Hardfork Meta - Fusaka
 TYPE: Meta 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-02-01
 REQUIRES: 7600
 
@@ -4496,13 +4536,13 @@ TITLE: Glamsterdam Gas Repricings
 TYPE: Meta 
 STATUS: Draft
 CREATED: 2025-08-21
-REQUIRES: 2, 7, 8, 0, ,,  , 7, 6, 6, 7, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1
+REQUIRES: 2, 7, 8, 0, ,,  , 7, 6, 6, 7, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This Meta EIP documents all the proposals for Glamsterdam related to the gas repricing effort. The goal of this effort is to harmonize gas costs across the EVM, thereby reducing the impact of specific bottlenecks on scaling. Proposals include changes to the cost of single EVM operations, as well as bigger changes to the gas model. This Meta EIP is purely informational and does not aim to have an active role in the governance process for the Glamsterdam fork. Instead, it serves as a directory for all repricing-related proposals, helping to organize the work and keeping the community
 
 SPECIFICATION:
-This Meta EIP includes two types of EIPs, namely, core and possible additions. This list will continue to be updated as more gas repricing EIPs are proposed. ### Core EIPs | EIP | Description | Type | Status | | ------------------------- | ------------------------------------------------------------------------------------------ | ------------------ | ---------------------- | | [EIP-7778](./eip-7778.md) | Prevent Block Gas Limit Circumvention by Excluding Refunds from Block Gas Accounting. | General Accounting | Proposed for Inclusion | | [EIP-7904](./eip-7904.md) | Gas Cost Repricing to reflect computational complexity and transaction throughput increase | Compute | Pending | | [EIP-7981](./eip-7981.md) | Introduce floor pricing for access
+This Meta EIP includes two types of EIPs, namely, core and possible additions. This list will continue to be updated as more gas repricing EIPs are proposed. ### Core EIPs | EIP | Description | Type | Status | | ------------------------- | ------------------------------------------------------------------------------------------ | ------------------ | ---------------------- | | [EIP-2780](./eip-2780.md) | Reduce intrinsic transaction gas and charge 25k when a value transfer creates a new account. | Multi-resource | Proposed for Inclusion | | [EIP-7778](./eip-7778.md) | Prevent Block Gas Limit Circumvention by Excluding Refunds from Block Gas Accounting. | General Accounting | Proposed for Inclusion | | [EIP-7904](./eip-7904.md)
 
 MOTIVATION:
 The main objective of the Glamsterdam fork is to improve L1 scalability. A crucial aspect of this initiative is to create a better alignment between gas costs and actual resource usage. Currently, the gas model often misprices operations, resulting in inefficiencies and unintended incentives. For instance, within the pure compute operations, there is a high variance in execution time per gas unit, which indicates that a single unit of computation is not priced equally across the various opcodes. By standardizing gas costs across EVM operations and other resources, we can reduce bottlenecks and enhance the utilization of EVM

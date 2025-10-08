@@ -8383,21 +8383,21 @@ The design of this Grant Registry Contract is driven by the need for a flexible 
 === ERC-8004 ===
 TITLE: Trustless Agents
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-08-13
 REQUIRES: 
 
 SUMMARY:
-This ERC extends the Agent‑to‑Agent (A2A) Protocol <!-- TODO: where is the A2A protocol defined? --> with a trust layer that allows participants to **discover, choose, and interact with agents across organizational boundaries** without pre‑existing trust. It introduces three **lightweight, on‑chain registries**—Identity, Reputation, and Validation—and leaves application‑specific logic to
+This protocol proposes to use blockchains to **discover, choose, and interact with agents across organizational boundaries** without pre-existing trust, thus **enabling open-ended agent economies**. Trust models are pluggable and tiered, with security proportional to value at risk, from low-stake tasks like ordering pizza to high-stake tasks like medical diagnosis.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Participants <!-- TODO: define "participant"; does it mean a human, contract, etc.? --> All
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Identity Registry The Identity Registry uses ERC-721 with the URIStorage extension for agent registration,
 
 MOTIVATION:
-The existing A2A protocol handles agent authentication, skills advertisement via AgentCards<!-- TODO: what's an AgentCard -->, direct messaging, and complete task-lifecycle orchestration. Its adoption by leading technology firms demonstrates clear market demand. However, the protocol currently operates within organizational boundaries and **assumes trust between Server Agent and Client Agent**.
+MCP allows servers to list and offer their capabilities (prompts, resources, tools, and completions), while A2A handles agent authentication, skills advertisement via AgentCards, direct messaging, and complete task-lifecycle orchestration. However, these agent communication protocols don't inherently cover agent discovery and trust. To foster an open, cross-organizational agent economy, we
 
 RATIONALE:
-**Off-chain Infrastructure** The protocol deliberately delegates complex operations off-chain to enable: * Sophisticated reputation algorithms and aggregation services * Flexible validation protocols with custom incentive mechanisms * Scalable data storage and retrieval systems **Interoperability** * CAIP 10 standard ensures chain-agnostic addressing * RFC 8615 compliance enables standard web discovery
+* **Agent communication protocols**: MCP and A2A are popular, and other protocols could emerge. For this reason, this protocol links from the blockchain to a flexible registration file including a list where endpoints can be added at will, combining AI primitives (MCP, A2A) and Web3 primitives such as wallet
 
 
 === ERC-5007 ===
