@@ -2015,7 +2015,7 @@ CREATED: 2024-02-07
 REQUIRES: 1, 5, 5, ,,  , 7, 1, 2
 
 SUMMARY:
-This specification defines a JSON format carrying additional information required to correctly display structured data to a human for review on a wallet screen, before signature by the wallet. The [ERC-7730](./eip-7730.md) specification enriches type data contained in the ABIs and schemas of structured messages (structures like the calldata of
+This specification defines a JSON format carrying additional information required to correctly display structured data for human verification on wallet screens or for machine consumption e.g. by transaction simulation engines. The [ERC-7730](./eip-7730.md) specification enriches type data contained in the ABIs and schemas of structured messages (structures like the calldata
 
 SPECIFICATION:
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Simple example The following is an example of how to clear sign a `transfer` function

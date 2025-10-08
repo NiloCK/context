@@ -2015,7 +2015,7 @@ CREATED: 2024-02-07
 REQUIRES: 1, 5, 5, ,,  , 7, 1, 2
 
 SUMMARY:
-This specification defines a JSON format carrying additional information required to correctly display structured data to a human for review on a wallet screen,
+This specification defines a JSON format carrying additional information required to correctly display structured data for human verification on wallet screens or for machine
 
 SPECIFICATION:
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
