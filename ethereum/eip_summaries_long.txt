@@ -2346,7 +2346,7 @@ Benchmarks were performed on a 2019-era CPU, with the ability to `keccak256` aro
 === EIP-5003 ===
 TITLE: Insert Code into EOAs with AUTHUSURP
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Withdrawn
 CREATED: 2022-03-26
 REQUIRES: 3, 0, 7, 4, ,,  , 3, 6, 0, 7
 
