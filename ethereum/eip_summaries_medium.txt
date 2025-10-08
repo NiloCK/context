@@ -6122,7 +6122,7 @@ MOTIVATION:
 Currently although we can use `net_version` RPC call to get the current network ID, there's no RPC for querying the chain ID. This makes it impossible to determine the current actual blockchain using the RPC.
 
 RATIONALE:
-An ETH/ETC client can accidentally connect to an ETC/ETH RPC endpoint without knowing it unless it tries to sign a transaction or it fetch a transaction that is known to have signed with a chain ID. This has since caused trouble for application developers, such as MetaMask, to add
+An ETH/ETC client can accidentally connect to an ETC/ETH RPC endpoint without knowing it unless it tries to sign a transaction or it fetches a transaction that is known to have signed with a chain ID. This has since caused trouble for application developers, such as MetaMask, to add
 
 
 === EIP-6963 ===
@@ -7265,13 +7265,13 @@ CREATED: 2018-08-01
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes net gas metering changes for `SSTORE` opcode, enabling new usages for contract storage, and reducing excessive gas costs where it doesn't match how most implementation works. This acts as an alternative for EIP-1087, where it tries to be friendlier to implementations that use different optimization strategies
+This EIP proposes net gas metering changes for `SSTORE` opcode, enabling new usages for contract storage, and reducing excessive gas costs where it doesn't match how most implementations work. This acts as an alternative for EIP-1087, where it tries to be friendlier to implementations that use different optimization strategies
 
 SPECIFICATION:
 Definitions of terms are as below: * *Storage slot's original value*: This is the value of the storage if a reversion happens on the *current transaction*. * *Storage slot's current value*: This is the value of the storage before SSTORE operation happens. * *Storage slot's new value*: This is
 
 MOTIVATION:
-This EIP proposes a way for gas metering on SSTORE (as an alternative for EIP-1087 and EIP-1153), using information that is more universally available to most implementations, and require as little change in implementation structures as possible. * *Storage slot's original value*. * *Storage slot's current value*. * Refund
+This EIP proposes a way for gas metering on SSTORE (as an alternative for EIP-1087 and EIP-1153), using information that is more universally available to most implementations, and requires as little change in implementation structures as possible. * *Storage slot's original value*. * *Storage slot's current value*. * Refund
 
 RATIONALE:
 This EIP mostly achieves what a transient storage tries to do (EIP-1087 and EIP-1153), but without the complexity of introducing the concept of "dirty maps", or an extra storage struct. * We don't suffer from the optimization limitation of EIP-1087. EIP-1087 requires keeping a dirty map for storage changes,
@@ -8176,7 +8176,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. If a contract creation is attempted due to a creation transaction, the `CREATE` opcode, the
 
 RATIONALE:
-One of the core tenants of smart contracts is that its code will not change. However with sufficient computing power an attacker can change the code stored in an address to any other code, steal funds or execute other malicious activity.
+One of the core tenets of smart contracts is that their code will not change. However with sufficient computing power an attacker can change the code stored in an address to any other code, steal funds or execute other malicious activity.
 
 
 === EIP-7949 ===
@@ -8952,6 +8952,26 @@ This meta-EIP specifies the changes included in the Ethereum hardfork that remov
 
 SPECIFICATION:
 - Codename: Petersburg - Aliases: St. Petersfork, Peter's Fork, Constantinople Fix - Activation: - `Block >= 7_280_000` on the Ethereum Mainnet - `Block >= 4_939_394` on the Ropsten testnet - `Block >= 10_255_201` on the Kovan testnet - `Block >= 4_321_234` on the Rinkeby testnet - `Block >= 0`
+
+
+=== EIP-8037 ===
+TITLE: State Creation Gas Cost Increase
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-01
+REQUIRES: 2780
+
+SUMMARY:
+This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It sets a unit cost per new state byte that targets an average state growth of 60 GiB per year at a block gas limit of 300M gas units and
+
+SPECIFICATION:
+### Parameter changes Upon activation of this EIP, the following parameters of the gas model are updated: | **Parameter** | **Current value** | **New value** | **Increase** | **Operations affected** | |:---:|:---:|:---:|:---:|:---:| | `GAS_CREATE` | 32,000 | 212,800 | 6.7x | `CREATE`, `CREATE2`, contract creation txs | | `GAS_CODE_DEPOSIT`
+
+MOTIVATION:
+State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance, while contract deployment only costs 202 gas units per new byte created, new storage slots cost 625 gas units per new byte created. Also, deploying
+
+RATIONALE:
+### Harmonization across state creation With the current pricing, the gas cost of creating 1 byte of state varies depending on the method used. The following table shows the various methods and their gas cost per byte. The calculation ignores the transaction intrinsic cost (21k gas units) and the
 
 
 === EIP-1418 ===

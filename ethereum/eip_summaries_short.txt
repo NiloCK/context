@@ -6122,7 +6122,7 @@ MOTIVATION:
 Currently although we can use `net_version` RPC call to get the current network ID, there's no RPC for querying the chain ID. This makes
 
 RATIONALE:
-An ETH/ETC client can accidentally connect to an ETC/ETH RPC endpoint without knowing it unless it tries to sign a transaction or it fetch
+An ETH/ETC client can accidentally connect to an ETC/ETH RPC endpoint without knowing it unless it tries to sign a transaction or it fetches
 
 
 === EIP-6963 ===
@@ -8176,7 +8176,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 RATIONALE:
-One of the core tenants of smart contracts is that its code will not change. However with sufficient computing power an attacker can change
+One of the core tenets of smart contracts is that their code will not change. However with sufficient computing power an attacker can change
 
 
 === EIP-7949 ===
@@ -8952,6 +8952,26 @@ This meta-EIP specifies the changes included in the Ethereum hardfork that remov
 
 SPECIFICATION:
 - Codename: Petersburg - Aliases: St. Petersfork, Peter's Fork, Constantinople Fix - Activation: - `Block >= 7_280_000` on the Ethereum Mainnet - `Block >=
+
+
+=== EIP-8037 ===
+TITLE: State Creation Gas Cost Increase
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-01
+REQUIRES: 2780
+
+SUMMARY:
+This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It sets a unit cost
+
+SPECIFICATION:
+### Parameter changes Upon activation of this EIP, the following parameters of the gas model are updated: | **Parameter** | **Current value** | **New
+
+MOTIVATION:
+State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance,
+
+RATIONALE:
+### Harmonization across state creation With the current pricing, the gas cost of creating 1 byte of state varies depending on the method used.
 
 
 === EIP-1418 ===
