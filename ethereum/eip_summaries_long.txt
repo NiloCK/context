@@ -801,26 +801,6 @@ RATIONALE:
 The `wallet_updateEthereumChain` method is designed to be as simple as possible, while still providing the necessary information for a wallet to switch to a new chain. The `chainId` is the only required parameter, as it is the only parameter that is guaranteed to be unique. The `chainName` is included to provide a human-readable name for the chain, and the `rpcUrls` array is included to provide a list of RPC endpoints for the chain. The `nativeCurrency` object is included to provide a suggestion for how the native currency should be displayed. Finally, the `blockExplorerUrl` is included to provide a
 
 
-=== EIP-7950 ===
-TITLE: Encode chain id with transaction hash
-TYPE: Standards Track Interface
-STATUS: Review
-CREATED: 2025-05-22
-REQUIRES: 155
-
-SUMMARY:
-This standard proposes a way to encode the combination of a chain ID and a transaction hash into one string.
-
-SPECIFICATION:
-The encoded string has three components: - A chain ID, denoted as `chainId`. The used chain id MUST be based on [EIP-155](./eip-155) and the chain ID repository stated in that EIP. - A transaction hash, denoted as `txHash`. The hash MUST include the `0x` prefix. - A static string `tx`, acting as a type identifier. The syntax is: `chainId:txHash:tx`. An example for a transaction with hash `0xc55e2b90168af6972193c1f86fa4d7d7b31a29c156665d15b9cd48618b5177ef` that was issued on chain ID `1` is: `1:0xc55e2b90168af6972193c1f86fa4d7d7b31a29c156665d15b9cd48618b5177ef:tx`. All of the characters are case-insensitive.
-
-MOTIVATION:
-Looking up a transaction by its hash always requires the context of the chain - a transaction hash alone is not enough to identify the used chain. If the chain information is included in the string itself, finding the right chain for the transaction is easy. Such strings can then be used, for example, in a forwarder service that forwards to the correct blockchain explorer. The chain id is included in some object formats, such as the transaction object inside the blockchain itself, but that object has a lot of unneeded data for our purposes.
-
-RATIONALE:
-The chain ID is the most important detail when routing queries based on this standard and is therefore the first element in the string. The transaction hash is the second most important element. The suffix `tx` is used to differentiate from, for example, addresses. Without the `tx` it would remain unclear whether an encoded string refers to an address, a transaction hash or something else.
-
-
 === EIP-3068 ===
 TITLE: Precompile for BN256 HashToCurve Algorithms
 TYPE: Standards Track Core
@@ -8701,7 +8681,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Transaction signature scheme Native SSZ transactions are based on the `TransactionPayload` and `Transaction` types defined in [EIP-6404](./eip-6404.md) and emit an [EIP-6466](./eip-6466.md) `Receipt`. To distinguish native SSZ transactions from those converted from RLP, native SSZ transactions do not set an RLP `TransactionType` in their `TransactionPayload`. All native SSZ transactions follow an identical scheme based on [`hash_tree_root`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md#merkleization) to compute their signing hash (`sig_hash`) and unique
 
 MOTIVATION:
-[EIP-6404](./eip-6404.md) introduces SSZ transactions by converting from RLP transactions. Defining a signature scheme for native SSZ transactions further reduces required conversions and unlocks the forward compatibility benefits of SSZ [`StableContainer`](./eip-7495.md).
+[EIP-6404](./eip-6404.md) introduces SSZ transactions by converting from RLP transactions. Defining a signature scheme for native SSZ transactions further reduces required conversions and unlocks the forward compatibility benefits of SSZ [`ProgressiveContainer`](./eip-7495.md).
 
 RATIONALE:
 The SSZ signature scheme reduces hashing overhead and ensures that `tx_hash` commitments are available on-chain. It also provides a flexible basis for future transaction functionality.

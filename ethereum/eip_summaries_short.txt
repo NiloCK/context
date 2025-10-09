@@ -801,26 +801,6 @@ RATIONALE:
 The `wallet_updateEthereumChain` method is designed to be as simple as possible, while still providing the necessary information for a wallet to switch to a
 
 
-=== EIP-7950 ===
-TITLE: Encode chain id with transaction hash
-TYPE: Standards Track Interface
-STATUS: Review
-CREATED: 2025-05-22
-REQUIRES: 155
-
-SUMMARY:
-This standard proposes a way to encode the combination of a chain ID and a transaction hash into one string.
-
-SPECIFICATION:
-The encoded string has three components: - A chain ID, denoted as `chainId`. The used chain id MUST be based on [EIP-155](./eip-155) and the
-
-MOTIVATION:
-Looking up a transaction by its hash always requires the context of the chain - a transaction hash alone is not enough to identify
-
-RATIONALE:
-The chain ID is the most important detail when routing queries based on this standard and is therefore the first element in the string.
-
-
 === EIP-3068 ===
 TITLE: Precompile for BN256 HashToCurve Algorithms
 TYPE: Standards Track Core

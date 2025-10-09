@@ -801,26 +801,6 @@ RATIONALE:
 The `wallet_updateEthereumChain` method is designed to be as simple as possible, while still providing the necessary information for a wallet to switch to a new chain. The `chainId` is the only required parameter, as it is the only parameter that is guaranteed to be unique. The `chainName` is included
 
 
-=== EIP-7950 ===
-TITLE: Encode chain id with transaction hash
-TYPE: Standards Track Interface
-STATUS: Review
-CREATED: 2025-05-22
-REQUIRES: 155
-
-SUMMARY:
-This standard proposes a way to encode the combination of a chain ID and a transaction hash into one string.
-
-SPECIFICATION:
-The encoded string has three components: - A chain ID, denoted as `chainId`. The used chain id MUST be based on [EIP-155](./eip-155) and the chain ID repository stated in that EIP. - A transaction hash, denoted as `txHash`. The hash MUST include the `0x` prefix. - A static string
-
-MOTIVATION:
-Looking up a transaction by its hash always requires the context of the chain - a transaction hash alone is not enough to identify the used chain. If the chain information is included in the string itself, finding the right chain for the transaction is easy. Such strings can
-
-RATIONALE:
-The chain ID is the most important detail when routing queries based on this standard and is therefore the first element in the string. The transaction hash is the second most important element. The suffix `tx` is used to differentiate from, for example, addresses. Without the `tx` it would
-
-
 === EIP-3068 ===
 TITLE: Precompile for BN256 HashToCurve Algorithms
 TYPE: Standards Track Core
@@ -8701,7 +8681,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Transaction signature scheme Native SSZ transactions are based on the `TransactionPayload` and `Transaction` types
 
 MOTIVATION:
-[EIP-6404](./eip-6404.md) introduces SSZ transactions by converting from RLP transactions. Defining a signature scheme for native SSZ transactions further reduces required conversions and unlocks the forward compatibility benefits of SSZ [`StableContainer`](./eip-7495.md).
+[EIP-6404](./eip-6404.md) introduces SSZ transactions by converting from RLP transactions. Defining a signature scheme for native SSZ transactions further reduces required conversions and unlocks the forward compatibility benefits of SSZ [`ProgressiveContainer`](./eip-7495.md).
 
 RATIONALE:
 The SSZ signature scheme reduces hashing overhead and ensures that `tx_hash` commitments are available on-chain. It also provides a flexible basis for future transaction functionality.
