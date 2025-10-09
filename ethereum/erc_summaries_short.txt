@@ -10325,7 +10325,7 @@ RATIONALE:
 === ERC-3009 ===
 TITLE: Transfer With Authorization
 TYPE: Standards Track ERC
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2020-09-28
 REQUIRES: 2, 0, ,,  , 7, 1, 2
 
@@ -10336,7 +10336,7 @@ SPECIFICATION:
 ### Event ```solidity event AuthorizationUsed( address indexed authorizer, bytes32 indexed nonce ); // keccak256("TransferWithAuthorization(address from,address to,uint256 value,uint256 validAfter,uint256 validBefore,bytes32 nonce)") bytes32 public constant TRANSFER_WITH_AUTHORIZATION_TYPEHASH
 
 MOTIVATION:
-There is an existing spec, [EIP-2612](./eip-2612), that also allows meta-transactions, and it is encouraged that a contract implements both for maximum compatibility. The two
+There is an existing spec, [ERC-2612](./eip-2612.md), that also allows meta-transactions, and it is encouraged that a contract implements both for maximum compatibility. The two
 
 RATIONALE:
 ### Unique Random Nonce, Instead of Sequential Nonce One might say transaction ordering is one reason why sequential nonces are preferred. However, sequential nonces
