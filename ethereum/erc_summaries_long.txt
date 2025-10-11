@@ -4660,7 +4660,7 @@ RATIONALE:
 === ERC-7828 ===
 TITLE: Readable Interoperable Addresses using ENS
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Last Call
 CREATED: 2024-11-27
 REQUIRES: 1, 5, 5, ,,  , 7, 9, 3, 0
 
