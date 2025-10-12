@@ -3202,7 +3202,7 @@ By reserving an address range for RIPs, it allows the RIP process to maintain it
 === EIP-2294 ===
 TITLE: Explicit bound to Chain ID size
 TYPE: Informational 
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2019-09-19
 REQUIRES: 155
 
