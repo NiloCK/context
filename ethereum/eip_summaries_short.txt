@@ -5202,7 +5202,7 @@ CREATED: 2023-02-08
 REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP defines a migration process of the existing Merkle-Patricia Trie (MPT) commitment for withdrawals to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
+This EIP defines a migration process of the existing Merkle Patricia Trie (MPT) commitment for withdrawals to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
