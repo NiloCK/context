@@ -467,7 +467,7 @@ SPECIFICATION:
 ### Subprotocol Handshake - Introduce a new subprotocol named `etha`. - Define the handshake message for the `etha` subprotocol as follows: - Handshake packet:
 
 MOTIVATION:
-With [EIP-4444](./eip-4444.md), nodes may prune historical data while others continue serving it. Determining data availability by connecting and requesting blocks is inefficient consuming unnexessary
+With [EIP-4444](./eip-4444.md), nodes may prune historical data while others continue serving it. Determining data availability by connecting and requesting blocks is inefficient consuming unnecessary
 
 RATIONALE:
 The bitmask approach provides a flexible means to represent and retain block data while committing to future spans. This mechanism aligns with the pruning
@@ -1340,7 +1340,7 @@ SPECIFICATION:
 ### Parameters | Parameter | Value | | - | - | | `FORK_TIMESTAMP` | TBD | | `TARGET_BLOB_COUNT_CHANGE_RATE` | `1` | | `MIN_TARGET_BLOB_COUNT`
 
 MOTIVATION:
-Ethereum currently uses a target of 50% capacity for blob count, with [EIP-1559](./eip-1559.md) smoothing out short term spikes and pushing average throughput towards the
+Ethereum currently uses a target of 50% capacity for blob count, with [EIP-1559](./eip-1559.md) smoothing out short-term spikes and pushing average throughput towards the target.
 
 RATIONALE:
 ### Constant blob cost target A constant blob cost target can keep L2 transaction costs affordable for end users. Volatility in the price of
@@ -4926,7 +4926,7 @@ MOTIVATION:
 In the past, most ERCs/EIPs included an ABI description purely as a Solidity contract and/or interface. This has several drawbacks: - Prefers a single
 
 RATIONALE:
-The aim was to chose a representation which is well supported by tools and supports comments. While inventing a more concise description language seems
+The aim was to choose a representation which is well supported by tools and supports comments. While inventing a more concise description language seems
 
 
 === EIP-7877 ===

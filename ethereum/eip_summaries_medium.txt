@@ -467,7 +467,7 @@ SPECIFICATION:
 ### Subprotocol Handshake - Introduce a new subprotocol named `etha`. - Define the handshake message for the `etha` subprotocol as follows: - Handshake packet: `[version: P, networkid: P, blockhash: B_32, genesis: B_32, forkid, blockBitmask]` - `blockBitmask` is a 10-bit bitmask, with each bit representing a 106_496-block range per 1_064_960
 
 MOTIVATION:
-With [EIP-4444](./eip-4444.md), nodes may prune historical data while others continue serving it. Determining data availability by connecting and requesting blocks is inefficient consuming unnexessary bandwidth. This EIP addresses this inefficiency by enabling nodes to shard chain history into 106_496 block segments and signal availability via a bitmask. By introducing
+With [EIP-4444](./eip-4444.md), nodes may prune historical data while others continue serving it. Determining data availability by connecting and requesting blocks is inefficient consuming unnecessary bandwidth. This EIP addresses this inefficiency by enabling nodes to shard chain history into 106_496 block segments and signal availability via a bitmask. By introducing
 
 RATIONALE:
 The bitmask approach provides a flexible means to represent and retain block data while committing to future spans. This mechanism aligns with the pruning proposed in EIP-4444, while ensuring that historical and future data spans remain available across the network. A similar bitlist approach is already used in the
@@ -1340,7 +1340,7 @@ SPECIFICATION:
 ### Parameters | Parameter | Value | | - | - | | `FORK_TIMESTAMP` | TBD | | `TARGET_BLOB_COUNT_CHANGE_RATE` | `1` | | `MIN_TARGET_BLOB_COUNT` | `1` | | `MAX_TARGET_BLOB_COUNT` | `3` | | `BLOB_COST_CHANGE_MARGIN` | `2^48` | | `TARGET_BLOB_COST` | `2^49` | ### Dynamic targeting The target blob count
 
 MOTIVATION:
-Ethereum currently uses a target of 50% capacity for blob count, with [EIP-1559](./eip-1559.md) smoothing out short term spikes and pushing average throughput towards the target. A dynamic target is orthogonal to EIP-1559, tweaking the target itself over a longer timescale to aim for some desired blob cost. With static
+Ethereum currently uses a target of 50% capacity for blob count, with [EIP-1559](./eip-1559.md) smoothing out short-term spikes and pushing average throughput towards the target. A dynamic target is orthogonal to EIP-1559, tweaking the target itself over a longer timescale to aim for some desired blob cost. With static targeting
 
 RATIONALE:
 ### Constant blob cost target A constant blob cost target can keep L2 transaction costs affordable for end users. Volatility in the price of ETH would affect affordability, but is unlikely to be significant compared to normal fluctuations in blob gas costs due to spikes in activity. In future
@@ -2143,7 +2143,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Two new opcodes are introduced, `NONREENTRANT` (0xF6) and `REENTRANT` (0xF7), which set and clear a
 
 MOTIVATION:
-Reentrancy attacks account for a substantial portion of user funds stolen on EVM chains, including the famous "DAO hack". However, due to the cost of preventing against reentrancy attacks in application code, developers often opt-out of reentrancy protection. This cost has come down with the advent of transient storage
+Reentrancy attacks account for a substantial portion of user funds stolen on EVM chains, including the famous "DAO hack". However, due to the cost of preventing reentrancy attacks in application code, developers often opt-out of reentrancy protection. This cost has come down with the advent of transient storage ([EIP-1153](./eip-1153.md)),
 
 RATIONALE:
 The computational cost of pushing the current value to the call stack (for handling reverts) is accounted for in the overhead cost of the `*CALL` opcodes. An alternative design could be considered which only introduces one opcode. This opcode, `NONREENTRANT`, would take a single stack item and set the
@@ -4926,7 +4926,7 @@ MOTIVATION:
 In the past, most ERCs/EIPs included an ABI description purely as a Solidity contract and/or interface. This has several drawbacks: - Prefers a single language over others and could hinder the development of new languages. - Locks the specification to a certain version of the Solidity language. - Allows
 
 RATIONALE:
-The aim was to chose a representation which is well supported by tools and supports comments. While inventing a more concise description language seems like a good idea, it felt as an unnecessary layer of complexity.
+The aim was to choose a representation which is well supported by tools and supports comments. While inventing a more concise description language seems like a good idea, it felt as an unnecessary layer of complexity.
 
 
 === EIP-7877 ===
@@ -6398,7 +6398,7 @@ SUMMARY:
 The pipeline for Core EIPs, per the EIP-Centric upgrade model, is as follows. ``` [ DRAFT ] -> [ ELLIGLE FOR INCLUSION ] -> [ IMPLEMENTATION ] -> [ TESTING ] -> [ ACCEPTED ] -> [ DEPLOYED ] ``` This EIP documents all EIPs marked as **Eligible For
 
 SPECIFICATION:
-| EIP | Title | Pipeline Status | Date of Initial Decision | REF | | -------- | ----------------------------------------------------- | -------- | ---------- | ---- | | EIP-663 | Unlimited SWAP and DUP instructions | ELIGIBLE | 2019-11-01 | [🔗](https://github.com/ethereum/pm/blob/master/All%20Core%20Devs%20Meetings/Meeting%2074.md) | | EIP-1057 | ProgPoW, a Programmatic Proof-of-Work |
+| EIP | Title | Pipeline Status | Date of Initial Decision | REF | | -------- | ----------------------------------------------------- | -------- | ---------- | ---- | | EIP-663 | Unlimited SWAP and DUP instructions | ELIGIBLE | 2019-11-01 | [🔗](https://github.com/ethereum/pm/blob/master/AllCoreDevs-EL-Meetings/Meeting%2074.md) | | EIP-1057 | ProgPoW, a Programmatic Proof-of-Work |
 
 MOTIVATION:
 Development of clear specifications and pull requests to existing Ethereum Clients is a large investment of time and resources. The state of *Eligible for Inclusion* is a signal from the Ethereum Core Developers to an EIP Author validiating the idea behind an EIP and confirms investing their time further
@@ -9188,7 +9188,7 @@ MOTIVATION:
 Currently existing contracts require no validation of correctness, but every time they are executed, a list must be built containing all the valid jump-destinations. This is an overhead which can be avoided, albeit the effect of the overhead depends on the client implementation. With the structure provided by EIP-3540
 
 RATIONALE:
-### Jumpdests section is bounded The length of the `jumpdests` section is bounded by the EOF maximum section size value 0xffff. Moreover, for deployed code this additionally limited by the max bytecode size 0x6000. Then any valid `jumpdests` section may not be more larger than 0x3000. ### Delta encoding
+### Jumpdests section is bounded The length of the `jumpdests` section is bounded by the EOF maximum section size value 0xffff. Moreover, for deployed code this is additionally limited by the max bytecode size 0x6000. Then any valid `jumpdests` section may not be larger than 0x3000. ### Delta encoding
 
 
 === EIP-7756 ===
