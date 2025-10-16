@@ -732,7 +732,7 @@ CREATED: 2025-01-30
 REQUIRES: 
 
 SUMMARY:
-This EIP adds a flag to the block builder in order to allow them to include a client configured maximum amount of blobs.
+This EIP adds a flag to the block builder in order to allow them to include a client configured maximum amount of blobs. This
 
 SPECIFICATION:
 - Create a parameter in block builder's configuration called `USER_CONFIGURED_MAX_BLOBS_PER_BLOCK` - Take the minimum out of the `MAX_BLOB_GAS_PER_BLOCK` and the `USER_CONFIGURED_MAX_BLOBS_PER_BLOCK` - If the
