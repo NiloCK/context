@@ -2308,7 +2308,7 @@ TITLE: Secondary Signature Algorithms
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-04-12
-REQUIRES: 1, 5, 5, ,,  , 6, 4, 0, 4, ,,  , 6, 4, 6, 6, ,,  , 6, 4, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
+REQUIRES: 1, 5, 5, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 6, 4, 6, 6, ,,  , 6, 4, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
 
 SUMMARY:
 This EIP does three things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-6404](./eip-6404.md) transaction profile & [EIP-2718](./eip-2718.md) transaction type that can modify the signature data of a contained transaction to a different signature algorithm. - Introduces a precompile at address `0x12` for decoding these newly introduced algorithms.
