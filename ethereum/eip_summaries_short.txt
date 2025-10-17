@@ -4214,13 +4214,13 @@ SUMMARY:
 This EIP adds a new [EIP-7932](./eip-7932.md) algorithm of type `0x0` for supporting P256 signatures.
 
 SPECIFICATION:
-This EIP defines a new [EIP-7932](../../EIPS/eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE`
+This EIP defines a new [EIP-7932](./eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE`
 
 MOTIVATION:
 P256 (a.k.a secp256r1) is a widely-used NIST standardized algorithm that already has a presence within the Ethereum codebase. This makes it a great algorithm
 
 RATIONALE:
-### Additional 500 gas penalty Much of this proposal is drawn from RIP-7212. Some of the test cases in RIP-7212 show that P256 is
+### Additional 500 gas penalty Much of this proposal is drawn from [EIP-7951](./eip-7951.md). Some of the test cases in [EIP-7951](./eip-7951.md) show that P256 is
 
 
 === EIP-7594 ===
