@@ -679,7 +679,7 @@ This proposal is intended to protect legitimate validator mnemonic holders where
 === EIP-7903 ===
 TITLE: Remove Initcode Size Limit
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-03-05
 REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
 
@@ -2047,7 +2047,7 @@ Switching to verkle trees require a complete rehashing of all tree keys. Most ex
 === EIP-7503 ===
 TITLE: Zero-Knowledge Wormholes
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2023-08-14
 REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 8
 
@@ -2860,7 +2860,7 @@ This EIP is mostly a retrospective EIP meaning it codifies an already existing s
 === EIP-7915 ===
 TITLE: Adaptive mean reversion blob pricing
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-03-23
 REQUIRES: 4844
 
@@ -3843,7 +3843,7 @@ EVM uses two's complement for negative numbers. The opcodes listed above trigger
 === EIP-7745 ===
 TITLE: Light client and DHT friendly log index
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-07-17
 REQUIRES: 7916
 
@@ -6101,7 +6101,7 @@ The rationale behind aliasing ORIGIN to SENDER is to: Facilitate Account Abstrac
 === EIP-7889 ===
 TITLE: Emit log on revert
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-02-20
 REQUIRES: 
 
