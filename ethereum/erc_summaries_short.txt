@@ -1768,6 +1768,26 @@ RATIONALE:
 The approach of simply augmenting existing EIP functions with new `address` parameters, rather than crafting new interfaces for the most commonly used EIPs, is
 
 
+=== ERC-8042 ===
+TITLE: Diamond Storage
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-11
+REQUIRES: 7201
+
+SUMMARY:
+This standard formalizes the diamond storage pattern originally introduced by [ERC-2535 Diamonds](./eip-2535.md) and widely adopted across smart contracts. Though originally created for proxy contracts,
+
+SPECIFICATION:
+Diamond storage defines where structs are located in contract storage. A diamond storage identifier is defined as a string containing only printable ASCII characters.
+
+MOTIVATION:
+On March 10, 2020, a change to the Solidity compiler introduced the ability to assign structs to any storage location. This enabled a new
+
+RATIONALE:
+Proxy contracts and contracts that use `DELEGATECALL` need a reliable and secure way to define, document, and manage separate areas of smart contract storage.
+
+
 === ERC-7858 ===
 TITLE: Expirable NFTs and SBTs
 TYPE: Standards Track ERC

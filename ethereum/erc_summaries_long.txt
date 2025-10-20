@@ -1768,6 +1768,26 @@ RATIONALE:
 The approach of simply augmenting existing EIP functions with new `address` parameters, rather than crafting new interfaces for the most commonly used EIPs, is employed to ensure broader applicability of this namespacing proposal.
 
 
+=== ERC-8042 ===
+TITLE: Diamond Storage
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-11
+REQUIRES: 7201
+
+SUMMARY:
+This standard formalizes the diamond storage pattern originally introduced by [ERC-2535 Diamonds](./eip-2535.md) and widely adopted across smart contracts. Though originally created for proxy contracts, diamond storage can be used to organize storage and data access within *any* smart contract. Diamond storage defines the location of structs in contract storage using the `keccak256` hash of human-readable identifiers. [ERC-8042](./eip-8042) standardizes this simple and production-proven approach, offering a lightweight alternative to [ERC-7201](./eip-7201.md) for new and existing projects.
+
+SPECIFICATION:
+Diamond storage defines where structs are located in contract storage. A diamond storage identifier is defined as a string containing only printable ASCII characters. That is characters `0x20` through `0x7E` inclusive. The location of a diamond storage struct is determined by the `keccak256` hash of a diamond storage identifier. ### Recommendations 1. #### Use Solidity's string literals A string literal is an ASCII string type that is literally written between quotes, for example: `"this is a string literal"`. It is recommended to use Solidity's string literals to create diamond storage identifiers because the Solidity compiler enforces that they
+
+MOTIVATION:
+On March 10, 2020, a change to the Solidity compiler introduced the ability to assign structs to any storage location. This enabled a new pattern for using separate areas of storage. The pattern became known as diamond storage, as it was first popularized by ERC-2535 Diamonds and has since been widely used. Later, on June 20, 2023, ERC-7201 was introduced to standardize this general storage pattern. However, the formula that ERC-7201 proposed for generating storage locations differed from the one already established and in active use by diamond storage. ERC-8042 standardizes diamond storage for new projects and validates
+
+RATIONALE:
+Proxy contracts and contracts that use `DELEGATECALL` need a reliable and secure way to define, document, and manage separate areas of smart contract storage. In March 2020, diamond storage established a way to do this and has been in use since then. However, diamond storage wasn't formalized as a standard, which is important to clarify its mechanics, usage and precise specification. In June 2023, ERC-7201 Namespaced Storage Layout standardized the general pattern but has looser restrictions on namespace ids and a more complicated formula for calculating storage locations. Some people may prefer using ERC-7201, especially if they may
+
+
 === ERC-7858 ===
 TITLE: Expirable NFTs and SBTs
 TYPE: Standards Track ERC
