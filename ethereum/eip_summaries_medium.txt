@@ -2731,6 +2731,26 @@ RATIONALE:
 The idea behind this EIP is to disable `SELFDESTRUCT` in a way that gives ample warning to Dapp developers. Many developers do not watch the EIP process closely and can therefore be caught by surprise when an opcode is deactivated and does not fulfill its original purpose anymore. However,
 
 
+=== EIP-8045 ===
+TITLE: Exclude slashed validators from proposing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-16
+REQUIRES: 7917
+
+SUMMARY:
+This EIP proposes a modification to the beacon chain proposer selection process to exclude slashed validators from being selected as proposers.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). The `get_beacon_proposer_indices` function in the consensus specifications is modified to exclude slashed validators from the
+
+MOTIVATION:
+Currently, slashed validators can still be selected as proposers, though their blocks are considered invalid by the state transition function, resulting in missed slots. This is in particular problematic after a mass slashing event, at which point there can be a long period with degraded chain performance, until all
+
+RATIONALE:
+### Why exclude slashed validators? Slashed validators are already prevented from successfully proposing blocks through the state transition validation. The `process_block` function checks that the proposer is not slashed, and blocks from slashed proposers are considered invalid. Therefore, selecting slashed validators as proposers serves no purpose and only results
+
+
 === EIP-1051 ===
 TITLE: Overflow checking for the EVM
 TYPE: Standards Track Core
@@ -8242,7 +8262,7 @@ The value 100,000 was chosen after careful technically sound analysis of various
 === EIP-7916 ===
 TITLE: SSZ ProgressiveList
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-24
 REQUIRES: 
 

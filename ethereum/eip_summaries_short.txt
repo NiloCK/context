@@ -2731,6 +2731,26 @@ RATIONALE:
 The idea behind this EIP is to disable `SELFDESTRUCT` in a way that gives ample warning to Dapp developers. Many developers do not watch
 
 
+=== EIP-8045 ===
+TITLE: Exclude slashed validators from proposing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-16
+REQUIRES: 7917
+
+SUMMARY:
+This EIP proposes a modification to the beacon chain proposer selection process to exclude slashed validators from being selected as proposers.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Currently, slashed validators can still be selected as proposers, though their blocks are considered invalid by the state transition function, resulting in missed slots.
+
+RATIONALE:
+### Why exclude slashed validators? Slashed validators are already prevented from successfully proposing blocks through the state transition validation. The `process_block` function checks that
+
+
 === EIP-1051 ===
 TITLE: Overflow checking for the EVM
 TYPE: Standards Track Core
@@ -8242,7 +8262,7 @@ The value 100,000 was chosen after careful technically sound analysis of various
 === EIP-7916 ===
 TITLE: SSZ ProgressiveList
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-24
 REQUIRES: 
 

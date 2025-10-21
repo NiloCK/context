@@ -2731,6 +2731,26 @@ RATIONALE:
 The idea behind this EIP is to disable `SELFDESTRUCT` in a way that gives ample warning to Dapp developers. Many developers do not watch the EIP process closely and can therefore be caught by surprise when an opcode is deactivated and does not fulfill its original purpose anymore. However, at least if the smart contract has regular use, then users will notice the price of the operation going up tremendously. The period over which this is happening (`HARD_FORK_BLOCK + DOUBLING_SLOTS * DOUBLINGS_BEFORE_SENDALL`) is chosen to be long enough (ca. 4 months) such that it gives developers time to
 
 
+=== EIP-8045 ===
+TITLE: Exclude slashed validators from proposing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-16
+REQUIRES: 7917
+
+SUMMARY:
+This EIP proposes a modification to the beacon chain proposer selection process to exclude slashed validators from being selected as proposers.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). The `get_beacon_proposer_indices` function in the consensus specifications is modified to exclude slashed validators from the proposer selection process, effectively going from considering all active validators to all active and unslashed validators. ```python def get_beacon_proposer_indices( state: BeaconState, epoch: Epoch ) -> Vector[ValidatorIndex, SLOTS_PER_EPOCH]: """ Return the proposer indices for the given ``epoch``. """ # Modified to exclude slashed validators indices = [i for i in
+
+MOTIVATION:
+Currently, slashed validators can still be selected as proposers, though their blocks are considered invalid by the state transition function, resulting in missed slots. This is in particular problematic after a mass slashing event, at which point there can be a long period with degraded chain performance, until all slashed validators are exited. If mass slashing also comes with general network disruption, the missed slots can also significantly complicate the recovery process. This change filters out slashed validators during proposer selection, reducing disruption and increasing resilience in such scenarios.
+
+RATIONALE:
+### Why exclude slashed validators? Slashed validators are already prevented from successfully proposing blocks through the state transition validation. The `process_block` function checks that the proposer is not slashed, and blocks from slashed proposers are considered invalid. Therefore, selecting slashed validators as proposers serves no purpose and only results in missed slots. ### Design decision: upfront filtering The chosen approach is to simply filter out slashed validators from the candidate pool, before doing any shuffling computation. An alternative design would be to still use the whole active validator set as the candidate pool, and then only filter out
+
+
 === EIP-1051 ===
 TITLE: Overflow checking for the EVM
 TYPE: Standards Track Core
@@ -3358,7 +3378,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Glamsterdam network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7732](./eip-7732.md): Enshrined Proposer-Builder Separation * [EIP-7928](./eip-7928.md): Block-Level Access Lists ### Considered for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Declined for Inclusion * [EIP-7692](./eip-7692.md): EVM Object Format (EOFv1) Meta * [EIP-7782](./eip-7782.md): Reduce Block Latency * [EIP-7886](./eip-7886.md): Delayed execution * [EIP-7919](./eip-7919.md): Pureth Meta * [EIP-7937](./eip-7937.md): EVM64 - 64-bit mode EVM opcodes * [EIP-7942](./eip-7942.md): Available Attestation ### Proposed for Inclusion 1. [EIP-2926](./eip-2926.md): Chunk-based code merkelization 1. [EIP-6873](./eip-6873.md): Preimage retention 1. [EIP-7667](./eip-7667.md): Raise
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7732](./eip-7732.md): Enshrined Proposer-Builder Separation * [EIP-7928](./eip-7928.md): Block-Level Access Lists ### Considered for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Declined for Inclusion * [EIP-7692](./eip-7692.md): EVM Object Format (EOFv1) Meta * [EIP-7782](./eip-7782.md): Reduce Block Latency * [EIP-7886](./eip-7886.md): Delayed execution * [EIP-7919](./eip-7919.md): Pureth Meta * [EIP-7937](./eip-7937.md): EVM64 - 64-bit mode EVM opcodes * [EIP-7942](./eip-7942.md): Available Attestation ### Proposed for Inclusion 1. [EIP-2780](./eip-2780.md): Reduce intrinsic transaction gas 1. [EIP-2926](./eip-2926.md): Chunk-based code merkelization 1.
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Glamsterdam network upgrade, as well as links to full specification.
@@ -8242,7 +8262,7 @@ The value 100,000 was chosen after careful technically sound analysis of various
 === EIP-7916 ===
 TITLE: SSZ ProgressiveList
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-24
 REQUIRES: 
 
