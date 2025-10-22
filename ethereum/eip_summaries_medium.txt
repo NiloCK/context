@@ -9005,7 +9005,7 @@ SUMMARY:
 This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It sets a unit cost per new state byte that targets an average state growth of 60 GiB per year at a block gas limit of 300M gas units and
 
 SPECIFICATION:
-### Parameter changes Upon activation of this EIP, the following parameters of the gas model are updated: | **Parameter** | **Current value** | **New value** | **Increase** | **Operations affected** | |:---:|:---:|:---:|:---:|:---:| | `GAS_CREATE` | 32,000 | 212,800 | 6.7x | `CREATE`, `CREATE2`, contract creation txs | | `GAS_CODE_DEPOSIT`
+### Parameter changes Upon activation of this EIP, the following parameters of the gas model are updated: | **Parameter** | **Current value** | **New value** | **Increase** | **Operations affected** | | :-----------------------------: | :---------------: | :-----------: | :----------: | :----------------------------------------: | | `GAS_CREATE` | 32,000 | 212,800 |
 
 MOTIVATION:
 State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance, while contract deployment only costs 202 gas units per new byte created, new storage slots cost 625 gas units per new byte created. Also, deploying

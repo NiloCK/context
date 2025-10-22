@@ -2107,7 +2107,7 @@ The design of this URI standard for blockchain-based payment requests addresses 
 === ERC-1202 ===
 TITLE: Voting Interface
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2018-07-08
 REQUIRES: 5269
 
