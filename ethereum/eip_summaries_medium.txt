@@ -2511,16 +2511,16 @@ CREATED: 2020-07-11
 REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0
 
 SUMMARY:
-Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `6,000`. If a non-create transaction has `value > 0` and targets a **non-existent** account add `GAS_NEW_ACCOUNT = 25,000` to align with `CALL` account creation and price in state growth. This additional `GAS_NEW_ACCOUNT` cost is not applied in the case of a
+Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `4,500` and define a consistent gas accounting model based on actual state operations. This more granular approach makes a simple ETH transfer `6,000` from additional costs related to the `to` account. If a non-create transaction has `value > 0` and targets
 
 SPECIFICATION:
-After `FORK_BLOCK`, set the following parameters and rules. ### Parameters | Name | Value | Description | | ----------------- | ------ | ------------------------------------------------------------------------- | | `TX_BASE_COST` | 6,000 | Base cost of any transaction | | `GAS_NEW_ACCOUNT` | 25,000 | Surcharge when a **value-transferring** transaction creates a new account
+After `FORK_BLOCK`, set the following parameters and rules: ### Parameters | Name | Value | Description | | -------------------------- | -----: | ----------------------------------------------------------------------- | | `TX_BASE_COST` | 4,500 | Base cost of any transaction | | `GAS_NEW_ACCOUNT` | 25,000 | Surcharge when a value-transferring transaction creates a new account
 
 MOTIVATION:
-The current `21,000` intrinsic gas is a legacy constant. It no longer matches the work all transactions must perform under warm/cold accounting. When decomposed into signature recovery, warming `sender` and `to`, and two warm writes for nonce and balance, the common path totals `6,000` gas. Top-level value transfers that
+The legacy `21,000` base no longer matches the universal work path under warm/cold accounting. Decomposed into signature recovery, one account-leaf write for the sender (nonce + balance coalesced), and one cold non-code touch (sender), the universal path totals `4,500` gas. State growth is underpriced for top-level value transfers that
 
 RATIONALE:
-Price only what every transaction always does: ECDSA recovery, warming `sender` and `to`, and two warm writes. That sums to `6,000` gas. Anything not universal should be metered separately. Calldata remains metered per byte. No calldata allowance is folded into the base. This reinforces ETH as money and payments:
+Price only what every transaction always does: ECDSA recovery, warming `sender` and `to`, and one account-leaf write for the sender (nonce + balance change). That sums to `4,500` gas. Anything not universal should be metered separately. Calldata remains metered per byte. No calldata allowance is folded into the base.
 
 
 === EIP-3041 ===
@@ -6225,6 +6225,26 @@ RATIONALE:
 ### Hexary vs binary trie The trie format is chosen to be the same as that of the account trie. If a tree conversion happens at a later stage, the chunk tree will have to be converted as well, e.g. the way it is in [EIP-6800](./eip-6800.md) or [EIP-7864](./eip-7864.md). ###
 
 
+=== EIP-7971 ===
+TITLE: Hard Limits for Transient Storage
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-06-12
+REQUIRES: 1153
+
+SUMMARY:
+This EIP proposes to reduce the gas costs for transient storage operations (`TLOAD` and `TSTORE`) and warm storage loads (`SLOAD`) by implementing constant pricing. To prevent denial-of-service attacks through excessive memory allocation, a transaction-global limit on transient storage slots is introduced. This approach provides lower costs for common use
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters This EIP introduces the following parameters: - `GAS_TLOAD` = 5 (tent.) - `GAS_TSTORE`
+
+MOTIVATION:
+[EIP-1153](./eip-1153.md) introduced transient storage with gas costs equivalent to warm storage operations (100 gas). The current pricing model presents several limitations: 1. Reentrancy Protection Cost: At 100 gas per operation, implementing reentrancy locks by default remains expensive enough to discourage universal adoption at the language level, leaving contracts vulnerable
+
+RATIONALE:
+### Constant Pricing with Hard Limit This EIP implements constant pricing with a hard limit for several reasons: 1. A hard limit provides guarantees on the total resource consumption which are easier to reason about for clients, rather than needing to perform a calculation as a function of current
+
+
 === EIP-3788 ===
 TITLE: Strict enforcement of chainId
 TYPE: Standards Track Core
@@ -8970,6 +8990,26 @@ Native Account Abstraction allows custom validation logic of a transaction and c
 
 RATIONALE:
 A full list of rationales for the decisions made in this proposal can be found in the [README document](../assets/eip-7701/README.md).
+
+
+=== EIP-7911 ===
+TITLE: Scaling Ethereum with a Perceptron Tree ZKP
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-19
+REQUIRES: 
+
+SUMMARY:
+This project proposes a method to enhance scalability and privacy protection in the Ethereum network using a Perceptron Tree-based Zero-Knowledge Proof (ZKP) model. The Perceptron Tree, a hybrid model combining the strengths of decision trees and perceptron neural networks, provides a compressed representation for transaction relationships, facilitating efficient verification.
+
+SPECIFICATION:
+### 1. Tree Construction The system inputs a transaction dataset T = {x₁, x₂, ..., xₙ} to construct a recursive tree. - Each node classifies transaction data using a perceptron with a linear function: ``` f(x) = step(Wₐ·a + Wᵦ·b + θ) ``` where the step function is defined
+
+MOTIVATION:
+The significant increase in blockchain transactions has resulted in scalability limitations and privacy issues. Existing ZKP methods effectively validate individual transactions but fall short in analyzing inter-transaction relationships while maintaining privacy. ZK-Rollups bundle multiple transactions off-chain into a single proof submitted to the Ethereum mainnet, improving throughput and reducing
+
+RATIONALE:
+The Perceptron Tree-based ZKP model extends the capabilities of existing zero-knowledge proof techniques by incorporating transaction relationships into the proof structure. Traditional zk-SNARK and zk-STARK methods validate individual transactions but do not leverage inter-transaction similarity, which can lead to inefficiencies. By structuring transactions using a Perceptron Tree, this model
 
 
 === EIP-868 ===
