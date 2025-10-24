@@ -2517,7 +2517,7 @@ SPECIFICATION:
 After `FORK_BLOCK`, set the following parameters and rules: ### Parameters | Name | Value | Description | | -------------------------- | -----: | ----------------------------------------------------------------------- | | `TX_BASE_COST` | 4,500 | Base cost of any transaction | | `GAS_NEW_ACCOUNT` | 25,000 | Surcharge when a value-transferring transaction creates a new account
 
 MOTIVATION:
-The legacy `21,000` base no longer matches the universal work path under warm/cold accounting. Decomposed into signature recovery, one account-leaf write for the sender (nonce + balance coalesced), and one cold non-code touch (sender), the universal path totals `4,500` gas. State growth is underpriced for top-level value transfers that
+**Monetary Context** Money has three basic functions: a unit of account, a medium of exchange, and a store of value. ETH already meets the last two by design. It carries value without an issuer and settles with finality. Where it falls short is in everyday exchange - the friction
 
 RATIONALE:
 Price only what every transaction always does: ECDSA recovery, warming `sender` and `to`, and one account-leaf write for the sender (nonce + balance change). That sums to `4,500` gas. Anything not universal should be metered separately. Calldata remains metered per byte. No calldata allowance is folded into the base.
