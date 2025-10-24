@@ -8348,23 +8348,23 @@ The `0xEF` byte was chosen because it resembles **E**xecutable **F**ormat. Contr
 
 
 === EIP-8032 ===
-TITLE: Tree-Depth-Based Storage Gas Pricing
+TITLE: Size-Based Storage Gas Pricing
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-09-29
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces a mechanism to dynamically price SSTORE operations based on the storage size of a contract. A new optional depth field is added to the account RLP, which tracks an approximation of the storage trie's depth. The gas cost for SSTORE will be augmented by a factor that grows exponentially with this depth field, but only after it crosses a predefined activation threshold. This change aims to align the cost of state growth with the long-term burden it places on the network, thereby disincentivizing state bloat.
+This EIP introduces a mechanism to dynamically price SSTORE operations based on the storage size of a contract. A new optional `storage_count` field is added to the account RLP, which tracks the number of storage slots it owns. The gas cost for SSTORE will be augmented by a factor that grows exponentially with this `storage_count` field, but only after it crosses a predefined activation threshold. This change aims to align the cost of state growth with the long-term burden it places on the network, thereby disincentivizing state bloat.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants and parameters |Name|Value|Description| |-|:-:|-| |`FORK_TIMESTAMP`| TBD | Fork activation timestamp | |`EXP_FACTOR` | TBD | Exponent gas cost factor | |`LIN_FACTOR` | TBD | Linear gas cost factor | | `ACTIVATION_THRESHOLD` | TBD | Activation threshold, chosen to be at ~8GB of data. | ### Account tree and update rules change Account RLP descriptors receive an optional `depth` field, corresponding to the
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants and parameters |Name|Value|Description| |-|:-:|-| |`FORK_TIMESTAMP`| TBD | Fork activation timestamp | |`LIN_FACTOR` | TBD | Linear gas cost factor | | `ACTIVATION_THRESHOLD` | TBD | Activation threshold, chosen to be at ~8GB of data. | | `TRANSITION_REGISTRY_ADDRESS` | TBD | The address of system contract that holds the information of account transition | | `TRANSITION_SLOTS_PER_BLOCK` | TBD | The number of storage
 
 MOTIVATION:
-Ethereum's state size is a growing concern, as it directly impacts node synchronization times, hardware requirements, and overall network health. The current gas model for storage operations does not fully account for the long-term cost of maintaining that state indefinitely. This has led to a situation where it is economically viable to create contracts with vast amounts of storage ("state bloat"), which can be used for low-cost data anchoring or spam, imposing a negative externality on all network participants who must maintain this data. This proposal aims to address the state growth problem by creating a direct economic
+Ethereum's state size is a growing concern, as it directly impacts node synchronization times, hardware requirements, and overall network health. The current gas model for storage operations does not fully account for the long-term cost of maintaining state indefinitely. As a result, it remains economically viable to deploy contracts with large storage footprints (“state bloat”), which can be exploited for low-cost data anchoring or spam. This imposes a negative externality on all network participants, who must store and process this data indefinitely. In practice, the computational and I/O costs of creating and updating storage slots scale with the
 
 RATIONALE:
-The intent is to create friction in when growing the state size of a contract, thus limiting the number of such contracts. Going over the limit, some contract developers might want to use another contract to start fresh, which comes at the cost of paying for contract creation, and for any call into the previous instance of the contract. The depth of the tree is chosen over the leaf count, because the storage tree is balanced, owing to the fact that its keys are hashed. Therefore, checking the maximum depth of a write is a stochastic process that
+The intent is to create friction in when growing the state size of a contract, thus limiting the number of such contracts. Going over the limit, some contract developers might want to use another contract to start fresh, which comes at the cost of paying for contract creation, and for any call into the previous instance of the contract. `ACTIVATION_THRESHOLD` is chosen to not penalize the contracts that are large, but do provide useful value. The idea is to disincentivize spam contracts that grow larger than useful contracts, the latter being legitimately big due to the value they
 
 
 === EIP-6800 ===
@@ -8819,6 +8819,26 @@ The `NewPooledTransactionHashes` message announces transaction hashes, allowing 
 
 RATIONALE:
 This change will make the `eth` protocol future-proof for new transaction types that might not be relevant for all nodes. It gives the receiving node better control over the data it fetches from the peer as well as allow throttling the download of specific types. The `types` message element is a byte array because early implementations of this EIP erroneously implemented it that way. It was later decided to keep this behavior in order to minimize work.
+
+
+=== EIP-8057 ===
+TITLE: Inter-Block Temporal Locality Gas Discounts
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-20
+REQUIRES: 2, 9, 2, 9, ,,  , 7, 9, 2, 8
+
+SUMMARY:
+This proposal introduces a deterministic, multi-block discount for the first access to accounts and storage keys in a transaction. The discount depends on how many blocks have passed since the item was last accessed, decaying smoothly to zero over a fixed recent window. Intra-block warming semantics are unchanged - there is no warming across transactions within a block. The mechanism builds on block-level access lists ([EIP-7928](./eip-7928.md)), which are committed in block headers. This allows a newly synced node to correctly price the first block it validates without replaying historical execution.
+
+SPECIFICATION:
+### Terminology and constants | Name | Description | Default | |-----------------------------|-----------------------|-----------------| | `WINDOW_SIZE_BLOCKS`| Number of recent blocks over which a discount may apply. | `63` | | `CURRENT_BLOCK_NUMBER` | The block number of the transaction being executed. | - | | `LAST_ACCESS_BLOCK_NUMBER(item)` | The most recent block number strictly less than `CURRENT_BLOCK_NUMBER` in which `item` was accessed by an executed transaction. If unknown or older than `WINDOW_SIZE_BLOCKS`, it is treated as not found. | - | | `BLOCK_DISTANCE_IN_BLOCKS(item)` | Defined as `CURRENT_BLOCK_NUMBER - LAST_ACCESS_BLOCK_NUMBER(item)` when the latter is found, else a value greater than `WINDOW_SIZE_BLOCKS`. | -
+
+MOTIVATION:
+Current warm and cold access pricing reflects how clients manage state, but it leaves potential efficiency untapped. Clients already retain data from recent blocks in memory to handle short reorgs, so accesses to those items are cheaper in practice. Yet the gas model ignores this, only distinguishing between warm and cold accesses within a single block. Extending the concept between transactions intra-block seems like an obvious improvement - but same-block sharing fails to deliver predictability. Any gas saving that depends on coincidental same-block accesses is effectively random and capricious from a user's perspective: they sign a transaction at
+
+RATIONALE:
+- Determinism: discounts depend only on prior blocks, so users can predict costs at submission time. The block-level access lists in headers remove bootstrap ambiguity for new nodes. Intra-block dependent savings are inherently unknowable and non-actionable at submission, so they do not change behaviour; prior-block based savings do. - Smooth curve: the chosen polynomial keeps strong incentive for very recent history and eases toward zero, aligning with how caches deliver benefit for temporal locality. Linear ramps are simpler but produce harsher edges. - Window of 63: this captures longer-lived temporal locality without turning the feature into a long-term
 
 
 === EIP-4200 ===

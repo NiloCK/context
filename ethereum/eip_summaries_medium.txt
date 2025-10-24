@@ -8348,20 +8348,20 @@ The `0xEF` byte was chosen because it resembles **E**xecutable **F**ormat. Contr
 
 
 === EIP-8032 ===
-TITLE: Tree-Depth-Based Storage Gas Pricing
+TITLE: Size-Based Storage Gas Pricing
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-09-29
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces a mechanism to dynamically price SSTORE operations based on the storage size of a contract. A new optional depth field is added to the account RLP, which tracks an approximation of the storage trie's depth. The gas cost for SSTORE will be augmented by a factor
+This EIP introduces a mechanism to dynamically price SSTORE operations based on the storage size of a contract. A new optional `storage_count` field is added to the account RLP, which tracks the number of storage slots it owns. The gas cost for SSTORE will be augmented by a factor
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants and parameters |Name|Value|Description| |-|:-:|-| |`FORK_TIMESTAMP`| TBD | Fork activation timestamp | |`EXP_FACTOR` |
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants and parameters |Name|Value|Description| |-|:-:|-| |`FORK_TIMESTAMP`| TBD | Fork activation timestamp | |`LIN_FACTOR` |
 
 MOTIVATION:
-Ethereum's state size is a growing concern, as it directly impacts node synchronization times, hardware requirements, and overall network health. The current gas model for storage operations does not fully account for the long-term cost of maintaining that state indefinitely. This has led to a situation where it is
+Ethereum's state size is a growing concern, as it directly impacts node synchronization times, hardware requirements, and overall network health. The current gas model for storage operations does not fully account for the long-term cost of maintaining state indefinitely. As a result, it remains economically viable to deploy contracts
 
 RATIONALE:
 The intent is to create friction in when growing the state size of a contract, thus limiting the number of such contracts. Going over the limit, some contract developers might want to use another contract to start fresh, which comes at the cost of paying for contract creation, and
@@ -8819,6 +8819,26 @@ The `NewPooledTransactionHashes` message announces transaction hashes, allowing 
 
 RATIONALE:
 This change will make the `eth` protocol future-proof for new transaction types that might not be relevant for all nodes. It gives the receiving node better control over the data it fetches from the peer as well as allow throttling the download of specific types. The `types` message element
+
+
+=== EIP-8057 ===
+TITLE: Inter-Block Temporal Locality Gas Discounts
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-20
+REQUIRES: 2, 9, 2, 9, ,,  , 7, 9, 2, 8
+
+SUMMARY:
+This proposal introduces a deterministic, multi-block discount for the first access to accounts and storage keys in a transaction. The discount depends on how many blocks have passed since the item was last accessed, decaying smoothly to zero over a fixed recent window. Intra-block warming semantics are unchanged -
+
+SPECIFICATION:
+### Terminology and constants | Name | Description | Default | |-----------------------------|-----------------------|-----------------| | `WINDOW_SIZE_BLOCKS`| Number of recent blocks over which a discount may apply. | `63` | | `CURRENT_BLOCK_NUMBER` | The block number of the transaction being executed. | - | | `LAST_ACCESS_BLOCK_NUMBER(item)` | The most recent block number
+
+MOTIVATION:
+Current warm and cold access pricing reflects how clients manage state, but it leaves potential efficiency untapped. Clients already retain data from recent blocks in memory to handle short reorgs, so accesses to those items are cheaper in practice. Yet the gas model ignores this, only distinguishing between warm
+
+RATIONALE:
+- Determinism: discounts depend only on prior blocks, so users can predict costs at submission time. The block-level access lists in headers remove bootstrap ambiguity for new nodes. Intra-block dependent savings are inherently unknowable and non-actionable at submission, so they do not change behaviour; prior-block based savings do. -
 
 
 === EIP-4200 ===
