@@ -1509,7 +1509,7 @@ RATIONALE:
 
 
 === EIP-8038 ===
-TITLE: State-access gas cost increase
+TITLE: State-access gas cost update
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-03
@@ -1519,7 +1519,7 @@ SUMMARY:
 This EIP updates the gas cost of state-access operations to reflect Ethereum’s larger state and the consequent slowdown of these operations. It raises the base costs for `GAS_STORAGE_UPDATE`, `GAS_COLD_SLOAD`, and `GAS_COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`. The design coordinates with EIP-8032: before EIP-8032, parameters assume worst-case contract size; after EIP-8032, they assume worst-case up to `ACTIVATION_THRESHOLD`, with additional depth-based scaling beyond.
 
 SPECIFICATION:
-Upon activation of this EIP, the following parameters of the gas model are updated: | **Parameter** | **Current value** | **New value** | **Increase** |**Operations affected** | |:---:|:---:|:---:|:---:|:---:| | `GAS_STORAGE_UPDATE` | 5,000 | TBD | TBD | `SSTORE` | | `GAS_COLD_SLOAD` | 2,100 | TBD | TBD | `SSTORE` and `SLOAD` | | `GAS_COLD_ACCOUNT_ACCESS` | 2,600 | TBD | TBD | `*CALL` opcodes, `BALANCE`, `SELFDESTRUCT` and `EXT*` opcodes | | `GAS_WARM_ACCESS` | 100 | TBD | TBD | `SSTORE`, `SLOAD`, `*CALL` opcodes, `BALANCE` and `EXT*` opcodes | <-- TODO --> Besides these parameter changes, the gas cost formula
+### Parameters Upon activation of this EIP, the following parameters of the gas model are renamed: | **Parameter** | **New name** | |:---:|:---:| | `GAS_STORAGE_UPDATE` | `GAS_COLD_STORAGE_WRITE` | | `GAS_COLD_SLOAD` | `GAS_COLD_STORAGE_ACCESS` | The following parameters of the gas model updated: | **Parameter** | **Current value** | **New value** | **Increase** |**Operations affected** | |:---:|:---:|:---:|:---:|:---:| | `GAS_COLD_STORAGE_WRITE` | 5,000 | TBD | TBD | `SSTORE` | | `GAS_COLD_STORAGE_ACCESS` | 2,100 | TBD | TBD | `SSTORE` and `SLOAD` | | `GAS_COLD_ACCOUNT_ACCESS` | 2,600 | TBD | TBD | `*CALL` opcodes, `BALANCE`, `SELFDESTRUCT` and `EXT*` opcodes | | `GAS_WARM_ACCESS`
 
 MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](eip-2929.md) was included in the Berlin fork in March 2021 and raised the costs of state-accessing opcodes. Yet, since then, Ethereum's state has grown significantly, thus deteriorating the performance of these operations. This proposal further raises state access costs to better align them with the current performance of state access operations, in relation to other operations. Additionally, `EXTCODESIZE` and `EXTCODECOPY` have the same access cost as `BALANCE` and `EXTCODEHASH`. However, `EXTCODESIZE` and `EXTCODECOPY` require two database reads - first to load the account object
@@ -2520,7 +2520,7 @@ MOTIVATION:
 **Monetary Context** Money has three basic functions: a unit of account, a medium of exchange, and a store of value. ETH already meets the last two by design. It carries value without an issuer and settles with finality. Where it falls short is in everyday exchange - the friction of use rather than the nature of the asset. ETH underpins most onchain liquidity. Pairs are denominated in it, and gas is paid in it - a de-facto tax base that anchors value. Bitcoin's monetary role now runs mainly through exchange pairs, hence its drift in focus to store-of-value
 
 RATIONALE:
-Price only what every transaction always does: ECDSA recovery, warming `sender` and `to`, and one account-leaf write for the sender (nonce + balance change). That sums to `4,500` gas. Anything not universal should be metered separately. Calldata remains metered per byte. No calldata allowance is folded into the base. This reinforces ETH as money and payments: a plain ETH transfer carries no calldata, executes no bytecode, and touches no contract storage slots. It adds exactly one recipient touch (when not a smart contract) and one recipient leaf write, so its total is `6,000`. When a value transfer creates
+Price only what every transaction always does: ECDSA recovery, warming `sender` and `to`, and one account-leaf write for the sender (nonce + balance change). That sums to `4,500` gas. Anything not universal should be metered separately. Calldata remains metered per byte. No calldata allowance is folded into the base. This reinforces ETH as money and payments: a plain ETH transfer carries no calldata, executes no bytecode, and touches no contract storage slots. It adds exactly one recipient touch (when not a smart contract) and one recipient leaf write, so its total is `6,000`. `CREATE` is unchanged because its
 
 
 === EIP-3041 ===

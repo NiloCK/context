@@ -1509,7 +1509,7 @@ RATIONALE:
 
 
 === EIP-8038 ===
-TITLE: State-access gas cost increase
+TITLE: State-access gas cost update
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-03
@@ -1519,7 +1519,7 @@ SUMMARY:
 This EIP updates the gas cost of state-access operations to reflect Ethereum’s larger state and the consequent slowdown of these operations. It raises the base costs for `GAS_STORAGE_UPDATE`, `GAS_COLD_SLOAD`, and `GAS_COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`. The design coordinates with EIP-8032: before EIP-8032, parameters assume
 
 SPECIFICATION:
-Upon activation of this EIP, the following parameters of the gas model are updated: | **Parameter** | **Current value** | **New value** | **Increase** |**Operations affected** | |:---:|:---:|:---:|:---:|:---:| | `GAS_STORAGE_UPDATE` | 5,000 | TBD | TBD | `SSTORE` | | `GAS_COLD_SLOAD` | 2,100 | TBD | TBD | `SSTORE`
+### Parameters Upon activation of this EIP, the following parameters of the gas model are renamed: | **Parameter** | **New name** | |:---:|:---:| | `GAS_STORAGE_UPDATE` | `GAS_COLD_STORAGE_WRITE` | | `GAS_COLD_SLOAD` | `GAS_COLD_STORAGE_ACCESS` | The following parameters of the gas model updated: | **Parameter** | **Current value** | **New value**
 
 MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](eip-2929.md) was included in the Berlin fork in March 2021 and raised the costs of state-accessing opcodes. Yet, since then, Ethereum's state has grown significantly, thus deteriorating the performance of these operations. This proposal further

@@ -1509,7 +1509,7 @@ RATIONALE:
 
 
 === EIP-8038 ===
-TITLE: State-access gas cost increase
+TITLE: State-access gas cost update
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-03
@@ -1519,7 +1519,7 @@ SUMMARY:
 This EIP updates the gas cost of state-access operations to reflect Ethereum’s larger state and the consequent slowdown of these operations. It raises the
 
 SPECIFICATION:
-Upon activation of this EIP, the following parameters of the gas model are updated: | **Parameter** | **Current value** | **New value** | **Increase**
+### Parameters Upon activation of this EIP, the following parameters of the gas model are renamed: | **Parameter** | **New name** | |:---:|:---:| |
 
 MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](eip-2929.md) was included in the Berlin fork in March 2021
