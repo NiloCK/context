@@ -8835,7 +8835,7 @@ SPECIFICATION:
 ### Terminology and constants | Name | Description | Default | |-----------------------------|-----------------------|-----------------| | `WINDOW_SIZE_BLOCKS`| Number of recent blocks over which a discount may apply.
 
 MOTIVATION:
-Current warm and cold access pricing reflects how clients manage state, but it leaves potential efficiency untapped. Clients already retain data from recent blocks
+Current warm and cold access pricing correctly models client state costs in the *worst case* but leaves a predictable efficiency gap in the *common
 
 RATIONALE:
 - Determinism: discounts depend only on prior blocks, so users can predict costs at submission time. The block-level access lists in headers remove bootstrap
