@@ -747,7 +747,7 @@ By adding a flag for the local block builder, they are able to specify how many 
 === EIP-7761 ===
 TITLE: EXTCODETYPE instruction
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-09-01
 REQUIRES: 3, 5, 4, 0, ,,  , 7, 6, 9, 2
 
@@ -961,7 +961,7 @@ RATIONALE:
 === EIP-7921 ===
 TITLE: Skip `JUMPDEST` immediate argument check
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-03-26
 REQUIRES: 
 
@@ -1953,7 +1953,7 @@ Only the `STATICCALL` instruction was changed to reduce the impact of the change
 === EIP-7709 ===
 TITLE: Read BLOCKHASH from storage and update cost
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-05-18
 REQUIRES: 2935
 
