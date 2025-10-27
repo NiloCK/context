@@ -2594,7 +2594,7 @@ SUMMARY:
 This EIP introduces a new JSON-RPC method, `wallet_signIntendedValidatorData`, which allows signing data with an intended validator address using [ERC-191](./eip-191.md) version 0x00 with this format: ```bash 0x19 <0x00> <intended validator address> <data to sign> ```
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `wallet_signIntendedValidatorData` MUST calculate an Ethereum signature using `sign(keccak256("\x19\x00<signature validator address><data to sign>"))`. This method
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### `wallet_signIntendedValidatorData` MUST calculate an Ethereum signature using `sign(keccak256("\x19\x00<intended validator address><data to sign>"))`. This method
 
 MOTIVATION:
 Currently, signing messages relies heavily on ERC-191 version 0x45 (`eth_sign`) and [EIP-712](./eip-712.md) (`eth_signTypedData`). While EIP-712 provides a more structured approach, it is often seen as complex. On the other hand, ERC-191 version 0x45 is widely used but poses significant phishing risks due to the lack of data parsing. ERC-191
@@ -6233,10 +6233,10 @@ CREATED: 2025-06-12
 REQUIRES: 1153
 
 SUMMARY:
-This EIP proposes to reduce the gas costs for transient storage operations (`TLOAD` and `TSTORE`) and warm storage loads (`SLOAD`) by implementing constant pricing. To prevent denial-of-service attacks through excessive memory allocation, a transaction-global limit on transient storage slots is introduced. This approach provides lower costs for common use
+This EIP proposes to reduce the gas costs for transient storage operations (`TLOAD` and `TSTORE`) by implementing constant pricing. To prevent denial-of-service attacks through excessive memory allocation, a transaction-global limit on transient storage slots is introduced. This approach provides lower costs for common use cases while maintaining security against
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters This EIP introduces the following parameters: - `GAS_TLOAD` = 5 (tent.) - `GAS_TSTORE`
+### Parameters This EIP introduces the following parameters: | Constant | Value | Description | | :--- | :--- | :--- | | `GAS_TLOAD` | 5 | Gas cost of `TLOAD` | | `GAS_TSTORE` | 12 | Gas cost of `TSTORE` | | `MAX_TRANSIENT_SLOTS` | 131072 | The maximum
 
 MOTIVATION:
 [EIP-1153](./eip-1153.md) introduced transient storage with gas costs equivalent to warm storage operations (100 gas). The current pricing model presents several limitations: 1. Reentrancy Protection Cost: At 100 gas per operation, implementing reentrancy locks by default remains expensive enough to discourage universal adoption at the language level, leaving contracts vulnerable

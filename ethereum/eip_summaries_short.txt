@@ -6233,10 +6233,10 @@ CREATED: 2025-06-12
 REQUIRES: 1153
 
 SUMMARY:
-This EIP proposes to reduce the gas costs for transient storage operations (`TLOAD` and `TSTORE`) and warm storage loads (`SLOAD`) by implementing constant pricing.
+This EIP proposes to reduce the gas costs for transient storage operations (`TLOAD` and `TSTORE`) by implementing constant pricing. To prevent denial-of-service attacks through
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+### Parameters This EIP introduces the following parameters: | Constant | Value | Description | | :--- | :--- | :--- | | `GAS_TLOAD`
 
 MOTIVATION:
 [EIP-1153](./eip-1153.md) introduced transient storage with gas costs equivalent to warm storage operations (100 gas). The current pricing model presents several limitations: 1. Reentrancy Protection
