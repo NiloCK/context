@@ -664,6 +664,26 @@ RATIONALE:
 ### Blocks and Epochs Blocks and epochs serve as natural trigger points for upgrades, as they represent the levels at which state transitions occur on Ethereum. ### Terminal Total Difficulty For the Terminal Total Difficulty mechanism, the rationale can be found in [EIP-3675](./eip-3675.md). ### Timestamps Due to the possibility of missed slots on the Beacon Chain, the execution layer cannot rely solely on block numbers to trigger upgrades in sync with the consensus layer. Timestamps are guaranteed to map to a specific epoch, and in their Unix representation, timestamps will always be greater than the block numbers previously
 
 
+=== EIP-8058 ===
+TITLE: Contract Bytecode Deduplication Discount
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-22
+REQUIRES: 2930
+
+SUMMARY:
+This proposal introduces a gas discount for contract deployments when the bytecode being deployed already exists in the state. By leveraging EIP-2930 access lists, any contract address included in the access list automatically contributes its code hash to a deduplication check. When the deployed bytecode matches an existing code hash from the access list, the deployment avoids paying `GAS_CODE_DEPOSIT * L` costs since clients already store the bytecode and only need to link the new account to the existing code hash. This EIP becomes particularly relevant with the adoption of EIP-8037, which increases `GAS_CODE_DEPOSIT` from 200 to 1,900
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Implicit Deduplication via Access Lists This proposal leverages the existing EIP-2930 access list structure without any modifications. No new fields or protocol changes are required. ### CodeHash Access-Set Construction Before transaction execution begins, build a set `W` (the "CodeHash Access-Set") as follows: ``` W = { codeHash(a) | a ∈ accessList, a exists in state, a has code } ``` Where: - `W`
+
+MOTIVATION:
+Currently, deploying duplicate bytecode costs the same as deploying new bytecode, even though execution clients don't store duplicated code in their databases. When the same bytecode is deployed multiple times, clients store only one copy and have multiple accounts point to the same code hash. Under EIP-8037's proposed gas costs, deploying a 24kB contract costs approximately 46.6M gas for code deposit alone (`1,900 × 24,576`). This charge is unfair for duplicate deployments where no additional storage is consumed. A naive "check if code exists in database" approach would break consensus because different nodes have different database contents due
+
+RATIONALE:
+### Why Access-List Based Deduplication? The access-list approach provides several critical properties: 1. Deterministic behavior: The result depends only on the transaction's access list and current state, not on local database contents. All nodes compute the same gas cost. 2. No reverse index requirement: Unlike other approaches, this doesn't require maintaining a `codeHash → [accounts]` reverse index, which would add significant complexity and storage overhead. 3. Leverages existing infrastructure: Builds on EIP-2930 access lists and EIP-2929 access costs, requiring minimal protocol changes. 4. Implicit optimization: Any address included in the access list automatically contributes to deduplication. This provides
+
+
 === EIP-7619 ===
 TITLE: Precompile Falcon512 generic verifier
 TYPE: Standards Track Core
@@ -4930,6 +4950,26 @@ Some staking operations feature two distinct entities, one operating the validat
 
 RATIONALE:
 ### Persist pending withdrawals Rejected deposits from block at slot N can not be withdrawn in block N due to a cyclic dependency. An execution client must know the full list of withdrawals before constructing a payload for slot N. After [EIP-6110](./eip-6110.md), a consensus client must know the full execution payload for slot N before constructing the beacon block for slot N. Therefore, rejected deposits must be withdrawn in some future slot. All pending withdrawals are processed at once in the very next slot for simplicity but could be queued and processed progressively if there are DOS concerns.
+
+
+=== EIP-7973 ===
+TITLE: Warm Account Write Metering
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-06-14
+REQUIRES: 2200
+
+SUMMARY:
+This EIP introduces warm metering for account writes. Namely, if one of the account fields (`nonce`, `value`, `codehash`) is changed more than once in a transaction, the later writes are cheaper, since the state root update only happens once.
+
+SPECIFICATION:
+The parameters `GAS_CALL_VALUE` and `GAS_STORAGE_UPDATE` are removed, and the following parameters are introduced: | **Parameter** | **Value** | **Description** | |:---:|:---:|:---:| | `GAS_COLD_STORAGE_WRITE` | TBD | Cost of a single update to the storage trie | | `GAS_COLD_ACCOUNT_WRITE` | TBD | Cost of a single update to the account trie | | `GAS_WARM_WRITE` | TBD | Cost of a warm update to a trie (i.e. does not trigger a new state root calculation) | <-- TODO --> On the account-updating opcodes `CREATE`, `CREATE2`, and `*CALL`, instead of charging `GAS_CALL_VALUE`: - `GAS_COLD_ACCOUNT_WRITE_COST` is charged if the account fields **are
+
+MOTIVATION:
+Updating the state root is one of the most expensive parts of block construction. Currently, multiple writes to storage are subject to a net gas metering, which reduces the cost of a storage write after the first write. However, updates to the account are subject to the same cost every time. This means that, for example, making multiple WETH transfers to an account in a single transaction gets successfully cheaper as the cold access cost is amortized over the remaining accesses. At the same time, the same discount does not occur when making multiple native ETH transfers. This
+
+RATIONALE:
+An account is represented within Ethereum as a tuple `(nonce, balance, storage_root, codehash)`. The account is a leaf of a Merkle Patricia Tree (MPT), while the `storage_root` is itself the root of the account's MPT key-value store. An update to the account's storage requires updating two MPTs (the account's `storage_root`, as well as the global state root). Meanwhile, updating the other fields in an account requires updating only one MPT. This proposal clarifies the cost of updating state by introducing the `*_WRITE` parameters. It also separates the cost of a storage state root update (`GAS_COLD_STORAGE_ACCESS`) and the cost
 
 
 === EIP-2069 ===

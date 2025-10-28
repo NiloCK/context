@@ -664,6 +664,26 @@ RATIONALE:
 ### Blocks and Epochs Blocks and epochs serve as natural trigger points for upgrades, as they represent the levels at which state transitions occur on Ethereum. ### Terminal Total Difficulty For the Terminal Total Difficulty mechanism, the rationale can be found in [EIP-3675](./eip-3675.md). ### Timestamps Due to the possibility
 
 
+=== EIP-8058 ===
+TITLE: Contract Bytecode Deduplication Discount
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-22
+REQUIRES: 2930
+
+SUMMARY:
+This proposal introduces a gas discount for contract deployments when the bytecode being deployed already exists in the state. By leveraging EIP-2930 access lists, any contract address included in the access list automatically contributes its code hash to a deduplication check. When the deployed bytecode matches an existing code
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Implicit Deduplication via Access Lists This proposal leverages the existing EIP-2930 access list structure
+
+MOTIVATION:
+Currently, deploying duplicate bytecode costs the same as deploying new bytecode, even though execution clients don't store duplicated code in their databases. When the same bytecode is deployed multiple times, clients store only one copy and have multiple accounts point to the same code hash. Under EIP-8037's proposed gas
+
+RATIONALE:
+### Why Access-List Based Deduplication? The access-list approach provides several critical properties: 1. Deterministic behavior: The result depends only on the transaction's access list and current state, not on local database contents. All nodes compute the same gas cost. 2. No reverse index requirement: Unlike other approaches, this doesn't
+
+
 === EIP-7619 ===
 TITLE: Precompile Falcon512 generic verifier
 TYPE: Standards Track Core
@@ -4930,6 +4950,26 @@ Some staking operations feature two distinct entities, one operating the validat
 
 RATIONALE:
 ### Persist pending withdrawals Rejected deposits from block at slot N can not be withdrawn in block N due to a cyclic dependency. An execution client must know the full list of withdrawals before constructing a payload for slot N. After [EIP-6110](./eip-6110.md), a consensus client must know the full
+
+
+=== EIP-7973 ===
+TITLE: Warm Account Write Metering
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-06-14
+REQUIRES: 2200
+
+SUMMARY:
+This EIP introduces warm metering for account writes. Namely, if one of the account fields (`nonce`, `value`, `codehash`) is changed more than once in a transaction, the later writes are cheaper, since the state root update only happens once.
+
+SPECIFICATION:
+The parameters `GAS_CALL_VALUE` and `GAS_STORAGE_UPDATE` are removed, and the following parameters are introduced: | **Parameter** | **Value** | **Description** | |:---:|:---:|:---:| | `GAS_COLD_STORAGE_WRITE` | TBD | Cost of a single update to the storage trie | | `GAS_COLD_ACCOUNT_WRITE` | TBD | Cost of a single update to the account
+
+MOTIVATION:
+Updating the state root is one of the most expensive parts of block construction. Currently, multiple writes to storage are subject to a net gas metering, which reduces the cost of a storage write after the first write. However, updates to the account are subject to the same cost
+
+RATIONALE:
+An account is represented within Ethereum as a tuple `(nonce, balance, storage_root, codehash)`. The account is a leaf of a Merkle Patricia Tree (MPT), while the `storage_root` is itself the root of the account's MPT key-value store. An update to the account's storage requires updating two MPTs (the account's
 
 
 === EIP-2069 ===
