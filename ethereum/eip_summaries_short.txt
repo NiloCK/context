@@ -5351,6 +5351,26 @@ MOTIVATION:
 Currently this is not possible. There are two practical ways to revert a transaction from within a contract: running out of gas or executing
 
 
+=== EIP-8061 ===
+TITLE: Increase churn limits
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-17
+REQUIRES: 7521
+
+SUMMARY:
+This EIP triples the global churn limit, by quadrupling the churn allocated to activations and exits and doubling the consolidation churn. It does so
+
+SPECIFICATION:
+The `CHURN_LIMIT_QUOTIENT` is halved, from `2**16` to `2**15`, and fully dedicated to activations and exits, as it was prior to the introduction of a
+
+MOTIVATION:
+[EIP-7514](./eip-7514.md) introduced an activation cap of 8 validators per epoch (now 256 ETH per epoch) to prevent overly rapid validator set growth. [EIP-7251](./eip-7251.md) extended
+
+RATIONALE:
+- **Independence and simplicity:** separate churn limits are easy to independently tune, in particular allowing for the consolidation churn to be adjusted downward in
+
+
 === EIP-1 ===
 TITLE: EIP Purpose and Guidelines
 TYPE: Meta 
