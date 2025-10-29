@@ -5274,6 +5274,26 @@ RATIONALE:
 This change was originally a candidate for inclusion in Shanghai, but was postponed to accelerate the rollout of withdrawals.
 
 
+=== EIP-8062 ===
+TITLE: Add sweep withdrawal fee for 0x01 validators
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-28
+REQUIRES: 4, 8, 9, 5, ,,  , 7, 2, 5, 1
+
+SUMMARY:
+A fee is proposed on the partial "sweep" withdrawal of validators using `0x01` credentials, to improve stake consolidation and fairness. Ethereum's fast finality roadmap hinges on staking service providers migrating from `0x01` validators to `0x02` compounding validators. One roadblock is that `0x01` validators receive free-of-charge sweep withdrawals for balances exceeding 32 ETH, which consume protocol resources that are not accounted for. To address this, a 0.05% fee is imposed on the partial `0x01` sweep using a minimal modification to `process_withdrawals()`, applying the new constant `WITHDRAWAL_FEE_FRACTION = 2000`.
+
+SPECIFICATION:
+### Parameters | Constant | Value | | - | - | | `WITHDRAWAL_FEE_FRACTION` | `2000` | ### Functions In `process_withdrawals()`, take out a fee for swept `0x01` validators that did not perform a full exit, burning it on the CL: ```python def process_withdrawals(state: BeaconState, payload: ExecutionPayload) -> None: ... # In this existing for-loop, calculate a fee before decreasing the balance for w in expected_withdrawals: vi = w.validator_index fee = 0 if not has_compounding_withdrawal_credential(state.validators[vi]) and w.amount != state.balances[vi]: fee = w.amount // WITHDRAWAL_FEE_FRACTION decrease_balance(state, vi, w.amount + fee) ```
+
+MOTIVATION:
+The roadmap for fast finality hinges on stake consolidation, where staking service providers (SSPs) transition from running 32-ETH validators with `0x01` credentials to compounding validators with `0x02` credentials. A roadblock to this transition is that `0x01` validators have been designed with close-to-ideal capital efficiency and free-of-charge partial withdrawals for balances exceeding 32 ETH (the "sweep" function). When factoring in switching costs, the incentives do not favor stake consolidation. At the same time, sweep withdrawals take up resources on both the consensus layer (CL) and execution layer (EL) that are not paid for. It is unsuitable to give `0x01`
+
+RATIONALE:
+### Fast finality Fast finality is best realized through a reduction to the active validator set voting each round. Two paths have been envisioned. In one path referred to as Orbit SSF, the active set rotates in a weighted fashion, such that large consolidated validators always are active, and smaller validators are active less frequently. In another path, there is a fixed number of validator seats, with only the largest validators (e.g., the top 8,192) granted a seat. Both paths require consolidation to achieve a desirable stake weight and optimal performance. ### Level of the proposed fee The
+
+
 === EIP-3322 ===
 TITLE: Account gas storage opcodes
 TYPE: Standards Track Core

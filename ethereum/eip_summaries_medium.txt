@@ -5274,6 +5274,26 @@ RATIONALE:
 This change was originally a candidate for inclusion in Shanghai, but was postponed to accelerate the rollout of withdrawals.
 
 
+=== EIP-8062 ===
+TITLE: Add sweep withdrawal fee for 0x01 validators
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-28
+REQUIRES: 4, 8, 9, 5, ,,  , 7, 2, 5, 1
+
+SUMMARY:
+A fee is proposed on the partial "sweep" withdrawal of validators using `0x01` credentials, to improve stake consolidation and fairness. Ethereum's fast finality roadmap hinges on staking service providers migrating from `0x01` validators to `0x02` compounding validators. One roadblock is that `0x01` validators receive free-of-charge sweep withdrawals for balances
+
+SPECIFICATION:
+### Parameters | Constant | Value | | - | - | | `WITHDRAWAL_FEE_FRACTION` | `2000` | ### Functions In `process_withdrawals()`, take out a fee for swept `0x01` validators that did not perform a full exit, burning it on the CL: ```python def process_withdrawals(state: BeaconState, payload: ExecutionPayload) -> None:
+
+MOTIVATION:
+The roadmap for fast finality hinges on stake consolidation, where staking service providers (SSPs) transition from running 32-ETH validators with `0x01` credentials to compounding validators with `0x02` credentials. A roadblock to this transition is that `0x01` validators have been designed with close-to-ideal capital efficiency and free-of-charge partial withdrawals for
+
+RATIONALE:
+### Fast finality Fast finality is best realized through a reduction to the active validator set voting each round. Two paths have been envisioned. In one path referred to as Orbit SSF, the active set rotates in a weighted fashion, such that large consolidated validators always are active, and
+
+
 === EIP-3322 ===
 TITLE: Account gas storage opcodes
 TYPE: Standards Track Core

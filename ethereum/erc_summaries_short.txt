@@ -2792,7 +2792,7 @@ MOTIVATION:
 Real World Assets (RWAs) represent a significant opportunity to bridge traditional finance and decentralized finance (DeFi). By tokenizing assets like real estate, corporate bonds,
 
 RATIONALE:
-* **Minimalism:** Defines only the essential functions (`forcedTransfer`, `setFrozenTokens`, `isUserAllowed`, `canTransfer`, `getFrozenTokens`) and associated events/errors needed for common RWA compliance and control patterns, avoiding
+* **Minimalism:** Defines only the essential functions (`forcedTransfer`, `setFrozenTokens`, `canTransact`, `canTransfer`, `getFrozenTokens`) and associated events/errors needed for common RWA compliance and control patterns, avoiding
 
 
 === ERC-7715 ===
