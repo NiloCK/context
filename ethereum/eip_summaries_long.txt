@@ -1055,6 +1055,26 @@ RATIONALE:
 The Future Salaries is the _only_ known system of distributing significant funds to common good producers. (Quadratic funding aimed to do a similar thing, but in practice as we see on GitCoin it favors a few developers, ignores project of highly advanced scientific research that is hard to explain to an average developer, and encourages colluding, and it just highly random due to small number of donors. Also quadratic funding simply does not gather enough funds to cover common good needs). So this EIP is the only known way to recover the economy. The economical model of Future
 
 
+=== EIP-8046 ===
+TITLE: FOCIL with ranked transactions (FOCILR)
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-16
+REQUIRES: 7805
+
+SUMMARY:
+FOCIL with ranked transactions (FOCILR) offers strong censorship resistance (CR) by not allowing the builder to circumvent propagated inclusion lists (ILs) when the block is full. Each transaction is ranked based on the ranking fee it offers to pay. No transaction is allowed to displace an IL transaction if the IL transaction passes regular inclusion criteria and offers a higher ranking fee per gas. All transactions pay the minimum required clearing fee, corresponding to the highest ranking fee offered by any IL transaction excluded from the block, and this fee is burned. FOCILR provides CR to time-sensitive transactions,
+
+SPECIFICATION:
+### New transaction format and ranking fee A new field `max_ranking_fee_per_gas` is added to a new [EIP-2718](./eip-2718.md) transaction with `TransactionType` = `RANK_TX_TYPE`. The `TransactionPayload` for this transaction is: <-- TODO --> ```Python # TODO: To be defined after scheduling this EIP relative to EIP-7999 and EIP-8011, etc. ``` The ranking is performed on the `ranking_fee_per_gas`, corresponding to the maximum ranking fee that the transactor was willing to pay under the current base fee. Older transaction formats use their entire headroom for their offered ranking fee, whereas the new format can cap the ranking fee using the `max_ranking_fee_per_gas` field.
+
+MOTIVATION:
+Censorship resistance (CR) is a key property of decentralized blockchains. To ensure that transactions cannot be censored by the entity building the block (denoted "builder" in this EIP, which may sometimes be the proposer), a mechanism called fork-choice enforced inclusion lists (FOCIL) has been proposed in [EIP-7805](./eip-7805.md). A set of includers propagate inclusion lists (ILs), and the attesters uphold that the transactions in the ILs are included in the block via the fork-choice. There is no mechanism for ranking transactions in the ILs, and therefore not viable to uphold CR when the block is full. If IL transactions
+
+RATIONALE:
+### Updated inclusion check #### Conservative balance The reason for using a conservative balance in (3b) when validating `T` is to avoid the circular dependencies that can emerge when a transaction is made executable by a lower-ranked transaction. Consider three transactions `A`, `B`, and `C` ranked as `A>B>C`. Without a conservative balance, `A` might be funded only if `B` is included in the block. For example, transaction `B` might fund `A`, so without `B`, `A` cannot be included, and without `A`, `B` cannot be included due to having a lower ranking. There is not enough gas to include
+
+
 === EIP-7610 ===
 TITLE: Revert creation in case of non-empty storage
 TYPE: Standards Track Core
@@ -4576,13 +4596,13 @@ TITLE: Glamsterdam Gas Repricings
 TYPE: Meta 
 STATUS: Draft
 CREATED: 2025-08-21
-REQUIRES: 2, 7, 8, 0, ,,  , 7, 6, 6, 7, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 2, 7, 8, 0, ,,  , 2, 9, 2, 6, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 1, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 1, 1, ,,  , 8, 0, 3, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8, ,,  , 8, 0, 5, 3, ,,  , 8, 0, 5, 7, ,,  , 8, 0, 5, 8, ,,  , 8, 0, 5, 9
 
 SUMMARY:
 This Meta EIP documents all the proposals for Glamsterdam related to the gas repricing effort. The goal of this effort is to harmonize gas costs across the EVM, thereby reducing the impact of specific bottlenecks on scaling. Proposals include changes to the cost of single EVM operations, as well as bigger changes to the gas model. This Meta EIP is purely informational and does not aim to have an active role in the governance process for the Glamsterdam fork. Instead, it serves as a directory for all repricing-related proposals, helping to organize the work and keeping the community
 
 SPECIFICATION:
-This Meta EIP includes two types of EIPs, namely, core and possible additions. This list will continue to be updated as more gas repricing EIPs are proposed. ### Core EIPs | EIP | Description | Type | Status | | ------------------------- | ------------------------------------------------------------------------------------------ | ------------------ | ---------------------- | | [EIP-2780](./eip-2780.md) | Reduce intrinsic transaction gas and charge 25k when a value transfer creates a new account. | Multi-resource | Proposed for Inclusion | | [EIP-7778](./eip-7778.md) | Prevent Block Gas Limit Circumvention by Excluding Refunds from Block Gas Accounting. | General Accounting | Proposed for Inclusion | | [EIP-7904](./eip-7904.md)
+The following table lists all EIPs related to repricings that are being discussed in the scope of the Glamsterdam fork. There are three types of EIPs in this list: 1. **Broad harmonization**. These EIPs reprice a class of operations with the goal of harmonizing them and removing single bottlenecks. 2. **Pricing extension**. These EIPs make targeted changes to a specific opcode or component of the gas model, usually coupled with a new mechanism. 3. **Supporting**. These EIPs are not directly doing a repricing, but instead introduce a change that support other repricing EIPs or enhance the scalability potential
 
 MOTIVATION:
 The main objective of the Glamsterdam fork is to improve L1 scalability. A crucial aspect of this initiative is to create a better alignment between gas costs and actual resource usage. Currently, the gas model often misprices operations, resulting in inefficiencies and unintended incentives. For instance, within the pure compute operations, there is a high variance in execution time per gas unit, which indicates that a single unit of computation is not priced equally across the various opcodes. By standardizing gas costs across EVM operations and other resources, we can reduce bottlenecks and enhance the utilization of EVM

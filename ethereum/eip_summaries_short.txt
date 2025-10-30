@@ -1055,6 +1055,26 @@ RATIONALE:
 The Future Salaries is the _only_ known system of distributing significant funds to common good producers. (Quadratic funding aimed to do a similar thing,
 
 
+=== EIP-8046 ===
+TITLE: FOCIL with ranked transactions (FOCILR)
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-16
+REQUIRES: 7805
+
+SUMMARY:
+FOCIL with ranked transactions (FOCILR) offers strong censorship resistance (CR) by not allowing the builder to circumvent propagated inclusion lists (ILs) when the block
+
+SPECIFICATION:
+### New transaction format and ranking fee A new field `max_ranking_fee_per_gas` is added to a new [EIP-2718](./eip-2718.md) transaction with `TransactionType` = `RANK_TX_TYPE`. The `TransactionPayload`
+
+MOTIVATION:
+Censorship resistance (CR) is a key property of decentralized blockchains. To ensure that transactions cannot be censored by the entity building the block (denoted
+
+RATIONALE:
+### Updated inclusion check #### Conservative balance The reason for using a conservative balance in (3b) when validating `T` is to avoid the circular
+
+
 === EIP-7610 ===
 TITLE: Revert creation in case of non-empty storage
 TYPE: Standards Track Core
@@ -4576,13 +4596,13 @@ TITLE: Glamsterdam Gas Repricings
 TYPE: Meta 
 STATUS: Draft
 CREATED: 2025-08-21
-REQUIRES: 2, 7, 8, 0, ,,  , 7, 6, 6, 7, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 2, 7, 8, 0, ,,  , 2, 9, 2, 6, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 1, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 1, 1, ,,  , 8, 0, 3, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8, ,,  , 8, 0, 5, 3, ,,  , 8, 0, 5, 7, ,,  , 8, 0, 5, 8, ,,  , 8, 0, 5, 9
 
 SUMMARY:
 This Meta EIP documents all the proposals for Glamsterdam related to the gas repricing effort. The goal of this effort is to harmonize gas
 
 SPECIFICATION:
-This Meta EIP includes two types of EIPs, namely, core and possible additions. This list will continue to be updated as more gas repricing
+The following table lists all EIPs related to repricings that are being discussed in the scope of the Glamsterdam fork. There are three types
 
 MOTIVATION:
 The main objective of the Glamsterdam fork is to improve L1 scalability. A crucial aspect of this initiative is to create a better alignment
