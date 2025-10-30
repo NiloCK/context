@@ -3313,6 +3313,26 @@ RATIONALE:
 ASIC Miners have become a threat to the future of Ethereum and a hard fork is required to remove them from the network before
 
 
+=== EIP-8053 ===
+TITLE: Milli-gas for High-precision Gas Metering
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-17
+REQUIRES: 
+
+SUMMARY:
+This proposal introduces the `milli-gas` counter as the EVM’s internal gas accounting. Gas costs are defined in `milli_gas` and internal EVM gas accounting is
+
+SPECIFICATION:
+This proposal introduces a new `Uint` counter to the EVM, `milli_gas_left`. Gas costs are defined in `milli_gas` and internal EVM gas accounting is entirely
+
+MOTIVATION:
+Currently, most EVM compute operations (`ADD`, `SUB`, `MUL`, etc.) are significantly underpriced when compared with state operations (`SSTORE`, `SLOAD`, `CREATE`, etc.). There are two
+
+RATIONALE:
+### New counter vs. new variable type A possible approach to allow for fractional gas would be to change the variable type of all
+
+
 === EIP-607 ===
 TITLE: Hardfork Meta: Spurious Dragon
 TYPE: Meta 
@@ -6006,6 +6026,26 @@ There has been a large amount of energy around parallel EVMs across multiple cha
 
 RATIONALE:
 The primary consideration when choosing between alternatives is that the primary intended audiences is token contracts and other asset-tracking contracts combined with a desire
+
+
+=== EIP-8059 ===
+TITLE: Gas Units Rebase for High-precision Metering
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-22
+REQUIRES: 
+
+SUMMARY:
+This proposal rebases Ethereum’s gas unit to a factor of `REBASE_FACTOR` to enable high-precision metering without introducing fractional gas. All gas-related parameters and variables
+
+SPECIFICATION:
+| **Parameter** | **Value** | |:---:|:---:| | `REBASE_FACTOR` | 1000 | This proposal introduces a gas rebase such that all gas-related parameters and variables
+
+MOTIVATION:
+Currently, most EVM compute operations (`ADD`, `SUB`, `MUL`, etc.) are significantly underpriced when compared with state operations (`SSTORE`, `SLOAD`, `CREATE`, etc.). There are two
+
+RATIONALE:
+A rebase factor of 1000 has two advantages: 1. It is large enough to completely remove rounding errors for compute operations now and to
 
 
 === EIP-615 ===

@@ -3313,6 +3313,26 @@ RATIONALE:
 ASIC Miners have become a threat to the future of Ethereum and a hard fork is required to remove them from the network before additional damage is caused. EIP-3372 proposes the minimum necessary to do so and will not affect ETH stakeholders or the network like Ethash 2.0 would.
 
 
+=== EIP-8053 ===
+TITLE: Milli-gas for High-precision Gas Metering
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-17
+REQUIRES: 
+
+SUMMARY:
+This proposal introduces the `milli-gas` counter as the EVM’s internal gas accounting. Gas costs are defined in `milli_gas` and internal EVM gas accounting is entirely carried out in `milli_gas`. At the end of transaction execution,`milli_gas` is rounded up to `gas`. Gas limits and transaction fees are still computed and
+
+SPECIFICATION:
+This proposal introduces a new `Uint` counter to the EVM, `milli_gas_left`. Gas costs are defined in `milli_gas` and internal EVM gas accounting is entirely carried out in `milli_gas`. Transaction fees, transaction gas limits, and block gas limits are still computed and verified using the current `gas_used` counter. There are
+
+MOTIVATION:
+Currently, most EVM compute operations (`ADD`, `SUB`, `MUL`, etc.) are significantly underpriced when compared with state operations (`SSTORE`, `SLOAD`, `CREATE`, etc.). There are two factors contributing to this mismatch. On one hand, client optimizations and hardware improvements have made pure compute operations more efficient. On the other hand, with
+
+RATIONALE:
+### New counter vs. new variable type A possible approach to allow for fractional gas would be to change the variable type of all gas-related variables from an integer to a float or a base fractional. Although simple in concept, the implementation of such a change in the EVM
+
+
 === EIP-607 ===
 TITLE: Hardfork Meta: Spurious Dragon
 TYPE: Meta 
@@ -6006,6 +6026,26 @@ There has been a large amount of energy around parallel EVMs across multiple cha
 
 RATIONALE:
 The primary consideration when choosing between alternatives is that the primary intended audiences is token contracts and other asset-tracking contracts combined with a desire to ship the minimum necessary changes to enable that use case. General concurrency controls is not a goal of this EIP. ### Enforcing Overflow Semantics
+
+
+=== EIP-8059 ===
+TITLE: Gas Units Rebase for High-precision Metering
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-22
+REQUIRES: 
+
+SUMMARY:
+This proposal rebases Ethereum’s gas unit to a factor of `REBASE_FACTOR` to enable high-precision metering without introducing fractional gas. All gas-related parameters and variables are increased to a factor of `REBASE_FACTOR`. This reduces rounding errors that arise when repricing EVM operations and future-proofs gas costs as hardware improves and
+
+SPECIFICATION:
+| **Parameter** | **Value** | |:---:|:---:| | `REBASE_FACTOR` | 1000 | This proposal introduces a gas rebase such that all gas-related parameters and variables are increased by a factor of `REBASE_FACTOR`. At fork boundary, `calculate_base_fee_per_gas` is updated so that both `parent_gas_used` and `parent_base_fee_per_gas` are also scaled by a factor
+
+MOTIVATION:
+Currently, most EVM compute operations (`ADD`, `SUB`, `MUL`, etc.) are significantly underpriced when compared with state operations (`SSTORE`, `SLOAD`, `CREATE`, etc.). There are two factors contributing to this mismatch. On one hand, client optimizations and hardware improvements have made pure compute operations more efficient. On the other hand, with
+
+RATIONALE:
+A rebase factor of 1000 has two advantages: 1. It is large enough to completely remove rounding errors for compute operations now and to be future-proof. As we can see from the motivation, an anchor of 400Mgas/s would be enough to reduce these errors. Assuming a 2-second block execution
 
 
 === EIP-615 ===
