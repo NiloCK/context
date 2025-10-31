@@ -78,6 +78,26 @@ RATIONALE:
 Although maintaining the target and max blob only in the consensus client is desirable, we acknowledge the reality that execution clients need these values for various activities. For example, the `eth_feeHistory` RPC method returns a field `blobGasUsedRatio` that does require the max, even though the core protocol doesn't specifically
 
 
+=== EIP-8068 ===
+TITLE: Neutral effective balance design
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-28
+REQUIRES: 7251
+
+SUMMARY:
+This EIP proposes a neutral effective balance (EB) design to ensure `0x01` (skimming) and `0x02` (compounding) validators receive equal consensus layer (CL) yields. Currently, validators that compound their balance have poor capital efficiency and lower yields as their idle balance (not contributing to EB) is 0.75 ETH, significantly higher
+
+SPECIFICATION:
+### Parameters Change two existing constants: | Constant | Value | - | - | | `HYSTERESIS_DOWNWARD_MULTIPLIER` | `3` | | `HYSTERESIS_UPWARD_MULTIPLIER` | `2` | ### Containers Two new fields are added to the Validator Container: ```python class Validator(Container): ... temporary_upward_threshold: Gwei # Initiate to 0 reset_eb: boolean #
+
+MOTIVATION:
+The roadmap for fast finality hinges on stake consolidation, where staking service providers (SSPs) transition from running 32-ETH validators with `0x01` credentials to compounding validators with `0x02` credentials. A roadblock to this transition is that `0x01` validators have close-to-ideal capital efficiency, whereas `0x02` validators have poor capital-efficiency during compounding.
+
+RATIONALE:
+### Equation for the temporary upward threshold To prevent gaming after a UBO, the EB is first reset to $E = \lfloor b_0 \rfloor$, where $b_0$ is the new balance. This creates an initial idle remainder $r_0 = b_0 - E$. A `temporary_upward_threshold` ($t$) is then set to ensure
+
+
 === EIP-6189 ===
 TITLE: Alias Contracts
 TYPE: Standards Track Core
@@ -8360,6 +8380,26 @@ Observability of gas has been a problem for very long. The system of gas has bee
 
 RATIONALE:
 ### Removing gas selectability One major change from the original `CALL` series of instructions is that the caller has no control over the amount of gas passed in as part of the call. The number of cases where such a feature is essential are probably better served by direct
+
+
+=== EIP-8070 ===
+TITLE: Sparse Blobpool
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2025-10-29
+REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 7, 0
+
+SUMMARY:
+This proposal introduces the sparse blobpool, a construction that brings cell-level, custody-aligned sampling in the Execution Layer (EL). For every new type 3 (blob-carrying) transaction, an EL node fetches full blob payloads only with probability p = 0.15, and otherwise it merely samples the blobs, using the same custody
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Execution clients :: devp2p changes We introduce a new devp2p protocol version, `eth/71` extending
+
+MOTIVATION:
+As Blob Parameter Only (BPO) forks progressively increase throughput, the full-replication nature of today's EL blobpool will begin dominating bandwidth utilization, causing us to hit [EIP-7870](./eip-7870.md) limits. Furthermore, this traffic will compete, and potentially starve, block and attestation propagation, risking instability and liveness issues. This behavior has already been
+
+RATIONALE:
+### Parameter selection The choice of p = 0.15 balances bandwidth reduction with availability guarantees. Mathematical analysis for a mesh degree D = 50 shows: - **Primary reliability**: Probability of having at least 3 peers with complete blob payload is 98.6% - **Secondary reliability**: Via reconstruction from partial availability,
 
 
 === EIP-684 ===

@@ -78,6 +78,26 @@ RATIONALE:
 Although maintaining the target and max blob only in the consensus client is desirable, we acknowledge the reality that execution clients need these values
 
 
+=== EIP-8068 ===
+TITLE: Neutral effective balance design
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-28
+REQUIRES: 7251
+
+SUMMARY:
+This EIP proposes a neutral effective balance (EB) design to ensure `0x01` (skimming) and `0x02` (compounding) validators receive equal consensus layer (CL) yields. Currently,
+
+SPECIFICATION:
+### Parameters Change two existing constants: | Constant | Value | - | - | | `HYSTERESIS_DOWNWARD_MULTIPLIER` | `3` | | `HYSTERESIS_UPWARD_MULTIPLIER` | `2`
+
+MOTIVATION:
+The roadmap for fast finality hinges on stake consolidation, where staking service providers (SSPs) transition from running 32-ETH validators with `0x01` credentials to compounding
+
+RATIONALE:
+### Equation for the temporary upward threshold To prevent gaming after a UBO, the EB is first reset to $E = \lfloor b_0 \rfloor$,
+
+
 === EIP-6189 ===
 TITLE: Alias Contracts
 TYPE: Standards Track Core
@@ -8360,6 +8380,26 @@ Observability of gas has been a problem for very long. The system of gas has bee
 
 RATIONALE:
 ### Removing gas selectability One major change from the original `CALL` series of instructions is that the caller has no control over the amount
+
+
+=== EIP-8070 ===
+TITLE: Sparse Blobpool
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2025-10-29
+REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 7, 0
+
+SUMMARY:
+This proposal introduces the sparse blobpool, a construction that brings cell-level, custody-aligned sampling in the Execution Layer (EL). For every new type 3 (blob-carrying)
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+As Blob Parameter Only (BPO) forks progressively increase throughput, the full-replication nature of today's EL blobpool will begin dominating bandwidth utilization, causing us to
+
+RATIONALE:
+### Parameter selection The choice of p = 0.15 balances bandwidth reduction with availability guarantees. Mathematical analysis for a mesh degree D = 50
 
 
 === EIP-684 ===
