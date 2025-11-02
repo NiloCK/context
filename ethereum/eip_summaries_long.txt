@@ -7960,7 +7960,7 @@ The implementation was chosen to help the ease of implementation for both provid
 === EIP-7922 ===
 TITLE: Dynamic exit queue rate limit
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-03-24
 REQUIRES: 
 
