@@ -7891,10 +7891,10 @@ SPECIFICATION:
 > _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ###
 
 MOTIVATION:
-**_Dynamic jumps must die._** ### The original control-flow facilities #### Babbage, 1833: Jumps and conditional jumps In 1833 Charles Babbage began the design of
+In 2016 the lead author set out to write a compiler from EVM code to machine code. I was immediately stymied by the presence
 
 RATIONALE:
-### How do dynamic jumps cause quadratic control flow? Static analysis amounts to most anything you can do with a program without actually running
+### How can dynamic jumps cause quadratic control flow? Static analysis amounts to most anything you can do with a program without actually running
 
 
 === EIP-663 ===
