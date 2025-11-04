@@ -1499,7 +1499,7 @@ Technically, the cases of L2s and databases are similar; routing to an L2 involv
 === ERC-7857 ===
 TITLE: AI Agents NFT with Private Metadata
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-01-02
 REQUIRES: 
 
@@ -5345,7 +5345,7 @@ We are now thinking about a building block as a smart contract with an encapsula
 === ERC-7908 ===
 TITLE: HD wallet In Treasury Management
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-03-07
 REQUIRES: 
 
@@ -6068,6 +6068,26 @@ Currently, EIP-1155 does not allow an external caller to detect whether a token 
 
 RATIONALE:
 `ownerOf` does not throw when a token does not exist (or does not have an owner). This simplifies the handling of such a case. Since it would be a security risk to assume all EIP-721 implementation would throw, it should not break compatibility with contract handling EIP-721 when dealing
+
+
+=== ERC-8023 ===
+TITLE: Multi-step Contract Ownership
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-09-16
+REQUIRES: 
+
+SUMMARY:
+We define a multi-stepped contract ownership interface for more secure contract ownership management. This makes the ownership transfer into 3 distinct steps. With the first 2 steps, performed by the original owner (initiate → confirm) and the remaining 1 step performed by the new owner (accept). We enforce an
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. A multi-step ownable contract MUST implement the following interface: ```solidity /// @title Multistep Ownership Standard interface
+
+MOTIVATION:
+Ownership management is crucial in on-chain security and a significant portion of the security assumptions of defi protocols, smart contract wallets and on-chain utilities rely on the contract ownership. The single-step `transferOwnership()` style ownership mechanism has been in the industry for a long time, (e.g.,[ERC-173](./eip-173.md)), and has been used
+
+RATIONALE:
+1. A time buffer for ownership transfer is introduced to foster a process of reviewing the new owner address on-chain. However, this remains an optional behavior to allow flexibility in ownership management. Removing the optional time buffer would be similar to the implementation of `Ownable2Step` with an additional step
 
 
 === ERC-6147 ===

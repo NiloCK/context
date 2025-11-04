@@ -5225,7 +5225,7 @@ SUMMARY:
 This EIP pursue "obsolete current ASIC miners" by modifying PoW algorithm in a very low risk manner and update to latest hash algorithm from
 
 SPECIFICATION:
-#### 1. Reference materials on ETHASH FNV0 #### Where FNV Applied on ETHASH - In [ETHASH](https://github.com/ethereum/wiki/wiki/Ethash) , FNV Hash is used on * 1)
+#### 1. Reference materials on ETHASH FNV0 #### Where FNV Applied on ETHASH - In [ETHASH](https://web.archive.org/web/20200505215203/https://github.com/ethereum/wiki/wiki/Ethash), FNV Hash is used on * 1) On
 
 MOTIVATION:
 Provide original Ethash proof of work verification with minimal set of changes by updating FNV0 algorithm
