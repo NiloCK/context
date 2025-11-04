@@ -5090,9 +5090,9 @@ RATIONALE:
 
 
 === EIP-7745 ===
-TITLE: Light client and DHT friendly log index
+TITLE: Trustless log index
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-07-17
 REQUIRES: 7916
 
