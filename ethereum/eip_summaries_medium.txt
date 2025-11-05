@@ -2640,7 +2640,7 @@ MOTIVATION:
 RLP transactions have a number of shortcomings: 1. **Linear hashing:** The signing hash (`sig_hash`) and unique identifier (`tx_hash`) of an RLP transaction are computed by linear keccak256 hashes across its serialization. Even if only partial data is of interest, linear hashes require the full transaction data to be present,
 
 RATIONALE:
-### Forward compatibility The proposed transaction design is extensible with new fee types, new signature types, and entirely new transaction features (e.g., CREATE2), while retaining compatibility with the proposed transactions. ### Verifier improvements Future RPC could expose an SSZ based `tx_root` on top of the `tx_hash`, against which proofs
+### Forward compatibility The proposed transaction design is extensible with new fee types, new signature types, and entirely new transaction features (e.g., CREATE2), while retaining compatibility with the proposed transactions. ### Verifier improvements The `transactions_root` is effectively constructed from the list of `tx_root`, enabling transaction inclusion proofs. Further, partial
 
 
 === EIP-7749 ===
@@ -8898,7 +8898,7 @@ SUMMARY:
 This EIP defines a signature scheme for native [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md) encoded transactions.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Transaction signature scheme Native SSZ transactions are based on the `TransactionPayload` and `Transaction` types
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Transaction signature scheme Native SSZ transactions are based on the `TransactionPayload` defined in [EIP-6404](./eip-6404.md)
 
 MOTIVATION:
 [EIP-6404](./eip-6404.md) introduces SSZ transactions by converting from RLP transactions. Defining a signature scheme for native SSZ transactions further reduces required conversions and unlocks the forward compatibility benefits of SSZ [`ProgressiveContainer`](./eip-7495.md).
