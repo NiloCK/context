@@ -2368,10 +2368,10 @@ TITLE: Secondary Signature Algorithms
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-04-12
-REQUIRES: 1, 5, 5, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 6, 4, 6, 6, ,,  , 6, 4, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
+REQUIRES: 1, 5, 5, ,,  , 2, 7, 1, 8, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP does three things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-6404](./eip-6404.md) transaction profile & [EIP-2718](./eip-2718.md) transaction type that can modify the signature data of a contained transaction to a different signature algorithm. - Introduces a precompile at address `0x12`
+This EIP does three things: - Creates a unified registry & standardized interface for introducing additional signature algorithms. - Introduces an [EIP-2718](./eip-2718.md) transaction type that can modify the signature data of a contained transaction to a different signature algorithm. - Introduces a precompile at address `0x12` for decoding these
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Unless explicitly noted, integer encoding MUST be in big-endian format. ### Parameters | Constant |
@@ -4083,7 +4083,7 @@ SUMMARY:
 A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains. This benefits developer experience, user experience, and security, in particular for multi-chain and cross-chain applications, including account abstraction.
 
 SPECIFICATION:
-### Parameters * `FACTORY_ADDRESS` = `0x0B` ### Factory Contract Upon activation of this EIP, the account at `FACTORY_ADDRESS` becomes a contract that, when called, invokes the `CREATE2` instruction ([EIP-1014](./eip-1014.md)) with a salt equal to the first 32 bytes of the call's input data, init code equal to the remaining
+### Parameters * `FACTORY_ADDRESS` = `0x12` ### Factory Contract Upon activation of this EIP, the account at `FACTORY_ADDRESS` becomes a contract that, when called, invokes the `CREATE2` instruction ([EIP-1014](./eip-1014.md)) with a salt equal to the first 32 bytes of the call's input data, init code equal to the remaining
 
 MOTIVATION:
 There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect this number to continue to grow in line with Ethereum's rollup-centric roadmap and the general adoption of programmable blockchains. Most applications support multiple chains and
@@ -4314,7 +4314,7 @@ SUMMARY:
 This EIP adds a new [EIP-7932](./eip-7932.md) algorithm of type `0x0` for supporting P256 signatures.
 
 SPECIFICATION:
-This EIP defines a new [EIP-7932](./eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE` | `Bytes1(0x0)` | | `GAS_PENALTY`| `500` | | `MAX_SIZE` | `128` | ```python N = 0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551 def verify(signature_info: bytes, payload_hash: Hash32) -> Bytes: assert(len(signature_info) ==
+This EIP defines a new [EIP-7932](./eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE` | `Bytes1(0x0)` | | `GAS_PENALTY`| `500` | ```python N = 0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551 def verify(signature_info: bytes, payload_hash: Hash32) -> Bytes: # Ignore initial alg_type byte signature_info =
 
 MOTIVATION:
 P256 (a.k.a secp256r1) is a widely-used NIST standardized algorithm that already has a presence within the Ethereum codebase. This makes it a great algorithm to write test cases against implementations of [EIP-7932](./eip-7932.md).

@@ -2368,10 +2368,10 @@ TITLE: Secondary Signature Algorithms
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-04-12
-REQUIRES: 1, 5, 5, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 6, 4, 6, 6, ,,  , 6, 4, 9, 3, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6
+REQUIRES: 1, 5, 5, ,,  , 2, 7, 1, 8, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP does three things: - Standardizes the introduction of several new algorithms for signing data. - Introduces a new [EIP-6404](./eip-6404.md) transaction profile &
+This EIP does three things: - Creates a unified registry & standardized interface for introducing additional signature algorithms. - Introduces an [EIP-2718](./eip-2718.md) transaction type
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -4083,7 +4083,7 @@ SUMMARY:
 A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains.
 
 SPECIFICATION:
-### Parameters * `FACTORY_ADDRESS` = `0x0B` ### Factory Contract Upon activation of this EIP, the account at `FACTORY_ADDRESS` becomes a contract that, when called,
+### Parameters * `FACTORY_ADDRESS` = `0x12` ### Factory Contract Upon activation of this EIP, the account at `FACTORY_ADDRESS` becomes a contract that, when called,
 
 MOTIVATION:
 There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect
