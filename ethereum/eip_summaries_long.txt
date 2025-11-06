@@ -1109,7 +1109,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. If a contract creation is attempted due to a creation transaction, the `CREATE` opcode, the `CREATE2` opcode, or any other reason, and the destination address already has either a nonzero nonce, a nonzero code length, or non-empty storage, then the creation MUST throw as if the first byte in the init code were an invalid opcode. This change MUST apply retroactively for all existing
 
 RATIONALE:
-EIP-684 defines two conditions for contract deployment: the destination address must have zero nonce and zero code length. Unfortunately, this is not sufficient. Before [EIP-161](./eip-161.md) was applied, the nonce of a newly deployed contract remained set to zero. Therefore, it was entirely possible to create a contract with a zero nonce and zero code length but with non-empty storage, if slots were set in the constructor. There exists 28 such contracts on Ethereum mainnet at this time. As one of the core tenets of smart contracts is that its code will not change, even if the code is
+EIP-684 defines two conditions for contract deployment: the destination address must have zero nonce and zero code length. Unfortunately, this is not sufficient. Before [EIP-161](./eip-161.md) was applied, the nonce of a newly deployed contract remained set to zero. Therefore, it was entirely possible to create a contract with a zero nonce and zero code length but with non-empty storage, if slots were set in the constructor. There exists 28 such contracts on Ethereum mainnet at this time.
 
 
 === EIP-7650 ===
