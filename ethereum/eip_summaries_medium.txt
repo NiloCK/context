@@ -2391,10 +2391,10 @@ CREATED: 2025-03-27
 REQUIRES: 
 
 SUMMARY:
-This EIP replaces the quadratic memory model in the EVM with a linear, page-based costing model. Memory is virtually addressable. Page allocation and page thrashing are included in the cost model. After applying this EIP, memory limits are invariant to the state of the message call stack.
+This EIP replaces the quadratic memory model in the EVM with a linear, page-based costing model. Memory is virtually addressable. Page allocation is included in the cost model. After applying this EIP, memory limits are invariant to the state of the message call stack.
 
 SPECIFICATION:
-Consider the following constants: ```python ALLOCATE_PAGE_COST = 100 THRASH_PAGE_COST = 6 LRU_SIZE = 512 PAGE_SIZE = 4096 MAXIMUM_MEMORY_SIZE = 64 * 1024 * 1024 ``` The memory costing algorithm is changed as follows: 1. For each page touched by an instruction 1. Charge `ALLOCATE_PAGE_COST` gas if it has not
+Consider the following constants: ```python ALLOCATE_PAGE_COST = 100 PAGE_SIZE = 4096 MAXIMUM_MEMORY_SIZE = 64 * 1024 * 1024 ``` The memory costing algorithm is changed as follows: 1. For each page touched by an instruction, charge `ALLOCATE_PAGE_COST` gas if it has not been touched before in this message call.
 
 MOTIVATION:
 The EVM currently uses a quadratic pricing model for its memory. This was originally put in place to defend against DoS attacks. However, the memory model has several drawbacks. 1. It is anachronistic. Even at a gas limit of 30 million gas, users can only use 3MB of memory
