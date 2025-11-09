@@ -2386,7 +2386,7 @@ RATIONALE:
 === EIP-7923 ===
 TITLE: Linear, Page-Based Memory Costing
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-03-27
 REQUIRES: 
 
@@ -4289,7 +4289,7 @@ This approach has the benefit of simplicity, over previous proposals for state e
 === EIP-7692 ===
 TITLE: EVM Object Format (EOFv1) Meta
 TYPE: Meta 
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-04-17
 REQUIRES: 6, 6, 3, ,,  , 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 4, 2, 0, 0, ,,  , 4, 7, 5, 0, ,,  , 5, 4, 5, 0, ,,  , 6, 2, 0, 6, ,,  , 7, 0, 6, 9, ,,  , 7, 4, 8, 0, ,,  , 7, 6, 2, 0, ,,  , 7, 6, 9, 8
 
@@ -5769,7 +5769,7 @@ RATIONALE:
 === EIP-7867 ===
 TITLE: Flow Control Wallet Call Capability
 TYPE: Standards Track Interface
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-01-17
 REQUIRES: 5792
 
