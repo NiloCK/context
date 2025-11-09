@@ -86,13 +86,13 @@ CREATED: 2025-10-28
 REQUIRES: 7251
 
 SUMMARY:
-This EIP proposes a neutral effective balance (EB) design to ensure `0x01` (skimming) and `0x02` (compounding) validators receive equal consensus layer (CL) yields. Currently, validators that compound their balance have poor capital efficiency and lower yields as their idle balance (not contributing to EB) is 0.75 ETH, significantly higher
+This EIP proposes a neutral effective balance (EB) design to ensure `0x01` (skimming) and `0x02` (compounding) validators receive equal yields. Currently, validators that compound their balance have poor capital efficiency and lower yields as their idle balance (not contributing to EB) is 0.75 ETH, significantly higher than that of
 
 SPECIFICATION:
 ### Parameters Change two existing constants: | Constant | Value | - | - | | `HYSTERESIS_DOWNWARD_MULTIPLIER` | `3` | | `HYSTERESIS_UPWARD_MULTIPLIER` | `2` | ### Containers Two new fields are added to the Validator Container: ```python class Validator(Container): ... temporary_upward_threshold: Gwei # Initiate to 0 reset_eb: boolean #
 
 MOTIVATION:
-The roadmap for fast finality hinges on stake consolidation, where staking service providers (SSPs) transition from running 32-ETH validators with `0x01` credentials to compounding validators with `0x02` credentials. A roadblock to this transition is that `0x01` validators have close-to-ideal capital efficiency, whereas `0x02` validators have poor capital-efficiency during compounding.
+The roadmap for fast finality hinges on stake consolidation, where staking service providers (SSPs) transition from running 32-ETH validators with `0x01` credentials to compounding validators with `0x02` credentials. A roadblock to this transition is that `0x01` validators have close-to-ideal capital efficiency, whereas `0x02` validators have poor capital efficiency during
 
 RATIONALE:
 ### Equation for the temporary upward threshold To prevent gaming after a UBO, the EB is first reset to $E = \lfloor b_0 \rfloor$, where $b_0$ is the new balance. This creates an initial idle remainder $r_0 = b_0 - E$. A `temporary_upward_threshold` ($t$) is then set to ensure

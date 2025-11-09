@@ -86,7 +86,7 @@ CREATED: 2025-10-28
 REQUIRES: 7251
 
 SUMMARY:
-This EIP proposes a neutral effective balance (EB) design to ensure `0x01` (skimming) and `0x02` (compounding) validators receive equal consensus layer (CL) yields. Currently,
+This EIP proposes a neutral effective balance (EB) design to ensure `0x01` (skimming) and `0x02` (compounding) validators receive equal yields. Currently, validators that compound
 
 SPECIFICATION:
 ### Parameters Change two existing constants: | Constant | Value | - | - | | `HYSTERESIS_DOWNWARD_MULTIPLIER` | `3` | | `HYSTERESIS_UPWARD_MULTIPLIER` | `2`
