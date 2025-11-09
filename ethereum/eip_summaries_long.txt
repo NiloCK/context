@@ -575,7 +575,7 @@ SUMMARY:
 This EIP removes the [`blake2f`](./eip-152.md) (`0x09`) precompile by changing the precompile behaviour to result in an exceptional abort.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. All `CALL`, `CALLCODE`, `DELEGATECALL`, and `STATICCALL` invocations to the `blake2f` precompile address `0x09` MUST result in an exceptional abort.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. All `CALL`, `CALLCODE`, `DELEGATECALL`, and `STATICCALL` invocations to the `blake2f` precompile address `0x09` MUST result in an exceptional halting state that consumes all supplied gas and returns no data.
 
 MOTIVATION:
 [EIP-152](./eip-152.md) has never capitalised on a real-world use case. This fact is clearly reflected in the number of times the address `0x09` has been invoked (numbers from the date this EIP was created): - The most recent call took place on 6 October 2022. - Since its gone live as part of the Istanbul network upgrade on December 7 2019 (block number 9,069,000), `0x09` has been called only 22,131 times. One of the reasons why [EIP-152](./eip-152.md) has failed is that the envisioned use cases were not validated before inclusion.
@@ -622,6 +622,26 @@ The current 24KiB contract size limit can be restrictive for complex contracts a
 
 RATIONALE:
 - **Developer Flexibility:** Enables more complex contracts and features. - **Backward Compatibility:** Existing contracts are unaffected. - **Simplicity:** Only the size limit is changed, with no other protocol modifications.
+
+
+=== EIP-8072 ===
+TITLE: Transaction Inclusion Subscription
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2025-10-31
+REQUIRES: 
+
+SUMMARY:
+This EIP extends the existing `eth_subscribe` JSON-RPC method with a new subscription type `transactionInclusion` that enables clients to receive real-time notifications when transactions are included in blocks. This subscription-based approach provides efficient transaction confirmation monitoring without blocking connections, supporting both combined transaction submission and monitoring in a single call, as well as monitoring of already-submitted transactions.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### New Subscription Type A new subscription type `transactionInclusion` is added to the `eth_subscribe` method. ### Subscription Request ```json { "jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["transactionInclusion", { "transaction": "0x...", "includeReorgs": false }] } ``` Or for monitoring an already-submitted transaction: ```json { "jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["transactionInclusion", { "hash": "0x...", "includeReorgs": false }] } ``` ### Parameters The subscription
+
+MOTIVATION:
+Current transaction submission workflows require separate calls to `eth_sendRawTransaction` followed by repeated polling of `eth_getTransactionReceipt`, creating unnecessary latency and network overhead. While [EIP-7966](eip-7966.md) proposes `eth_sendRawTransactionSync` to address this through a synchronous blocking approach, blocking HTTP connections presents significant drawbacks: - **Connection hogging**: Each transaction blocks one HTTP connection until confirmation or timeout - **Limited scalability**: Cannot efficiently monitor multiple transactions over a single connection - **Timeout complexity**: Requires careful tuning of timeout parameters for different blockchain slot times - **Resource inefficiency**: Repeated polling consumes bandwidth and server resources The subscription-based approach leverages the battle-tested `eth_subscribe` mechanism already implemented
+
+RATIONALE:
+### Why Subscription Over Synchronous? Subscriptions provide several advantages over the synchronous approach proposed in EIP-7966: - **Non-blocking**: Clients can perform other operations while waiting for confirmation - **Multiplexing**: Multiple transactions can be monitored over a single WebSocket connection - **No timeout complexity**: Subscriptions naturally handle varying confirmation times without timeout parameters - **Proven infrastructure**: Leverages existing `eth_subscribe` implementation present in all major clients The addition of the `transaction` parameter provides complete feature parity with `eth_sendRawTransactionSync` by enabling submission and monitoring in a single call. ### Why Extend `eth_subscribe`? The `eth_subscribe` mechanism is battle-tested and already implemented across
 
 
 === EIP-4396 ===
@@ -1774,6 +1794,26 @@ Ethereum currently does not track the number of contract storage slots at all, a
 
 RATIONALE:
 A mechanism for estimation of contract storage size has been proposed [here](https://medium.com/@akhounov/estimation-approximate-of-the-size-of-contracst-in-ethereum-4642fe92d6fe). But it does have a big drawback of introducing a lot of complexity into the consensus (in the form of estimation algorithm, which has quite a few edge cases to cater for different sizes of the storage).
+
+
+=== EIP-8071 ===
+TITLE: Prevent using consolidations as withdrawals
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-29
+REQUIRES: 
+
+SUMMARY:
+Cancels a consolidation request if the effective balance of the target validator would exceed the max effective balance after processing it, which would result in the excess balance being withdrawn. This is an unintended way to speed up withdrawals when the consolidation queue is faster than the exit queue.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Starting from the beginning of the epoch when this EIP is activated, Consensus Layer client **MUST** use modified `process_consolidation_request` function which code is outlined below. ### New `get_pending_balance_to_consolidate` ```python def get_pending_balance_to_consolidate(state: BeaconState, target_index: ValidatorIndex) -> Gwei: pending_balance_to_consolidate = Gwei(0) for pending_consolidation in state.pending_consolidations: if pending_consolidation.target_index == target_index: source_validator = state.validators[pending_consolidation.source_index] pending_balance_to_consolidate += source_validator.effective_balance return pending_balance_to_consolidate ``` ### Modified `process_consolidation_request` *Note*: This function is extended
+
+MOTIVATION:
+The existing design of consolidation mechanism leaves an opportunity to use consolidation queue for exits which becomes appealing to be abused when there is an imbalance between exit and consolidation queues favoring the latter. At the date of writing this EIP, the consolidation flaw is being heavily exploited. There are public write ups on how to speed up withdrawals by using this vulnerability. Even though this is a UX rather than security issue, consolidation queue was never meant to be used for withdrawals, which makes the fix introduced by this EIP an important modification.
+
+RATIONALE:
+### Iterating over pending consolidaitons The new design introduces an iteration over pending consolidations which increases complexity of consolidation processing. This is done to handle the case when there are multiple consolidations with the same target and each of them doesn't exceed the max effective balance while all of them together does.
 
 
 === EIP-3779 ===
@@ -7555,6 +7595,26 @@ The motivation for this proposal is to provide a standardized and efficient way 
 
 RATIONALE:
 The introduction of the `BURN` opcode helps clean up a piece of weird semantics in the Ethereum. Historically, burning native ether involved sending them to an address from which they could not be recovered, such as the zero address or a contract with no withdrawal functionality. This method is not only inefficient but also confusing for indexers and other tools that track token movements. By providing a dedicated `BURN` opcode, we eliminate this ambiguity and ensure that the act of burning tokens is explicit and standardized. Potential Pros: - Provides a clear and standardized method for burning native
+
+
+=== EIP-8066 ===
+TITLE: Upgrade Mascots
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2024-10-29
+REQUIRES: 
+
+SUMMARY:
+This EIP establishes a mascot for each Ethereum network upgrade. Mascots serve to humanize and celebrate upgrades, fostering community engagement while adhering to principles of cuteness, relevance, and inclusivity. The mascot is selected through community-driven processes, with safeguards for appropriateness, by a designated facilitator (the "Mascot Wrestler").
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### 1. Mascot Requirements - **Relevance**: The mascot **SHOULD** relate thematically to the network upgrade's headliner(s). - **Representation**: The mascot **MUST** be expressible using one or more standard Unicode emojis (e.g., :panda: for the Merge). - **Form**: The mascot **SHOULD** depict an animal (real, mythical, or stylized, but always animal-adjacent). - **Tone**: The mascot **MUST NOT** be offensive (no depictions of violence, discrimination, or
+
+MOTIVATION:
+Ethereum network upgrades often introduce complex technical changes that can feel abstract to the broader community. Mascots provide a fun, memorable, and relatable symbol for each upgrade, drawing inspiration from its headliner(s). By mandating emoji-representable mascots that are cute and non-offensive, this process: - Enhances community participation and excitement around network upgrades. - Creates opportunities for creative expression in upgrade event branding (e.g., watch parties, POAPs). - Builds a consistent, whimsical tradition that differentiates Ethereum's upgrade narrative from other ecosystems.
+
+RATIONALE:
+This specification balances creativity with guardrails to prevent mascot drift (e.g., unrelated or edgy choices). Emoji-based representation ensures accessibility across digital platforms, while the animal/cute mandate aligns with Ethereum's community ethos of approachability. The self-selected Mascot Wrestler role decentralizes coordination, leveraging vetoes for accountability. Selection flexibility accommodates Ethereum's decentralized governance evolution. Alternatives considered: - Fully onchain mandates: Too rigid for creative processes. - No formal process: Risks ad-hoc or absent mascots. - Non-animal options: Animals evoke universality and whimsy.
 
 
 === EIP-7804 ===

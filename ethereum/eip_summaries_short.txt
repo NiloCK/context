@@ -624,6 +624,26 @@ RATIONALE:
 - **Developer Flexibility:** Enables more complex contracts and features. - **Backward Compatibility:** Existing contracts are unaffected. - **Simplicity:** Only the size limit is changed,
 
 
+=== EIP-8072 ===
+TITLE: Transaction Inclusion Subscription
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2025-10-31
+REQUIRES: 
+
+SUMMARY:
+This EIP extends the existing `eth_subscribe` JSON-RPC method with a new subscription type `transactionInclusion` that enables clients to receive real-time notifications when transactions are
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Current transaction submission workflows require separate calls to `eth_sendRawTransaction` followed by repeated polling of `eth_getTransactionReceipt`, creating unnecessary latency and network overhead. While [EIP-7966](eip-7966.md) proposes
+
+RATIONALE:
+### Why Subscription Over Synchronous? Subscriptions provide several advantages over the synchronous approach proposed in EIP-7966: - **Non-blocking**: Clients can perform other operations while
+
+
 === EIP-4396 ===
 TITLE: Time-Aware Base Fee Calculation
 TYPE: Standards Track Core
@@ -1774,6 +1794,26 @@ Ethereum currently does not track the number of contract storage slots at all, a
 
 RATIONALE:
 A mechanism for estimation of contract storage size has been proposed [here](https://medium.com/@akhounov/estimation-approximate-of-the-size-of-contracst-in-ethereum-4642fe92d6fe). But it does have a big drawback of introducing a lot of
+
+
+=== EIP-8071 ===
+TITLE: Prevent using consolidations as withdrawals
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-29
+REQUIRES: 
+
+SUMMARY:
+Cancels a consolidation request if the effective balance of the target validator would exceed the max effective balance after processing it, which would result
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The existing design of consolidation mechanism leaves an opportunity to use consolidation queue for exits which becomes appealing to be abused when there is
+
+RATIONALE:
+### Iterating over pending consolidaitons The new design introduces an iteration over pending consolidations which increases complexity of consolidation processing. This is done to
 
 
 === EIP-3779 ===
@@ -7555,6 +7595,26 @@ The motivation for this proposal is to provide a standardized and efficient way 
 
 RATIONALE:
 The introduction of the `BURN` opcode helps clean up a piece of weird semantics in the Ethereum. Historically, burning native ether involved sending them
+
+
+=== EIP-8066 ===
+TITLE: Upgrade Mascots
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2024-10-29
+REQUIRES: 
+
+SUMMARY:
+This EIP establishes a mascot for each Ethereum network upgrade. Mascots serve to humanize and celebrate upgrades, fostering community engagement while adhering to principles
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Ethereum network upgrades often introduce complex technical changes that can feel abstract to the broader community. Mascots provide a fun, memorable, and relatable symbol
+
+RATIONALE:
+This specification balances creativity with guardrails to prevent mascot drift (e.g., unrelated or edgy choices). Emoji-based representation ensures accessibility across digital platforms, while the
 
 
 === EIP-7804 ===
