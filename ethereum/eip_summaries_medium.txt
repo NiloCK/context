@@ -5472,23 +5472,23 @@ Currently this is not possible. There are two practical ways to revert a transac
 
 
 === EIP-8061 ===
-TITLE: Increase churn limits
+TITLE: Increase exit and consolidation churn
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-17
 REQUIRES: 7521
 
 SUMMARY:
-This EIP triples the global churn limit, by quadrupling the churn allocated to activations and exits and doubling the consolidation churn. It does so by introducing a separate churn limit quotient for consolidations, so that it can be adjusted independently of activations and exits. The choice of parameters balances
+This EIP roughly doubles the consolidation churn, as well as quadrupling the exit churn and restoring its proportionality to total stake (though maintaining the existing cap on activations). Moreover, it routes exits through the consolidation queue when it is shorter than the exit queue (but not viceversa!), increasing the
 
 SPECIFICATION:
-The `CHURN_LIMIT_QUOTIENT` is halved, from `2**16` to `2**15`, and fully dedicated to activations and exits, as it was prior to the introduction of a cap in [EIP-7514](./eip-7514.md) and of consolidations in [EIP-7251](./eip-7251.md). Consolidations now have their own dedicated churn, determined by `CONSOLIDATION_CHURN_LIMIT_QUOTIENT`. This is set here to `2**16`, so
+The `CHURN_LIMIT_QUOTIENT` is halved, from `2**16` to `2**15`, and fully dedicated to activations and exits. However, the cap on activations introduced in [EIP-7514](./eip-7514.md) is maintained via `MAX_PER_EPOCH_ACTIVATION_CHURN_LIMIT`, while exits are freed from this cap. Consolidations now have their own dedicated churn, determined by `CONSOLIDATION_CHURN_LIMIT_QUOTIENT`. This is set here to
 
 MOTIVATION:
-[EIP-7514](./eip-7514.md) introduced an activation cap of 8 validators per epoch (now 256 ETH per epoch) to prevent overly rapid validator set growth. [EIP-7251](./eip-7251.md) extended this cap to exits, in part to maintain symmetry between the two queues, but most importantly to make room for the newly introduced consolidation operations.
+[EIP-7514](./eip-7514.md) introduced an activation cap of 8 validators per epoch (now 256 ETH per epoch) to prevent overly rapid validator set growth. [EIP-7251](./eip-7251.md) extended this cap to exits, to make room for the newly introduced consolidation operations, without increasing the weak subjectivity period. However, the fixed cap prevents the
 
 RATIONALE:
-- **Independence and simplicity:** separate churn limits are easy to independently tune, in particular allowing for the consolidation churn to be adjusted downward in the future, when the primary wave of validator set consolidation has already happened - **Scaling with stake**: both churn limits are linear in the total
+- **Independent parameters:** a separate churn consolidation is easy to independently tune, in particular adjusted upward if we want to speed up the consolidation process further, and later downward, when the primary wave of validator set consolidation has already happened and the consolidation operation becomes less crucial. - **Scaling
 
 
 === EIP-1 ===

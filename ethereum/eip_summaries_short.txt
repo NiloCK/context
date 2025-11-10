@@ -5472,23 +5472,23 @@ Currently this is not possible. There are two practical ways to revert a transac
 
 
 === EIP-8061 ===
-TITLE: Increase churn limits
+TITLE: Increase exit and consolidation churn
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-17
 REQUIRES: 7521
 
 SUMMARY:
-This EIP triples the global churn limit, by quadrupling the churn allocated to activations and exits and doubling the consolidation churn. It does so
+This EIP roughly doubles the consolidation churn, as well as quadrupling the exit churn and restoring its proportionality to total stake (though maintaining the
 
 SPECIFICATION:
-The `CHURN_LIMIT_QUOTIENT` is halved, from `2**16` to `2**15`, and fully dedicated to activations and exits, as it was prior to the introduction of a
+The `CHURN_LIMIT_QUOTIENT` is halved, from `2**16` to `2**15`, and fully dedicated to activations and exits. However, the cap on activations introduced in [EIP-7514](./eip-7514.md) is
 
 MOTIVATION:
 [EIP-7514](./eip-7514.md) introduced an activation cap of 8 validators per epoch (now 256 ETH per epoch) to prevent overly rapid validator set growth. [EIP-7251](./eip-7251.md) extended
 
 RATIONALE:
-- **Independence and simplicity:** separate churn limits are easy to independently tune, in particular allowing for the consolidation churn to be adjusted downward in
+- **Independent parameters:** a separate churn consolidation is easy to independently tune, in particular adjusted upward if we want to speed up the consolidation
 
 
 === EIP-1 ===
