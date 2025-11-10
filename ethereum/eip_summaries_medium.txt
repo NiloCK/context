@@ -1539,10 +1539,10 @@ SUMMARY:
 This EIP introduces a new `GAS2ETH` opcode that enables the direct conversion of gas into ether (ETH).
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. A new quantity is added to the calling and transaction context, the `GAS2ETH` limit. It
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. A new opcode, `GAS2ETH` (`0xFC`), is introduced to enable direct conversion of gas into ETH
 
 MOTIVATION:
-This EIP is based on the premise that smart contract authors, compiler teams and public goods projects in general should be compensated for their contributions. Moreover, their compensation should scale with the usage of their contracts. A widely used and popular contract offers significant value to its users through
+This EIP is based on the premise that smart contract authors, compiler teams, and public goods projects in general should be compensated for their contributions. Moreover, their compensation should _scale_ with the usage of their contracts. A widely used and popular contract offers significant value to its users through
 
 RATIONALE:
 - `GAS2ETH` vs. pro-rata: The pro-rata model incentivizes inflating contract gas usage to artificially increase fees. In contrast, this proposal allows contract authors to charge their desired amount directly, eliminating the need for unnecessary gas consumption. - Target address vs. simply increasing balance of the currently executing contract: Using

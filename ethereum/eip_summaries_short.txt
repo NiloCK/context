@@ -1542,7 +1542,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-This EIP is based on the premise that smart contract authors, compiler teams and public goods projects in general should be compensated for their
+This EIP is based on the premise that smart contract authors, compiler teams, and public goods projects in general should be compensated for their
 
 RATIONALE:
 - `GAS2ETH` vs. pro-rata: The pro-rata model incentivizes inflating contract gas usage to artificially increase fees. In contrast, this proposal allows contract authors to
