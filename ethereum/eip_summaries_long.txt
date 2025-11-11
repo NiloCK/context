@@ -1853,6 +1853,26 @@ RATIONALE:
 This policy allows micro contributions for anyone who just want to fix a typo or change a section of a section in a large EIP.
 
 
+=== EIP-8077 ===
+TITLE: eth/XX - announce transactions with nonce
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2025-11-07
+REQUIRES: 7642
+
+SUMMARY:
+This EIP improves mempool propagation, extending the devp2p 'eth' protocol's `NewPooledTransactionHashes` message to also announce each transaction's source address and nonce together with the already announced hash, type, and size.
+
+SPECIFICATION:
+### NewPooledTransactionHashes message changes Modify the NewPooledTransactionHashes (0x08) message as follows: (eth/69): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...]] (eth/XX): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...], [txsource₁: b_20, txsource₂: b_20, ...], [txnonce₁: P, txnonce₂: P, ...]] ### Changes to message handling Changes on the sender side of `NewPooledTransactionHashes` messages are trivial. Only the transmitted data changes. Since the size of announcements is increased, implementations MAY revisit the condition (typically transaction size) to select between eager push and announcement. At the receiver side of `NewPooledTransactionHashes` messages the extra
+
+MOTIVATION:
+Transactions are propagated in the Mempool using the devp2p protocol in two modalities. Eager push is only used for small transactions, and only towards a few nodes, while the rest of nodes receive only announcements. For large transactions and for type 3 transactions, only announcements are sent. This announcement is made using the `NewPooledTransactionHashes` message, which only contains the hash, the type and the size of each transaction. As it is now, the receiver of the announcement does not have enough information to make intelligent scheduling choices. This crates several issues: - the receiver of the announcement can
+
+RATIONALE:
+To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction then its hash, size, and type. By adding the source and the nonce, the receiver has enough information to make better fetch decisions. ### Overhead The modification adds a significant overhead to announcements by adding a B_20 and a variable size filed to the current B_32, size, and type fields. We think this overhead is worth the additional gain in protocol efficiency. Details TBD. ### Alternatives While the modification is relatively straightforward, there are several design variants to consider. First
+
+
 === EIP-4747 ===
 TITLE: Simplify EIP-161
 TYPE: Standards Track Core

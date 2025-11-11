@@ -1853,6 +1853,26 @@ RATIONALE:
 This policy allows micro contributions for anyone who just want to fix a typo or change a section of a section in a large
 
 
+=== EIP-8077 ===
+TITLE: eth/XX - announce transactions with nonce
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2025-11-07
+REQUIRES: 7642
+
+SUMMARY:
+This EIP improves mempool propagation, extending the devp2p 'eth' protocol's `NewPooledTransactionHashes` message to also announce each transaction's source address and nonce together with the
+
+SPECIFICATION:
+### NewPooledTransactionHashes message changes Modify the NewPooledTransactionHashes (0x08) message as follows: (eth/69): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...]]
+
+MOTIVATION:
+Transactions are propagated in the Mempool using the devp2p protocol in two modalities. Eager push is only used for small transactions, and only towards
+
+RATIONALE:
+To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction then its hash, size, and type.
+
+
 === EIP-4747 ===
 TITLE: Simplify EIP-161
 TYPE: Standards Track Core
