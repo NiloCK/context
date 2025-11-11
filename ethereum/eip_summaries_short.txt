@@ -1608,6 +1608,23 @@ RATIONALE:
 ### Benchmarking This proposal does not yet have finalized numbers. To achieve this, we require stateful benchmarks, which are currently in development. Once we
 
 
+=== EIP-8075 ===
+TITLE: Adaptive state cost to cap growth & scale L1
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-02
+REQUIRES: 1, 5, 5, 9, ,,  , 4, 8, 4, 4, ,,  , 8, 0, 3, 7
+
+SUMMARY:
+This EIP precisely caps state growth while at the same time facilitating between 50%-300% more non-state operations per block compared to when solely raising
+
+MOTIVATION:
+Ethereum is currently focused on scaling the layer 1, with a rapid expansion of the block gas limit foreseen in the near-term from compute
+
+RATIONALE:
+### Potential concerns with current EIP-8037 EIP-8037 sets a fixed price of 1900 gas per byte, which can lead to a range of outcomes,
+
+
 === EIP-1588 ===
 TITLE: Hardfork Meta: Ethereum ProgPoW
 TYPE: Meta 
@@ -7186,7 +7203,7 @@ The `metadata_section` in the `body`, as well as the `kind_metadata` and `metada
 === EIP-7495 ===
 TITLE: SSZ ProgressiveContainer
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-08-18
 REQUIRES: 7916
 
