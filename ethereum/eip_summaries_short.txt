@@ -95,7 +95,7 @@ MOTIVATION:
 The roadmap for fast finality hinges on stake consolidation, where staking service providers (SSPs) transition from running 32-ETH validators with `0x01` credentials to compounding
 
 RATIONALE:
-### Equation for the temporary upward threshold To prevent gaming after a UBO, the EB is first reset to $E = \lfloor b_0 \rfloor$,
+### Relative change in staking yield The figure shows the impact of the current EB bands and hysteresis design on validator yields for different
 
 
 === EIP-6189 ===
