@@ -9422,7 +9422,7 @@ SPECIFICATION:
 There are three situations where this is applicable: * `CREATE`, * `CREATE2`, * creation using a transaction with empty receiver. In all these (and future) cases, the EVM should fail with Out Of Gas error if the code has a length more than `max_initcode_size`.
 
 MOTIVATION:
-When a client executes `initcode`, the client has to perform a jumpdest analysis. In some cases, the client also performs a `hash` of the code: * To use as a key in a mapping containing result of a jumpdest analysis * To use for address calculation within `CREATE2`. The
+When a client executes `initcode`, the client has to perform a jumpdest analysis. In some cases, the client also performs a `hash` of the code: * To use as a key in a mapping containing the result of a jumpdest analysis * To use for address calculation within `CREATE2`.
 
 RATIONALE:
 TBA
