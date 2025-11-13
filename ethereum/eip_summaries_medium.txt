@@ -5419,10 +5419,10 @@ CREATED: 2025-10-28
 REQUIRES: 4, 8, 9, 5, ,,  , 7, 2, 5, 1
 
 SUMMARY:
-A fee is proposed on the partial "sweep" withdrawal of validators using `0x01` credentials, to improve stake consolidation and fairness. Ethereum's fast finality roadmap hinges on staking service providers migrating from `0x01` validators to `0x02` compounding validators. One roadblock is that `0x01` validators receive free-of-charge sweep withdrawals for balances
+A fee is proposed on the partial "sweep" withdrawal of validators using `0x01` credentials, to improve stake consolidation and fairness. Ethereum's fast finality roadmap hinges on staking service providers migrating from `0x01` validators to `0x02` compounding validators. One roadblock is that `0x01` validators receive free-of-charge partial skimming withdrawals for
 
 SPECIFICATION:
-### Parameters | Constant | Value | | - | - | | `WITHDRAWAL_FEE_FRACTION` | `2000` | ### Functions In `process_withdrawals()`, take out a fee for swept `0x01` validators that did not perform a full exit, burning it on the CL: ```python def process_withdrawals(state: BeaconState, payload: ExecutionPayload) -> None:
+### Parameters | Constant | Value | | - | - | | `WITHDRAWAL_FEE_FRACTION` | `2000` | ### Functions In `process_withdrawals()`, take out a fee for skimmed `0x01` validators that did not perform a full exit, burning it on the CL: ```python def process_withdrawals(state: BeaconState, payload: ExecutionPayload) -> None:
 
 MOTIVATION:
 The roadmap for fast finality hinges on stake consolidation, where staking service providers (SSPs) transition from running 32-ETH validators with `0x01` credentials to compounding validators with `0x02` credentials. A roadblock to this transition is that `0x01` validators have been designed with close-to-ideal capital efficiency and free-of-charge partial withdrawals for
