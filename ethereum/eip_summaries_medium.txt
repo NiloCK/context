@@ -3684,7 +3684,7 @@ The current approach proposed by EIP-712 is to specify the chain ID at compile t
 === EIP-7557 ===
 TITLE: Block-level Warming with fair cost savings
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2023-10-01
 REQUIRES: 
 
@@ -5129,7 +5129,7 @@ The aim was to choose a representation which is well supported by tools and supp
 === EIP-7877 ===
 TITLE: Enhanced RETURN opcodes
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-01-31
 REQUIRES: 6, ,,  , 1, 1, 5, 3, ,,  , 3, 8, 5, 5
 
@@ -5474,7 +5474,7 @@ RATIONALE:
 === EIP-7927 ===
 TITLE: History Expiry Meta
 TYPE: Meta 
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-03-28
 REQUIRES: 4444
 
