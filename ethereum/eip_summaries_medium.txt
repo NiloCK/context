@@ -7991,7 +7991,7 @@ MOTIVATION:
 In 2016 the lead author set out to write a compiler from EVM code to machine code. I was immediately stymied by the presence of dynamic jumps. _Dynamic jumps must die._ How to kill them? First, some history. ### Babbage, 1833: Jumps and conditional jumps In 1833 Charles Babbage
 
 RATIONALE:
-### How can dynamic jumps cause quadratic control flow? Static analysis amounts to most anything you can do with a program without actually running it. And traversing the flow of control — in a way that follows each possible path only once — is a fundamental first step for
+### How can dynamic jumps cause quadratic control flow? Static analysis amounts to most anything you can do with a program without actually running it. And traversing the flow of control — in a way that follows every possible path only once — is a fundamental first step for
 
 
 === EIP-663 ===
