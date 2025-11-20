@@ -2698,6 +2698,26 @@ RATIONALE:
 ### Design Motivation The design of this standard is driven by the need to address specific challenges in the DeFi sector, particularly concerning the
 
 
+=== ERC-8002 ===
+TITLE: Simplified Payment Verification Gateway
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-08-07
+REQUIRES: 
+
+SUMMARY:
+Introduce a singleton contract for on-chain verification of transactions that happened on Bitcoin. The contract is available at "0xTODO" <!-- TODO -->, acting as
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as
+
+MOTIVATION:
+Ethereum's long-term mission has always been to revolutionize the financial world through decentralization, trustlessness, and programmable value enabled by smart contracts. Many great use
+
+RATIONALE:
+During the design process of the `SPVGateway` contract, several decisions have been made that require clarification. The following initialization options of the smart contract
+
+
 === ERC-5437 ===
 TITLE: Security Contact Interface
 TYPE: Standards Track ERC
@@ -10300,6 +10320,26 @@ For some "standard interfaces" like [the ERC-20 token interface](./eip-20.md), i
 
 RATIONALE:
 We tried to keep this specification as simple as possible. This implementation is also compatible with the current Solidity version.
+
+
+=== ERC-8000 ===
+TITLE: Operator contract for non delegated EOAs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-02
+REQUIRES: 1, 1, 5, 3, ,,  , 2, 7, 7, 1
+
+SUMMARY:
+This standard defines a contract interface that enables externally owned accounts (EOAs) to perform batch call executions via a standard Operator contract, without requiring
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The [ERC-7702](./eip-7702) allows EOAs to become powerful smart contract accounts (SCA), which solves many UX issues, like the double `approve` + `transferFrom` transactions. While
+
+RATIONALE:
+By having a trusted contract (`Operator`) that may act on behalf of the EOA wallet, this ERC provides batch call capabilities and keeps the
 
 
 === ERC-7679 ===

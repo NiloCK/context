@@ -2698,6 +2698,26 @@ RATIONALE:
 ### Design Motivation The design of this standard is driven by the need to address specific challenges in the DeFi sector, particularly concerning the liquidity and management of assets locked as collateral. Traditional mechanisms in DeFi often require asset holders to lock up their assets for participation in activities
 
 
+=== ERC-8002 ===
+TITLE: Simplified Payment Verification Gateway
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-08-07
+REQUIRES: 
+
+SUMMARY:
+Introduce a singleton contract for on-chain verification of transactions that happened on Bitcoin. The contract is available at "0xTODO" <!-- TODO -->, acting as a trustless Simplified Payment Verification (SPV) gateway where anyone can submit Bitcoin block headers. The gateway maintains the mainchain of blocks and allows the existence
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### General #### Bitcoin Block Header Structure In Bitcoin, each block contains a header, which has a fixed size of 80
+
+MOTIVATION:
+Ethereum's long-term mission has always been to revolutionize the financial world through decentralization, trustlessness, and programmable value enabled by smart contracts. Many great use cases have been discovered so far, including the renaissance of Decentralized Finance (DeFi), emergence of Real-World Assets (RWA), and rise of privacy-preserving protocols. However, one
+
+RATIONALE:
+During the design process of the `SPVGateway` contract, several decisions have been made that require clarification. The following initialization options of the smart contract were considered: 1. **Hardcoding the Bitcoin genesis block:** This approach is the simplest for contract deployment as it embeds the initial state directly in the
+
+
 === ERC-5437 ===
 TITLE: Security Contact Interface
 TYPE: Standards Track ERC
@@ -10300,6 +10320,26 @@ For some "standard interfaces" like [the ERC-20 token interface](./eip-20.md), i
 
 RATIONALE:
 We tried to keep this specification as simple as possible. This implementation is also compatible with the current Solidity version.
+
+
+=== ERC-8000 ===
+TITLE: Operator contract for non delegated EOAs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-02
+REQUIRES: 1, 1, 5, 3, ,,  , 2, 7, 7, 1
+
+SUMMARY:
+This standard defines a contract interface that enables externally owned accounts (EOAs) to perform batch call executions via a standard Operator contract, without requiring them to delegate control or convert into smart contract accounts.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions - Operator: The contract that executes calls on the sender's behalf. - Operated:
+
+MOTIVATION:
+The [ERC-7702](./eip-7702) allows EOAs to become powerful smart contract accounts (SCA), which solves many UX issues, like the double `approve` + `transferFrom` transactions. While this new technology is still reaching wider adoption over time, we need a way to improve UX for the users that decide to not have
+
+RATIONALE:
+By having a trusted contract (`Operator`) that may act on behalf of the EOA wallet, this ERC provides batch call capabilities and keeps the EOA as the caller of the target contracts.
 
 
 === ERC-7679 ===

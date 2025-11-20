@@ -2698,6 +2698,26 @@ RATIONALE:
 ### Design Motivation The design of this standard is driven by the need to address specific challenges in the DeFi sector, particularly concerning the liquidity and management of assets locked as collateral. Traditional mechanisms in DeFi often require asset holders to lock up their assets for participation in activities such as lending, staking, or yield farming, which results in a loss of liquidity. This standard aims to introduce a more flexible approach, allowing asset holders to retain some liquidity while their assets are locked, thereby enhancing the utility and appeal of DeFi products. ### Design Decision - Dual-Role
 
 
+=== ERC-8002 ===
+TITLE: Simplified Payment Verification Gateway
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-08-07
+REQUIRES: 
+
+SUMMARY:
+Introduce a singleton contract for on-chain verification of transactions that happened on Bitcoin. The contract is available at "0xTODO" <!-- TODO -->, acting as a trustless Simplified Payment Verification (SPV) gateway where anyone can submit Bitcoin block headers. The gateway maintains the mainchain of blocks and allows the existence of Bitcoin transactions to be verified via Merkle proofs.
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### General #### Bitcoin Block Header Structure In Bitcoin, each block contains a header, which has a fixed size of 80 bytes and follows the following structure: | Field | Size | Format | Description | | :------------- | :------- | :----------------- | :------------------------------------------------------------------- | | Version | 4 bytes | little-endian | The version number of the block. | | Previous Block | 32 bytes | natural byte order
+
+MOTIVATION:
+Ethereum's long-term mission has always been to revolutionize the financial world through decentralization, trustlessness, and programmable value enabled by smart contracts. Many great use cases have been discovered so far, including the renaissance of Decentralized Finance (DeFi), emergence of Real-World Assets (RWA), and rise of privacy-preserving protocols. However, one gem has been unreachable to date -- Bitcoin. Due to its extremely constrained programmability, one can only hold and transfer bitcoins in a trustless manner. This EIP tries to expand its capabilities by laying a solid foundation for bitcoins to be also used in various EVM-based DeFi protocols, unlocking
+
+RATIONALE:
+During the design process of the `SPVGateway` contract, several decisions have been made that require clarification. The following initialization options of the smart contract were considered: 1. **Hardcoding the Bitcoin genesis block:** This approach is the simplest for contract deployment as it embeds the initial state directly in the code. While offering absolute trustlessness of the starting point, it limits availability, as the full sync of the gateway would cost around ~100 ETH at the gas price of 1 gwei. 2. **Initialization from an arbitrary block height by trusting provided cumulative work and height:** Currently, the gateway adopts
+
+
 === ERC-5437 ===
 TITLE: Security Contact Interface
 TYPE: Standards Track ERC
@@ -10300,6 +10320,26 @@ For some "standard interfaces" like [the ERC-20 token interface](./eip-20.md), i
 
 RATIONALE:
 We tried to keep this specification as simple as possible. This implementation is also compatible with the current Solidity version.
+
+
+=== ERC-8000 ===
+TITLE: Operator contract for non delegated EOAs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-02
+REQUIRES: 1, 1, 5, 3, ,,  , 2, 7, 7, 1
+
+SUMMARY:
+This standard defines a contract interface that enables externally owned accounts (EOAs) to perform batch call executions via a standard Operator contract, without requiring them to delegate control or convert into smart contract accounts.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions - Operator: The contract that executes calls on the sender's behalf. - Operated: The contract that supports calls through the Operator. It's OPTIONAL but HIGHLY RECOMMENDED to have the `Operator` contract as a singleton. ### Operator ```solidity pragma solidity ^0.8.29; interface IOperator { struct Call { address target; uint256 value; bytes callData; } /// @notice Execute calls /// @param calls An array
+
+MOTIVATION:
+The [ERC-7702](./eip-7702) allows EOAs to become powerful smart contract accounts (SCA), which solves many UX issues, like the double `approve` + `transferFrom` transactions. While this new technology is still reaching wider adoption over time, we need a way to improve UX for the users that decide to not have code attached to their EOAs. This proposal introduces a lightweight, backward-compatible mechanism to enhance UX for such users. By leveraging a standardized Operator contract, EOAs can batch multiple contract calls into a single transaction—assuming the target contracts are compatible (i.e., implement the Operated pattern).
+
+RATIONALE:
+By having a trusted contract (`Operator`) that may act on behalf of the EOA wallet, this ERC provides batch call capabilities and keeps the EOA as the caller of the target contracts.
 
 
 === ERC-7679 ===
