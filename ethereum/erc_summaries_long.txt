@@ -2504,7 +2504,7 @@ RATIONALE:
 === ERC-8042 ===
 TITLE: Diamond Storage
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-10-11
 REQUIRES: 7201
 
