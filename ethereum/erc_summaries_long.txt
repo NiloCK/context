@@ -6287,6 +6287,26 @@ RATIONALE:
 ### Extending ERC-20 standard The goal of this proposal is to upgrade without affecting user balances, therefore leveraging existing data structure and methods is the path of the least engineering efforts as well as the most interoperability. ### Supporting downgrade The ability to downgrade makes moving between multiple IERC-6864 implementations on the same base ERC-20 smart contract possible. It also allows a way out should bugs or limitations discovered on ERC-6864 smart contract, or the user simply changes his or her mind. ### Optional see-through extension While these functions are useful in many situations, they are trivial to
 
 
+=== ERC-7988 ===
+TITLE: Minimal Avatar Smart Wallet (MASW)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-08
+REQUIRES: 7702
+
+SUMMARY:
+Minimal Avatar Smart Wallet (MASW) is an immutable delegate‑wallet that any EOA can designate via [EIP‑7702](./eip-7702) (txType `0x04`). Once designated, the wallet's code remains active for every subsequent transaction until the owner sends a new `0x04` to clear or replace it. During each delegated call the EOA is the avatar and MASW's code executes as the delegate at the same address, enabling atomic batched calls ([EIP‑712](./eip-712) signed) and optional sponsor gas reimbursement in ETH or [ERC‑20](./eip-20). The contract offers one primary function, `executeBatch`, plus two plug‑in hooks: a Policy Module for pre/post guards and a Recovery Module for
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview of Delegation Flow 1. **Deploy** `MASW` with constructor argument `_owner = EOA`. 2. The owner sends an EIP‑7702 transaction (txType `0x04`) referencing the contract's byte‑code hash. 3. After that transaction the EOA acts as the **avatar wallet** while the MASW logic executes as the **delegate wallet** at the _same_ address. ### Public Interface ```solidity function executeBatch( address[] calldata targets, uint256[] calldata values,
+
+MOTIVATION:
+A single‑transaction code‑injection model (EIP‑7702) grants EOAs full implementation freedom, but unconstrained diversity would impose high coordination costs: - **Interoperability** – Divergent ABIs and fee‑settlement conventions force dApps and relayers to maintain per‑wallet adapters, increasing integration complexity and failure modes. - **Economic alignment** – Gas‑sponsorship relies on deterministic fee‑reimbursement paths; heterogeneity erodes relayer incentives and throttles sponsored‑transaction volume. - **Tooling precision** – Indexers, debuggers, and static‑analysis frameworks achieve optimal decoding and gas estimation when targeting a single, fixed byte‑code and seven‑field call schema. - **Extensibility focus** – Constraining variability to two module boundaries (Policy, Recovery) localizes complexity, allowing
+
+RATIONALE:
+- **Immutable logic** minimizes upgrade risk; a new version requires an explicit 7702 `0x04` call. - A **two‑module** boundary captures common customizations without growing byte‑code. - No hard `maxTargets`; advanced users can bundle many calls, while conservative users install a size‑capping Policy module. - Domain separator binds the real `chainId` to mitigate cross‑chain replays.
+
+
 === ERC-6604 ===
 TITLE: Abstract Token
 TYPE: Standards Track ERC
@@ -7346,6 +7366,26 @@ RATIONALE:
 The purpose of the proposal is to add a decentralized presentation layer for Ethereum. With the layer, we are able to render any web content (including HTML/CSS/JPG/PNG/SVG, etc) on-chain using human-readable URLs, and thus EVM can be served as decentralized Backend. The design of the standard is based on the following principles: - **Human-readable**. The Web3 URL should be easily recognized by human similar to Web2 URL (`http://`). As a result, we support names from name services to replace address for better readability. In addition, instead of using calldata in hex, we use human-readable method + arguments and
 
 
+=== ERC-7984 ===
+TITLE: Confidential Fungible Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-03
+REQUIRES: 165
+
+SUMMARY:
+The following standard describes confidential fungible tokens via pointers. All amounts in this standard are represented by confidential pointers; therefore, balances and transfer amounts are confidential. Pointers refer to data stored elsewhere--onchain or offchain. The logistics of pointer resolution, operation, and location are implementation specific. The interface defines functions to transfer tokens with pointers, as well as approve operators, allowing the token to be transferred by a third party.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Nomenclature - All amounts in this ERC are pointer based amounts represented by `bytes32` pointers unless otherwise specified. The resolution and manipulation of these pointers is implementation specific. ### Token Compliant tokens MUST implement [ERC-165](./eip-165.md). The `supportsInterface` function MUST return `true` if `0x4958f2a4` is passed through the `interfaceID` argument. ### Methods Compliant tokens MUST implement the following methods, unless otherwise specified: #### `name()`
+
+MOTIVATION:
+Confidential tokens enable private value transfer which is vital for many usecases such as payroll, confidential DeFi, institutional settlement, and more. A standard interface allows pointer based confidential tokens on Ethereum to be reused by other applications: from privacy-focused wallets to decentralized exchanges, while keeping transaction amounts private from public view.
+
+RATIONALE:
+### Technology Agnostic Design Using `bytes32` allows implementations using pointer based systems and privacy mechanisms including FHE systems, zero-knowledge proofs, secure enclaves, or future technologies to be compliant. ### Operator Model Time-limited operators provide granular control while enabling DeFi protocol integration and natural permission expiration. This approach reduces the load on the external system by removing the need to track approval amounts. ### Data Parameter The `bytes calldata data` parameter in transfer functions allows implementations to include cryptographic proofs, access permissions, or other privacy-mechanism-specific information.
+
+
 === ERC-5006 ===
 TITLE: Rental NFT, NFT User Extension
 TYPE: Standards Track ERC
@@ -7691,7 +7731,7 @@ CREATED: 2023-05-28
 REQUIRES: 165
 
 SUMMARY:
-This proposal introduces fixed-income financial bonds with key characteristics defined to facilitate bond issuance in the primary market and enable buying or selling bonds in the secondary market. The standard also provides cross-chain functionalities for bonds operations and management accross multiple blockchains.
+This proposal introduces fixed-income financial bonds with key characteristics defined to facilitate bond issuance in the primary market and enable buying or selling bonds in the secondary market. The standard also provides cross-chain functionalities for bonds operations and management across multiple blockchains.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. **Every contract compliant with this ERC MUST implement the following Token Interface as well as the [ERC-165](./eip-165.md) interface:** ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity ^0.8.0; /** * @title ERC-7092 Financial Bonds Standard */ interface IERC7092 /** is ERC165 */ { // events /** * @notice MUST be emitted when bond tokens are transferred, issued or redeemed, except during contract creation * @param _from the

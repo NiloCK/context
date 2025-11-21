@@ -6287,6 +6287,26 @@ RATIONALE:
 ### Extending ERC-20 standard The goal of this proposal is to upgrade without affecting user balances, therefore leveraging existing data structure and methods is
 
 
+=== ERC-7988 ===
+TITLE: Minimal Avatar Smart Wallet (MASW)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-08
+REQUIRES: 7702
+
+SUMMARY:
+Minimal Avatar Smart Wallet (MASW) is an immutable delegate‑wallet that any EOA can designate via [EIP‑7702](./eip-7702) (txType `0x04`). Once designated, the wallet's code remains
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+A single‑transaction code‑injection model (EIP‑7702) grants EOAs full implementation freedom, but unconstrained diversity would impose high coordination costs: - **Interoperability** – Divergent ABIs and
+
+RATIONALE:
+- **Immutable logic** minimizes upgrade risk; a new version requires an explicit 7702 `0x04` call. - A **two‑module** boundary captures common customizations without growing
+
+
 === ERC-6604 ===
 TITLE: Abstract Token
 TYPE: Standards Track ERC
@@ -7344,6 +7364,26 @@ Currently, reading data from Web3 generally relies on a translation done by a We
 
 RATIONALE:
 The purpose of the proposal is to add a decentralized presentation layer for Ethereum. With the layer, we are able to render any web
+
+
+=== ERC-7984 ===
+TITLE: Confidential Fungible Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-03
+REQUIRES: 165
+
+SUMMARY:
+The following standard describes confidential fungible tokens via pointers. All amounts in this standard are represented by confidential pointers; therefore, balances and transfer amounts
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Confidential tokens enable private value transfer which is vital for many usecases such as payroll, confidential DeFi, institutional settlement, and more. A standard interface
+
+RATIONALE:
+### Technology Agnostic Design Using `bytes32` allows implementations using pointer based systems and privacy mechanisms including FHE systems, zero-knowledge proofs, secure enclaves, or future
 
 
 === ERC-5006 ===

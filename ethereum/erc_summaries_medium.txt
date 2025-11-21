@@ -6287,6 +6287,26 @@ RATIONALE:
 ### Extending ERC-20 standard The goal of this proposal is to upgrade without affecting user balances, therefore leveraging existing data structure and methods is the path of the least engineering efforts as well as the most interoperability. ### Supporting downgrade The ability to downgrade makes moving between multiple IERC-6864
 
 
+=== ERC-7988 ===
+TITLE: Minimal Avatar Smart Wallet (MASW)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-08
+REQUIRES: 7702
+
+SUMMARY:
+Minimal Avatar Smart Wallet (MASW) is an immutable delegate‑wallet that any EOA can designate via [EIP‑7702](./eip-7702) (txType `0x04`). Once designated, the wallet's code remains active for every subsequent transaction until the owner sends a new `0x04` to clear or replace it. During each delegated call the EOA is the
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview of Delegation Flow 1. **Deploy** `MASW` with constructor argument `_owner = EOA`. 2.
+
+MOTIVATION:
+A single‑transaction code‑injection model (EIP‑7702) grants EOAs full implementation freedom, but unconstrained diversity would impose high coordination costs: - **Interoperability** – Divergent ABIs and fee‑settlement conventions force dApps and relayers to maintain per‑wallet adapters, increasing integration complexity and failure modes. - **Economic alignment** – Gas‑sponsorship relies on deterministic fee‑reimbursement
+
+RATIONALE:
+- **Immutable logic** minimizes upgrade risk; a new version requires an explicit 7702 `0x04` call. - A **two‑module** boundary captures common customizations without growing byte‑code. - No hard `maxTargets`; advanced users can bundle many calls, while conservative users install a size‑capping Policy module. - Domain separator binds the real
+
+
 === ERC-6604 ===
 TITLE: Abstract Token
 TYPE: Standards Track ERC
@@ -7346,6 +7366,26 @@ RATIONALE:
 The purpose of the proposal is to add a decentralized presentation layer for Ethereum. With the layer, we are able to render any web content (including HTML/CSS/JPG/PNG/SVG, etc) on-chain using human-readable URLs, and thus EVM can be served as decentralized Backend. The design of the standard is based on
 
 
+=== ERC-7984 ===
+TITLE: Confidential Fungible Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-03
+REQUIRES: 165
+
+SUMMARY:
+The following standard describes confidential fungible tokens via pointers. All amounts in this standard are represented by confidential pointers; therefore, balances and transfer amounts are confidential. Pointers refer to data stored elsewhere--onchain or offchain. The logistics of pointer resolution, operation, and location are implementation specific. The interface defines functions
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Nomenclature - All amounts in this ERC are pointer based amounts represented by `bytes32`
+
+MOTIVATION:
+Confidential tokens enable private value transfer which is vital for many usecases such as payroll, confidential DeFi, institutional settlement, and more. A standard interface allows pointer based confidential tokens on Ethereum to be reused by other applications: from privacy-focused wallets to decentralized exchanges, while keeping transaction amounts private from
+
+RATIONALE:
+### Technology Agnostic Design Using `bytes32` allows implementations using pointer based systems and privacy mechanisms including FHE systems, zero-knowledge proofs, secure enclaves, or future technologies to be compliant. ### Operator Model Time-limited operators provide granular control while enabling DeFi protocol integration and natural permission expiration. This approach reduces the
+
+
 === ERC-5006 ===
 TITLE: Rental NFT, NFT User Extension
 TYPE: Standards Track ERC
@@ -7691,7 +7731,7 @@ CREATED: 2023-05-28
 REQUIRES: 165
 
 SUMMARY:
-This proposal introduces fixed-income financial bonds with key characteristics defined to facilitate bond issuance in the primary market and enable buying or selling bonds in the secondary market. The standard also provides cross-chain functionalities for bonds operations and management accross multiple blockchains.
+This proposal introduces fixed-income financial bonds with key characteristics defined to facilitate bond issuance in the primary market and enable buying or selling bonds in the secondary market. The standard also provides cross-chain functionalities for bonds operations and management across multiple blockchains.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. **Every contract compliant with this ERC MUST implement the following Token Interface as well as
