@@ -3347,7 +3347,7 @@ SUMMARY:
 Expose the state transition function to the execution layer via a new `EXECUTE` precompile.
 
 SPECIFICATION:
-### Parameters <-- TODO --> | Constant | Value | | - | - | | `PROOF_TX_TYPE` | `Bytes1(TBD)` | | `EXECUTE_PRECOMPILE_ADDRESS` | `TBD`
+### Parameters <!-- TODO --> | Constant | Value | | - | - | | `PROOF_TX_TYPE` | `Bytes1(TBD)` | | `EXECUTE_PRECOMPILE_ADDRESS` | `TBD`
 
 MOTIVATION:
 Today, EVM-equivalent rollups need to implement and maintain complex proof systems just to be able to replicate what Ethereum already provides on L1. Such
