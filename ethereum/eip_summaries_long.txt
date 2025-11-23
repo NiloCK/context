@@ -41,7 +41,7 @@ Gas costs are based on [EIP-1962](./eip-1962.md) estimation strategy (but do not
 === EIP-7873 ===
 TITLE: EOF - TXCREATE and InitcodeTransaction type
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2025-01-31
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 3, 8, 6, 0, ,,  , 7, 6, 2, 0
 
@@ -2783,7 +2783,7 @@ RATIONALE:
 === EIP-7480 ===
 TITLE: EOF - Data section access instructions
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2023-08-11
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0
 
@@ -2951,7 +2951,7 @@ The Falcon signature scheme was selected as a NIST-standardized post-quantum cry
 === EIP-7912 ===
 TITLE: Pragmatic stack manipulation tools
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-03-25
 REQUIRES: 
 
@@ -3584,7 +3584,7 @@ This Meta EIP provides a global view of all changes included in the Glamsterdam 
 === EIP-4750 ===
 TITLE: EOF - Functions
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2022-01-10
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 5, 4, 5, 0
 
@@ -5494,7 +5494,7 @@ By reusing the execution context's refund counter we can reuse its 50% DoS prote
 === EIP-5450 ===
 TITLE: EOF - Stack Validation
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2022-08-12
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 4, 2, 0, 0, ,,  , 4, 7, 5, 0
 
@@ -5946,7 +5946,7 @@ RATIONALE:
 === EIP-7938 ===
 TITLE: Exponential Gas Limit Increase
 TYPE: Informational 
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-04-27
 REQUIRES: 
 
@@ -7423,7 +7423,7 @@ Getting rid of the `SELFDESTRUCT` opcode has been considered in the past, and th
 === EIP-7620 ===
 TITLE: EOF Contract Creation
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-02-12
 REQUIRES: 1, 7, 0, ,,  , 6, 8, 4, ,,  , 2, 9, 2, 9, ,,  , 3, 5, 4, 0, ,,  , 3, 5, 4, 1, ,,  , 3, 6, 7, 0
 
@@ -7737,7 +7737,7 @@ EOAs are the most widely used type of wallet. This EIP would drastically expand 
 === EIP-6206 ===
 TITLE: EOF - JUMPF and non-returning functions
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2022-12-21
 REQUIRES: 4, 7, 5, 0, ,,  , 5, 4, 5, 0
 
@@ -8037,7 +8037,7 @@ RATIONALE:
 === EIP-663 ===
 TITLE: SWAPN, DUPN and EXCHANGE instructions
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2017-07-03
 REQUIRES: 3, 5, 4, 0, ,,  , 5, 4, 5, 0
 
@@ -8502,7 +8502,7 @@ RATIONALE:
 === EIP-7069 ===
 TITLE: Revamped CALL instructions
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2023-05-05
 REQUIRES: 1, 5, 0, ,,  , 2, 1, 1, ,,  , 2, 1, 4, ,,  , 2, 9, 2, 9, ,,  , 3, 5, 4, 0
 
@@ -9161,7 +9161,7 @@ RATIONALE:
 === EIP-4200 ===
 TITLE: EOF - Static relative jumps
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2021-07-16
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0
 
