@@ -6838,7 +6838,7 @@ MOTIVATION:
 As Ethereum moves toward a higher block gas limit on mainnet, the worst-case total size of a block receipts list also becomes larger, and
 
 RATIONALE:
-Since [EIP-7825] caps the gas limit of a single transaction to 30M gas, a single transaction receipt will always be limited in size. Specifically,
+Since [EIP-7825] caps the gas limit of a single transaction to ~16.7M gas, a single transaction receipt will always be limited in size. Specifically,
 
 
 === EIP-7329 ===
