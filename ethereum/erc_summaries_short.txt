@@ -2067,6 +2067,26 @@ RATIONALE:
 There have been numerous interesting uses of [EIP-721](./eip-721.md) and [EIP-1155](./eip-1155.md) smart contracts that associate for each token essential and significant metadata. While some projects
 
 
+=== ERC-7994 ===
+TITLE: Purpose-Bound ERC-20 with Conditional Unlock
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-29
+REQUIRES: 2, 0, ,,  , 7, 2, 9, 1
+
+SUMMARY:
+This ERC extends the concept introduced in [ERC-7291] by enabling [ERC-20]-compatible tokens to carry multi-condition unlocking constraints, combining temporal, identity, and usage restrictions into
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to
+
+MOTIVATION:
+ERC-7291 introduced purpose-bound money by restricting how and where tokens can be spent. However, many real-world applications require multiple conditions to be satisfied simultaneously
+
+RATIONALE:
+Flexibility: Conditions are modular and extensible. Composability: Can be integrated into DAOs, payroll, education, and compliance tokens. Security: Off-chain verification (e.g., KYC) backed by
+
+
 === ERC-162 ===
 TITLE: Initial ENS Hash Registrar
 TYPE: Standards Track ERC
@@ -5699,6 +5719,26 @@ RATIONALE:
 **Bytecode over Addresses**: Bytecode is deterministic and can be verified on-chain, while addresses are opaque and mutable. **Reverting on re-indexing**: There is small, yet
 
 
+=== ERC-7827 ===
+TITLE: JSON Contract with Value Version Control
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-07
+REQUIRES: 
+
+SUMMARY:
+This EIP defines a smart contract interface that allows for managing a JSON object within a smart contract, offering both real-time JSON output and
+
+SPECIFICATION:
+The contract interface includes the following methods: ### Read Methods 1. **`json()`** - **Output:** `string` (a JSON string representing the entire object) - **Description:**
+
+MOTIVATION:
+With an increasing number of developers from RESTful backgrounds joining the Ethereum ecosystem, there is a need for a contract interface that allows developers
+
+RATIONALE:
+1. **REST-like Access via JSON Method** The `json` method enables developers to interact with the contract as if it were a RESTful API, improving
+
+
 === ERC-7555 ===
 TITLE: Single Sign-On for Account Discovery
 TYPE: Standards Track ERC
@@ -9069,6 +9109,26 @@ The Ethereum ecosystem is experiencing a rapid growth in the number of rollup ch
 
 RATIONALE:
 ### Broadcast vs Unicast A contract on any given chain cannot dictate which other chains can and cannot inspect its state. Contracts are naturally
+
+
+=== ERC-8017 ===
+TITLE: Payout Race
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-08-31
+REQUIRES: 20
+
+SUMMARY:
+This ERC specifies a small contract surface for a "payout race": a bucket that holds a single payout asset type and transfers the entire
+
+SPECIFICATION:
+The following interface and rules are normative. The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY",
+
+MOTIVATION:
+Many protocols need an ongoing way to convert a continuous stream of value into another asset at or near prevailing market prices. Typical cases
+
+RATIONALE:
+* A single required payment pairs well with controllers that evaluate when the exchange is economically sound and trigger `purchase` only when conditions justify
 
 
 === ERC-4824 ===

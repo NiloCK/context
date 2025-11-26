@@ -2067,6 +2067,26 @@ RATIONALE:
 There have been numerous interesting uses of [EIP-721](./eip-721.md) and [EIP-1155](./eip-1155.md) smart contracts that associate for each token essential and significant metadata. While some projects (e.g. EtherOrcs) have experimented successfully to manage these metadata on-chain, that experimental solution will always be limited by the cost and speed of generating and storing JSON on-chain. Symmetrically, while storing the JSON metadata at URI endpoint controlled by traditional servers permit limitless updates the metadata for each NFT, it is somehow defeating in many uses cases, the whole purpose of using a trustless blockchain to manage NFT: indeed users may want or demand
 
 
+=== ERC-7994 ===
+TITLE: Purpose-Bound ERC-20 with Conditional Unlock
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-29
+REQUIRES: 2, 0, ,,  , 7, 2, 9, 1
+
+SUMMARY:
+This ERC extends the concept introduced in [ERC-7291] by enabling [ERC-20]-compatible tokens to carry multi-condition unlocking constraints, combining temporal, identity, and usage restrictions into a programmable structure. It aims to support controlled disbursement of tokens where funds are only accessible under predefined, auditable, and verifiable conditions.
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Interface The `IPurposeBoundERC20` interface defines the standard for programmable token transfers that are conditional. Each transfer, referred to as a *purpose binding*, includes: - A `recipient` and `amount`. - A set of `UnlockCondition` objects, each consisting of a `conditionType` (like `"TIME"`, `"KYC"`, or `"WHITELIST"`) and `conditionData` used to evaluate the condition. - An optional `expiry` timestamp after which the transfer can no longer
+
+MOTIVATION:
+ERC-7291 introduced purpose-bound money by restricting how and where tokens can be spent. However, many real-world applications require multiple conditions to be satisfied simultaneously before tokens can be used. Examples include: - Scholarships requiring the recipient to be KYC-verified, under 25 years of age, and registered at a university. - NGO aid to be used only for food and medicine, after a specific unlock date. - Payroll tokens that unlock monthly and only for whitelisted vendors (e.g., banks, healthcare providers). This proposal generalizes and formalizes such use cases by layering unlocking conditions on top of the ERC-20 standard.
+
+RATIONALE:
+Flexibility: Conditions are modular and extensible. Composability: Can be integrated into DAOs, payroll, education, and compliance tokens. Security: Off-chain verification (e.g., KYC) backed by on-chain proofs (e.g., Merkle roots).
+
+
 === ERC-162 ===
 TITLE: Initial ENS Hash Registrar
 TYPE: Standards Track ERC
@@ -5699,6 +5719,26 @@ RATIONALE:
 **Bytecode over Addresses**: Bytecode is deterministic and can be verified on-chain, while addresses are opaque and mutable. **Reverting on re-indexing**: There is small, yet non-zero probability of hash collision attack. Disallowing updates to indexed location of bytecode coupes with this. **Simple Interface**: The interface is minimal and focused to maximize composability and ease of implementation. **Library Implementation**: Implementing this as a library would limit its impact, making code reuse more difficult and lacking a single, official source of truth. By establishing this as an ERC, we ensure standardization and widespread adoption, driving the ecosystem forward.
 
 
+=== ERC-7827 ===
+TITLE: JSON Contract with Value Version Control
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-11-07
+REQUIRES: 
+
+SUMMARY:
+This EIP defines a smart contract interface that allows for managing a JSON object within a smart contract, offering both real-time JSON output and a version-controlled history for each value. The interface includes methods to retrieve the most recent JSON state as well as the version history of each key in the JSON object. This approach supports REST developers familiar with JSON-based data interactions, thus improving accessibility for developers new to Web3 and Ethereum.
+
+SPECIFICATION:
+The contract interface includes the following methods: ### Read Methods 1. **`json()`** - **Output:** `string` (a JSON string representing the entire object) - **Description:** Returns the current state of the JSON object as a string. 2. **`version(string key)`** - **Inputs:** - `key` (`string`): The JSON key whose version history is requested. - **Output:** `string` (a JSON array as a string) - **Description:** Returns an array of all versions of the specified key's value in JSON format. The array is ordered chronologically, with the earliest version at index 0 and the most recent version at the highest index. ###
+
+MOTIVATION:
+With an increasing number of developers from RESTful backgrounds joining the Ethereum ecosystem, there is a need for a contract interface that allows developers to easily interact with structured JSON data. This EIP aims to create a universal standard that provides JSON data management and version control functionality in a straightforward and REST-like way, making Ethereum more accessible and developer-friendly.
+
+RATIONALE:
+1. **REST-like Access via JSON Method** The `json` method enables developers to interact with the contract as if it were a RESTful API, improving accessibility for those familiar with traditional web development paradigms. 2. **Version Management via Version Method** The `version` method provides a straightforward version control system for each key, offering a history of values that developers can reference without altering the main JSON structure. This maintains immutability for historical values while allowing updates to be appended. 3. **Compatibility with Web3 Abstractions** Ensuring a simple and standardized ABI is essential for usability with Web3 libraries, thus enhancing
+
+
 === ERC-7555 ===
 TITLE: Single Sign-On for Account Discovery
 TYPE: Standards Track ERC
@@ -9069,6 +9109,26 @@ The Ethereum ecosystem is experiencing a rapid growth in the number of rollup ch
 
 RATIONALE:
 ### Broadcast vs Unicast A contract on any given chain cannot dictate which other chains can and cannot inspect its state. Contracts are naturally broadcasting their state to anything capable of reading it. Targeted messaging applications can always be built on top of a broadcast messaging system. See [Reference Implementation](#reference-implementation) for an example of a unicast application. ### Using Storage Proofs Message reading uses storage proofs. An alternative to this would be to pass messages (perhaps batched) via the canonical bridges of the chains. However storage proofs have some advantages over this method: - They only require gas
+
+
+=== ERC-8017 ===
+TITLE: Payout Race
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-08-31
+REQUIRES: 20
+
+SUMMARY:
+This ERC specifies a small contract surface for a "payout race": a bucket that holds a single payout asset type and transfers the entire bucket to a recipient when a caller pays a fixed **required payment** in a configured desired payment asset. The desired payment asset can be ETH or one [ERC-20](./eip-20.md). The payout asset can be ETH or one ERC-20. This ERC is inspired by the Uniswap Foundation's **Unistaker** proposal, which introduced the term **Payout Race** and motivated this design.
+
+SPECIFICATION:
+The following interface and rules are normative. The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions * **Conforming contract**: Any smart contract that exposes this interface and claims compliance with this ERC. This includes proxies and clones. Requirements in this document apply to the observable runtime behavior of the deployed contract. * **Payout asset**: Asset dispensed from the bucket. `payoutAsset == address(0)` means ETH payout. * **Desired payment asset**: Asset the
+
+MOTIVATION:
+Many protocols need an ongoing way to convert a continuous stream of value into another asset at or near prevailing market prices. Typical cases include buying back a protocol token using protocol revenue, accumulating a reserve asset, funding incentive budgets, or rebalancing treasuries. Existing patterns have material drawbacks. Integrating an AMM couples outcomes to external liquidity, slippage, and fees, and requires retuning when pool conditions change. General on-chain auctions add operational complexity and higher gas, especially when run continuously. This ERC defines a deterministic, revenue-driven primitive that is analogous to a Dutch auction. Sources of value flow into
+
+RATIONALE:
+* A single required payment pairs well with controllers that evaluate when the exchange is economically sound and trigger `purchase` only when conditions justify it. The onchain primitive then validates the payment and atomically transfers the entire bucket. * `paymentSink` reduces persistent balances in the contract and simplifies audits. Sinks can be treasuries, splitters, or burns. * Using the live onchain balance as the source of truth automatically captures rebases and fee-on-transfer mechanics, and keeps the onchain tracking minimized. It also implies that unsolicited transfers to the contract will be included in the next payout, which purchasers may
 
 
 === ERC-4824 ===
