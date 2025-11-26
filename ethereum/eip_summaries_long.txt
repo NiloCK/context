@@ -3721,6 +3721,26 @@ RATIONALE:
 The current approach proposed by EIP-712 is to specify the chain ID at compile time. Using this approach will result in problems after a hardfork, as well as human error that may lead to loss of funds or replay attacks on signed messages. By adding the proposed opcode it will be possible to access the current chain ID and validate signatures based on that. Currently, there is no specification for how chain ID is set for a particular network, relying on choices made manually by the client implementers and the chain community. There is a potential scenario where,
 
 
+=== EIP-8080 ===
+TITLE: Let exits use the consolidation queue
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-11-13
+REQUIRES: 
+
+SUMMARY:
+This EIP allows exits to be routed through the consolidation queue when it is shorter than the exit queue, consuming churn that is allocated to consolidations. This democratizes access to a feature that is currently only available to validators with at least 2048 ETH through a loophole in the consolidation logic. The protocol then makes more efficient usage of the churn that its security parameters (weak subjectivity period) allow, and is able to process more exits without any security reduction.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Starting from the beginning of the epoch when this EIP is activated, Consensus Layer clients **MUST** use the modified `compute_exit_epoch_and_update_churn` function which routes exits through the consolidation queue when it is shorter than the exit queue. ### Modified `compute_exit_epoch_and_update_churn` The only modification is this addition at the start of `compute_exit_epoch_and_update_churn`: ```python if state.earliest_exit_epoch > state.earliest_consolidation_epoch: return compute_consolidation_epoch_and_update_churn(state, 2 * exit_balance // 3) ``` In
+
+MOTIVATION:
+The existing design of consolidation mechanism allows validators with at least 2048 ETH to use the consolidation queue for exits through a loophole in the consolidation logic. When there is an imbalance between exit and consolidation queues favoring the latter, as has been the case since the introduction of the consolidation feature, this becomes an appealing way to speed up withdrawals. However, this feature is only available to a subset of validators, creating an unfair advantage. Rather than removing this unintended feature, this EIP democratizes it by making it available to all exits. This approach preserves fairness by
+
+RATIONALE:
+The decision to democratize access to this unintended feature, rather than removing it or keeping it as is, is driven by: 1. **Fairness**: All validators gain equal access to this efficiency improvement, rather than it being restricted to those with at least 2048 ETH who can exploit the loophole. 2. **Efficiency**: When consolidation activity is low, the consolidation churn would otherwise go unused. By allowing exits to use this churn, we ensure it is not wasted and can be put to productive use, improving staking liquidity with unchanged security guarantees. To summarize, fairness is a strong motivation to
+
+
 === EIP-7557 ===
 TITLE: Block-level Warming with fair cost savings
 TYPE: Standards Track Core

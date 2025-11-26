@@ -3721,6 +3721,26 @@ RATIONALE:
 The current approach proposed by EIP-712 is to specify the chain ID at compile time. Using this approach will result in problems after a
 
 
+=== EIP-8080 ===
+TITLE: Let exits use the consolidation queue
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-11-13
+REQUIRES: 
+
+SUMMARY:
+This EIP allows exits to be routed through the consolidation queue when it is shorter than the exit queue, consuming churn that is allocated
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The existing design of consolidation mechanism allows validators with at least 2048 ETH to use the consolidation queue for exits through a loophole in
+
+RATIONALE:
+The decision to democratize access to this unintended feature, rather than removing it or keeping it as is, is driven by: 1. **Fairness**: All
+
+
 === EIP-7557 ===
 TITLE: Block-level Warming with fair cost savings
 TYPE: Standards Track Core
