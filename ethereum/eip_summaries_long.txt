@@ -2705,7 +2705,7 @@ TITLE: SSZ transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-01-30
-REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 0, 1, 6
+REQUIRES: 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6, ,,  , 7, 9, 3, 2, ,,  , 8, 0, 1, 6
 
 SUMMARY:
 This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) transactions to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
@@ -3575,7 +3575,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Glamsterdam network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7732](./eip-7732.md): Enshrined Proposer-Builder Separation * [EIP-7928](./eip-7928.md): Block-Level Access Lists ### Considered for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Declined for Inclusion * [EIP-7692](./eip-7692.md): EVM Object Format (EOFv1) Meta * [EIP-7782](./eip-7782.md): Reduce Block Latency * [EIP-7886](./eip-7886.md): Delayed execution * [EIP-7919](./eip-7919.md): Pureth Meta * [EIP-7937](./eip-7937.md): EVM64 - 64-bit mode EVM opcodes * [EIP-7942](./eip-7942.md): Available Attestation ### Proposed for Inclusion 1. [EIP-2780](./eip-2780.md): Reduce intrinsic transaction gas 1. [EIP-2926](./eip-2926.md): Chunk-based code merkelization 1.
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7732](./eip-7732.md): Enshrined Proposer-Builder Separation * [EIP-7928](./eip-7928.md): Block-Level Access Lists ### Considered for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Declined for Inclusion * [EIP-7692](./eip-7692.md): EVM Object Format (EOFv1) Meta * [EIP-7782](./eip-7782.md): Reduce Block Latency * [EIP-7886](./eip-7886.md): Delayed execution * [EIP-7919](./eip-7919.md): Pureth Meta * [EIP-7937](./eip-7937.md): EVM64 - 64-bit mode EVM opcodes * [EIP-7942](./eip-7942.md): Available Attestation * [EIP-8068](./eip-8068.md): Neutral effective balance design ### Proposed for Inclusion 1. [EIP-2780](./eip-2780.md): Reduce intrinsic transaction gas
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Glamsterdam network upgrade, as well as links to full specification.
