@@ -8587,7 +8587,7 @@ SUMMARY:
 This EIP defines a canonical structure for Ethereum genesis files (`genesis.json`) used to bootstrap Ethereum networks. The standard aligns with the de facto structure
 
 SPECIFICATION:
-The canonical genesis file MUST be a JSON object with the following top-level fields: ### Top-Level Fields | Field | Description | |-----------------|-----------------------------------------------------------------| |
+The canonical genesis file MUST be a JSON object with the following top-level fields: ### Top-Level Fields | Field | Type | Description |
 
 MOTIVATION:
 The lack of an official standard for the `genesis.json` file has led to incompatibilities, bugs and confusion, as well as added workload for those
