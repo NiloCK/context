@@ -5860,23 +5860,23 @@ RATIONALE:
 
 
 === ERC-5485 ===
-TITLE: Legitimacy, Jurisdiction and Sovereignty
+TITLE: Jurisdiction, Accreditation, and Enforcement
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2022-08-17
-REQUIRES: 1, 6, 5, ,,  , 5, 2, 4, 7
+REQUIRES: 5247
 
 SUMMARY:
-Provide a way for compliant smart contracts to declare their legitimacy lineage, jurisdiction they observe, and sovereignty if they choose to not fall onto
+Defines a standard interface for smart contracts to declare their sovereignty status, observed jurisdiction, accreditation within that jurisdiction, and the mechanisms by which they
 
 SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
 
 MOTIVATION:
-Today, smart contracts have no standard way to specify their legitimacy lineage, jurisdiction, or sovereignty relationship. The introduction of such a standard, supports better
+Smart contracts are, in essence, digital agreements whose execution is enforced by network consensus. As their use increasingly expands into domains that mirror real-world
 
 RATIONALE:
-Needs discussion.
+### Separation of Jurisdiction and Accreditation This ERC separates **jurisdiction** from **accreditation** because they represent fundamentally different relationships: - **Jurisdiction is voluntary.** A contract
 
 
 === ERC-6327 ===

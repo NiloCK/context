@@ -5860,23 +5860,23 @@ RATIONALE:
 
 
 === ERC-5485 ===
-TITLE: Legitimacy, Jurisdiction and Sovereignty
+TITLE: Jurisdiction, Accreditation, and Enforcement
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2022-08-17
-REQUIRES: 1, 6, 5, ,,  , 5, 2, 4, 7
+REQUIRES: 5247
 
 SUMMARY:
-Provide a way for compliant smart contracts to declare their legitimacy lineage, jurisdiction they observe, and sovereignty if they choose to not fall onto any jurisdiction.
+Defines a standard interface for smart contracts to declare their sovereignty status, observed jurisdiction, accreditation within that jurisdiction, and the mechanisms by which they may receive and record enforcement actions.
 
 SPECIFICATION:
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. 1. Compliant contract MUSTS implement the following interface. ```solidity interface IERC5485 { /// A function that returns the source of legitimacy in an address /// /// @returns address of EOA or contract that grants legitimacy status to this contract. /// See Specification #2 and #3 for more details. function sourceOfLegitimacy() public view returns (address); /// A function that returns the sovereign jurisdiction in an address /// /// @returns address
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. A contract compliant with this ERC MUST implement the interface defined below. The interface provides standardized primitives for declaring a contract’s accreditation source, its observed jurisdiction, and a mechanism for receiving structured enforcement proposals. When the jurisdiction is absent, a contract is self-sovereign. ### 1. Data Structures For backward compatibility with existing contracts that implement [ERC-5247](./eip-5247.md), the interface extends the `IERC5247Executable` and `IERC5247Executables` data structures. #### `IERC5247Executable` Represents a
 
 MOTIVATION:
-Today, smart contracts have no standard way to specify their legitimacy lineage, jurisdiction, or sovereignty relationship. The introduction of such a standard, supports better integration with today's legal and regulative scenarios: 1. it supports a regulative body to allow or deny interoperability with smart contracts. 2. it also allows DAOs to clearly declare "self-sovereignty" by announcing via this interface by saying they do not assert legitimacy from any source other than themselves. A real-world example is that ContractA represents an **A company registered in a country**, ContractB represents a **The Secretary of State of the country**, and ContractC
+Smart contracts are, in essence, digital agreements whose execution is enforced by network consensus. As their use increasingly expands into domains that mirror real-world legal or institutional relationships, one critical component present in traditional systems is missing on-chain: a structured way to express sovereignty, jurisdiction, accreditation, and enforcement. Historically, much of the smart-contract ecosystem has emphasized decentralization and self-sovereignty, implicitly assuming that contracts do not rely on any external legal or institutional framework. However, many practical use cases—especially those that interface with real-world regulations, property rights, or compliance regimes—require an explicit identification of the jurisdiction(s) a contract observes,
 
 RATIONALE:
-Needs discussion.
+### Separation of Jurisdiction and Accreditation This ERC separates **jurisdiction** from **accreditation** because they represent fundamentally different relationships: - **Jurisdiction is voluntary.** A contract may unilaterally declare that it observes the rules or norms of a particular system. - **Accreditation requires external approval.** Only the authority itself can grant formal recognition that a contract is an accepted participant within its system. - **Jurisdiction expresses alignment; accreditation expresses acceptance.** Declaring jurisdiction does not imply the authority recognizes the contract. Accreditation establishes the reciprocal relationship. - **Accreditation enables enforcement.** Authorities typically issue enforcement only to contracts they have accredited. Jurisdiction
 
 
 === ERC-6327 ===
