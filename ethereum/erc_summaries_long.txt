@@ -6141,7 +6141,7 @@ SUMMARY:
 We define a multi-stepped contract ownership interface for more secure contract ownership management. This makes the ownership transfer into 3 distinct steps. With the first 2 steps, performed by the original owner (initiate → confirm) and the remaining 1 step performed by the new owner (accept). We enforce an optional time window between the initiate and confirm stages to give additional room for review, and make ownership key compromise scenarios less fatal.
 
 SPECIFICATION:
-The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. A multi-step ownable contract MUST implement the following interface: ```solidity /// @title Multistep Ownership Standard interface MultiStepOwnable { event OwnershipTransferInitiated(address indexed prevOwner, address indexed newOwner); event OwnershipTransferConfirmed(address indexed prevOwner, address indexed newOwner); event OwnwershipTransferred(address indexed prevOwner, address indexed newOwner); /// @dev initiate the ownership transfer. First step of ownership transfer. /// moves the newOwner to the preConfirmed stage. /// /// @param newOwner the address of
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. A multi-step ownable contract MUST implement the following interface: ```solidity /// @title Multistep Ownership Standard interface MultiStepOwnable { event OwnershipTransferInitiated(address indexed prevOwner, address indexed newOwner); event OwnershipTransferConfirmed(address indexed prevOwner, address indexed newOwner); event OwnershipTransferred(address indexed prevOwner, address indexed newOwner); /// @dev initiate the ownership transfer. First step of ownership transfer. /// moves the newOwner to the preConfirmed stage. /// /// @param newOwner the address of
 
 MOTIVATION:
 Ownership management is crucial in on-chain security and a significant portion of the security assumptions of defi protocols, smart contract wallets and on-chain utilities rely on the contract ownership. The single-step `transferOwnership()` style ownership mechanism has been in the industry for a long time, (e.g.,[ERC-173](./eip-173.md)), and has been used ubiquitously as an industry standard. As the industry evolves and attacks get more sophisticated there is a strong need for a multi-step, time gated ownership management process to enhance the ecosystem’s contract ownership to be more reviewable, stoppable, thorough and secure. The main objective of this standard is to
@@ -9823,6 +9823,26 @@ SPECIFICATION:
 
 MOTIVATION:
 As we move to more token models, having a common staking interface which is familiar to users can be useful. The common interface can be used by a variety of applications, this common interface could be beneficial especially to things like Token curated registries which have recently gained popularity.
+
+
+=== ERC-8019 ===
+TITLE: Minimal Wallet-Managed Auto-Login for SIWE
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-09-02
+REQUIRES: 4361
+
+SUMMARY:
+Defines a wallet-local allowlist for automatic signing of [ERC-4361](./eip-4361.md) messages when simple, deterministic match rules succeed. Policies are created and managed only by the wallet/user.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The term “wallet” refers to wallet user interfaces, regardless of whether mobile, web-based or browser extensions. ### Overview Each allow-policy is defined as: ```json { "domain": "example.com", // exact match to SIWE domain "uriPrefix": "https://example.com/", // SIWE URI MUST start with this "allowedChains": [1], // list of allowed chainIds "allowedResources": ["https://example.com/login"], // exact set match "supportsEIP6492": true, // required for smooth UX when using
+
+MOTIVATION:
+Users repeatedly sign identical SIWE messages for trusted apps. A small, explicit match policy enables zero-prompt login without involving apps. Users already get prompted by their wallets if they trust a certain app when they initially connect to it - this flow can also authorize auto-login if applicable.
+
+RATIONALE:
+* This ERC is designed with minimal modifications to existing apps in mind * From a security perspective, it's much easier to "outsource" the job of determining which apps to enable to this policy for to wallets - most wallets already maintain lists of "trusted" apps * [EIP-712](./eip-712.md) (typed data) is out of scope due to SIWE deciding to build on plain text.
 
 
 === ERC-7683 ===

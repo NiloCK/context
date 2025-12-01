@@ -9825,6 +9825,26 @@ MOTIVATION:
 As we move to more token models, having a common staking interface which is familiar to users can be useful. The common interface can be used by a variety of applications, this common interface could be beneficial especially to things like Token curated registries which have recently gained popularity.
 
 
+=== ERC-8019 ===
+TITLE: Minimal Wallet-Managed Auto-Login for SIWE
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-09-02
+REQUIRES: 4361
+
+SUMMARY:
+Defines a wallet-local allowlist for automatic signing of [ERC-4361](./eip-4361.md) messages when simple, deterministic match rules succeed. Policies are created and managed only by the wallet/user.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The term “wallet” refers to wallet user interfaces, regardless of whether mobile, web-based or browser
+
+MOTIVATION:
+Users repeatedly sign identical SIWE messages for trusted apps. A small, explicit match policy enables zero-prompt login without involving apps. Users already get prompted by their wallets if they trust a certain app when they initially connect to it - this flow can also authorize auto-login if applicable.
+
+RATIONALE:
+* This ERC is designed with minimal modifications to existing apps in mind * From a security perspective, it's much easier to "outsource" the job of determining which apps to enable to this policy for to wallets - most wallets already maintain lists of "trusted" apps * [EIP-712](./eip-712.md) (typed
+
+
 === ERC-7683 ===
 TITLE: Cross Chain Intents
 TYPE: Standards Track ERC
