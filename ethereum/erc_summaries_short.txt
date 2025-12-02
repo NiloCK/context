@@ -2070,7 +2070,7 @@ There have been numerous interesting uses of [EIP-721](./eip-721.md) and [EIP-11
 === ERC-7994 ===
 TITLE: Purpose-Bound ERC-20 with Conditional Unlock
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-07-29
 REQUIRES: 2, 0, ,,  , 7, 2, 9, 1
 
@@ -3378,7 +3378,7 @@ The interfaces described in this ERC have been chosen as to cover the known flas
 === ERC-7246 ===
 TITLE: Encumber - Splitting Ownership & Guarantees
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-06-27
 REQUIRES: 20
 
@@ -5082,6 +5082,26 @@ RATIONALE:
 User pain points: * users don't want to think about ether * users don't want to think about backing up private keys or seed
 
 
+=== ERC-8033 ===
+TITLE: Agent Council Oracles
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-09-28
+REQUIRES: 20
+
+SUMMARY:
+This ERC defines a standard interface for oracle contracts that use multi-agent councils to resolve information queries in a decentralized manner. It enables dApps
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to
+
+MOTIVATION:
+With AI agents advancing rapidly, we can build trust-minimized oracles that are cheaper, faster, and more scalable than traditional human or node-based systems. Traditional
+
+RATIONALE:
+This interface standardizes a council flow for AI-driven oracles, balancing minimal on-chain logic with off-chain flexibility. Commit-reveal prevents front-running and judging enables consensus on
+
+
 === ERC-7955 ===
 TITLE: Permissionless CREATE2 Factory
 TYPE: Standards Track ERC
@@ -5762,7 +5782,7 @@ RATIONALE:
 === ERC-7518 ===
 TITLE: Dynamic Compliant Interop Security Token
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-09-14
 REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 5
 
@@ -5862,7 +5882,7 @@ RATIONALE:
 === ERC-5485 ===
 TITLE: Jurisdiction, Accreditation, and Enforcement
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2022-08-17
 REQUIRES: 5247
 
@@ -6538,7 +6558,7 @@ This EIP aims to allow tracing all licenses to an NFT to facilitate right manage
 === ERC-8001 ===
 TITLE: Agent Coordination Framework
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-08-02
 REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 5, 2, 6, 7
 
@@ -6549,7 +6569,7 @@ SPECIFICATION:
 The keywords “MUST”, “SHOULD”, and “MAY” are to be interpreted as described in RFC 2119 and RFC 8174. Implementations MUST expose the following canonical
 
 MOTIVATION:
-Agents in DeFi/MEV often need to act together without a trusted coordinator. Existing intent standards (e.g., [ERC-7521](./eip-7521.md), [ERC-7683](./eip-7683.md)) define single-initiator flows and do not
+Agents in DeFi/MEV/Web3 Gaming and Agentic Commerce often need to act together without a trusted coordinator. Existing intent standards (e.g., [ERC-7521](./eip-7521.md), [ERC-7683](./eip-7683.md)) define single-initiator
 
 RATIONALE:
 - Sorted participant lists remove hash malleability and allow off-chain deduplication. - Separation of intent and acceptance allows off-chain collation and a single on-chain
@@ -7289,21 +7309,21 @@ The protocol tries to be parsimonious. The transfer is associated with a (prefer
 === ERC-7634 ===
 TITLE: Limited Transfer Count NFT
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-02-22
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
 SUMMARY:
-This standard extends [ERC-721](./eip-721.md) to introduce a mechanism that allows minters to customize the transferability of NFTs through a parameter called `TransferCount`. `TransferCount` sets
+This standard extends [ERC-721](./eip-721.md) with a mechanism that lets token owners/minters cap how many times a specific token can be transferred. It specifies functions
 
 SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
 
 MOTIVATION:
-Once NFTs are sold, they detach from their minters (creators) and can be perpetually transferred thereafter. Yet, many circumstances demand precise control over NFT
+Once NFTs are sold, they detach from their minters and can be perpetually transferred. Yet many situations require tighter control over secondary movement. First,
 
 RATIONALE:
-### Does tracking the internal transfer count matter? Yes and no. It is optional and quite depends on the actual requirements. The reference implementation
+### Tracking and hooks `transferCountOf` and `transferLimitOf` expose state needed to enforce a cap. The count should only increase after a successful native transfer
 
 
 === ERC-4955 ===

@@ -2070,7 +2070,7 @@ There have been numerous interesting uses of [EIP-721](./eip-721.md) and [EIP-11
 === ERC-7994 ===
 TITLE: Purpose-Bound ERC-20 with Conditional Unlock
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-07-29
 REQUIRES: 2, 0, ,,  , 7, 2, 9, 1
 
@@ -3378,7 +3378,7 @@ The interfaces described in this ERC have been chosen as to cover the known flas
 === ERC-7246 ===
 TITLE: Encumber - Splitting Ownership & Guarantees
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-06-27
 REQUIRES: 20
 
@@ -5082,6 +5082,26 @@ RATIONALE:
 User pain points: * users don't want to think about ether * users don't want to think about backing up private keys or seed phrases * users want to be able to pay for transactions using what they already have on the system, be apple pay, xbox points or
 
 
+=== ERC-8033 ===
+TITLE: Agent Council Oracles
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-09-28
+REQUIRES: 20
+
+SUMMARY:
+This ERC defines a standard interface for oracle contracts that use multi-agent councils to resolve information queries in a decentralized manner. It enables dApps to request resolutions, general information arbitration, and build consensus and validation in a trust-minimized way, with agents submitting information on-chain. The interface supports permissionless participation,
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. This EIP proposes the `IAgentCouncilOracle` interface, which defines methods and events for a council-based resolution
+
+MOTIVATION:
+With AI agents advancing rapidly, we can build trust-minimized oracles that are cheaper, faster, and more scalable than traditional human or node-based systems. Traditional data oracles primarily provide quantitative feeds and are often centralized or expensive for arbitrary, one-off queries. With AI agents becoming reliable for factual resolutions from
+
+RATIONALE:
+This interface standardizes a council flow for AI-driven oracles, balancing minimal on-chain logic with off-chain flexibility. Commit-reveal prevents front-running and judging enables consensus on complex queries. Bonds and optional reputation help deter attacks. Reputation scores provide a rationale for enhanced security: they enable proportional reward distribution, gating participation to
+
+
 === ERC-7955 ===
 TITLE: Permissionless CREATE2 Factory
 TYPE: Standards Track ERC
@@ -5762,7 +5782,7 @@ RATIONALE:
 === ERC-7518 ===
 TITLE: Dynamic Compliant Interop Security Token
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-09-14
 REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 5
 
@@ -5773,7 +5793,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Interface ```solidity pragma solidity ^0.8.0; interface IERC7518 is IERC1155, IERC165{ event TokensLocked(address indexed account,
 
 MOTIVATION:
-The growing demand for tokenized real-world assets necessitates a token standard that can accommodate the unique requirements of security tokens. Existing standards, while powerful, do not fully address the need for flexible partitioning and comprehensive compliance management. Build upon of [ERC-1155](./eip-1155.md) to introduce partitions, allowing for the creation of
+The growing demand for tokenized real-world assets necessitates a token standard that can accommodate the unique requirements of security tokens. Existing standards, while powerful, do not fully address the need for flexible partitioning and comprehensive compliance management. This standard builds upon [ERC-1155](./eip-1155.md) by introducing partitions, allowing for the creation
 
 RATIONALE:
 ### Enhancing Compliance Management The `canTransfer` function facilitates compliance checks during token transfers, offering adaptability through diverse implementation methods such as on-chain storage, oracle utilization, or any off-chain methodologies. This versatility ensures seamless integration with existing compliance frameworks, particularly in enforcing regulatory standards like KYC/AML. Additionally, functionalities like `freezeAddress`,
@@ -5862,7 +5882,7 @@ RATIONALE:
 === ERC-5485 ===
 TITLE: Jurisdiction, Accreditation, and Enforcement
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2022-08-17
 REQUIRES: 5247
 
@@ -6538,7 +6558,7 @@ This EIP aims to allow tracing all licenses to an NFT to facilitate right manage
 === ERC-8001 ===
 TITLE: Agent Coordination Framework
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-08-02
 REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 5, 2, 6, 7
 
@@ -6546,10 +6566,10 @@ SUMMARY:
 [ERC-8001](./eip-8001.md) defines a minimal, single-chain primitive for **multi-party agent coordination**. An initiator posts an intent and each participant provides a verifiable acceptance attestation. Once the required set of acceptances is present and fresh, the intent is executable. The standard specifies typed data, lifecycle, mandatory events, and verification rules compatible
 
 SPECIFICATION:
-The keywords “MUST”, “SHOULD”, and “MAY” are to be interpreted as described in RFC 2119 and RFC 8174. Implementations MUST expose the following canonical status codes for `getCoordinationStatus`: ### Status Codes Implementations MUST use the canonical enum defined above: ```solidity enum Status { None, Proposed, Ready, Executed, Cancelled, Expired
+The keywords “MUST”, “SHOULD”, and “MAY” are to be interpreted as described in RFC 2119 and RFC 8174. Implementations MUST expose the following canonical status codes for `getCoordinationStatus`: ### Status Codes Implementations MUST use the canonical enum defined below: ```solidity enum Status { None, Proposed, Ready, Executed, Cancelled, Expired
 
 MOTIVATION:
-Agents in DeFi/MEV often need to act together without a trusted coordinator. Existing intent standards (e.g., [ERC-7521](./eip-7521.md), [ERC-7683](./eip-7683.md)) define single-initiator flows and do not specify multi-party agreement. [ERC-8001](./eip-8001.md) specifies the smallest on-chain primitive for that gap: an initiator's [EIP-712](./eip-712.md) intent plus per-participant [EIP-712](./eip-712.md)/[EIP-1271](./eip-1271.md) acceptances. The intent becomes executable only
+Agents in DeFi/MEV/Web3 Gaming and Agentic Commerce often need to act together without a trusted coordinator. Existing intent standards (e.g., [ERC-7521](./eip-7521.md), [ERC-7683](./eip-7683.md)) define single-initiator flows and do not specify multi-party agreement. [ERC-8001](./eip-8001.md) specifies the smallest on-chain primitive for that gap: an initiator's [EIP-712](./eip-712.md) intent plus per-participant [EIP-712](./eip-712.md)/[EIP-1271](./eip-1271.md) acceptances. The
 
 RATIONALE:
 - Sorted participant lists remove hash malleability and allow off-chain deduplication. - Separation of intent and acceptance allows off-chain collation and a single on-chain check. - Keeping [ERC-8001](./eip-8001.md) single-chain avoids coupling to bridge semantics and keeps the primitive audit-friendly. - Wallet friendliness: EIP-712 arrays let signers see actual participant
@@ -7289,21 +7309,21 @@ The protocol tries to be parsimonious. The transfer is associated with a (prefer
 === ERC-7634 ===
 TITLE: Limited Transfer Count NFT
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-02-22
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
 SUMMARY:
-This standard extends [ERC-721](./eip-721.md) to introduce a mechanism that allows minters to customize the transferability of NFTs through a parameter called `TransferCount`. `TransferCount` sets a limit on how many times an NFT can be transferred. The standard specifies an interface that includes functions for setting and retrieving transfer limits,
+This standard extends [ERC-721](./eip-721.md) with a mechanism that lets token owners/minters cap how many times a specific token can be transferred. It specifies functions to set and read a per-token transfer limit, to query a per-token transfer count, and defines transfer-time hooks to enforce the cap. The goal is
 
 SPECIFICATION:
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. - `setTransferLimit`: a function establishes the transfer limit for a tokenId. - `transferLimitOf`: a function retrieves the transfer limit for
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. - `setTransferLimit`: establishes the transfer limit for a `tokenId`. - `transferLimitOf`: returns the transfer limit for a `tokenId`. - `transferCountOf`:
 
 MOTIVATION:
-Once NFTs are sold, they detach from their minters (creators) and can be perpetually transferred thereafter. Yet, many circumstances demand precise control over NFT issuance. We outline their advantages across three dimensions. Firstly, by imposing limitations on the frequency of NFT sales or trades, the worth of rare NFTs
+Once NFTs are sold, they detach from their minters and can be perpetually transferred. Yet many situations require tighter control over secondary movement. First, limiting the number of transfers can help preserve value (e.g., premium auctions, IP that becomes CC0 after a finite number of transfers, or game items
 
 RATIONALE:
-### Does tracking the internal transfer count matter? Yes and no. It is optional and quite depends on the actual requirements. The reference implementation given below is a recommended one if you opt for tracking. The `_incrementTransferCount` function and related retrieval functions (`transferLimitOf` and `transferCountOf`) are designed to keep
+### Tracking and hooks `transferCountOf` and `transferLimitOf` expose state needed to enforce a cap. The count should only increase after a successful native transfer (not on mint/burn). Separating `TransferLimitUpdated` from `TransferCountIncreased` makes it clear that the former is an administrative change while the latter is derived from runtime transfers.
 
 
 === ERC-4955 ===
