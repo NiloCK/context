@@ -5576,7 +5576,7 @@ CREATED: 2025-10-17
 REQUIRES: 7521
 
 SUMMARY:
-This EIP roughly doubles the consolidation churn, as well as quadrupling the exit churn and restoring its proportionality to total stake (though maintaining the existing cap on activations). Moreover, it routes exits through the consolidation queue when it is shorter than the exit queue (but not viceversa!), increasing the
+This EIP roughly doubles the consolidation churn, as well as quadrupling the exit churn and restoring its proportionality to total stake (though maintaining the existing cap on activations). The choice of parameters balances maintaining a sufficiently long weak subjectivity period (~7 days, roughly halving the current period) with achieving
 
 SPECIFICATION:
 The `CHURN_LIMIT_QUOTIENT` is halved, from `2**16` to `2**15`, and fully dedicated to activations and exits. However, the cap on activations introduced in [EIP-7514](./eip-7514.md) is maintained via `MAX_PER_EPOCH_ACTIVATION_CHURN_LIMIT`, while exits are freed from this cap. Consolidations now have their own dedicated churn, determined by `CONSOLIDATION_CHURN_LIMIT_QUOTIENT`. This is set here to

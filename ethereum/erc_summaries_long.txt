@@ -6188,23 +6188,23 @@ RATIONALE:
 
 
 === ERC-7964 ===
-TITLE: Cross-Chain EIP-712 Signing Domains
+TITLE: Cross-Chain EIP-712 Signatures
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-06-05
-REQUIRES: 7, 1, 2, ,,  , 7, 8, 0, 3
+REQUIRES: 712
 
 SUMMARY:
-This ERC extends [ERC-7803] to enable readable cross-chain account abstraction by reserving `chainId` 0 for universal signature validity in [EIP-712] domains, following the same pattern established in [EIP-7702]. It allows accounts to sign messages that authorize operations across multiple chains through a single signature, enabling cross-chain intents, multi-chain DAO voting, and unified account management. [ERC-7803]: ./eip-7803.md [EIP-7702]: ./eip-7702.md [EIP-712]: ./eip-712.md
+This ERC defines a standard approach for creating and verifying cross-chain signatures using [EIP-712]. By omitting the `chainId` field from the EIP-712 domain (which is optional per the standard), a signature can be valid across multiple chains. Chain-specific operations are encoded as an array of structured messages, where each chain receives the array of message hashes and only the full message data relevant to that chain. This enables efficient cross-chain intents, multi-chain DAO voting, and unified account management using standard EIP-712 encoding without requiring special wallet support. [EIP-712]: ./eip-712.md
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Cross-Chain Domain Semantics When an [EIP-712] domain in [ERC-7803] uses `chainId: 0`, it MUST be interpreted as "valid on any chain where the account exists" (even counterfactually). ### Cross-Chain Signature Verification Applications verifying cross-chain signatures MUST recognize `chainId: 0` as valid on any chain where the account exists. For on-chain validation, the account SHOULD accept the signature as valid regardless of the `chainId`
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Cross-Chain Domain Semantics A cross-chain [EIP-712] signature MUST omit the `chainId` field from the `EIP712Domain` type and domain object. Since `chainId` is optional per [EIP-712], omitting it signals that the signature is intended for cross-chain validity. The domain's `verifyingContract` field MAY be set to the account address that controls the operations across chains if it is deterministically deployed at the same address across
 
 MOTIVATION:
-Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for cross-chain operations such as: - **Cross-chain intents**: Users wanting to trade assets across multiple chains atomically - **Multi-chain DAO governance**: Voting on proposals that affect protocol instances across different networks - **Unified account management**: Managing the same account deployed on multiple chains - **Cross-chain social recovery**: Recovery processes that span multiple networks By extending [ERC-7803]'s signing domains to support cross-chain scenarios, this ERC enables these use cases while maintaining security through explicit chain specification.
+Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for cross-chain operations such as: - **Cross-chain intents**: Users wanting to trade assets across multiple chains atomically - **Multi-chain DAO governance**: Voting on proposals that affect protocol instances across different networks - **Unified account management**: Managing the same account deployed on multiple chains - **Cross-chain social recovery**: Recovery processes that span multiple networks Existing proposals either require complex Merkle tree constructions (which need wallet-specific UI to verify all leaves) or non-standard encoding schemes that lack wallet adoption. This ERC provides a simpler
 
 RATIONALE:
-[EIP-712] has become the standard for readable and structured data signing. Assuming [ERC-7803] is implemented, it becomes a building block that already streamlines from applications to users. By reusing the same mechanism, `signingDomains` and `authMethods` become building blocks that fit into the wider ecosystem with relatively low effort. This document extends [ERC-7803] and uses these building blocks to allow for a more consistent and informed user experience while interacting with cross-chain applications. ### Account-Centric Approach The account-centric approach represents the most interoperable way for users to express cross-chain intents. By binding signatures to user accounts rather than specific
+### Standard EIP-712 Compatibility This ERC uses only standard [EIP-712] encoding without any extensions or special constructs. All fields in the `EIP712Domain` are optional per the standard, so omitting `chainId` is perfectly valid. This means: 1. **No Special Wallet Support Required**: Any wallet that supports EIP-712 can already sign these messages 2. **Readable by Default**: Wallets automatically display the array of chain-specific operations 3. **Proven Security**: Relies on well-tested EIP-712 encoding rather than custom schemes ### Array Encoding vs Merkle Trees Alternative approaches use Merkle trees to commit to cross-chain operations. While Merkle trees can reduce on-chain overhead
 
 
 === ERC-3440 ===
