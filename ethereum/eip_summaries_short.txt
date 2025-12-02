@@ -5227,23 +5227,23 @@ RATIONALE:
 
 
 === EIP-7745 ===
-TITLE: Trustless log index
+TITLE: Trustless log and transaction index
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-07-17
 REQUIRES: 7916
 
 SUMMARY:
-Replace the fixed 2048 bit log event bloom filters in block headers with a new data structure that can adapt to the changing number
+Replace the fixed 2048 bit log event bloom filters with a new lookup index data structure that can adapt to the changing number of
 
 SPECIFICATION:
-### Terms and definitions - _log value_: either an _address value_ or a _topic value_. Each `LOG` opcode adds one _address value_ and 0..4
+### Terms and definitions - _index entry_: a single entry in the `index_entries` tree associated with an indexed event. It is either a _log
 
 MOTIVATION:
 Adding logs has a significantly lower gas cost and should accordingly be less resource consuming than writing to the state. The original design of
 
 RATIONALE:
-### Log value index space In each block a varying number of _log values_ are emitted. In addition to inefficient search, another drawback of
+### Design goals The proposed data structure is intended to realize a balance between the cost of adding items and accessing old ones. In
 
 
 === EIP-7863 ===
