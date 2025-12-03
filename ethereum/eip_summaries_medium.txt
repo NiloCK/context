@@ -2448,7 +2448,7 @@ CREATED: 2025-04-12
 REQUIRES: 1, 5, 5, ,,  , 2, 7, 1, 8, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP does three things: - Creates a unified registry & standardized interface for introducing additional signature algorithms. - Introduces an [EIP-2718](./eip-2718.md) transaction type that can modify the signature data of a contained transaction to a different signature algorithm. - Introduces a precompile at address `0x12` for decoding these
+This EIP: - Creates a unified registry & standardized interface for introducing additional signature algorithms for the use of deriving account addresses. - Introduces a precompile at address `SIGRECOVER_PRECOMPILE_ADDRESS` for decoding these newly introduced algorithms.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Unless explicitly noted, integer encoding MUST be in big-endian format. ### Parameters | Constant |
@@ -2457,7 +2457,7 @@ MOTIVATION:
 As quantum computers become more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all have certain issues, such as large key sizes (>1KiB), large signature sizes, or long verification times. These issues make them more expensive to compute and store than the currently used secp256k1 curve.
 
 RATIONALE:
-### Opaque `signature_info` type As each algorithm has unique properties, e.g. signature recovery and key sizes, the object needs to hold every permutation of every possible signature and additional recovery information. A bytearray of a dynamic size would be able to achieve this goal. However, this leads to a
+### ERC-4337 interoperability While initial drafts of this EIP were competing with ERC-4337, current versions of this EIP support it via the sigrecover precompile. This allows any ERC-4337 implementation to have the same signature verification logic and address derivation logic for any given private key. This also works agnostic
 
 
 === EIP-7923 ===

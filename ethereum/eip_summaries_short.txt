@@ -2448,7 +2448,7 @@ CREATED: 2025-04-12
 REQUIRES: 1, 5, 5, ,,  , 2, 7, 1, 8, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP does three things: - Creates a unified registry & standardized interface for introducing additional signature algorithms. - Introduces an [EIP-2718](./eip-2718.md) transaction type
+This EIP: - Creates a unified registry & standardized interface for introducing additional signature algorithms for the use of deriving account addresses. - Introduces
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -2457,7 +2457,7 @@ MOTIVATION:
 As quantum computers become more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all have certain issues, such as large key
 
 RATIONALE:
-### Opaque `signature_info` type As each algorithm has unique properties, e.g. signature recovery and key sizes, the object needs to hold every permutation of
+### ERC-4337 interoperability While initial drafts of this EIP were competing with ERC-4337, current versions of this EIP support it via the sigrecover precompile.
 
 
 === EIP-7923 ===
