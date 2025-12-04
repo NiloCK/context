@@ -1160,7 +1160,7 @@ CREATED: 2023-12-01
 REQUIRES: 1, 1, 5, 3, ,,  , 4, 7, 8, 8, ,,  , 4, 8, 4, 4, ,,  , 5, 6, 5, 6, ,,  , 6, 7, 8, 0, ,,  , 7, 0, 4, 4, ,,  , 7, 0, 4, 5, ,,  , 7, 5, 1, 4, ,,  , 7, 5, 1, 6, ,,  , 7, 5, 6, 8
 
 SUMMARY:
-This Meta EIP lists the EIPs included in the Dencun network upgrade across both Ethereum's execution and consensus layers.
+This Meta EIP lists the EIPs included in the Dencun network upgrade across both Ethereum's execution and consensus layers. See [EIP-7568](./eip-7568.md) for the specifications
 
 SPECIFICATION:
 ### Included EIPs * [EIP-1153](./eip-1153.md): Transient storage opcodes * [EIP-4788](./eip-4788.md): Beacon block root in the EVM * [EIP-4844](./eip-4844.md): Shard Blob Transactions * [EIP-5656](./eip-5656.md): MCOPY
@@ -4653,10 +4653,10 @@ TITLE: Hardfork Meta - Fusaka
 TYPE: Meta 
 STATUS: Last Call
 CREATED: 2024-02-01
-REQUIRES: 7600
+REQUIRES: 7, 6, 0, 0, ,,  , 7, 7, 2, 3
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Fulu/Osaka network upgrade.
+This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Fulu/Osaka network upgrade. It follows the Pectra upgrade, documented in [EIP-7600](./eip-7600.md)
 
 SPECIFICATION:
 Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Proposed for Inclusion` and `Declined for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for
@@ -7060,10 +7060,10 @@ TITLE: Hardfork Meta - Pectra
 TYPE: Meta 
 STATUS: Final
 CREATED: 2024-01-18
-REQUIRES: 2, 5, 3, 7, ,,  , 2, 9, 3, 5, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 5, 4, 9, ,,  , 7, 6, 2, 3, ,,  , 7, 6, 8, 5, ,,  , 7, 6, 9, 1, ,,  , 7, 7, 0, 2
+REQUIRES: 2, 5, 3, 7, ,,  , 2, 9, 3, 5, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 5, 4, 9, ,,  , 7, 5, 6, 9, ,,  , 7, 6, 2, 3, ,,  , 7, 6, 8, 5, ,,  , 7, 6, 9, 1, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This Meta EIP lists the EIPs Included in the Prague/Electra network upgrade.
+This Meta EIP lists the EIPs Included in the Prague/Electra network upgrade. It follows the Dencun upgrade, documented in [EIP-7569](./eip-7569.md).
 
 SPECIFICATION:
 ### Included EIPs #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply

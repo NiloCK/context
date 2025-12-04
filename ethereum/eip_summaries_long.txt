@@ -1160,7 +1160,7 @@ CREATED: 2023-12-01
 REQUIRES: 1, 1, 5, 3, ,,  , 4, 7, 8, 8, ,,  , 4, 8, 4, 4, ,,  , 5, 6, 5, 6, ,,  , 6, 7, 8, 0, ,,  , 7, 0, 4, 4, ,,  , 7, 0, 4, 5, ,,  , 7, 5, 1, 4, ,,  , 7, 5, 1, 6, ,,  , 7, 5, 6, 8
 
 SUMMARY:
-This Meta EIP lists the EIPs included in the Dencun network upgrade across both Ethereum's execution and consensus layers.
+This Meta EIP lists the EIPs included in the Dencun network upgrade across both Ethereum's execution and consensus layers. See [EIP-7568](./eip-7568.md) for the specifications of past upgrades.
 
 SPECIFICATION:
 ### Included EIPs * [EIP-1153](./eip-1153.md): Transient storage opcodes * [EIP-4788](./eip-4788.md): Beacon block root in the EVM * [EIP-4844](./eip-4844.md): Shard Blob Transactions * [EIP-5656](./eip-5656.md): MCOPY - Memory copying instruction * [EIP-6780](./eip-6780.md): SELFDESTRUCT only in same transaction * [EIP-7044](./eip-7044.md): Perpetually Valid Signed Voluntary Exits * [EIP-7045](./eip-7045.md): Increase Max Attestation Inclusion Slot * [EIP-7514](./eip-7514.md): Add Max Epoch Churn Limit * [EIP-7516](./eip-7516.md): BLOBBASEFEE opcode ### Full Specifications #### Consensus Layer EIPs 4788, 4844, 7044, 7045 and 7514 require changes to Ethereum's consensus layer. These are specified in the `deneb` folder of the `ethereum/consensus-specs` repository. #### Execution Layer EIPs 1153, 4788, 4844, 5656,
@@ -4653,10 +4653,10 @@ TITLE: Hardfork Meta - Fusaka
 TYPE: Meta 
 STATUS: Last Call
 CREATED: 2024-02-01
-REQUIRES: 7600
+REQUIRES: 7, 6, 0, 0, ,,  , 7, 7, 2, 3
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Fulu/Osaka network upgrade.
+This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Fulu/Osaka network upgrade. It follows the Pectra upgrade, documented in [EIP-7600](./eip-7600.md)
 
 SPECIFICATION:
 Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Proposed for Inclusion` and `Declined for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion #### Core EIPs * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * [EIP-7823](./eip-7823.md): Set upper bounds for MODEXP * [EIP-7825](./eip-7825.md): Transaction Gas Limit Cap * [EIP-7883](./eip-7883.md): ModExp Gas Cost Increase * [EIP-7917](./eip-7917.md): Deterministic proposer lookahead * [EIP-7918](./eip-7918.md): Blob base fee bounded by execution cost * [EIP-7934](./eip-7934.md): RLP Execution Block Size Limit * [EIP-7939](./eip-7939.md): Count leading zeros (CLZ) opcode * [EIP-7951](./eip-7951.md): Precompile for secp256r1 Curve Support #### Other EIPs * [EIP-7892](./eip-7892.md): Blob Parameter Only
@@ -7060,10 +7060,10 @@ TITLE: Hardfork Meta - Pectra
 TYPE: Meta 
 STATUS: Final
 CREATED: 2024-01-18
-REQUIRES: 2, 5, 3, 7, ,,  , 2, 9, 3, 5, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 5, 4, 9, ,,  , 7, 6, 2, 3, ,,  , 7, 6, 8, 5, ,,  , 7, 6, 9, 1, ,,  , 7, 7, 0, 2
+REQUIRES: 2, 5, 3, 7, ,,  , 2, 9, 3, 5, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 5, 4, 9, ,,  , 7, 5, 6, 9, ,,  , 7, 6, 2, 3, ,,  , 7, 6, 8, 5, ,,  , 7, 6, 9, 1, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This Meta EIP lists the EIPs Included in the Prague/Electra network upgrade.
+This Meta EIP lists the EIPs Included in the Prague/Electra network upgrade. It follows the Dencun upgrade, documented in [EIP-7569](./eip-7569.md).
 
 SPECIFICATION:
 ### Included EIPs #### Core EIPs * [EIP-2537](./eip-2537.md): Precompile for BLS12-381 curve operations * [EIP-2935](./eip-2935.md): Save historical block hashes in state * [EIP-6110](./eip-6110.md): Supply validator deposits on chain * [EIP-7002](./eip-7002.md): Execution layer triggerable exits * [EIP-7251](./eip-7251.md): Increase the MAX_EFFECTIVE_BALANCE * [EIP-7549](./eip-7549.md): Move committee index outside Attestation * [EIP-7623](./eip-7623.md): Increase calldata cost * [EIP-7685](./eip-7685.md): General purpose execution layer requests * [EIP-7691](./eip-7691.md): Blob throughput increase * [EIP-7702](./eip-7702.md): Set EOA account code #### Other EIPs * [EIP-7840](./eip-7840.md): Add blob schedule to EL config files (Informational) * [EIP-7642](./eip-7642.md): eth/69 - Drop pre-merge fields (Networking) * While not necessary for the Pectra network
