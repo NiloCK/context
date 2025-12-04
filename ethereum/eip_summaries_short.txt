@@ -4403,6 +4403,23 @@ RATIONALE:
 This proposal forces clients to stop serving old historical data over p2p. We make this explicit to force clients to seek historical data from
 
 
+=== EIP-8081 ===
+TITLE: Hardfork Meta - Heka/Bogotá
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2025-11-11
+REQUIRES: 7, 7, 2, 3, ,,  , 7, 7, 7, 3
+
+SUMMARY:
+This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Heka/Bogotá network upgrade.
+
+SPECIFICATION:
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for
+
+RATIONALE:
+This Meta EIP provides a global view of all changes included in the network upgrade, as well as links to full specification.
+
+
 === EIP-7736 ===
 TITLE: Leaf-level state expiry in verkle trees
 TYPE: Standards Track Core
