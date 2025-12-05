@@ -1881,7 +1881,7 @@ SUMMARY:
 This EIP improves mempool propagation, extending the devp2p 'eth' protocol's `NewPooledTransactionHashes` message to also announce each transaction's source address and nonce together with the already announced hash, type, and size.
 
 SPECIFICATION:
-### NewPooledTransactionHashes message changes Modify the NewPooledTransactionHashes (0x08) message as follows: (eth/69): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...]] (eth/XX): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...], [txsource₁: b_20, txsource₂: b_20, ...], [txnonce₁: P, txnonce₂: P, ...]] ### Changes
+### NewPooledTransactionHashes message changes Modify the NewPooledTransactionHashes (0x08) message as follows: (eth/69): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...]] (eth/XX): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...], [txsource₁: B_20, txsource₂: B_20, ...], [txnonce₁: P, txnonce₂: P, ...]] ### Changes
 
 MOTIVATION:
 Transactions are propagated in the Mempool using the devp2p protocol in two modalities. Eager push is only used for small transactions, and only towards a few nodes, while the rest of nodes receive only announcements. For large transactions and for type 3 transactions, only announcements are sent. This announcement

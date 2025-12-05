@@ -10710,10 +10710,10 @@ CREATED: 2025-05-16
 REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 2, 6, 1, 2, ,,  , 5, 5, 6, 4
 
 SUMMARY:
-This EIP proposes two token standards: **ERC-KeyHash721** for non-fungible tokens (NFTs) and **ERC-KeyHash20** for fungible tokens (similar to [ERC-20](./eip-20.md)). Both of them utilize cryptographic key hashes (“keyHash”, or `keccak256(key)`) instead of Ethereum addresses to manage ownership. This enhances privacy by authorizing by the public key’s ECDSA signature (address derived
+This EIP proposes two token interfaces: **ERC-KeyHash721** for non-fungible tokens (NFTs) and **ERC-KeyHash20** for fungible tokens (similar to [ERC-20](./eip-20.md)). Both of them utilize cryptographic key hashes (“keyHash”, or `keccak256(key)`) instead of Ethereum addresses to manage ownership. This enhances privacy by authorizing by the public key’s ECDSA signature (address derived
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Overview This standard defines two token interfaces: - `IERCKeyHash721`: For non-fungible tokens (NFTs), each identified by a unique `tokenId`,
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Overview This proposal defines two token interfaces: - `IERCKeyHash721`: For non-fungible tokens (NFTs), each identified by a unique `tokenId`,
 
 MOTIVATION:
 Traditional [ERC-721](./eip-721.md) and [ERC-20](./eip-20.md) tokens bind ownership to Ethereum addresses, which are publicly visible and may be linked to identities, compromising privacy. The key hash-based ownership model allows owners to prove control without exposing addresses, ideal for anonymous collectibles, private transactions, or decentralized identity use cases. Additionally, separating ownership

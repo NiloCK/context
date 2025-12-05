@@ -10710,7 +10710,7 @@ CREATED: 2025-05-16
 REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 2, 6, 1, 2, ,,  , 5, 5, 6, 4
 
 SUMMARY:
-This EIP proposes two token standards: **ERC-KeyHash721** for non-fungible tokens (NFTs) and **ERC-KeyHash20** for fungible tokens (similar to [ERC-20](./eip-20.md)). Both of them utilize cryptographic
+This EIP proposes two token interfaces: **ERC-KeyHash721** for non-fungible tokens (NFTs) and **ERC-KeyHash20** for fungible tokens (similar to [ERC-20](./eip-20.md)). Both of them utilize cryptographic
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
