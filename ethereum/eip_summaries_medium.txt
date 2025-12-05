@@ -6333,7 +6333,7 @@ SUMMARY:
 This EIP modifies the block gas accounting mechanism to prevent the circumvention of block gas limits. It proposes that gas refunds, particularly those from SSTORE operations setting storage slots to zero, should not reduce the gas counted toward the block gas limit, while still being applied to transaction gas
 
 SPECIFICATION:
-### Gas Accounting Changes 1. **User Gas Costs (Unchanged):** - Users continue to receive gas refunds for operations that qualify (e.g., setting storage to zero) - The transaction gas cost remains: `tx.gas_used = gas_used - gas_refund` 2. **Block Gas Accounting (Modified):** - When calculating gas for block gas limit
+### Gas Accounting Changes 1. **User Gas Costs (Unchanged):** - Users continue to receive gas refunds for operations that qualify (e.g., setting storage to zero) - The transaction gas cost remains: `tx.gas_used = gas_used - gas_refund` - Note: Since receipts store the post-refund `gas_used` value, validating block gas limits
 
 MOTIVATION:
 Currently, gas refunds from operations like clearing storage slots (setting to zero) reduce both the transaction gas cost for users and the gas counted toward the block gas limit. This creates a discrepancy between the computational work performed and the gas accounted for in the block. Example: Block `20878522`

@@ -298,6 +298,26 @@ RATIONALE:
 `clock` returns `uint48` as it is largely sufficient for storing realistic values. In timestamp mode, `uint48` will be enough until the year 8921556. Even
 
 
+=== ERC-7996 ===
+TITLE: Contract Feature Detection
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-07
+REQUIRES: 165
+
+SUMMARY:
+Creates a standard method `supportsFeature(bytes4)` in the same spirit as `supportsInterface(bytes4)` to publish and detect what features a smart contract implements that lack a
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Ethereum Name Service (ENS) has maintained backwards compatibility with contracts created in 2016 through extensive use of ERC-165. Unfortunately, not all contract capabilities can
+
+RATIONALE:
+Since feature names cannot be derived from a contract interface, they are derived from a reverse domain name to reduce collisions and permit a
+
+
 === ERC-173 ===
 TITLE: Contract Ownership Standard
 TYPE: Standards Track ERC
@@ -7643,6 +7663,26 @@ RATIONALE:
 The Principal Token interface is designed to be optimized for integrators with a core minimal interface alongside optional interfaces to enable backwards compatibility. Details
 
 
+=== ERC-8056 ===
+TITLE: Scaled UI Amount Extension for ERC-20 Tokens
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-20
+REQUIRES: 20
+
+SUMMARY:
+This EIP proposes a standard extension to [ERC-20](./eip-20.md) tokens that enables issuers to apply an updatable multiplier to the UI (user interface) amount of
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+
+MOTIVATION:
+Current ERC-20 implementations lack an efficient mechanism to handle real-world asset scenarios such as stock splits: When a company performs a 2-for-1 stock split,
+
+RATIONALE:
+Design Decisions: 1. Separate UI Functions: Rather than modifying the core ERC-20 functions, we provide separate UI-specific functions. This ensures backward compatibility and allows
+
+
 === ERC-7929 ===
 TITLE: PermaLink Asset Bound Token
 TYPE: Standards Track ERC
@@ -10660,6 +10700,26 @@ The well-known [ERC-721](eip-721.md) establishes that NFTs may represent "owners
 
 RATIONALE:
 **Why do you use an anchor<>tokenId mapping and not simply use tokenIds directly?** Especially for collectable use-cases, special or sequential tokenIds (for example low
+
+
+=== ERC-7962 ===
+TITLE: Key Hash Based Tokens
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-16
+REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 2, 6, 1, 2, ,,  , 5, 5, 6, 4
+
+SUMMARY:
+This EIP proposes two token standards: **ERC-KeyHash721** for non-fungible tokens (NFTs) and **ERC-KeyHash20** for fungible tokens (similar to [ERC-20](./eip-20.md)). Both of them utilize cryptographic
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+
+MOTIVATION:
+Traditional [ERC-721](./eip-721.md) and [ERC-20](./eip-20.md) tokens bind ownership to Ethereum addresses, which are publicly visible and may be linked to identities, compromising privacy. The key
+
+RATIONALE:
+### Advantages of Key Hash - **Privacy**: `ownerOf` and `balanceOf` return `keyHash`, not addresses. Users can use unique key pairs per token or balance,
 
 
 === ERC-6551 ===

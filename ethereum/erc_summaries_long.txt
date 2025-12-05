@@ -298,6 +298,26 @@ RATIONALE:
 `clock` returns `uint48` as it is largely sufficient for storing realistic values. In timestamp mode, `uint48` will be enough until the year 8921556. Even in block number mode, with 10,000 blocks per second, it would be enough until the year 2861. Using a type smaller than `uint256` allows storage packing of timepoints with other associated values, greatly reducing the cost of writing and reading from storage. Depending on the evolution of the blockchain (particularly layer twos), using a smaller type, such as `uint32` might cause issues fairly quickly. On the other hand, anything bigger than `uint48` appears wasteful.
 
 
+=== ERC-7996 ===
+TITLE: Contract Feature Detection
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-07
+REQUIRES: 165
+
+SUMMARY:
+Creates a standard method `supportsFeature(bytes4)` in the same spirit as `supportsInterface(bytes4)` to publish and detect what features a smart contract implements that lack a derivable [ERC-165](./eip-165.md) interface.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### How Features are Identified For this standard, a *feature* is any property of a contract that cannot be expressed via ERC-165. A feature name SHOULD be a reverse domain name that uniquely defines its implication, eg. `eth.ens.resolver.extended.multicall` is the multicall feature for an extended ENS resolver contract. A feature identifier is defined as the first four-bytes of the keccak256-hash of its name, eg.
+
+MOTIVATION:
+Ethereum Name Service (ENS) has maintained backwards compatibility with contracts created in 2016 through extensive use of ERC-165. Unfortunately, not all contract capabilities can be expressed through an unique interface. Features allow expression of contract capabilities that preserve existing interfaces. This proposal standardizes the concept of features and standardizes the identification (naming) of features. Defining a new standard avoids unnecessary pollution of the ERC-165 selector namespace with synthetic interfaces representing features.
+
+RATIONALE:
+Since feature names cannot be derived from a contract interface, they are derived from a reverse domain name to reduce collisions and permit a human-readable representention that briefly describes its implication.
+
+
 === ERC-173 ===
 TITLE: Contract Ownership Standard
 TYPE: Standards Track ERC
@@ -7643,6 +7663,26 @@ RATIONALE:
 The Principal Token interface is designed to be optimized for integrators with a core minimal interface alongside optional interfaces to enable backwards compatibility. Details such as accounting and management of underlying are intentionally not specified, as Principal Tokens are expected to be treated as black boxes on-chain and inspected off-chain before use. [EIP-20](./eip-20.md) is enforced as implementation details such as token approval and balance calculation directly carry over. This standardization makes Principal Tokens immediately compatible with all [EIP-20](./eip-20.md) use cases in addition to EIP-5095. All principal tokens are redeemable upon maturity, with the only variance being whether further
 
 
+=== ERC-8056 ===
+TITLE: Scaled UI Amount Extension for ERC-20 Tokens
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-20
+REQUIRES: 20
+
+SUMMARY:
+This EIP proposes a standard extension to [ERC-20](./eip-20.md) tokens that enables issuers to apply an updatable multiplier to the UI (user interface) amount of tokens. This allows for efficient representation of stock splits, without requiring actual token minting or transfers. The extension provides a cosmetic layer that modifies how token balances are displayed to users while maintaining the underlying token economics.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface: ```solidity interface IScaledUIAmount { // Emitted when the UI multiplier is updated event UIMultiplierUpdated(uint256 oldMultiplier, uint256 newMultiplier, uint256 setAtTimestamp, uint256 effectiveAtTimestamp); // Returns the current UI multiplier // Multiplier is represented with 18 decimals (1e18 = 1.0) function uiMultiplier() external view returns (uint256); // Converts a raw token amount to UI amount function toUIAmount(uint256 rawAmount) external view returns (uint256); // Converts a UI amount to raw token
+
+MOTIVATION:
+Current ERC-20 implementations lack an efficient mechanism to handle real-world asset scenarios such as stock splits: When a company performs a 2-for-1 stock split, all shareholders should see their holdings double. Currently, this requires minting new tokens to all holders, which is gas-intensive and operationally complex. Moreover, the internal accounting in DeFi protocols would break from such a split. The inability to efficiently handle this scenario limits the adoption of tokenized real-world assets (RWAs) on Ethereum. This EIP addresses these limitations by introducing a multiplier mechanism that adjusts the displayed balance without altering the actual token supply.
+
+RATIONALE:
+Design Decisions: 1. Separate UI Functions: Rather than modifying the core ERC-20 functions, we provide separate UI-specific functions. This ensures backward compatibility and allows integrators to opt-in to the UI scaling feature. 2. 18 Decimal Precision: Using 18 decimals for the multiplier provides sufficient precision for most use cases while aligning with Ethereum's standard decimal representation. 3. No Automatic Updates: The multiplier must be explicitly set by authorized parties, giving issuers full control over when and how adjustments are made. 4. Raw Amount Preservation: All actual token operations continue to use raw amounts, ensuring that the multiplier is
+
+
 === ERC-7929 ===
 TITLE: PermaLink Asset Bound Token
 TYPE: Standards Track ERC
@@ -10660,6 +10700,26 @@ The well-known [ERC-721](eip-721.md) establishes that NFTs may represent "owners
 
 RATIONALE:
 **Why do you use an anchor<>tokenId mapping and not simply use tokenIds directly?** Especially for collectable use-cases, special or sequential tokenIds (for example low numbers), have value. Holders may be proud to have claimed tokenId=1 respectively the off-chain ASSET with tokenId=1 may increase in value, because it was the first ever claimed. Or an Issuer may want to address the first 100 owners who claimed their ASSET-BOUND NFT. While these use-cases technically can certainly be covered by observing the blockchain state-changes, we consider reflecting the order in the tokenIds to be the user-friendly way. Please refer [Security considerations](#security-considerations)
+
+
+=== ERC-7962 ===
+TITLE: Key Hash Based Tokens
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-16
+REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 2, 6, 1, 2, ,,  , 5, 5, 6, 4
+
+SUMMARY:
+This EIP proposes two token standards: **ERC-KeyHash721** for non-fungible tokens (NFTs) and **ERC-KeyHash20** for fungible tokens (similar to [ERC-20](./eip-20.md)). Both of them utilize cryptographic key hashes (“keyHash”, or `keccak256(key)`) instead of Ethereum addresses to manage ownership. This enhances privacy by authorizing by the public key’s ECDSA signature (address derived from `keccak256(key[1:])`) and matching `keyHash = keccak256(key)`, without storing addresses on‑chain. Consequently, it empowers users to conduct transactions using any address they choose. By separating ownership from transaction initiation, these standards allow gas fees to be paid by third parties without relinquishing token control, making them suitable for batch
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Overview This standard defines two token interfaces: - `IERCKeyHash721`: For non-fungible tokens (NFTs), each identified by a unique `tokenId`, with ownership managed via `keyHash` (`keccak256(key)`). - `IERCKeyHash20`: For fungible tokens, with balances associated with `keyHash`. Token operations (`transfer`, `destroy`) require the owner's key(an uncompressed secp256k1 public key) and an ECDSA signature produced by the private key corresponding to the key (i.e., the address derived from `keccak256(key[1:])` excluding the
+
+MOTIVATION:
+Traditional [ERC-721](./eip-721.md) and [ERC-20](./eip-20.md) tokens bind ownership to Ethereum addresses, which are publicly visible and may be linked to identities, compromising privacy. The key hash-based ownership model allows owners to prove control without exposing addresses, ideal for anonymous collectibles, private transactions, or decentralized identity use cases. Additionally, separating ownership from gas fee payment enables third-party gas sponsorship, improving user experience in high-gas or batch transaction scenarios. This standard aligns with the privacy principles of [ERC-5564](./eip-5564.md) (Stealth Addresses) and extends them to token ownership.
+
+RATIONALE:
+### Advantages of Key Hash - **Privacy**: `ownerOf` and `balanceOf` return `keyHash`, not addresses. Users can use unique key pairs per token or balance, reducing linkability. - **Gas Fee Separation**: Anyone can call `transfer` with a valid signature, paying gas fees, enabling batch transactions or gas sponsorship. - **Flexibility**: Aligns with [ERC-5564](./eip-5564.md) stealth addresses, extending privacy to tokens. ### Transfer and Destroy Design - Open to any caller with valid signatures, ensuring only owners operate while allowing gas sponsorship. - [EIP-712](./eip-712.md) signatures prevent message tampering by including all critical parameters. - Per-keyHash nonces and deadlines prevent replay attacks.
 
 
 === ERC-6551 ===
