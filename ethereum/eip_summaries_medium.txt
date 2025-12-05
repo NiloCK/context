@@ -1830,7 +1830,7 @@ MOTIVATION:
 The existing design of consolidation mechanism leaves an opportunity to use consolidation queue for exits which becomes appealing to be abused when there is an imbalance between exit and consolidation queues favoring the latter. At the date of writing this EIP, the consolidation flaw is being heavily exploited. There
 
 RATIONALE:
-### Iterating over pending consolidaitons The new design introduces an iteration over pending consolidations which increases complexity of consolidation processing. This is done to handle the case when there are multiple consolidations with the same target and each of them doesn't exceed the max effective balance while all of
+### Iterating over pending consolidations The new design introduces an iteration over pending consolidations which increases complexity of consolidation processing. This is done to handle the case when there are multiple consolidations with the same target and each of them doesn't exceed the max effective balance while all of
 
 
 === EIP-3779 ===

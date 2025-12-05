@@ -1830,7 +1830,7 @@ MOTIVATION:
 The existing design of consolidation mechanism leaves an opportunity to use consolidation queue for exits which becomes appealing to be abused when there is
 
 RATIONALE:
-### Iterating over pending consolidaitons The new design introduces an iteration over pending consolidations which increases complexity of consolidation processing. This is done to
+### Iterating over pending consolidations The new design introduces an iteration over pending consolidations which increases complexity of consolidation processing. This is done to
 
 
 === EIP-3779 ===
