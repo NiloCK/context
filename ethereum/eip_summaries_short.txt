@@ -638,7 +638,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Current transaction submission workflows require separate calls to `eth_sendRawTransaction` followed by repeated polling of `eth_getTransactionReceipt`, creating unnecessary latency and network overhead. While [EIP-7966](eip-7966.md) proposes
+Current transaction submission workflows require separate calls to `eth_sendRawTransaction` followed by repeated polling of `eth_getTransactionReceipt`, creating unnecessary latency and network overhead. While [EIP-7966](./eip-7966.md) proposes
 
 RATIONALE:
 ### Why Subscription Over Synchronous? Subscriptions provide several advantages over the synchronous approach proposed in EIP-7966: - **Non-blocking**: Clients can perform other operations while
