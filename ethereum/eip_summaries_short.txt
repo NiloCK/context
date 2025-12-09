@@ -938,6 +938,26 @@ MOTIVATION:
 In the software security industry, it is a widely accepted practice to use a common terminology and to classify security related bugs and errors
 
 
+=== EIP-7906 ===
+TITLE: Restricted Behavior Transaction Type
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-02-21
+REQUIRES: 
+
+SUMMARY:
+This proposal allows the transaction payload to define write protections for balances and storage slots that are enforced at the protocol level. These protected
+
+SPECIFICATION:
+### Constants | Name | Value | |------------|-------| | RESTRICTED_TX_COST | TBD | |TRACE_CALL_GAS_COST|TBD| |GET_TRACE_CALL_ADDRESS|TBD| |RESTRICTED_EXECUTION_TX_TYPE|TBD| ### New Transaction Type We introduce a new
+
+MOTIVATION:
+The total value of crypto assets that have been stolen to date exceeds the yearly GDP of a medium-sized nation. This level of loss
+
+RATIONALE:
+### New Transaction Type and Assertion Frame One of the main advantages of a new Transaction Type for the Restricted Behaviour feature is the
+
+
 === EIP-7797 ===
 TITLE: Double speed for hash_tree_root
 TYPE: Standards Track Core
@@ -6180,6 +6200,26 @@ The Ethereum network with network ID 1 and chain ID 1 is referenced using severa
 
 RATIONALE:
 Choosing common word use promotes interoperability of implementations and increases customer awareness. Also, it adds a sense of professionalism when customers see the same
+
+
+=== EIP-8094 ===
+TITLE: eth/vhash - Blob-Aware Mempool
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2025-11-29
+REQUIRES: 7642
+
+SUMMARY:
+This EIP eliminates the need to redistribute blob content in the mempool if only the metadata (fees) of a transaction are updated, making RBF
+
+SPECIFICATION:
+### Transactions (0x02) changes Type 3 transaction should be sent without sidecar ### PooledTransactions (0x0a) changes Type 3 transaction should be sent without sidecar
+
+MOTIVATION:
+In the current version of devp2p eth/69, when a transaction is replaced, it must be redistributed in the mempool like any new transaction. Even
+
+RATIONALE:
+A typical blob transaction RBF changes the fees only, while the sidecar (blob content) remains the same. If a node that has the previous
 
 
 === EIP-3300 ===

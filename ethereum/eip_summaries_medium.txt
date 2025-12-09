@@ -938,6 +938,26 @@ MOTIVATION:
 In the software security industry, it is a widely accepted practice to use a common terminology and to classify security related bugs and errors with a standardized scheme. While this has not stopped vulnerabilities from appearing in software, it has helped communities focusing on web applications, network protocols, IOT
 
 
+=== EIP-7906 ===
+TITLE: Restricted Behavior Transaction Type
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-02-21
+REQUIRES: 
+
+SUMMARY:
+This proposal allows the transaction payload to define write protections for balances and storage slots that are enforced at the protocol level. These protected transactions empower Ethereum users to restrict the behavior of the deployed on-chain smart contracts without needing to perform a deep analysis of their EVM bytecode.
+
+SPECIFICATION:
+### Constants | Name | Value | |------------|-------| | RESTRICTED_TX_COST | TBD | |TRACE_CALL_GAS_COST|TBD| |GET_TRACE_CALL_ADDRESS|TBD| |RESTRICTED_EXECUTION_TX_TYPE|TBD| ### New Transaction Type We introduce a new [EIP-2718](./eip-2718.md) transaction, "restricted execution transaction", where the `TransactionType` is `RESTRICTED_EXECUTION_TX_TYPE` and the `TransactionPayload` is the RLP serialization of the following: ``` rlp([chain_id, nonce, max_priority_fee_per_gas, max_fee_per_gas,
+
+MOTIVATION:
+The total value of crypto assets that have been stolen to date exceeds the yearly GDP of a medium-sized nation. This level of loss and waste is indefensible and has a long list of negative consequences for everyone involved. Specifically, one of the major ways in which Ethereum users
+
+RATIONALE:
+### New Transaction Type and Assertion Frame One of the main advantages of a new Transaction Type for the Restricted Behaviour feature is the ability to protect all existing EOAs, and not just smart accounts. This makes it preferable to introduce a new Transaction Type instead of any other
+
+
 === EIP-7797 ===
 TITLE: Double speed for hash_tree_root
 TYPE: Standards Track Core
@@ -6180,6 +6200,26 @@ The Ethereum network with network ID 1 and chain ID 1 is referenced using severa
 
 RATIONALE:
 Choosing common word use promotes interoperability of implementations and increases customer awareness. Also, it adds a sense of professionalism when customers see the same word and word styling (i.e. capitalization of letters) across different implementations. Anybody that has travelled to certain countries and seen an "IPhone [sic]" repair store
+
+
+=== EIP-8094 ===
+TITLE: eth/vhash - Blob-Aware Mempool
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2025-11-29
+REQUIRES: 7642
+
+SUMMARY:
+This EIP eliminates the need to redistribute blob content in the mempool if only the metadata (fees) of a transaction are updated, making RBF (replace-by-fee) more efficient and cheaper for the network. It achieves this modifying the devp2p ‘eth’ protocol to address blobs in type 3 transaction sidecars by
+
+SPECIFICATION:
+### Transactions (0x02) changes Type 3 transaction should be sent without sidecar ### PooledTransactions (0x0a) changes Type 3 transaction should be sent without sidecar ### GetPooledBlobs (msg code to be assigned <-- TODO -->) [request-id: P, [vhash₁: B_32, vhash₂: B_32, ...]] This message requests blobs from the recipient's transaction
+
+MOTIVATION:
+In the current version of devp2p eth/69, when a transaction is replaced, it must be redistributed in the mempool like any new transaction. Even if the actual content is largely the same, protocol participants have no means to figure this out before getting the full content, making a replacement
+
+RATIONALE:
+A typical blob transaction RBF changes the fees only, while the sidecar (blob content) remains the same. If a node that has the previous version would know this, it could avoid pulling the sidecar, largely reducing bandwidth consumption. However, this is not possible with the current messaging. To make
 
 
 === EIP-3300 ===
