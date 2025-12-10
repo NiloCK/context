@@ -1850,7 +1850,7 @@ MOTIVATION:
 The existing design of consolidation mechanism leaves an opportunity to use consolidation queue for exits which becomes appealing to be abused when there is an imbalance between exit and consolidation queues favoring the latter. At the date of writing this EIP, the consolidation flaw is being heavily exploited. There are public write ups on how to speed up withdrawals by using this vulnerability. Even though this is a UX rather than security issue, consolidation queue was never meant to be used for withdrawals, which makes the fix introduced by this EIP an important modification.
 
 RATIONALE:
-### Iterating over pending consolidations The new design introduces an iteration over pending consolidations which increases complexity of consolidation processing. This is done to handle the case when there are multiple consolidations with the same target and each of them doesn't exceed the max effective balance while all of them together does.
+### Iterating over pending consolidations The new design introduces an iteration over pending consolidations which increases complexity of consolidation processing. This is done to handle the case when there are multiple consolidations with the same target and each of them doesn't exceed the max effective balance while all of them together do.
 
 
 === EIP-3779 ===
