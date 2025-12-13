@@ -5425,7 +5425,7 @@ We are now thinking about a building block as a smart contract with an encapsula
 === ERC-7908 ===
 TITLE: HD wallet In Treasury Management
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-03-07
 REQUIRES: 
 
