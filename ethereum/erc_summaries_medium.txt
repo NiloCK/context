@@ -2846,7 +2846,7 @@ SUMMARY:
 This EIP proposes the Universal RWA (uRWA) standard, a set of interfaces for tokenized Real World Assets (RWAs) such as securities, real estate, commodities, or other physical/financial assets on the blockchain. Real World Assets often require regulatory compliance features not found in standard tokens, including the ability to freeze
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The following defines the standard interfaces for an [ERC-7943](./eip-7943.md) token contract, which MUST extend from
+The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", and "MAY" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The following defines the standard interfaces for an [ERC-7943](./eip-7943.md) token contract, which MUST extend from one base token interface such as [ERC-20](./eip-20.md), [ERC-721](./eip-721.md) or
 
 MOTIVATION:
 Real World Assets (RWAs) represent a significant opportunity to bridge traditional finance and decentralized finance (DeFi). By tokenizing assets like real estate, corporate bonds, commodities, art, or securities, we can unlock benefits such as fractional ownership, programmable compliance, enhanced liquidity through secondary markets for traditionally illiquid assets and integration
