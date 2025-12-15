@@ -1116,14 +1116,14 @@ The Future Salaries is the _only_ known system of distributing significant funds
 
 
 === EIP-8046 ===
-TITLE: FOCIL with ranked transactions (FOCILR)
+TITLE: Uniform price auction over inclusion lists
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-16
 REQUIRES: 7805
 
 SUMMARY:
-FOCIL with ranked transactions (FOCILR) offers strong censorship resistance (CR) by not allowing the builder to circumvent propagated inclusion lists (ILs) when the block
+This EIP proposes a uniform price auction over inclusion lists (UPIL), which ranks transactions by their offered ranking fee per gas. When the block
 
 SPECIFICATION:
 ### New transaction format and ranking fee A new field `max_ranking_fee_per_gas` is added to a new [EIP-2718](./eip-2718.md) transaction with `TransactionType` = `RANK_TX_TYPE`. The `TransactionPayload`

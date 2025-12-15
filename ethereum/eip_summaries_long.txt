@@ -1116,14 +1116,14 @@ The Future Salaries is the _only_ known system of distributing significant funds
 
 
 === EIP-8046 ===
-TITLE: FOCIL with ranked transactions (FOCILR)
+TITLE: Uniform price auction over inclusion lists
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-16
 REQUIRES: 7805
 
 SUMMARY:
-FOCIL with ranked transactions (FOCILR) offers strong censorship resistance (CR) by not allowing the builder to circumvent propagated inclusion lists (ILs) when the block is full. Each transaction is ranked based on the ranking fee it offers to pay. No transaction is allowed to displace an IL transaction if the IL transaction passes regular inclusion criteria and offers a higher ranking fee per gas. All transactions pay the minimum required clearing fee, corresponding to the highest ranking fee offered by any IL transaction excluded from the block, and this fee is burned. FOCILR provides CR to time-sensitive transactions,
+This EIP proposes a uniform price auction over inclusion lists (UPIL), which ranks transactions by their offered ranking fee per gas. When the block is full, no transaction is allowed to displace an inclusion-list (IL) transaction that passes regular inclusion criteria and offers a higher ranking fee per gas. All included transactions pay a uniform inclusion price, equal to the highest ranking fee offered by any valid IL transaction excluded from the block, and this fee is burned. UPIL achieves strong censorship resistance by not allowing builders to circumvent propagated ILs when the block is full. This is
 
 SPECIFICATION:
 ### New transaction format and ranking fee A new field `max_ranking_fee_per_gas` is added to a new [EIP-2718](./eip-2718.md) transaction with `TransactionType` = `RANK_TX_TYPE`. The `TransactionPayload` for this transaction is: <-- TODO --> ```Python # TODO: To be defined after scheduling this EIP relative to EIP-7999 and EIP-8011, etc. ``` The ranking is performed on the `ranking_fee_per_gas`, corresponding to the maximum ranking fee that the transactor was willing to pay under the current base fee. Older transaction formats use their entire headroom for their offered ranking fee, whereas the new format can cap the ranking fee using the `max_ranking_fee_per_gas` field.
