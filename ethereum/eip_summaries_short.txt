@@ -2465,7 +2465,7 @@ TITLE: Secondary Signature Algorithms
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-04-12
-REQUIRES: 1, 5, 5, ,,  , 2, 7, 1, 8, ,,  , 7, 7, 0, 2
+REQUIRES: 
 
 SUMMARY:
 This EIP: - Creates a unified registry & standardized interface for introducing additional signature algorithms for the use of deriving account addresses. - Introduces
@@ -2474,7 +2474,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-As quantum computers become more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all have certain issues, such as large key
+As quantum computers become more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all have certain drawbacks, such as large key
 
 RATIONALE:
 ### ERC-4337 interoperability While initial drafts of this EIP were competing with ERC-4337, current versions of this EIP support it via the sigrecover precompile.
@@ -4478,7 +4478,7 @@ Refer to the individual EIPs.
 
 
 === EIP-8030 ===
-TITLE: P256 transaction support
+TITLE: P256 algorithm support
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-09-20
@@ -4494,7 +4494,7 @@ MOTIVATION:
 P256 (a.k.a secp256r1) is a widely-used NIST standardized algorithm that already has a presence within the Ethereum codebase. This makes it a great algorithm
 
 RATIONALE:
-### Additional 500 gas penalty Much of this proposal is drawn from [EIP-7951](./eip-7951.md). Some of the test cases in [EIP-7951](./eip-7951.md) show that P256 is
+### Why P256? P256 or secp256r1, is used globally but (more importantly) has an existing implementation in all execution clients. This allows easy implementation
 
 
 === EIP-7594 ===

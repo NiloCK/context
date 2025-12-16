@@ -2465,19 +2465,19 @@ TITLE: Secondary Signature Algorithms
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-04-12
-REQUIRES: 1, 5, 5, ,,  , 2, 7, 1, 8, ,,  , 7, 7, 0, 2
+REQUIRES: 
 
 SUMMARY:
 This EIP: - Creates a unified registry & standardized interface for introducing additional signature algorithms for the use of deriving account addresses. - Introduces a precompile at address `SIGRECOVER_PRECOMPILE_ADDRESS` for decoding these newly introduced algorithms.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Unless explicitly noted, integer encoding MUST be in big-endian format. ### Parameters | Constant | Value | | - | - | | `GAS_PER_ADDITIONAL_VERIFICATION_BYTE`| `16` | | `SIGRECOVER_PRECOMPILE_ADDRESS`| `Bytes20(0x12)` | | `SIGRECOVER_PRECOMPILE_BASE_GAS` | `3000` | | `SECP256K1_SIGNATURE_SIZE` | `65` | ### Algorithm specification This EIP only provides the `secp256k1` algorithm. Further algorithms MUST be specified via a distinct EIP. Each type of algorithm MUST
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Unless explicitly noted, integer encoding MUST be in big-endian format. ### Parameters | Constant | Value | | - | - | | `SIGRECOVER_PRECOMPILE_ADDRESS`| `Bytes20(0x12)` | | `SIGRECOVER_PRECOMPILE_BASE_GAS` | `3000` | ### Algorithm specification New algorithms beyond the `secp256k1` algorithm specified in this EIP MUST be specified via a distinct EIP. Each type of algorithm MUST specify the following fields: ```rust trait Algorithm {
 
 MOTIVATION:
-As quantum computers become more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all have certain issues, such as large key sizes (>1KiB), large signature sizes, or long verification times. These issues make them more expensive to compute and store than the currently used secp256k1 curve. This EIP provides a solution to the large volume of algorithms by introducing a registry of algorithms that can be used via a single interface.
+As quantum computers become more advanced, several new post-quantum (PQ) algorithms have been designed. These algorithms all have certain drawbacks, such as large key sizes (>1KiB), large signature sizes, or long verification times. These issues make them more expensive to compute and store than the currently used secp256k1 curve. This EIP provides allows the use of many algorithms by introducing an algorithm registry that can be used via a single interface.
 
 RATIONALE:
-### ERC-4337 interoperability While initial drafts of this EIP were competing with ERC-4337, current versions of this EIP support it via the sigrecover precompile. This allows any ERC-4337 implementation to have the same signature verification logic and address derivation logic for any given private key. This also works agnostic of whatever algorithm derives the address. ### Precompile over native EVM code Having a precompile allows non-EVM processes, i.e. transaction level signature verification, to access the registry *without* having to call into the EVM. ### Opaque `signature_info` type As each algorithm has unique properties, e.g. signature recovery and key
+### ERC-4337 interoperability While initial drafts of this EIP were competing with ERC-4337, current versions of this EIP support it via the sigrecover precompile. This allows any ERC-4337 implementation to have the same signature verification logic and address derivation logic for any given private key. This also works agnostic of whatever algorithm derives the address. ### Precompile over native EVM code Having a precompile allows non-EVM processes, i.e. transaction level signature verification, to access the registry *without* having to call into the EVM. ### Opaque `signature` type As each algorithm has unique properties, e.g. supporting signature recovery and
 
 
 === EIP-7923 ===
@@ -4478,7 +4478,7 @@ Refer to the individual EIPs.
 
 
 === EIP-8030 ===
-TITLE: P256 transaction support
+TITLE: P256 algorithm support
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-09-20
@@ -4488,13 +4488,13 @@ SUMMARY:
 This EIP adds a new [EIP-7932](./eip-7932.md) algorithm of type `0x0` for supporting P256 signatures.
 
 SPECIFICATION:
-This EIP defines a new [EIP-7932](./eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE` | `Bytes1(0x0)` | | `GAS_PENALTY`| `500` | ```python N = 0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551 def verify(signature_info: bytes, payload_hash: Hash32) -> Bytes: # Ignore initial alg_type byte signature_info = signature_info[1:] assert(len(signature_info) == 128) (r, s, x, y) = (signature_info[0:32], signature_info[32:64], signature_info[64:96], signature_info[96:128]) # This is similar to [EIP-2](./eip-2.md)'s malleability verification. assert(s <= N/2) # This is defined in [P256Verify Function](#p256verify-function) assert(P256Verify(payload_hash, r, s, x, y) == Bytes("0x0000000000000000000000000000000000000000000000000000000000000001")) return x.to_bytes(32, "big") + y.to_bytes(32, "big") ``` ### `P256Verify` Function The
+This EIP defines a new [EIP-7932](./eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE` | `Bytes1(0x0)` | | `SIZE`| `129` | ```python N = 0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551 def gas_cost(signing_data: Bytes) -> Uint64: # This is the precompile cost from [EIP-7951](./eip-7951.md) with 3000 gas # subtracted (the cost of the secp256k1 precompile) BASE_GAS = Uint64(3900) # Calcuate extra overhead for keccak256 hashing if len(signing_data) == 32: return BASE_GAS else: minimum_word_size = (len(signing_data) + 31) // 32 return BASE_GAS + Uint64(30 + (6 * minimum_word_size)) def validate(signature: Bytes) -> None | Error;
 
 MOTIVATION:
 P256 (a.k.a secp256r1) is a widely-used NIST standardized algorithm that already has a presence within the Ethereum codebase. This makes it a great algorithm to write test cases against implementations of [EIP-7932](./eip-7932.md).
 
 RATIONALE:
-### Additional 500 gas penalty Much of this proposal is drawn from [EIP-7951](./eip-7951.md). Some of the test cases in [EIP-7951](./eip-7951.md) show that P256 is slower than secp256k1 and as such, a small penalty has been added to combat the slowdown of verification. ### Why P256? P256 or secp256r1, is used globally but (more importantly) has an existing implementation in all execution clients. This allows easy implementation of a known-safe algorithm, which is perfect for a test algorithm.
+### Why P256? P256 or secp256r1, is used globally but (more importantly) has an existing implementation in all execution clients. This allows easy implementation of a known-safe algorithm, which is perfect for a test algorithm.
 
 
 === EIP-7594 ===
