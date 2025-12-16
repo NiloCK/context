@@ -2090,7 +2090,7 @@ There have been numerous interesting uses of [EIP-721](./eip-721.md) and [EIP-11
 === ERC-7994 ===
 TITLE: Purpose-Bound ERC-20 with Conditional Unlock
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-07-29
 REQUIRES: 2, 0, ,,  , 7, 2, 9, 1
 
@@ -2818,7 +2818,7 @@ New standards with improvements have been released, but the majority of tokens c
 === ERC-7627 ===
 TITLE: Secure Messaging Protocol
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-02-19
 REQUIRES: 
 
@@ -6578,7 +6578,7 @@ This EIP aims to allow tracing all licenses to an NFT to facilitate right manage
 === ERC-8001 ===
 TITLE: Agent Coordination Framework
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-08-02
 REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 5, 2, 6, 7
 
@@ -9531,7 +9531,7 @@ The above modifications are the simplest possible additions to the existing flas
 === ERC-7913 ===
 TITLE: Signature Verifiers
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-03-21
 REQUIRES: 
 

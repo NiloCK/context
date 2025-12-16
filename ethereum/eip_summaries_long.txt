@@ -4326,7 +4326,7 @@ N/A
 === EIP-7917 ===
 TITLE: Deterministic proposer lookahead
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-03-24
 REQUIRES: 
 
