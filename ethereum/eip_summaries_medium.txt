@@ -7285,13 +7285,13 @@ CREATED: 2025-03-31
 REQUIRES: 
 
 SUMMARY:
-This EIP introduces Block-Level Access Lists (BALs) that record all accounts and storage locations accessed during block execution, along with their post-execution values. BALs enable parallel disk reads, parallel transaction validation, and executionless state updates.
+This EIP introduces Block-Level Access Lists (BALs) that record all accounts and storage locations accessed during block execution, along with their post-execution values. BALs enable parallel disk reads, parallel transaction validation, parallel state root computation and executionless state updates.
 
 SPECIFICATION:
 ### Block Structure Modification We introduce a new field to the block header, `block_access_list_hash`, which contains the Keccak-256 hash of the RLP-encoded block access list. When no state changes are present, this field is the hash of an empty rlp list `0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347`, i.e. `keccak256(rlp.encode([]))`. ```python class Header: # Existing
 
 MOTIVATION:
-Transaction execution cannot be parallelized without knowing in advance which addresses and storage slots will be accessed. While [EIP-2930](./eip-2930.md) introduced optional transaction access lists, they are not enforced. This proposal enforces access lists at the block level, enabling: - Parallel disk reads and transaction execution - State reconstruction without
+Transaction execution cannot be parallelized without knowing in advance which addresses and storage slots will be accessed. While [EIP-2930](./eip-2930.md) introduced optional transaction access lists, they are not enforced. This proposal enforces access lists at the block level, enabling: - Parallel disk reads and transaction execution - Parallel post-state root
 
 RATIONALE:
 ### BAL Design Choice This design variant was chosen for several key reasons: 1. **Size vs parallelization**: BALs include all accessed addresses (even unchanged) for complete parallel IO and execution. 2. **Storage values for writes**: Post-execution values enable state reconstruction during sync without individual proofs against state root. 3.
