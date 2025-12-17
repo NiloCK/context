@@ -3304,16 +3304,16 @@ CREATED: 2025-03-14
 REQUIRES: 1, 7, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 8, 6, 0, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP substantially increases the contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 48KB (49152 bytes), and adds gas metering. It introduces a gas cost of 4 gas per (32 byte) word for contract code exceeding 24KB, allowing deployment of contracts of any size while
+This EIP increases the contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 64KB (65536 bytes), and adds gas metering for excess code loading. It introduces a gas cost of 2 gas per (32 byte) word for contract code exceeding 24KB, allowing deployment of contracts of
 
 SPECIFICATION:
-### Definitions | Name | Value | Description | | --- | --- | --- | | COLD_SLOAD_COST | `2100` | The cost charged for cold loading storage as defined by [EIP-2929](./eip-2929.md). | | WARM_STORAGE_READ_COST | `100` | The cost charged for loading warm storage as defined by [EIP-2929](./eip-2929.md).
+### Definitions | Name | Value | Description | | --- | --- | --- | | `COLD_SLOAD_COST` | `2100` | The cost charged for cold loading storage as defined by [EIP-2929](./eip-2929.md). | | `WARM_STORAGE_READ_COST` | `100` | The cost charged for loading warm storage as defined by [EIP-2929](./eip-2929.md).
 
 MOTIVATION:
 EIP-170 introduced a 24KB contract code size limit to prevent potential DoS attacks, as large contract code requires O(n) resource cost in terms of disk reads, VM preprocessing, and Merkle proof sizes, all of which are not directly compensated by gas fees. However, this limit restricts legitimate use cases
 
 RATIONALE:
-The gas cost of 4 per word was chosen in-line with the per word code defined by [EIP-2929](./eip-2929.md)'s `COLD_ACCOUNT_ACCESS_COST`. The value is derived from the current gas per word code of `ceil(2600 / (24676//32)) = 4` where `2600` is the current cold account load cost and `24676` is the
+The gas cost of 2 per word was chosen to account for: 1. The additional disk I/O for retrieving larger contract code 2. The increased computational resources for preprocessing larger code for execution (a.k.a. "JUMPDEST analysis"). 3. The growth in Merkle proof sizes for blocks containing larger contracts This
 
 
 === EIP-2384 ===
