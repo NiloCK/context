@@ -8439,6 +8439,26 @@ RATIONALE:
 In order to keep in place the implicit reentrancy protection of existing contracts, transactions should not be allowed to modify state if the remaining
 
 
+=== EIP-8051 ===
+TITLE: Precompile for ML-DSA signature verification
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-10-15
+REQUIRES: 7932
+
+SUMMARY:
+This proposal adds precompiled contracts that perform signature verifications using the NIST module-lattice signature scheme. Two instantiations are supported: * **ML-DSA** — NIST-compliant version
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Quantum computers pose a long-term risk to classical cryptographic algorithms. In particular, signature algorithms based on the hardness of the Elliptic Curve Discrete Logarithm
+
+RATIONALE:
+The ML-DSA scheme was selected as a NIST-standardized post-quantum cryptographic algorithm due to its strong security guarantees and efficiency. ML-DSA is a signature algorithm
+
+
 === EIP-3534 ===
 TITLE: Restricted Chain Context Type Transactions
 TYPE: Standards Track Core
