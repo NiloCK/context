@@ -436,7 +436,7 @@ SUMMARY:
 This EIP adds a new [EIP-7932](./eip-7932.md) algorithm of type `0x0` for supporting Ed25519 signatures.
 
 SPECIFICATION:
-This EIP defines a new [EIP-7932](../../EIPS/eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE` | `Bytes1(0x0)` | | `GAS_PENALTY`| `1000` | | `MAX_SIZE` | `96` | ```python def verify(signature_info: bytes, payload_hash: Hash32) -> ExecutionAddress: assert(len(signature_info) == 96) signature =
+This EIP defines a new [EIP-7932](./eip-7932.md) algorithmic type with the following parameters: | Constant | Value | | - | - | | `ALG_TYPE` | `Bytes1(0x0)` | | `GAS_PENALTY`| `1000` | | `MAX_SIZE` | `96` | ```python def verify(signature_info: bytes, payload_hash: Hash32) -> ExecutionAddress: assert(len(signature_info) == 96) signature =
 
 MOTIVATION:
 Ed25519 is one of the most widely used forms of Elliptic Curve Cryptography and is one of the defaults for SSH keys, this makes it a good contender to be able to sign transactions with. It also provides an algorithm to write test cases against during the implementation phase
