@@ -6228,20 +6228,20 @@ RATIONALE:
 
 
 === ERC-7964 ===
-TITLE: Cross-Chain EIP-712 Signatures
+TITLE: Crosschain EIP-712 Signatures
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-06-05
-REQUIRES: 712
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 5, 2, 6, 7
 
 SUMMARY:
-This ERC defines a standard approach for creating and verifying cross-chain signatures using [EIP-712]. By omitting the `chainId` field from the EIP-712 domain (which
+This ERC defines a standard approach for creating and verifying crosschain signatures using [EIP-712]. By omitting the `chainId` field from the EIP-712 domain, a
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for cross-chain operations such as: - **Cross-chain intents**:
+Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for crosschain operations such as: - **Crosschain intents**:
 
 RATIONALE:
 ### Standard EIP-712 Compatibility This ERC uses only standard [EIP-712] encoding without any extensions or special constructs. All fields in the `EIP712Domain` are optional

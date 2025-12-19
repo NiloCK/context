@@ -6228,23 +6228,23 @@ RATIONALE:
 
 
 === ERC-7964 ===
-TITLE: Cross-Chain EIP-712 Signatures
+TITLE: Crosschain EIP-712 Signatures
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-06-05
-REQUIRES: 712
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 5, 2, 6, 7
 
 SUMMARY:
-This ERC defines a standard approach for creating and verifying cross-chain signatures using [EIP-712]. By omitting the `chainId` field from the EIP-712 domain (which is optional per the standard), a signature can be valid across multiple chains. Chain-specific operations are encoded as an array of structured messages, where each
+This ERC defines a standard approach for creating and verifying crosschain signatures using [EIP-712]. By omitting the `chainId` field from the EIP-712 domain, a signature can be valid across multiple chains. Chain-specific operations are encoded as an array of structured messages, where each chain receives the array of message
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Cross-Chain Domain Semantics A cross-chain [EIP-712] signature MUST omit the `chainId` field from the
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Crosschain Domain Semantics A crosschain [EIP-712] signature MUST omit the `chainId` field from the
 
 MOTIVATION:
-Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for cross-chain operations such as: - **Cross-chain intents**: Users wanting to trade assets across multiple chains atomically - **Multi-chain DAO governance**: Voting on proposals that affect protocol instances across different networks - **Unified
+Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for crosschain operations such as: - **Crosschain intents**: Users wanting to trade assets across multiple chains atomically - **Multi-chain DAO governance**: Voting on proposals that affect protocol instances across different networks - **Unified
 
 RATIONALE:
-### Standard EIP-712 Compatibility This ERC uses only standard [EIP-712] encoding without any extensions or special constructs. All fields in the `EIP712Domain` are optional per the standard, so omitting `chainId` is perfectly valid. This means: 1. **No Special Wallet Support Required**: Any wallet that supports EIP-712 can already sign
+### Standard EIP-712 Compatibility This ERC uses only standard [EIP-712] encoding without any extensions or special constructs. All fields in the `EIP712Domain` are optional per the standard, so omitting `chainId` is perfectly valid. This means any wallet that supports EIP-712 can sign these messages and any application that supports
 
 
 === ERC-3440 ===
