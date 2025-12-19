@@ -4424,14 +4424,14 @@ This proposal forces clients to stop serving old historical data over p2p. We ma
 
 
 === EIP-8081 ===
-TITLE: Hardfork Meta - Heka/Bogotá
+TITLE: Hardfork Meta - Hegotá
 TYPE: Meta 
 STATUS: Draft
 CREATED: 2025-11-11
 REQUIRES: 7, 7, 2, 3, ,,  , 7, 7, 7, 3
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Heka/Bogotá network upgrade.
+This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Hegotá network upgrade.
 
 SPECIFICATION:
 Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for
