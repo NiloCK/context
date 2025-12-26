@@ -8125,7 +8125,7 @@ SPECIFICATION:
 > _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ### `CALLSUB (0x..)` Transfers control to a subsidiary operation. 1. Pop the `destination` on top on the `stack`. 2. Push the current `PC + 1` to
 
 MOTIVATION:
-In 2016 the lead author set out to write a compiler from EVM code to machine code. I was immediately stymied by the presence of dynamic jumps. _Dynamic jumps must die._ How to kill them? First, some history. ### Babbage, 1833: Jumps and conditional jumps In 1833 Charles Babbage
+In 2016 the lead author set out to write a compiler from EVM code to register code for a better VM or to machine code. The design was simple -- traverse the EVM stack code in one pass, emitting register code for the target machine. I was immediately stymied
 
 RATIONALE:
 ### How can dynamic jumps cause quadratic control flow? Static analysis amounts to most anything you can do with a program without actually running it. And traversing the flow of control — in a way that follows every possible path only once — is a fundamental first step for
