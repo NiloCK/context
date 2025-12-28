@@ -7557,7 +7557,7 @@ Packet codes 0x00 and 0x01 are already used in all Whisper versions. Packet code
 === EIP-7843 ===
 TITLE: SLOTNUM opcode
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2024-12-06
 REQUIRES: 
 
@@ -9429,7 +9429,7 @@ RATIONALE:
 === EIP-7701 ===
 TITLE: Native Account Abstraction
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-05-01
 REQUIRES: 
 
