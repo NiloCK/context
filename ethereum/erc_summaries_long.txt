@@ -7226,6 +7226,26 @@ RATIONALE:
 The authors believe that it is very important that this standard leaves the other open to any resolver mechanism to be implemented and adopted. That's why a lot of the function and variable names were left intentionally bogus to be compatible with future resolvers without changing the standard. ERC-3000 should be seen as a public good of top of which public infrastrastructure will be built, being way more important than any particular implementation or the interests of specific companies or projects.
 
 
+=== ERC-8109 ===
+TITLE: Diamonds, Simplified
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-21
+REQUIRES: 
+
+SUMMARY:
+A diamond is a proxy contract that `delegatecall`s to multiple implementation contracts called facets. ![Diagram showing how a diamond contract works](../assets/eip-8109/basic-diamond-diagram.svg) Diamond contracts were originally standardized by [ERC-2535](./eip-2535). This standard refines that specification by simplifying terminology, reducing the implementation complexity of introspection functions, and standardizing events that are easier for block explorers, indexers, and other tooling to consume. This standard preserves the full capabilities of diamond contracts while reducing complexity. It also specifies an optional upgrade path for existing ERC-2535 diamonds.
+
+SPECIFICATION:
+### Terms 1. A **diamond** is a smart contract that routes external function calls to one or more implementation contracts, referred to as facets. A diamond is stateful: all persistent data is stored in the diamond’s contract storage. 2. A **facet** is a smart contract that defines one or more external functions. A facet is deployed independently, and one or more of its functions are added to one or more diamonds. A facet’s functions are executed in the diamond’s context via `delegatecall`, so reads/writes affect the diamond’s storage. The term facet is derived from the diamond industry, referring
+
+MOTIVATION:
+<img alt="Obligatory diamond" src="../assets/eip-8109/diamond.svg" width="17%" align="right">Through a single contract address, a diamond provides functionality from multiple implementation contracts (facets). Each facet is independent, yet facets can share internal functions and storage. This architecture allows arbitrarily large smart-contract systems to be composed from separate facets and presented as a single contract, simplifying deployment, testing, and integration with other contracts, off-chain software, and user interfaces. By decomposing large smart contracts into facets, diamonds can reduce complexity and make systems easier to reason about. Distinct areas of functionality can be isolated, organized, tested, and managed independently. Diamonds combine the single-address convenience
+
+RATIONALE:
+This standard provides standard events, an upgrade function and introspection functions so that GUIs, block explorers, command line programs, and other tools and software can detect and interoperate with diamond contracts. Software can retrieve function selectors and facet addresses from a diamond in order to use and show what functions a diamond has. Function selectors and facet addresses, combined with contract ABIs and verified source code, provide sufficient information for tooling and user interfaces. ### [ERC-8109 Diamonds](./eip-8109.md) vs ERC-2535 Diamonds This standard is a simplification and refinement of ERC-2535 Diamonds. A diamond compliant with ERC-8109 is NOT required
+
+
 === ERC-6786 ===
 TITLE: Registry for royalties payment for NFTs
 TYPE: Standards Track ERC
