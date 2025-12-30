@@ -8798,7 +8798,7 @@ MOTIVATION:
 Ethereum's state size is a growing concern, as it directly impacts node synchronization times, hardware requirements, and overall network health. The current gas model
 
 RATIONALE:
-The intent is to create friction in when growing the state size of a contract, thus limiting the number of such contracts. Going over
+The intent is to create friction when growing the state size of a contract, thus limiting the number of such contracts. Going over the
 
 
 === EIP-6800 ===
