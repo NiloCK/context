@@ -3785,7 +3785,7 @@ CREATED: 2025-02-02
 REQUIRES: 
 
 SUMMARY:
-This proposal introduces a **binary format** to describe a chain specific address. Additionally, it defines a human-readable version of that identifier, which improves the
+This proposal introduces a **binary format** to describe a _chain-specific address_. This is achieved through a versioned, length-prefixed binary envelope that supports arbitrary-length data.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
