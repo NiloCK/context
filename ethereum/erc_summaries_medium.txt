@@ -3540,6 +3540,26 @@ RATIONALE:
 ### Design philosophy The core design decisions behind this minimal interface are - Bridge agnosticism. - Extensibility. **Bridge agnosticism** This interface is designed so bridges, not tokens, contain the logic to process crosschain actions. By maintaining this separation of concerns, token contracts remain simple, reducing their attack surface and
 
 
+=== ERC-8110 ===
+TITLE: Domain Architecture for Diamonds
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-20
+REQUIRES: 2, 5, 3, 5, ,,  , 8, 0, 4, 2, ,,  , 8, 1, 0, 9
+
+SUMMARY:
+This EIP introduces a **domain-based architectural pattern** for contracts implementing the Diamond execution model defined by [ERC-2535 (Diamond Standard)](./eip-2535.md) or [ERC-8109 (Diamond, Simplified)](./eip-8109.md), together with the storage identifier mechanism defined by [ERC-8042 (Diamond Storage Identifier)](./eip-8042). It defines a consistent naming convention for storage identifiers and a directory organization model
+
+SPECIFICATION:
+### 1. Domain Definition - A **domain** represents the conceptual ownership of a storage space. - Each **domain** corresponds to exactly one storage struct and one identifier. - A **domain** has a one-to-many relationship with the group of function selectors that access it. - A **domain** is independent of
+
+MOTIVATION:
+ERC-2535 provides a flexible foundation for modular smart contracts through facets, but it intentionally leaves storage organization and architectural conventions open to implementation. While this flexibility encourages creativity, it can sometimes lead to inconsistency. Each developer or team may structure storage differently, making it harder to design robust and
+
+RATIONALE:
+From the beginning, the Diamond Standard (ERC-2535) was designed around the relationship between **function selectors** and **storage positions**, not around facets themselves. Facets are replaceable units of logic — the `diamondCut` operation only replaces, removes or adds code — but the **storage layout persists** and defines the actual state
+
+
 === ERC-7766 ===
 TITLE: Signature Aggregation for ERC-4337
 TYPE: Standards Track ERC
