@@ -192,7 +192,7 @@ The behavior of `CODECOPY`, `CODESIZE`, `EXTCODESIZE`, and `EXTCODECOPY` match t
 === EIP-7886 ===
 TITLE: Delayed execution
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-02-18
 REQUIRES: 1, 5, 5, 9, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2
 
