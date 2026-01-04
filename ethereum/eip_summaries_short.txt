@@ -8125,7 +8125,7 @@ SPECIFICATION:
 > _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ###
 
 MOTIVATION:
-In 2016 the lead author set out to write an EVM compiler to code for virtual or real machines. The design was just that
+In 2016 the lead author set out to write a compiler from the EVM to code for virtual or real register machines. The design
 
 RATIONALE:
 ### How can dynamic jumps cause quadratic control flow? Static analysis amounts to most anything you can do with a program without actually running
