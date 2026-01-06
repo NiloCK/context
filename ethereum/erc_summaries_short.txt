@@ -3791,10 +3791,10 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-The address format utilized on Ethereum mainnet ([ERC-55]) is shared by a large number of other blockchains. The format does not include details of
+The address format utilized on Ethereum mainnet ([ERC-55]) is shared by a large number of other blockchains. However, this format does not encode any
 
 RATIONALE:
-The interoperability roadmap benefits significantly from first having a standardized binary format for addresses, which allows the message passing and intents verticals to move
+This ERC defines a compact binary format for a chain-specific address, primarily for use in smart contracts. Other contexts (such as display to end-users
 
 
 === ERC-6120 ===
@@ -6718,7 +6718,7 @@ Current NFT standards define transferable non-fungible tokens, but not shareable
 === ERC-7866 ===
 TITLE: Decentralised User Profiles
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-01-22
 REQUIRES: 165
 

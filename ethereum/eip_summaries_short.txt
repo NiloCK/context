@@ -9496,16 +9496,16 @@ CREATED: 2025-10-01
 REQUIRES: 2780
 
 SUMMARY:
-This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It sets a unit cost
+This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It dynamically sets the unit
 
 SPECIFICATION:
-### Parameter changes Upon activation of this EIP, the following parameters of the gas model are updated: | **Parameter** | **Current value** | **New
+### New parameters | **Parameter** | **Value** | |:---:|:---:| | `TARGET_STATE_GROWTH_PER_YEAR` | 100 x 1024^3 bytes | Besides these fixed parameters, this EIP introduces
 
 MOTIVATION:
 State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance,
 
 RATIONALE:
-### Harmonization across state creation With the current pricing, the gas cost of creating 1 byte of state varies depending on the method used.
+### Deriving the cost per byte The variable `cost_per_state_byte` is a dynamic parameter that depends on the block gas limit. The idea is to
 
 
 === EIP-1418 ===
