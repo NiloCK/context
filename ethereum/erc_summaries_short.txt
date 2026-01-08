@@ -4460,6 +4460,26 @@ RATIONALE:
 1. We only support `ERC-721` NFTs for simplicity and gas efficiency. We have not considered other ERCs, which can be left for future extensions.
 
 
+=== ERC-8111 ===
+TITLE: Bound Signatures
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-23
+REQUIRES: 
+
+SUMMARY:
+Recoverable ECDSA signatures can flip `s` and `v` while remaining valid, so they can be compressed to 64 bytes by restricting `v`.
+
+SPECIFICATION:
+Smart contracts accepting bound signatures MUST supply `27` for `v`. ```solidity address signer = ecrecover(digest, 27, r, s); require(signer != address(0)); ``` ECDSA signatures
+
+MOTIVATION:
+ECDSA signatures are often encoded with three parameters: `v`, `r`, and `s`. In the Solidity ABI encoding, this is 96 bytes. By eliminating the
+
+RATIONALE:
+Another signature compression approach, [ERC-2098](./eip-2098.md), stores the y-parity bit in the most-significant bit of the low `s`. Bound signatures are preferable because they are
+
+
 === ERC-7750 ===
 TITLE: Decentralized Employment System
 TYPE: Standards Track ERC
