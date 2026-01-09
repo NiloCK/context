@@ -3817,6 +3817,26 @@ RATIONALE:
 The `Permit` type signature is not supported since the purpose of the Universal Token Router is to eliminate all interactive `approve` signatures for new
 
 
+=== ERC-8117 ===
+TITLE: Compressed Display Format for Addresses
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-30
+REQUIRES: 55
+
+SUMMARY:
+This ERC proposes a standard presentation layer transformation for Ethereum addresses containing long sequences of identical hexadecimal digits. It defines two representation formats: a
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+
+MOTIVATION:
+As the Ethereum ecosystem matures, addresses with long repeating sequences are becoming increasingly common due to several factors: **Vanity Addresses & CREATE2:** Factories and
+
+RATIONALE:
+### Industry Precedents & Alignment **Regex Alignment (ASCII Mode):** We selected the curly brace syntax `Byte{n}` (e.g., `0{8}`) because it aligns with the universal
+
+
 === ERC-7950 ===
 TITLE: Encode chain id with transaction hash
 TYPE: Standards Track ERC

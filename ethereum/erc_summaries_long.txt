@@ -3817,6 +3817,26 @@ RATIONALE:
 The `Permit` type signature is not supported since the purpose of the Universal Token Router is to eliminate all interactive `approve` signatures for new tokens, and *most* for old tokens.
 
 
+=== ERC-8117 ===
+TITLE: Compressed Display Format for Addresses
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-30
+REQUIRES: 55
+
+SUMMARY:
+This ERC proposes a standard presentation layer transformation for Ethereum addresses containing long sequences of identical hexadecimal digits. It defines two representation formats: a Unicode-based format using superscripts for graphical user interfaces (UI), and an ASCII-safe fallback format using bracket notation for logs and terminals. This standard aims to improve human readability and safety verification without altering the underlying address data.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. The compression transformation applies only to the visual representation of the address. ### 1. Trigger Condition Compression SHOULD be applied if a sequence of identical hexadecimal nibbles has a length $L$, where $L \geq 6$. ### 2. Formatting Rules The standard defines two modes of display. Implementations must preserve the first character of the repeating sequence to indicate which character is being repeated, followed by a count of the
+
+MOTIVATION:
+As the Ethereum ecosystem matures, addresses with long repeating sequences are becoming increasingly common due to several factors: **Vanity Addresses & CREATE2:** Factories and developers frequently generate "vanity" addresses with specific prefixes or suffixes for branding or identification. **Gas Optimization ([EIP-7939](./eip-7939.md)):** With proposals like EIP-7939 aiming to reduce gas costs for zero bytes in calldata, there is an economic incentive to deploy contracts at addresses containing large sequences of zeros to optimize cross-contract call costs. **Security Risks:** The human eye struggles to distinguish between long sequences of identical characters (e.g., counting 10 zeros vs. 11 zeros). This creates
+
+RATIONALE:
+### Industry Precedents & Alignment **Regex Alignment (ASCII Mode):** We selected the curly brace syntax `Byte{n}` (e.g., `0{8}`) because it aligns with the universal Regular Expression standard for quantification. Developers intuitively understand `{n}` as "repeat n times." **Divergence from IPv6:** Unlike IPv6, which uses `::` to represent "fill the gap with zeros," EVM vanity addresses rely on the specific count of characters for identity. Therefore, an explicit count (`{8}`) is safer than an implicit gap (`::`). ### Superscript vs. Subscript (UI Mode) While subscript notation (e.g., $H_2O$) implies component count in chemistry, this ERC selects Superscript (`0⁸`) for
+
+
 === ERC-7950 ===
 TITLE: Encode chain id with transaction hash
 TYPE: Standards Track ERC
