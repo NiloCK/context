@@ -8294,6 +8294,26 @@ RATIONALE:
 A primary design rationale for this proposal is to extend a greater diversity of Guardian types and more flexible, customizable recovery policies for a
 
 
+=== ERC-7876 ===
+TITLE: Ethereum Network Configuration for DApps
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-03
+REQUIRES: 55
+
+SUMMARY:
+This standard defines a universal format for specifying network configurations to decentralized applications (DApps). The configuration includes essential information about Ethereum networks, such as
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Currently, decentralized applications (DApps) support numerous EVM-compatible networks and often define network configurations in inconsistent formats, which complicates interoperability and sharing of configurations. This
+
+RATIONALE:
+The design of this standard leverages the following key goals: ### 1. Availability and Distribution Use JSON as a universally supported data interchange format,
+
+
 === ERC-190 ===
 TITLE: Ethereum Smart Contract Packaging Standard
 TYPE: Standards Track ERC

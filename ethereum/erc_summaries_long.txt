@@ -8294,6 +8294,26 @@ RATIONALE:
 A primary design rationale for this proposal is to extend a greater diversity of Guardian types and more flexible, customizable recovery policies for a RecoveryAccount. This is achieved by separating the verification logic from the social recovery process, ensuring that the basic logic of the account contract remains unaltered. The necessity of incorporating `Verifiers` from external contracts arises from the importance of maintaining the inherent recovery logic of the `RecoveryAccount`. The `Verifiers`'s logic is designed to be simple and clear, and its fixed invocation format means that any security risks posed by integrating external contracts can be effectively
 
 
+=== ERC-7876 ===
+TITLE: Ethereum Network Configuration for DApps
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-03
+REQUIRES: 55
+
+SUMMARY:
+This standard defines a universal format for specifying network configurations to decentralized applications (DApps). The configuration includes essential information about Ethereum networks, such as available RPC URLs, native currencies, contract addresses, and block explorers. Configurations are intended to be provided by: - Network maintainers to make sure their network is supported by DApp. - Smart contract developers to ensure the smart contracts are properly integrated into DApps and changes are consistently delivered. - DApps developers internally in the organisation to make use of software libraries designed around the standard and maintain consistent configuration across multiple platforms (e.g iOS,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The configuration **MUST** use a JSON object, which DApp developers can use to define multiple Ethereum networks. ### Interface definition The specification interface is provided in the TypeScript type definition format, which is widely used to define JSON file formats for Ethereum DApps: Refer to [Example Configuration](#example-configuration) for an illustrative implementation of this standard. ```typescript /** * Represents the configuration for a smart contract.
+
+MOTIVATION:
+Currently, decentralized applications (DApps) support numerous EVM-compatible networks and often define network configurations in inconsistent formats, which complicates interoperability and sharing of configurations. This standard introduces a **unified network configuration** format that can be adopted by EVM-based networks, making it easier for developers to integrate with multiple networks and providing consistent configuration management. The proposed configuration format includes essential details required by DApps, including: - Network name and ID - RPC URL for Ethereum nodes - Native currency details - Smart contract addresses - Available block explorers and NFT marketplaces
+
+RATIONALE:
+The design of this standard leverages the following key goals: ### 1. Availability and Distribution Use JSON as a universally supported data interchange format, with libraries available in virtually all modern programming languages and platforms. This ensures: - **Cross-Platform Compatibility**: Developers can easily parse and generate JSON regardless of their tech stack. - **Ease of Integration**: Existing tools and frameworks already support JSON natively, reducing implementation overhead. - **Built-in Data Types**: JSON provides sufficient data types to describe all necessary configurations semantically, eliminating the need for manual typecasting. - **Multinetwork Support**: The configuration supports multiple networks, ensuring projects
+
+
 === ERC-190 ===
 TITLE: Ethereum Smart Contract Packaging Standard
 TYPE: Standards Track ERC
