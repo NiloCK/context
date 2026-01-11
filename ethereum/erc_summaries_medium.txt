@@ -5170,7 +5170,7 @@ CREATED: 2025-09-28
 REQUIRES: 20
 
 SUMMARY:
-This ERC defines a standard interface for oracle contracts that use multi-agent councils to resolve information queries in a decentralized manner. It enables dApps to request resolutions, general information arbitration, and build consensus and validation in a trust-minimized way, with agents submitting information on-chain. The interface supports permissionless participation,
+This ERC defines a standard interface for oracle contracts that use multi-agent councils to resolve arbitrary information queries. It enables dApps to request resolutions, general information arbitration, and build consensus and validation in a trust-minimized way, with agents submitting answers to the queries on-chain. The ERC works by a
 
 SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. This EIP proposes the `IAgentCouncilOracle` interface, which defines methods and events for a council-based resolution

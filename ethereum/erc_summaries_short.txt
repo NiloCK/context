@@ -5170,7 +5170,7 @@ CREATED: 2025-09-28
 REQUIRES: 20
 
 SUMMARY:
-This ERC defines a standard interface for oracle contracts that use multi-agent councils to resolve information queries in a decentralized manner. It enables dApps
+This ERC defines a standard interface for oracle contracts that use multi-agent councils to resolve arbitrary information queries. It enables dApps to request resolutions,
 
 SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to
