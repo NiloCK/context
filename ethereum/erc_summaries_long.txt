@@ -5017,6 +5017,26 @@ RATIONALE:
 ### Minimal approach Smart accounts are a new concept and we are still learning about the best ways to build them. Therefore, we should not be too opinionated about how they are built. Instead, we should define the most minimal interfaces that allow for interoperability between smart accounts and modules to be used across different account implementations. Our approach has been twofold: 1. Take learnings from existing smart accounts that have been used in production and from building interoperability layers between them 2. Ensure that the interfaces are as minimal and open to alternative architectures as possible ###
 
 
+=== ERC-8065 ===
+TITLE: Zero Knowledge Token Wrapper
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-18
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 6, 9, 0, 9
+
+SUMMARY:
+This ERC defines a standard for the Zero Knowledge Token Wrapper, a wrapper that adds privacy to tokens — including [ERC-20](./eip-20.md), [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md) and [ERC-6909](./eip-6909) — while preserving all of the tokens' original properties, such as transferability, tradability, and composability. It specifies [EIP-7503](./eip-7503.md)-style provable burn-and-remint flows, enabling users to break on-chain traceability and making privacy a native feature of all tokens on Ethereum.
+
+SPECIFICATION:
+The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview A Zero Knowledge Wrapped Token (ZWToken) is a wrapped token minted by a Zero Knowledge Token Wrapper. It adds a commitment-based privacy layer to existing tokens, including ERC-20, ERC-721, ERC-1155, ERC-6909. This privacy layer allows private transfers without modifying the underlying token standard, while preserving full composability with existing Ethereum infrastructure. The commitment mechanism underlying this privacy layer may be implemented using Merkle trees, cryptographic accumulators, or any other verifiable
+
+MOTIVATION:
+Most existing tokens lack native privacy due to regulatory, technical, and issuer-side neglect. Users seeking privacy must rely on dedicated privacy blockchains or privacy-focused dApps, which restrict token usability, reduce composability, limit supported token types, impose whitelists, and constrain privacy schemes. This ERC takes a different approach by introducing a zero knowledge token wrapper that preserves the underlying token’s properties while adding privacy. Its primary goals are: - Pluggable privacy: the wrapper preserves all properties of the underlying token while adding privacy. - Permissionless privacy: any user can wrap any token into a Zero Knowledge Wrapped Token (ZWToken).
+
+RATIONALE:
+- Permissionless Wrapping: Launching a new zk-native token is unlikely to achieve sufficient liquidity or adoption, and major token issuers are unlikely to deploy zk variants due to regulatory and operational constraints. A permissionless wrapper makes privacy a native feature for existing tokens. ZWToken does not require issuer consent—any existing token can be wrapped, ensuring openness and equal accessibility regardless of issuer policies. - Composable Privacy: Wrapped tokens remain fully compatible with their underlying token standards, preserving interoperability across the Ethereum ecosystem. Users and dApps can treat ZWToken as the underlying token when privacy is not required, making
+
+
 === ERC-1123 ===
 TITLE: Revised Ethereum Smart Contract Packaging Standard
 TYPE: Standards Track ERC
@@ -7294,16 +7314,16 @@ CREATED: 2025-12-21
 REQUIRES: 
 
 SUMMARY:
-A diamond is a proxy contract that `delegatecall`s to multiple implementation contracts called facets. ![Diagram showing how a diamond contract works](../assets/eip-8109/basic-diamond-diagram.svg) Diamond contracts were originally standardized by [ERC-2535](./eip-2535). This standard refines that specification by simplifying terminology, reducing the implementation complexity of introspection functions, and standardizing events that are easier for block explorers, indexers, and other tooling to consume. This standard preserves the full capabilities of diamond contracts while reducing complexity. It also specifies an optional upgrade path for existing ERC-2535 diamonds.
+A diamond is a proxy contract that `delegatecall`s to multiple implementation contracts called facets. ![Diagram showing how a diamond contract works](../assets/eip-8109/basic-diamond-diagram.svg) Diamond contracts were originally standardized by [ERC-2535](./eip-2535). This standard refines that specification by simplifying terminology, reducing the implementation complexity of introspection functions, and standardizing specific events. This standard preserves the full capabilities of diamond contracts while reducing complexity. It also specifies an optional upgrade path for existing ERC-2535 diamonds.
 
 SPECIFICATION:
 ### Terms 1. A **diamond** is a smart contract that routes external function calls to one or more implementation contracts, referred to as facets. A diamond is stateful: all persistent data is stored in the diamond’s contract storage. A diamond implements the requirements in the [Implementation Requirements](#implementation-requirements) section. 2. A **facet** is a smart contract that defines one or more external functions. A facet is deployed independently, and one or more of its functions are added to one or more diamonds. A facet’s functions are executed in the diamond’s context via `delegatecall`, so reads/writes affect the diamond’s storage.
 
 MOTIVATION:
-<img alt="Obligatory diamond" src="../assets/eip-8109/diamond.svg" width="17%" align="right">Through a single contract address, a diamond provides functionality from multiple implementation contracts (facets). Each facet is independent, yet facets can share internal functions and storage. This architecture allows arbitrarily large smart-contract systems to be composed from separate facets and presented as a single contract, simplifying deployment, testing, and integration with other contracts, off-chain software, and user interfaces. By decomposing large smart contracts into facets, diamonds can reduce complexity and make systems easier to reason about. Distinct areas of functionality can be isolated, organized, tested, and managed independently. Diamonds combine the single-address convenience
+### Motivation for Diamond Contracts <img alt="Obligatory diamond" src="../assets/eip-8109/diamond.svg" width="17%" align="right">Through a single contract address, a diamond provides functionality from multiple implementation contracts (facets). Each facet is independent, yet facets can share internal functions and storage. This architecture allows large smart-contract systems to be composed from separate facets and presented as a single contract, simplifying deployment, testing, and integration with other contracts, off-chain software, and user interfaces. By decomposing large smart contracts into facets, diamonds can reduce complexity and make systems easier to reason about. Distinct areas of functionality can be isolated, organized, tested, and managed independently. Diamonds
 
 RATIONALE:
-This standard provides standard events, an upgrade function and introspection functions so that GUIs, block explorers, command line programs, and other tools and software can detect and interoperate with diamond contracts. Software can retrieve function selectors and facet addresses from a diamond in order to use and show what functions a diamond has. Function selectors and facet addresses, combined with contract ABIs and verified source code, provide sufficient information for tooling and user interfaces. ### [ERC-8109 Diamonds](./eip-8109.md) vs ERC-2535 Diamonds This standard is a simplification and refinement of ERC-2535 Diamonds. A diamond compliant with ERC-8109 is NOT required
+This standard provides standard events, an upgrade function and introspection functions so that GUIs, block explorers, command line programs, and other tools and software can detect and interoperate with diamond contracts. Software can retrieve function selectors and facet addresses from a diamond in order to use and show what functions a diamond has. Function selectors and facet addresses, combined with contract ABIs and verified source code, provide sufficient information for tooling and user interfaces. ### ERC-8109 Diamonds vs ERC-2535 Diamonds This standard is a simplification and refinement of ERC-2535 Diamonds. A diamond compliant with ERC-8109 is NOT required
 
 
 === ERC-6786 ===

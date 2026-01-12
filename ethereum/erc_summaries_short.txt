@@ -5017,6 +5017,26 @@ RATIONALE:
 ### Minimal approach Smart accounts are a new concept and we are still learning about the best ways to build them. Therefore, we should
 
 
+=== ERC-8065 ===
+TITLE: Zero Knowledge Token Wrapper
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-18
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 6, 9, 0, 9
+
+SUMMARY:
+This ERC defines a standard for the Zero Knowledge Token Wrapper, a wrapper that adds privacy to tokens — including [ERC-20](./eip-20.md), [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md) and
+
+SPECIFICATION:
+The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** in this document are to be interpreted as described in RFC 2119 and
+
+MOTIVATION:
+Most existing tokens lack native privacy due to regulatory, technical, and issuer-side neglect. Users seeking privacy must rely on dedicated privacy blockchains or privacy-focused
+
+RATIONALE:
+- Permissionless Wrapping: Launching a new zk-native token is unlikely to achieve sufficient liquidity or adoption, and major token issuers are unlikely to deploy
+
+
 === ERC-1123 ===
 TITLE: Revised Ethereum Smart Contract Packaging Standard
 TYPE: Standards Track ERC
@@ -7300,7 +7320,7 @@ SPECIFICATION:
 ### Terms 1. A **diamond** is a smart contract that routes external function calls to one or more implementation contracts, referred to as facets.
 
 MOTIVATION:
-<img alt="Obligatory diamond" src="../assets/eip-8109/diamond.svg" width="17%" align="right">Through a single contract address, a diamond provides functionality from multiple implementation contracts (facets). Each facet is independent, yet
+### Motivation for Diamond Contracts <img alt="Obligatory diamond" src="../assets/eip-8109/diamond.svg" width="17%" align="right">Through a single contract address, a diamond provides functionality from multiple implementation contracts (facets).
 
 RATIONALE:
 This standard provides standard events, an upgrade function and introspection functions so that GUIs, block explorers, command line programs, and other tools and software
