@@ -7722,7 +7722,7 @@ SUMMARY:
 This EIP modifies the gas cost of `point evaluation` precompile introduced in [EIP-4844](./eip-4844.md).
 
 SPECIFICATION:
-Upon activation of this EIP, the gas cost of calling the precompile at address `0x000000000000000000000000000000000000000A` will be tripled from `50_000` gas to `150_000` gas.
+Upon activation of this EIP, the gas cost of calling the precompile at address `0x000000000000000000000000000000000000000A` will be doubled from `50_000` gas to `100_000` gas.
 
 MOTIVATION:
 Currently the `point evaluation` precompile is underpriced relative to its resource consumption. This EIP aims to address these discrepancies by adjusting the gas cost and making `point evaluation` precompile sufficiently efficient to enable potential further increases in the block gas limit.
