@@ -2838,7 +2838,7 @@ RATIONALE:
 === ERC-7943 ===
 TITLE: uRWA - Universal Real World Asset Interface
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-06-10
 REQUIRES: 165
 
@@ -6407,6 +6407,26 @@ RATIONALE:
 ### Why using ERC-1155 In the technical implementation aspect, we chose to use [ERC-1155](./eip-1155.md) as the main contract for NFTs due to the consideration of increasing the reusability of Smart-NFTs. The reason for this choice is that both [ERC-721](./eip-721.md) and [ERC-1155](./eip-1155.md) are based on the concept of "token IDs"
 
 
+=== ERC-8034 ===
+TITLE: Referable NFT Royalties
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-02
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 5, 5, 2, 1
+
+SUMMARY:
+This ERC proposes Royalty Distribution, a standalone royalty distribution for Referable Non-Fungible Tokens (rNFTs). It enables royalty distribution to multiple recipients at the primary level and referenced NFTs in the directed acyclic graph (DAG), with a single depth limit to control propagation. The standard is independent of [ERC-2981](./eip-2981.md). and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface The IRNFTRoyalty interface defines the royalty distribution for rNFTs and MUST inherit `ERC165` so that supporting contracts can
+
+MOTIVATION:
+[ERC-5521](./eip-5521.md) introduces Referable NFTs (rNFTs), which form a DAG through "referring" and "referred" relationships. Existing royalty standards like [ERC-2981](./eip-2981.md) do not account for this structure or support multiple recipients per level. This EIP addresses the need for a royalty mechanism that: - Supports multiple recipients per royalty level (e.g.,
+
+RATIONALE:
+- Fixed Royalty Query: The new `getReferenceRoyaltyInfo` function without salePrice allows users to inspect fixed royalty fractions (in basis points), improving transparency. - Multiple Recipients: The `RoyaltyInfo` array supports collaborative projects. - Single Depth Limit: Simplifies configuration and reduces gas costs. - Standalone Design: Ensures compatibility with any ERC-5521
+
+
 === ERC-7631 ===
 TITLE: Dual Nature Token Pair
 TYPE: Standards Track ERC
@@ -8680,6 +8700,26 @@ CREATED: 2018-09-08
 REQUIRES: 
 
 
+=== ERC-8107 ===
+TITLE: ENS Trust Registry for Agent Coordination
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-16
+REQUIRES: 1, 3, 7, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 8, 0, 0, 1
+
+SUMMARY:
+This ERC defines a **Trust Registry** that enables agents to establish and query transitive trust relationships using ENS names as identifiers. Trust is expressed at four levels (Unknown, None, Marginal, Full) and propagates through signature chains following the GNU Privacy Guard (GnuPG) web of trust model. The registry serves
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview This ERC specifies: * Trust levels and their semantics * ENS-indexed trust attestation
+
+MOTIVATION:
+[ERC-8001](./eip-8001) defines minimal primitives for multi-party agent coordination but explicitly defers trust to modules: > "Privacy, thresholds, bonding, and cross-chain are left to modules." And in Security Considerations: > "Equivocation: A participant can sign conflicting intents. Mitigate with module-level slashing or reputation." This ERC provides that trust and delegation
+
+RATIONALE:
+### Why ENS Instead of a New Identity System? ENS is finalised [EIP-137](./eip-137), battle-tested, and widely adopted. Creating a new identity system would: * Add dependency on draft standards * Fragment the identity ecosystem * Require new adoption efforts ENS provides everything needed: stable identifiers, ownership semantics, and extensibility.
+
+
 === ERC-7794 ===
 TITLE: Grant Registry
 TYPE: Standards Track ERC
@@ -9279,10 +9319,10 @@ CREATED: 2025-02-18
 REQUIRES: 
 
 SUMMARY:
-This ERC defines a protocol for cross-rollup messaging using storage proofs. Users can broadcast messages on a source chain, and those messages can be verified on any other chain that shares a common ancestor with the source chain. Each chain deploys a singleton Receiver and Broadcaster contract. Broadcasters store
+This ERC defines a protocol for cross-rollup messaging using state commitments. Users can broadcast messages on a source chain, and those messages can be verified on any other chain that shares a common ancestor with the source chain. A state commitment is a `bytes32` hash that commits to a
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Compatibility Requirements Chains must satisfy the following conditions to be compatible with the system: - Must store finalized block
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Compatibility Requirements Chains must satisfy the following conditions to be compatible with the system: - Must store finalized state
 
 MOTIVATION:
 The Ethereum ecosystem is experiencing a rapid growth in the number of rollup chains. As the number of chains grows, the experience becomes more fragmented for users, creating a need for trustless "interop" between rollup chains. These rollup chains, hosted on different rollup stacks, have heterogeneous properties, and as
@@ -10408,7 +10448,7 @@ The standard aims to standardise how multiple lending markets and risk providers
 === ERC-7893 ===
 TITLE: DeFi Protocol Solvency Proof Mechanism
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-01-30
 REQUIRES: 2, 0, ,,  , 1, 6, 5
 
@@ -10416,13 +10456,13 @@ SUMMARY:
 A standardized interface that enables DeFi protocols to implement verifiable solvency proofs through smart contracts. This interface works by defining structured data types for assets and liabilities, with oracle-validated price feeds tracking token values in real-time. The technical implementation calculates solvency ratios using configurable risk thresholds (105% minimum solvency
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ![main](../assets/eip-7893/svg/main.svg) ### Core Interfaces The standard defines a comprehensive interface for solvency verification. Key features
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ![main](../assets/eip-7893/images/diagrams/main.svg) ### Core Interface Requirements Compliant implementations MUST implement the `ISolvencyProof` interface. Compliant implementations MUST
 
 MOTIVATION:
 The DeFi ecosystem currently lacks standardization in financial health reporting, leading to: 1. Inconsistent reporting methodologies across protocols 2. Limited transparency in real-time financial status 3. Absence of standardized early warning systems 4. Complex and time-consuming audit processes 5. Difficulty in assessing cross-protocol risks This proposal directly addresses these
 
 RATIONALE:
-The standard's design prioritizes: 1. Reliability through robust calculations 2. Efficiency via optimized data structures 3. Flexibility through modular design 4. Transparency via standardized metrics ### Data Structure Design Rationale The interface defines two primary data structures (`ProtocolAssets` and `ProtocolLiabilities`) with specific attributes: 1. **Array-based token tracking** was selected
+The standard's design prioritizes: 1. Reliability through robust calculations 2. Efficiency via optimized data structures 3. Flexibility through modular design 4. Transparency via standardized metrics #### Asset and Liability Management Authorized oracles update the protocol's asset and liability data through the `updateAssets` and `updateLiabilities` functions, which accept parallel arrays
 
 
 === ERC-7811 ===

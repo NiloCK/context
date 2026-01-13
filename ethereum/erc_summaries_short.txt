@@ -2838,7 +2838,7 @@ RATIONALE:
 === ERC-7943 ===
 TITLE: uRWA - Universal Real World Asset Interface
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-06-10
 REQUIRES: 165
 
@@ -6407,6 +6407,26 @@ RATIONALE:
 ### Why using ERC-1155 In the technical implementation aspect, we chose to use [ERC-1155](./eip-1155.md) as the main contract for NFTs due to the consideration
 
 
+=== ERC-8034 ===
+TITLE: Referable NFT Royalties
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-02
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 5, 5, 2, 1
+
+SUMMARY:
+This ERC proposes Royalty Distribution, a standalone royalty distribution for Referable Non-Fungible Tokens (rNFTs). It enables royalty distribution to multiple recipients at the primary
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+
+MOTIVATION:
+[ERC-5521](./eip-5521.md) introduces Referable NFTs (rNFTs), which form a DAG through "referring" and "referred" relationships. Existing royalty standards like [ERC-2981](./eip-2981.md) do not account for this
+
+RATIONALE:
+- Fixed Royalty Query: The new `getReferenceRoyaltyInfo` function without salePrice allows users to inspect fixed royalty fractions (in basis points), improving transparency. - Multiple
+
+
 === ERC-7631 ===
 TITLE: Dual Nature Token Pair
 TYPE: Standards Track ERC
@@ -8680,6 +8700,26 @@ CREATED: 2018-09-08
 REQUIRES: 
 
 
+=== ERC-8107 ===
+TITLE: ENS Trust Registry for Agent Coordination
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-16
+REQUIRES: 1, 3, 7, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 8, 0, 0, 1
+
+SUMMARY:
+This ERC defines a **Trust Registry** that enables agents to establish and query transitive trust relationships using ENS names as identifiers. Trust is expressed
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[ERC-8001](./eip-8001) defines minimal primitives for multi-party agent coordination but explicitly defers trust to modules: > "Privacy, thresholds, bonding, and cross-chain are left to modules."
+
+RATIONALE:
+### Why ENS Instead of a New Identity System? ENS is finalised [EIP-137](./eip-137), battle-tested, and widely adopted. Creating a new identity system would: *
+
+
 === ERC-7794 ===
 TITLE: Grant Registry
 TYPE: Standards Track ERC
@@ -9279,7 +9319,7 @@ CREATED: 2025-02-18
 REQUIRES: 
 
 SUMMARY:
-This ERC defines a protocol for cross-rollup messaging using storage proofs. Users can broadcast messages on a source chain, and those messages can be
+This ERC defines a protocol for cross-rollup messaging using state commitments. Users can broadcast messages on a source chain, and those messages can be
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
@@ -10408,7 +10448,7 @@ The standard aims to standardise how multiple lending markets and risk providers
 === ERC-7893 ===
 TITLE: DeFi Protocol Solvency Proof Mechanism
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-01-30
 REQUIRES: 2, 0, ,,  , 1, 6, 5
 
