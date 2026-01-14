@@ -8743,9 +8743,9 @@ The design of this Grant Registry Contract is driven by the need for a flexible 
 === ERC-8004 ===
 TITLE: Trustless Agents
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Draft
 CREATED: 2025-08-13
-REQUIRES: 
+REQUIRES: 1, 5, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1
 
 SUMMARY:
 This protocol proposes to use blockchains to **discover, choose, and interact with agents across organizational boundaries** without pre-existing trust, thus **enabling open-ended agent economies**. Trust models are pluggable and tiered, with security proportional to value at risk, from low-stake tasks like ordering pizza to high-stake tasks like medical diagnosis.
@@ -8754,7 +8754,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Identity Registry The Identity Registry uses ERC-721 with the URIStorage extension for agent registration,
 
 MOTIVATION:
-MCP allows servers to list and offer their capabilities (prompts, resources, tools, and completions), while A2A handles agent authentication, skills advertisement via AgentCards, direct messaging, and complete task-lifecycle orchestration. However, these agent communication protocols don't inherently cover agent discovery and trust. To foster an open, cross-organizational agent economy, we
+Model context protocol <!-- TODO: double check that this is the correct abbreviation -->(MCP) allows servers to list and offer their capabilities (prompts, resources, tools, and completions), while Agent2Agent <!-- TODO: double check that this is the correct abbreviation -->(A2A) handles agent authentication, skills advertisement via AgentCards, direct messaging,
 
 RATIONALE:
 * **Agent communication protocols**: MCP and A2A are popular, and other protocols could emerge. For this reason, this protocol links from the blockchain to a flexible registration file including a list where endpoints can be added at will, combining AI primitives (MCP, A2A) and Web3 primitives such as wallet
