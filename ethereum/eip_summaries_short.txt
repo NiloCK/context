@@ -6869,7 +6869,7 @@ SUMMARY:
 This EIP proposes a new JSON-RPC method, `eth_sendRawTransactionSync`, which submits a signed raw transaction and waits synchronously for the transaction receipt or a configurable
 
 SPECIFICATION:
-### Method Name `eth_sendRawTransactionSync` ### Parameters | Position | Type | Description | Required | |----------|------------|-----------------------------------|----------| | 1 | `DATA` | The signed transaction
+### Method Name `eth_sendRawTransactionSync` ### Parameters | Position | Type | Description | Required | |----------|--------|-----------------------------------|----------| | 1 | `DATA` | The signed transaction
 
 MOTIVATION:
 Currently, Ethereum clients submit signed transactions asynchronously using `eth_sendRawTransaction`. Clients receive a transaction hash immediately but must poll repeatedly for the transaction receipt, which
