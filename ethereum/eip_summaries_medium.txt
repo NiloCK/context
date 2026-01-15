@@ -9092,7 +9092,7 @@ SUMMARY:
 This EIP defines an extension for eth_getLogs to provide logs for events that are not associated with a given transaction, such as block rewards and withdrawals.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### System logs list A new list is introduced to track all block level logs
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Fee payment logs A log, identical to a LOG2, is issued for every transaction
 
 MOTIVATION:
 With [EIP-7708](./eip-7708.md) wallets gain the ability to use eth_getLogs to track changes to their ETH balance. However, the ETH balance may change without an explicit transaction, through block production and withdrawals. By having such operations emit block-level system logs, eth_getLogs provides a complete picture of ETH balance changes.
