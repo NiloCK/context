@@ -1679,6 +1679,26 @@ RATIONALE:
 BLAKE2 is an excellent candidate for precompilation. BLAKE2 is heavily optimized for modern 64-bit CPUs, specifically utilizing 24 and 63-bit rotations to allow parallelism
 
 
+=== EIP-8116 ===
+TITLE: Replace cumulative receipt fields
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-12-30
+REQUIRES: 
+
+SUMMARY:
+This EIP describes how to change the on-chain receipt data to track gas per transaction instead of cumulatively.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Currently, on-chain receipts track a `cumulativeGasUsed` field which contains the running sum of all gas spent for all transactions in the block so far.
+
+RATIONALE:
+This EIP is a step towards aligning on-chain data with the RPC data actually being consumed by client applications. Stateful components of receipts (`cumulativeGasUsed`
+
+
 === EIP-969 ===
 TITLE: Modifications to ethash to invalidate existing dedicated hardware implementations
 TYPE: Standards Track Core
@@ -2457,7 +2477,7 @@ MOTIVATION:
 [Light client data](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/full-node.md) is collected by beacon nodes to assist [light clients](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/light-client.md) to sync with the network. The [sync protocol](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/sync-protocol.md) defines a mechanism to
 
 RATIONALE:
-### How to rank `SyncAggregate`? The EIP reuses the [`is_better_update`](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/sync-protocol.md#is_better_update) function from existing specs. ### How could a backfill protocol use this? Once the
+### How to rank `SyncAggregate`? The EIP reuses the [`is_better_update`](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/sync-protocol.md#is_better_update) function from existing specs. To ensure deterministic selection when participation and finality are equal,
 
 
 === EIP-7932 ===
@@ -6034,6 +6054,26 @@ RATIONALE:
 Recent denial-of-service attacks have shown that opcodes that read the state tree are under-priced relative to other opcodes. There are software changes that have
 
 
+=== EIP-8115 ===
+TITLE: Batch priority fees at end of block
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-12-30
+REQUIRES: 1, 5, 5, 9, ,,  , 4, 8, 9, 5
+
+SUMMARY:
+This EIP defines how to optimize processing of priority fees from [EIP-1559](./eip-1559.md) fee market transactions.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Priority fees are credited at the end of each transaction, leading to these complications: 1. **Limited parallelization:** Each transaction writes to the fee recipient
+
+RATIONALE:
+This EIP is one step towards fully accurate ETH balance logs. Batched crediting of priority fees improves parallel execution of transactions, as a transaction
+
+
 === EIP-616 ===
 TITLE: SIMD Operations for the EVM
 TYPE: Standards Track Core
@@ -9046,7 +9086,7 @@ TITLE: System logs
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-29
-REQUIRES: 1, 5, 5, 9, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 1, 6
+REQUIRES: 4, 8, 9, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 1, 6, ,,  , 8, 1, 1, 5
 
 SUMMARY:
 This EIP defines an extension for eth_getLogs to provide logs for events that are not associated with a given transaction, such as block rewards
@@ -9213,6 +9253,26 @@ This EIP provides a way for validator withdrawals made on the beacon chain to en
 
 RATIONALE:
 ### Push vs pull approach This push approach gives validators a small subsidy with respect to processing, in lieu of needing to buy gas
+
+
+=== EIP-8123 ===
+TITLE: RPC Method for Transaction Gas Limit Cap
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2026-01-11
+REQUIRES: 1, 4, 7, 4, ,,  , 7, 8, 2, 5
+
+SUMMARY:
+This EIP specifies a new Ethereum JSON-RPC method, `eth_txGasLimitCap`, which returns the maximum transaction gas limit (`tx.gas`) that the node will accept under the
+
+SPECIFICATION:
+The key words “MUST", “MUST NOT", “SHOULD", and “MAY" are to be interpreted as described in RFC 2119. ### New method: `eth_txGasLimitCap` #### Request
+
+MOTIVATION:
+[EIP-7825](./eip-7825.md) introduces a protocol-level per-transaction gas limit cap (e.g. `2^24 = 16,777,216` on Ethereum) to bound worst-case single-transaction work. However, it does not specify
+
+RATIONALE:
+A dedicated method is needed because there is currently no way to query the maximum allowed `tx.gas` without simulation or out-of-band knowledge. Returning the
 
 
 === EIP-2803 ===
@@ -9650,7 +9710,7 @@ TITLE: SSZ receipts
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-02-08
-REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 0, 1, 6
+REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 6, 6, 8, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 0, 1, 6, ,,  , 8, 1, 1, 6
 
 SUMMARY:
 This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) receipts to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md)

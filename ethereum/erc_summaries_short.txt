@@ -3791,10 +3791,10 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-The address format utilized on Ethereum mainnet ([ERC-55]) is shared by a large number of other blockchains. However, this format does not encode any
+The address format utilized on Ethereum mainnet ([ERC-55]) is shared by a large number of other blockchains. This format does not encode any information
 
 RATIONALE:
-This ERC defines a compact binary format for a chain-specific address, primarily for use in smart contracts. Other contexts (such as display to end-users
+This ERC defines a compact binary format for representing a *chain-specific address*, primarily intended for use within smart contracts. For other contexts—such as display
 
 
 === ERC-6120 ===

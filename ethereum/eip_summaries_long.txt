@@ -1679,6 +1679,26 @@ RATIONALE:
 BLAKE2 is an excellent candidate for precompilation. BLAKE2 is heavily optimized for modern 64-bit CPUs, specifically utilizing 24 and 63-bit rotations to allow parallelism through SIMD instructions and little-endian arithmetic. These characteristics provide exceptional speed on native CPUs: 3.08 cycles per byte, or 1 gibibyte per second on an Intel i5. In contrast, the big-endian 32 byte semantics of the EVM are not conducive to efficient implementation of BLAKE2, and thus the gas cost associated with computing the hash on the EVM is disproportionate to the true cost of computing the function natively. An obvious implementation would be
 
 
+=== EIP-8116 ===
+TITLE: Replace cumulative receipt fields
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-12-30
+REQUIRES: 
+
+SUMMARY:
+This EIP describes how to change the on-chain receipt data to track gas per transaction instead of cumulatively.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### `Receipt` construction All receipts emitted after this EIP activates track the individual transaction's `gasUsed` instead of the incremental `cumulativeGasUsed` value. ### JSON-RPC API Within `logs`, the `logIndex` field is changed to indicate the log index position in the individual receipt, rather than in the entire block.
+
+MOTIVATION:
+Currently, on-chain receipts track a `cumulativeGasUsed` field which contains the running sum of all gas spent for all transactions in the block so far. This has a number of shortcomings: 1. **Inefficient verification:** RPC clients that want to verify individual transaction `gasUsed` requires computation based on `cumulativeGasUsed` across consecutive receipts. 2. **Limited parallelism:** Receipt contents are stateful, even for transactions accessing mutually exclusive state. The `logIndex` field exposed via JSON-RPC is currently also tracking an incremental block level index instead of a per-receipt index, with similar shortcomings.
+
+RATIONALE:
+This EIP is a step towards aligning on-chain data with the RPC data actually being consumed by client applications. Stateful components of receipts (`cumulativeGasUsed` / `logIndex`) are replaced with per-transaction equivalents.
+
+
 === EIP-969 ===
 TITLE: Modifications to ethash to invalidate existing dedicated hardware implementations
 TYPE: Standards Track Core
@@ -2457,7 +2477,7 @@ MOTIVATION:
 [Light client data](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/full-node.md) is collected by beacon nodes to assist [light clients](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/light-client.md) to sync with the network. The [sync protocol](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/sync-protocol.md) defines a mechanism to sync forward in time. However, it cannot be used to sync backward. Collecting light client data is challenging because beacon nodes need to have access to the corresponding [`BeaconState`](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/phase0/beacon-chain.md#beaconstate) and [`SignedBeaconBlock`](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/phase0/beacon-chain.md#signedbeaconblock). `BeaconState` objects are not available before the initially synced checkpoint state, and `SignedBeaconBlock` objects have a limited retention period on libp2p. Furthermore, each [sync committee period](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/beacon-chain.md#get_next_sync_committee) consists of `EPOCHS_PER_SYNC_COMMITTEE_PERIOD * SLOTS_PER_EPOCH` slots. To support archive services such as Portal network to provide a
 
 RATIONALE:
-### How to rank `SyncAggregate`? The EIP reuses the [`is_better_update`](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/sync-protocol.md#is_better_update) function from existing specs. ### How could a backfill protocol use this? Once the data is available in the `BeaconState`, a light client data backfill protocol could be defined that serves, for past periods: 1. A `LightClientUpdate` from requested `period` + 1 that proves that the entirety of `period` is finalized. 2. `BeaconState.historical_summaries[period].block_summary_root` at (1)'s `attested_header.beacon.state_root` + Merkle proof. 3. For each epoch's slot 0 block within requested `period`, the corresponding `LightClientHeader` + Merkle multi-proof for the block's inclusion into (2)'s `block_summary_root`. 4. For each of the entries
+### How to rank `SyncAggregate`? The EIP reuses the [`is_better_update`](https://github.com/ethereum/consensus-specs/blob/4afe39822c9ad9747e0f5635cca117c18441ec1b/specs/altair/light-client/sync-protocol.md#is_better_update) function from existing specs. To ensure deterministic selection when participation and finality are equal, implementations MUST break ties by preferring the lower `signature_slot`; if equal, the existing selection SHOULD be retained. ### How could a backfill protocol use this? Once the data is available in the `BeaconState`, a light client data backfill protocol could be defined that serves, for past periods: 1. A `LightClientUpdate` from requested `period` + 1 that proves that the entirety of `period` is finalized. 2. `BeaconState.historical_summaries[period].block_summary_root` at (1)'s `attested_header.beacon.state_root` + Merkle proof. 3. For
 
 
 === EIP-7932 ===
@@ -6034,6 +6054,26 @@ RATIONALE:
 Recent denial-of-service attacks have shown that opcodes that read the state tree are under-priced relative to other opcodes. There are software changes that have been made, are being made and can be made in order to mitigate the situation; however, the fact will remain that such opcodes will be by a substantial margin the easiest known mechanism to degrade network performance via transaction spam. The concern arises because it takes a long time to read from disk, and is additionally a risk to future sharding proposals as the "attack transactions" that have so far been most successful in
 
 
+=== EIP-8115 ===
+TITLE: Batch priority fees at end of block
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-12-30
+REQUIRES: 1, 5, 5, 9, ,,  , 4, 8, 9, 5
+
+SUMMARY:
+This EIP defines how to optimize processing of priority fees from [EIP-1559](./eip-1559.md) fee market transactions.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Priority fee processing [EIP-1559](./eip-1559.md) priority fees SHALL no longer be credited after each individual transaction. Instead, they SHALL be summed up and credited after all transactions of a block are processed but before [EIP-4895](./eip-4895.md) withdrawals are processed.
+
+MOTIVATION:
+Priority fees are credited at the end of each transaction, leading to these complications: 1. **Limited parallelization:** Each transaction writes to the fee recipient account balance. 2. **Mempool complexities:** A transaction sender may become solvent only after prior transactions in a block have been processed. 3. **Accounting complexities:** The fee recipient gets hundreds of micropayments for what could logically be a single credit. 4. **Inaccurate logs:** Proposals to emit logs on ETH transfers either have to omit priority fees, limiting their usefulness due to inaccuracies, or have to emit an extra entry for each individual fee, making them
+
+RATIONALE:
+This EIP is one step towards fully accurate ETH balance logs. Batched crediting of priority fees improves parallel execution of transactions, as a transaction can no longer start with insufficient fees and only become eligible for execution after incremental priority fees have been credited.
+
+
 === EIP-616 ===
 TITLE: SIMD Operations for the EVM
 TYPE: Standards Track Core
@@ -8724,7 +8764,7 @@ SUMMARY:
 This EIP introduces a new Merkle tree shape for [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md) types that results in fewer hashes when only a small number of leaves is used. The new tree shape grows progressively with increased leaf count and no longer has a bounded capacity. It also offers forward compatibility: a given chunk index is always assigned the same stable [generalized index (gindex)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/merkle-proofs.md#generalized-merkle-tree-index) regardless of leaf count. New types are defined to use the progressive Merkle tree shape: `ProgressiveList[type]` and `ProgressiveBitlist`. These new types represent lists of arbitrary length with stable merkleization, reducing hashing overhead for small lists and
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Progressive Merkle tree The [SSZ Merkleization specification](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md#merkleization) is extended with a helper function: - `merkleize_progressive(chunks, num_leaves=1)`: Given ordered `BYTES_PER_CHUNK`-byte chunks: - The merkleization depends on the number of input chunks and is defined recursively: - If `len(chunks) == 0`: the root is a zero value, `Bytes32()`. - Otherwise: compute the root using `hash(a, b)` - `a`: Recursively merkleize chunks beyond `num_leaves` using `merkleize_progressive(chunks[num_leaves:],
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Progressive Merkle tree The [SSZ Merkleization specification](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md#merkleization) is extended with a helper function: - `merkleize_progressive(chunks, num_leaves=1)`: Given ordered `BYTES_PER_CHUNK`-byte chunks: - The merkleization depends on the number of input chunks and is defined recursively: - If `len(chunks) == 0`: the root is a zero value, `Bytes32()`. - Otherwise: compute the root using `hash(a, b)` - `a`: Merkleize the first up to `num_leaves` chunks
 
 MOTIVATION:
 Current SSZ `List[type, N]` types require a predefined capacity `N`, which leads to several issues: - Inefficient hashing: Lists often contain far fewer elements than their maximum capacity (e.g., [`Transaction`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/bellatrix/beacon-chain.md#custom-types)), resulting in unnecessary zero-padding and dozens of extra hash computations. This is exacerbated when nesting `List[type, N]`, e.g., in a design where each of up to `X` transactions has up to `Y` access lists, each with up to `Z` storage slots. - Arbitrary Limits: The capacity `N` is often chosen arbitrarily (e.g., [`MAX_BYTES_PER_TRANSACTION`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/bellatrix/beacon-chain.md#execution), [`MAX_TRANSACTIONS_PER_PAYLOAD`](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/bellatrix/beacon-chain.md#execution)) and set to artificially large values to anticipate future design space, which are not
@@ -9046,19 +9086,19 @@ TITLE: System logs
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-29
-REQUIRES: 1, 5, 5, 9, ,,  , 4, 8, 9, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 1, 6
+REQUIRES: 4, 8, 9, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 1, 6, ,,  , 8, 1, 1, 5
 
 SUMMARY:
 This EIP defines an extension for eth_getLogs to provide logs for events that are not associated with a given transaction, such as block rewards and withdrawals.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### System logs list A new list is introduced to track all block level logs emitted from system interactions. The definition uses the `Log` SSZ type from [EIP-6466](./eip-6466.md). ```python system_logs = ProgressiveList[Log]( log_0, log_1, log_2, ...) ``` ### Priority fee processing [EIP-1559](./eip-1559.md) priority fees SHALL no longer be credited after each individual transaction. Instead, they SHALL be summed up and credited after all transactions
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### System logs list A new list is introduced to track all block level logs emitted from system interactions. The definition uses the `Log` SSZ type from [EIP-6466](./eip-6466.md). ```python system_logs = ProgressiveList[Log]( log_0, log_1, log_2, ...) ``` ### Priority fee processing A log SHALL be appended to the system logs list when crediting the batched [EIP-8115](./eip-8115.md) priority fee. | Field | Value | |
 
 MOTIVATION:
 With [EIP-7708](./eip-7708.md) wallets gain the ability to use eth_getLogs to track changes to their ETH balance. However, the ETH balance may change without an explicit transaction, through block production and withdrawals. By having such operations emit block-level system logs, eth_getLogs provides a complete picture of ETH balance changes.
 
 RATIONALE:
-Together with [EIP-7708](./eip-7708.md) this EIP provides the ability for wallets to compute the exact ETH balance from logs without requiring download of every single block header and all withdrawals. The block reward from priority fees no longer has to be summed up by processing all receipts and can be obtained from the system logs root, making it efficiently provable. Batched crediting of priority fees improves parallel execution of transactions, as a transaction can no longer start with insufficient fees and only become eligible for execution after incremental priority fees have been credited. ### Alternatives / Future - Instead
+Together with [EIP-7708](./eip-7708.md) this EIP provides the ability for wallets to compute the exact ETH balance from logs without requiring download of every single block header and all withdrawals. The block reward from priority fees no longer has to be summed up by processing all receipts and can be obtained from the system logs root, making it efficiently provable. ### Alternatives / Future - The information from withdrawals is now duplicated across both the `withdrawals` list and the system logs. Maybe the information could be massaged into the emitted `Withdrawal` log data, allowing the existing `withdrawals` list to
 
 
 === EIP-7708 ===
@@ -9213,6 +9253,26 @@ This EIP provides a way for validator withdrawals made on the beacon chain to en
 
 RATIONALE:
 ### Push vs pull approach This push approach gives validators a small subsidy with respect to processing, in lieu of needing to buy gas via normal EVM processing that would be required for a pull-based approach. This style also happens automatically when the requisite conditions are met on the beacon chain which is nicer UX for validators. ### Why a new transaction type? This EIP suggests a new transaction type as it has special semantics different from other existing types of EVM transactions. An entirely new transaction type firewalls off generic EVM execution from this type of processing
+
+
+=== EIP-8123 ===
+TITLE: RPC Method for Transaction Gas Limit Cap
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2026-01-11
+REQUIRES: 1, 4, 7, 4, ,,  , 7, 8, 2, 5
+
+SUMMARY:
+This EIP specifies a new Ethereum JSON-RPC method, `eth_txGasLimitCap`, which returns the maximum transaction gas limit (`tx.gas`) that the node will accept under the current fork rules (and any stricter local policy). This enables wallets, SDKs, bundlers, and tooling to discover the effective per-transaction gas limit cap without simulation or out-of-band knowledge.
+
+SPECIFICATION:
+The key words “MUST", “MUST NOT", “SHOULD", and “MAY" are to be interpreted as described in RFC 2119. ### New method: `eth_txGasLimitCap` #### Request - **Method**: `eth_txGasLimitCap` - **Params**: `[]` (no parameters) #### Response - **Result**: `QUANTITY` or `null` - If the node enforces a finite transaction gas limit cap, it **MUST** return that cap as a `QUANTITY`. - If the node does not enforce a finite cap, it **MUST** return `null`. Returning `null` indicates that no finite per-transaction gas limit is enforced by the node. #### Semantics Let: - `protocolCap` be the maximum `tx.gas` permitted by the
+
+MOTIVATION:
+[EIP-7825](./eip-7825.md) introduces a protocol-level per-transaction gas limit cap (e.g. `2^24 = 16,777,216` on Ethereum) to bound worst-case single-transaction work. However, it does not specify any way to query this cap. As a consequence, users and tools must: - infer it from failed transaction submissions, - hardcode network assumptions, - read client source code, - or rely on Internet documentation. This is brittle because: - the cap may change in future upgrades, - different chains intentionally set different cap values (e.g. Arbitrum and Polygon both use `32,000,000`), - and there already are some proposals to make the transaction gas
+
+RATIONALE:
+A dedicated method is needed because there is currently no way to query the maximum allowed `tx.gas` without simulation or out-of-band knowledge. Returning the _effective_ cap (`min(protocolCap, policyCap)`) matches what users need when constructing transactions to submit.
 
 
 === EIP-2803 ===
@@ -9650,7 +9710,7 @@ TITLE: SSZ receipts
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2023-02-08
-REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 0, 1, 6
+REQUIRES: 6, 5, 8, ,,  , 2, 7, 1, 8, ,,  , 6, 4, 0, 4, ,,  , 7, 4, 9, 5, ,,  , 7, 6, 6, 8, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 0, 1, 6, ,,  , 8, 1, 1, 6
 
 SUMMARY:
 This EIP defines a migration process of [EIP-2718](./eip-2718.md) Recursive-Length Prefix (RLP) receipts to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/ssz/simple-serialize.md)
@@ -9659,7 +9719,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Existing definitions Definitions from existing specifications that are used throughout this document are replicated here for reference. | Name | SSZ equivalent | | - | - | | [`Root`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/phase0/beacon-chain.md#custom-types) | `Bytes32` | | [`ExecutionAddress`](https://github.com/ethereum/consensus-specs/blob/b3e83f6691c61e5b35136000146015653b22ed38/specs/bellatrix/beacon-chain.md#custom-types) | `Bytes20` | | [`GasAmount`](./eip-6404.md#normalized-transactions) | `uint64` | ### Logs Logs are represented as an SSZ `Container`. | Name | Value | Description | | - | -
 
 MOTIVATION:
-RLP receipts have a number of shortcomings: 1. **Limited proving support:** Due to receipt data being linearly hashed as part of the `receipts_root` Merkle-Patricia Trie (MPT), it is not possible to efficiently proof individual parts of receipts, such as logs. Requiring the full receipt data to be present can be prohibitive for smart contract based applications such as L2 fraud proofs or client applications verifying log data. 2. **Unnecessary statefulness:** [EIP-658](./eip-658.md) replaced the intermediate post-state `root` from receipts with a boolean `status` code. However, `cumulativeGasUsed` and `logIndex` are similarly stateful, unnecessarily complicating efforts to execute transactions in parallel.
+RLP receipts have a number of shortcomings: 1. **Limited proving support:** Due to receipt data being linearly hashed as part of the `receipts_root` Merkle-Patricia Trie (MPT), it is not possible to efficiently proof individual parts of receipts, such as logs. Requiring the full receipt data to be present can be prohibitive for smart contract based applications such as L2 fraud proofs or client applications verifying log data. 2. **Incomplete data:** JSON-RPC provides `from`, `gasUsed`, and `contractAddress` fields for receipts, but the on-chain receipt does not contain the required information to verify them. This EIP defines a universal receipt
 
 RATIONALE:
 ### Forward compatibility All receipts share the same Merkle tree shape with a stable [generalized index (gindex)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/merkle-proofs.md#generalized-merkle-tree-index) assigned to each field. Future transaction features can introduce additional receipt fields or drop existing fields without breaking verifiers. ### Verifier improvements Committing to `from`, `contract_address` and `authorities` in the receipt allows efficient verification without the expensive `ecrecover` mechanism. This allows future EIPs to change how these addresses are computed without breaking verifiers, e.g., when future signature schemes are introduced. ### Execution client improvements Execution Layer implementations no longer need access to the transaction and additional indices when serving receipts based
