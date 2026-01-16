@@ -4798,20 +4798,20 @@ RATIONALE:
 
 
 === ERC-7828 ===
-TITLE: Readable Interoperable Addresses using ENS
+TITLE: Interoperable Names
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Draft
 CREATED: 2024-11-27
 REQUIRES: 1, 5, 5, ,,  , 7, 9, 3, 0
 
 SUMMARY:
-This proposal extends [ERC-7930] \(Interoperable Addresses & Names\) by standardizing a human-readable format for chain-specific addresses in the form `<address>@<chain>#<checksum>`. It introduces: - A
+This proposal defines an _Interoperable Name_, a human-readable _chain-specific address_ format that MAY represent the _target address_ as an ENS name. Additionally, the target
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-The current Ethereum address landscape is leading to an ecosystem that will have hundreds and eventually thousands of L2s that use the same address
+The core motivation for introducing the _Interoperable Name_ standard is to provide maximally readable, _chain-specific addresses_ for user-facing interactions. [ERC-7930] introduced a binary format
 
 RATIONALE:
 - Using ENS as the only resolving method means it's enough to use the same Interoperable Addresses v1 for this standard, without extending it
