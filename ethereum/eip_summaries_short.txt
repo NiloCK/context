@@ -6413,7 +6413,7 @@ SUMMARY:
 This EIP modifies the block gas accounting mechanism to prevent the circumvention of block gas limits. It proposes that gas refunds, particularly those from
 
 SPECIFICATION:
-### Gas Accounting Changes 1. **User Gas Costs (Unchanged):** - Users continue to receive gas refunds for operations that qualify (e.g., setting storage to
+### Gas Accounting Changes 1. **User and Receipt Gas Accounting (Unchanged):** - Users continue to receive gas refunds for operations that qualify (e.g., setting
 
 MOTIVATION:
 Currently, gas refunds from operations like clearing storage slots (setting to zero) reduce both the transaction gas cost for users and the gas counted
