@@ -9311,6 +9311,26 @@ RATIONALE:
 The optimized contract is constructed with essential components of the proxy contract and incorporates the recently added `PUSH0` opcode. The core elements of the minimal proxy include: 1. Copy the calldata with `CALLDATACOPY`. 2. Forward the calldata to the implementation contract using `DELEGATECALL`. 3. Copy the returned data from the `DELEGATECALL`. 4. Return the results or revert the transaction based on whether the `DELEGATECALL` is successful. ### Step 1: Copy the Calldata To copy the calldata, we need to provide the arguments for the `CALLDATACOPY` opcodes, which are `[0, 0, cds]`, where `cds` represents calldata size. | pc
 
 
+=== ERC-7841 ===
+TITLE: Cross-chain Message Format and Mailbox
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2024-12-12
+REQUIRES: 
+
+SUMMARY:
+This ERC proposes a **mailbox API** and **message format** for sending and receiving data between L2s. This standard makes it easier for developers to build cross-chain applications that work over a variety of VMs, chain settlement mechanisms (e.g., ZK or optimistic settlement), and messaging protocols (e.g., synchronous or asynchronous protocols). This ERC accomplishes this by 1.) defining a mailbox interface through which cross-chain messages can be sent and received independent of their payload; 2.) defining a VM-agnostic message format and address type to make the interface compatible with many VMs; 3.) keeping the mailbox interface minimal to make
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Terminology - A **Messaging Protocol** consists of mailbox contracts and a coordination (sub)protocol. A chain sends a message through a transaction that writes to its outbox and receives a message through a transaction that reads from the inbox. - **Coordination Protocol**: A mechanism that relays messages between source and destination mailboxes, commonly through off-chain mechanisms. Examples include shared sequencers or intent relayers. A
+
+MOTIVATION:
+L2s have scaled Ethereum and unlocked new avenues for innovation, but left the ecosystem *fragmented*. To address this, there are a variety of cross-chain communication protocols designed to make L2s composable with each other, each implements its own message format that is incompatible with others. This ERC proposes a neutral, standard format for sending and receiving cross-chain messages. By standardizing the interface chains for messaging, we achieve: - **Unified developer experience:** This standard abstracts away the low-level details of message passing from applications. This allows application developers to achieve the following, even among chains with different VMs, coordination
+
+RATIONALE:
+### Multiple VM Support Notice that our standard requires **no changes to a chain's VM** (i.e. no new opcode or precompiles required), but only proposes some smart contract interfaces. Specifically, the sender/recipient account type — generic `bytes32` instead of EVM-specific `address` type -- allows this standard to support a much wider class of VMs (e.g. SolanaVM that uses `Ed25519` public key as their accounts). An optional `MultiplexABIEncoder` contract can abstract away the VM-specific encoding when preparing the message payload: a generic `encode(chainId)` function, as opposed to EVM’s `abi.encode`, that takes in the destination chain ID and decides the
+
+
 === ERC-7888 ===
 TITLE: Crosschain Broadcaster
 TYPE: Standards Track ERC
