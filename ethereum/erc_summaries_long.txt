@@ -2856,20 +2856,20 @@ RATIONALE:
 
 
 === ERC-7715 ===
-TITLE: Grant Permissions from Wallets
+TITLE: Request Permissions from Wallets
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2024-05-24
-REQUIRES: 4, 3, 3, 7, ,,  , 5, 7, 9, 2, ,,  , 7, 6, 7, 9, ,,  , 7, 7, 1, 0
+REQUIRES: 4, 3, 3, 7, ,,  , 7, 7, 1, 0
 
 SUMMARY:
-We define a new JSON-RPC method `wallet_grantPermissions` for DApp to request a Wallet to grant permissions in order to execute transactions on the user’s behalf. This enables two use cases: - Executing transactions for users without a wallet connection. - Executing transactions for users with a wallet connection that is scoped with permissions.
+We define a new JSON-RPC method `wallet_requestExecutionPermissions` for DApp to request a Wallet to grant permissions in order to execute transactions on the user’s behalf. This enables two use cases: - Executing transactions for users without a wallet connection. - Executing transactions for users with a wallet connection that is scoped with permissions.
 
 SPECIFICATION:
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ### `wallet_grantPermissions` We introduce a `wallet_grantPermissions` method for the DApp to request the Wallet to grant permissions. #### Permission schema ```tsx type PermissionRequest = { chainId: Hex; // hex-encoding of uint256 address?: Address; expiry: number; // unix timestamp signer: { type: string; // enum defined by ERCs data: Record<string, any>; }; permissions: { type: string; // enum defined by ERCs data: Record<string, any>; }[]; }[]; ``` `chainId` defines the
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ### Permission Types, Rule Types This ERC does not specify an exhaustive list of rule or permission types, since we expect more rule and permission types to be developed as wallets get more advanced. A permission type, or rule type is valid as long as both the DApp and the wallet are willing to support it. However, if two permissions or two rules share the same type name, a
 
 MOTIVATION:
-Currently most DApps implement a flow similar to the following: ![Wallet Approve Flow](../assets/eip-7715/approve-flow.svg) Each interaction requires the user to sign a transaction with their wallet. The problems are: - It can get tedious for the user to manually approve every transaction, especially in highly-interactive applications such as games. - It’s impossible to send transactions for users without an active wallet connection. This invalidates use cases such as subscriptions, passive investments, limit orders, and more. In the context of AA, there are multiple vendor-specific implementations of session keys, which are temporary keys imbued with specific permissions. However, since the
+Currently most DApps implement a flow similar to the following: ![Wallet Approve Flow](../assets/eip-7715/approve-flow.svg) Each interaction requires the user to sign a transaction with their wallet. The problems are: - It can get tedious for the user to manually approve every transaction, especially in highly-interactive applications such as games. - It’s impossible to send transactions for users without an active wallet connection. This invalidates use cases such as subscriptions, passive investments, limit orders, and more.
 
 RATIONALE:
 The typical transaction flow of `suggesting transactions => approving transactions => sending transactions` is deeply limiting in several ways: - Users must be online to send transactions. DApps cannot send transactions for users when they are offline, which makes use cases such as subscriptions or automated trading impossible. - Users must manually approve every transaction, interrupting what could otherwise be a smooth user experience. With this ERC, DApps can request Wallets to grant permissions and execute transactions on the user's behalf, therefore circumventing the issues above. ### `permissionsContext` Since this ERC only specifies the interaction between the wallet
@@ -3943,6 +3943,26 @@ MOTIVATION:
 
 RATIONALE:
 ### Encoding Status codes are encoded as a `byte`. Hex values break nicely into high and low nibbles: `category` and `reason`. For instance, `0x01` stands for general success (ie: `true`) and `0x00` for general failure (ie: `false`). As a general approach, all even numbers are blocking conditions (where the receiver does not have control), and odd numbers are nonblocking (the receiver is free to continue as they wish). This aligns both a simple bit check with the common encoding of Booleans. `bytes1` is very lightweight, portable, easily interoperable with `uint8`, cast from `enum`s, and so on. #### Alternatives
+
+
+=== ERC-8074 ===
+TITLE: Self-Describing Bytes via EIP-712 Selectors
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-30
+REQUIRES: 712
+
+SUMMARY:
+This ERC standardizes a convention for tagging ABI-encoded structures placed inside `bytes` parameters with a compact type selector derived from the [EIP-712](./eip-712.md) type string. It also defines a canonical multi-payload wrapper, allowing multiple typed payloads to be carried in a single `bytes` parameter.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Terms - **Type string** — the canonical EIP-712 type string, e.g. `TransferNote(bytes32 reference,string comment,uint256 deadline)` - **Type selector (`bytes4`)** — `keccak256(typeString)[0:4]` - **Single-payload** — a selector followed by `abi.encode` of that struct’s fields - **Multi-payload wrapper** — `DataList(bytes[] items)`; each `items[i]` is a valid single-payload ### Single-payload encoding - An ABI-encoded struct is prefixed with a 4-byte selector. - The selector is defined
+
+MOTIVATION:
+Many smart contract methods use a `bytes` parameter to support future extensibility—including common standards such as [ERC-721](./eip-721.md) and [ERC-1155](./eip-1155.md). The convention of carrying extra data in a `bytes` parameter was also codified further in [ERC-5750](./eip-5750.md). In many practical cases, the `bytes` payload may encode a structured type that must be ABI-decoded before it can be processed. However: - Different contracts use different, ad-hoc conventions for distinguishing among possible payloads. - A single contract may need to support multiple encodings. - In more complex workflows, a payload may be propagated across multiple contracts, each of which may need to
+
+RATIONALE:
+- **EIP-712 reuse:** avoids new schema syntax and aligns with the signing ecosystem. - **4-byte selectors:** mirror Solidity’s function selector convention for compactness. - **Simple wrapper:** `DataList` provides multiplexing without special parsing or new ABI rules.
 
 
 === ERC-6823 ===
@@ -6733,6 +6753,26 @@ As decentralized domain registration methods evolve with the integration of NFTs
 
 RATIONALE:
 #### Name Expiry By implementing expiration periods for usernames, we introduce several advantages. This mechanism ensures a dynamic environment where unused or outdated usernames can be released, fostering a healthy ecosystem. It encourages turnover of usernames, preventing long-term hoarding and promoting active participation. Users are motivated to manage their username portfolio, renewing valuable names while relinquishing irrelevant ones. Ultimately, this fosters fairness and efficiency, ensuring naming resources are utilized effectively and refreshed to meet evolving needs. #### Name Uniqueness Enforcing unique usernames is crucial for maintaining a clear and intuitive identification system. It prevents confusion and enables seamless
+
+
+=== ERC-7992 ===
+TITLE: Verifiable ML Model Inference (ZKML)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-07-23
+REQUIRES: 165
+
+SUMMARY:
+This ERC standardizes how smart contracts reference machine-learning (ML) models and accept zero-knowledge attestations of their inferences. It defines a registry that issues a `modelId` for a `ModelCommitment`, hashes of the model’s weights/architecture, proving circuit/AIR, and verifying key, along with a `proofSystemId` for the proving system, and exposes discoverability via [ERC-165](./eip-165.md). A verifier interface provides `verifyInference(modelId, inputCommitment, output, proof)`: it retrieves the model commitment, dispatches verification to the declared proof system, and reverts on any mismatch or invalid proof; success implies validity and emits `InferenceVerified`. Inputs are bound by domain-separated commitments (nonceable for replay protection), outputs are ABI-encoded
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Terminology & IDs - Model Commitment: A bundle of hashes that ties together the model’s weights, architecture, proving circuit/Algebraic intermediate representation (AIR), and verifying key. - `modelId` (`uint256`): A unique identifier returned by the registry upon model registration. - `inputCommitment` (`bytes32`): A hash commitment to all private inputs (and any declared public inputs) for an inference. Implementations MUST domain-separate and SHOULD include a
+
+MOTIVATION:
+Smart contracts can’t run large ML models, and they can’t trust an oracle’s claim about a model’s output. Today, projects either (1) trust a centralized server, (2) cripple models to fit on-chain, or (3) rely on social committees. None provide cryptographic assurance. Zero-knowledge ML (ZKML) fixes the trust gap by letting a prover show—succinctly and privately—that a specific model, with specific inputs, produced a specific output. But without a shared interface, every dApp/verifier pair is bespoke: different ABIs, different registry schemas, poor composability. This ERC standardizes that on-chain boundary: - Registry: publish immutable commitments to model weights/architecture/circuits so
+
+RATIONALE:
+- Void Return on `verifyInference`: Reverting on failure and returning nothing on success removes redundant gas-expensive booleans and matches modern Solidity patterns (e.g., OpenZeppelin’s `SafeERC20`). - Separated Registry & Verifier: Encourages modularity—teams can upgrade verifiers or registries independently. - Opaque bytes for Proof/Output: Avoids lock-in to a specific proof system or output schema. - Deterministic `proofSystemId`: Prevents collisions and ambiguity; enables predictable dispatch in mixed-system verifiers. - Nonce in `inputCommitment`: Explicitly mitigates replay attacks when inference uniqueness matters.
 
 
 === ERC-7774 ===
