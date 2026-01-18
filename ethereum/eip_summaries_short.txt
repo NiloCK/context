@@ -607,7 +607,7 @@ RATIONALE:
 === EIP-7954 ===
 TITLE: Increase Maximum Contract Size
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-06-09
 REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
 
@@ -3299,7 +3299,7 @@ RATIONALE:
 === EIP-5920 ===
 TITLE: PAY opcode
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Stagnant
 CREATED: 2022-03-14
 REQUIRES: 2, 1, 4, ,,  , 2, 9, 2, 9, ,,  , 7, 5, 2, 3
 
@@ -5827,7 +5827,7 @@ RATIONALE:
 === EIP-7958 ===
 TITLE: EVM64 - Little endian opcodes
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-05-26
 REQUIRES: 7937
 
