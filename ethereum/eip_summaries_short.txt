@@ -5019,23 +5019,23 @@ RATIONALE:
 
 
 === EIP-7981 ===
-TITLE: Increase access list cost
+TITLE: Increase Access List Cost
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-12-27
-REQUIRES: 2930
+REQUIRES: 2, 9, 3, 0, ,,  , 7, 9, 7, 6
 
 SUMMARY:
-This EIP charges access lists for their data footprint, closing a loophole that allows circumventing [EIP-7623](./eip-7623.md) floor pricing. This effectively reduces the worst-case block
+This EIP charges access lists for their data footprint, preventing the circumvention of the [EIP-7623](./eip-7623.md) floor pricing. This effectively reduces the worst-case block size
 
 SPECIFICATION:
 | Parameter | Value | Source | | -------------------------------------- | ----- | ------ | | `ACCESS_LIST_ADDRESS_COST` | `2400` | [EIP-2930](./eip-2930.md) | | `ACCESS_LIST_STORAGE_KEY_COST` |
 
 MOTIVATION:
-Access lists are only priced for storage but not for their data. Furthermore, access lists can circumvent the [EIP-7623](./eip-7623.md) floor pricing by contributing to
+Access lists are only priced for storage but not for their data. Furthermore, access lists can circumvent the [EIP-7976](./eip-7976.md) floor pricing by contributing to
 
 RATIONALE:
-Adding 40 gas per non-zero byte and 10 gas per zero byte ensures consistent pricing across all transaction data: - Address (20 bytes, typically
+Adding 60 gas per non-zero byte and 15 gas per zero byte ensures consistent pricing across all transaction data: - Address (20 bytes, typically
 
 
 === EIP-6789 ===
