@@ -2503,7 +2503,7 @@ RATIONALE:
 === EIP-7923 ===
 TITLE: Linear, Page-Based Memory Costing
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2025-03-27
 REQUIRES: 
 
@@ -2511,7 +2511,7 @@ SUMMARY:
 This EIP replaces the quadratic memory model in the EVM with a linear, page-based costing model. Memory is virtually addressable. Page allocation is included in the cost model. After applying this EIP, memory limits are invariant to the state of the message call stack.
 
 SPECIFICATION:
-Consider the following constants: ```python ALLOCATE_PAGE_COST = 100 PAGE_SIZE = 4096 MAXIMUM_MEMORY_SIZE = 64 * 1024 * 1024 ``` The memory costing algorithm is changed as follows: 1. For each page touched by an instruction, charge `ALLOCATE_PAGE_COST` gas if it has not been touched before in this message call.
+Consider the following constants: ```python ALLOCATE_PAGE_COST = 100 PAGE_SIZE = 4096 MAXIMUM_MEMORY_SIZE = 64 * 1024 * 1024 ``` The memory costing algorithm is changed as follows: 1. For each page touched by an instruction, charge `ALLOCATE_PAGE_COST` gas if it has not been touched before in this message call,
 
 MOTIVATION:
 The EVM currently uses a quadratic pricing model for its memory. This was originally put in place to defend against DoS attacks. However, the memory model has several drawbacks. 1. It is anachronistic. Even at a gas limit of 30 million gas, users can only use 3MB of memory
@@ -4763,6 +4763,26 @@ External callers presently have no way of accessing return data from Ethereum, i
 
 RATIONALE:
 [EIP-658](./eip-658.md) originally proposed adding return data to transaction receipts. However, return data is not charged for (as it is not stored on the blockchain), so adding it to transaction receipts could result in DoS and spam opportunities. Instead, a simple Boolean `status` field was added to transaction receipts. This
+
+
+=== EIP-8125 ===
+TITLE: Temporary Contract Storage
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-01-14
+REQUIRES: 2, 2, 0, 0, ,,  , 2, 9, 2, 9
+
+SUMMARY:
+This EIP introduces *temporary storage*: a new contract-accessible key-value store that persists across transactions and blocks, but is automatically cleared at a protocol-defined schedule. Two new opcodes are added: - `TMPSTORE(key, value)` to write temporary storage for the executing contract. - `TMPLOAD(key)` to read temporary storage for the executing
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants and parameters |Name|Value|Description| |-|:-:|-| | `FORK_BLOCK` | TBD | Activation block of this
+
+MOTIVATION:
+![](../assets/eip-8125/1.png) *Figure 1: Over 60% of the storage slots are written once and never accessed again onchain.* Permanent contract storage is costly because it increases long-term node resource requirements (disk, I/O, state maintenance). However, many applications write data that is only valuable for a bounded time window. This EIP
+
+RATIONALE:
+### Why not just use transient storage (EIP-1153)? [EIP-1153](./eip-1153.md) (transient storage) is discarded after every transaction, which is ideal for intra-tx operations. This EIP targets a different class of use cases where data must persist across multiple transactions/blocks, but does not need indefinite retention. ### Why two-period rollover? Two-period
 
 
 === EIP-7609 ===
@@ -7118,7 +7138,7 @@ RATIONALE:
 === EIP-7934 ===
 TITLE: RLP Execution Block Size Limit
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-04-16
 REQUIRES: 
 
@@ -7275,6 +7295,26 @@ EIP-7937 has maximum compatibility with existing EVM. It implements EVM64 simply
 
 RATIONALE:
 ### Stack behavior "Pure" in "pure EVM64" refers to the fact that all opcodes in EVM64 mode only operates on the least significant 64 bits. In this specification, we don't specifically define 64-bit stack. As far as this EIP is concerned, stack is still 256-bit. However, because it only
+
+
+=== EIP-8099 ===
+TITLE: MEVless Protocol
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-09-25
+REQUIRES: 
+
+SUMMARY:
+This proposal introduces the MEVless protocol, a novel approach to prevent Maximum Extractable Value (MEV) attacks by implementing blind transaction sequencing. The core principle of MEVless is to prevent validators from seeing transaction content during the ordering phase, thereby eliminating the fundamental prerequisite for MEV attacks. The protocol separates
+
+SPECIFICATION:
+### Protocol Overview The MEVless protocol operates on a two-phase block system: 1. **Sequencing Blocks**: Order transactions based on transaction hashes and prepayment amounts without revealing transaction content. Sequencing blocks interval can be shorter than execution blocks. 2. **Execution Blocks**: Execute transactions in the predetermined order from sequencing blocks
+
+MOTIVATION:
+MEV attacks, particularly sandwich attacks and front-running, represent a significant threat to blockchain ecosystems, especially in DeFi applications. The fundamental prerequisite for MEV attacks is that validators can see transaction content before ordering, which allows them to: 1. **Sandwich Attacks**: Insert buy and sell transactions around user transactions to
+
+RATIONALE:
+### Why Blind Sequencing? Blind sequencing eliminates the root cause of MEV attacks by preventing miners from seeing transaction content during the critical ordering phase. This approach is more efficient than encryption-based solutions and more decentralized than private mempool approaches. ### Why Two-Phase Blocks? Separating sequencing and execution allows
 
 
 === EIP-1052 ===
@@ -7597,7 +7637,7 @@ Packet codes 0x00 and 0x01 are already used in all Whisper versions. Packet code
 === EIP-7843 ===
 TITLE: SLOTNUM opcode
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-12-06
 REQUIRES: 
 
@@ -7605,7 +7645,7 @@ SUMMARY:
 This EIP proposes to add a new opcode `SLOTNUM` (`0x4b`), that returns the corresponding slot number for the current block.
 
 SPECIFICATION:
-A new opcode `SLOTNUM` is introduced at `0x4b`. It shall return one stack element. ### Output One element `SlotNumber` is added to the stack; it is equal to the corresponding slot number for this block. `SlotNumber` is a `uint64` in big endian encoding. ### Gas Cost The gas cost
+A new opcode `SLOTNUM` is introduced at `0x4b`. It shall return one stack element. ### Output One element `slotNumber` is added to the stack; it is equal to the corresponding slot number for this block. `slotNumber` is a `uint64` in big endian encoding. ### Gas Cost The gas cost
 
 MOTIVATION:
 There are currently two ways to get the current slot number onchain: 1) Calculate from the block timestamp. This requires hardcoding the chain slot length into a smart contract. 2) Provide the slot number as calldata and prove it against the beacon block root (using [EIP-4788](./eip-4788.md)). Both of these
@@ -9104,7 +9144,7 @@ Together with [EIP-7708](./eip-7708.md) this EIP provides the ability for wallet
 === EIP-7708 ===
 TITLE: ETH transfers emit a log
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-05-17
 REQUIRES: 
 
@@ -9112,7 +9152,7 @@ SUMMARY:
 All ETH-transfers, including transactions, `CALL` and `SELFDESTRUCT` emit a log.
 
 SPECIFICATION:
-### Parameters * `MAGIC`: `TBD` ### Functionality Whenever (i) a nonzero-value `CALL`, (ii) a nonzero-value-transferring `SELFDESTRUCT`, or (iii) a nonzero-value-transferring transaction takes place, issue a log, identical to a LOG3, with three topics: (i) `MAGIC`, (ii) the sender address, (iii) the recipient address. The log data is a big-endian
+### ETH transfer logs A log, identical to a LOG3, is issued for: - Any nonzero-value-transferring transaction, before any other logs created by EVM execution - Any nonzero-value-transferring `CALL`, at the time that the value transfer executes - Any nonzero-value-transferring `SELFDESTRUCT` to a different account, at the time that
 
 MOTIVATION:
 Logs are often used to track when balance changes of assets on Ethereum. Logs work for [ERC-20](./eip-20.md) tokens, but they do not work for ETH. ETH transfers from EOAs can be read from the transaction list in the block, but ETH transfers from smart contract wallets are not automatically

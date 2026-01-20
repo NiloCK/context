@@ -7332,21 +7332,21 @@ RATIONALE:
 === ERC-5516 ===
 TITLE: Soulbound Multi-owner Tokens
 TYPE: Standards Track ERC
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2022-08-19
-REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 5
+REQUIRES: 165
 
 SUMMARY:
-This EIP proposes a standard interface for non-fungible double signature Soulbound multi-tokens. Previous account-bound token standards face the issue of users losing their account
+This EIP proposes a standard interface for non-transferable, multi-owner Soulbound tokens. Previous account-bound token standards face the issue of users losing their account keys
 
 SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
 
 MOTIVATION:
-This EIP was inspired by the main characteristics of the [EIP-1155](./eip-1155.md) token and by articles in which benefits and potential use cases of Soulbound/Accountbound
+This EIP was inspired by the main characteristics of the [ERC-1155](./eip-1155.md) token standard and by articles in which benefits and potential use cases of
 
 RATIONALE:
-### SBT as an extension of EIP-1155 We believe that Soulbound Tokens serve as a specialized subset of existing [EIP-1155](./eip-1155.md) tokens. The advantage of
+### [ERC-5516](./eip-5516.md) as certificates The original idea for this proposal aroused from a neccesity of emitting on-chain certificates to multiple people. We thought that
 
 
 === ERC-3000 ===

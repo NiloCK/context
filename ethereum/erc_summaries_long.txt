@@ -7332,21 +7332,21 @@ RATIONALE:
 === ERC-5516 ===
 TITLE: Soulbound Multi-owner Tokens
 TYPE: Standards Track ERC
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2022-08-19
-REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 5
+REQUIRES: 165
 
 SUMMARY:
-This EIP proposes a standard interface for non-fungible double signature Soulbound multi-tokens. Previous account-bound token standards face the issue of users losing their account keys or having them rotated, thereby losing their tokens in the process. This EIP provides a solution to this issue that allows for the recycling of SBTs.
+This EIP proposes a standard interface for non-transferable, multi-owner Soulbound tokens. Previous account-bound token standards face the issue of users losing their account keys or having them rotated, thereby losing their tokens in the process. This EIP provides a solution to this issue that allows for the recycling of SBTs.
 
 SPECIFICATION:
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. **Smart contracts implementing this EIP MUST implement all of the functions in the `EIP-5516` interface.** **Smart contracts implementing this EIP MUST implement the [EIP-165](./eip-165.md) `supportsInterface` function and MUST return the constant value `true` if `0x8314f22b` is passed through the `interfaceID` argument. They also MUST implement the [EIP-1155](./eip-1155.md) Interface and MUST return the constant value `true` if `0xd9b67a26` is passed through the `interfaceID` argument. Furthermore, they MUST implement the [EIP-1155](./eip-1155.md)
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. **Smart contracts implementing this EIP MUST implement all of the functions in the [ERC-5516](./eip-5516.md) interface.** **Smart contracts implementing this EIP MUST implement the [EIP-165](./eip-165.md) `supportsInterface` function and MUST return the constant value `true` if `0x45b253ba` is passed through the `interfaceID` argument.** ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity ^0.8.4; /** @title Soulbound, Multi-Token standard. @notice Interface of the EIP-5516 Note: The ERC-165 identifier for this interface is 0x45b253ba. */ interface
 
 MOTIVATION:
-This EIP was inspired by the main characteristics of the [EIP-1155](./eip-1155.md) token and by articles in which benefits and potential use cases of Soulbound/Accountbound Tokens (SBTs) were presented. This design also allows for batch token transfers, saving on transaction costs. Trading of multiple tokens can be built on top of this standard and it removes the need to approve individual token contracts separately. It is also easy to describe and mix multiple fungible or non-fungible token types in a single contract. ### Characteristics - The NFT will be non-transferable after the initial transfer - Partially compatible with [EIP-1155](./eip-1155.md)
+This EIP was inspired by the main characteristics of the [ERC-1155](./eip-1155.md) token standard and by articles in which benefits and potential use cases of Soulbound/Accountbound Tokens (SBTs) were presented. This design also allows for batch token transfers, saving on transaction costs. Trading of multiple tokens can be built on top of this standard and it removes the need to approve individual token contracts separately. It is also easy to describe and mix multiple fungible or non-fungible token types in a single contract. ### Characteristics - The NFT will be non-transferable after the initial transfer - Multi-Token - Multi-Owner
 
 RATIONALE:
-### SBT as an extension of EIP-1155 We believe that Soulbound Tokens serve as a specialized subset of existing [EIP-1155](./eip-1155.md) tokens. The advantage of such a design is the seamless compatibility of SBTs with existing NFT services. Service providers can treat SBTs like NFTs and do not need to make drastic changes to their existing codebase. Making the standard mostly compatible with [EIP-1155](./eip-1155.md) also allows for SBTs to bind to multiple addresses and to Smart Contracts. ### Double-Signature The Double-Signature functionality was implemented to prevent the receipt of unwanted tokens. It symbolizes a handshake between the token receiver
+### [ERC-5516](./eip-5516.md) as certificates The original idea for this proposal aroused from a neccesity of emitting on-chain certificates to multiple people. We thought that having to emit one token per account has redundant, and we originally developed a [ERC-1155](./eip-1155.md) partial-compatible implementation. After revisiting our proposal, we thought that it would be cleaner to have a more minimal interface that just serves this purpose only, so we decided to drop the partial backwards compatibility with [ERC-1155](./eip-1155.md). ### SBT as a _spinoff_ of [EIP-1155](./eip-1155.md) We saw the vision of the [ERC-1155](./eip-1155.md#metadata) and tried to apply it to Soulbound/Accountbound tokens: We
 
 
 === ERC-3000 ===

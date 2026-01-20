@@ -2503,7 +2503,7 @@ RATIONALE:
 === EIP-7923 ===
 TITLE: Linear, Page-Based Memory Costing
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2025-03-27
 REQUIRES: 
 
@@ -2511,7 +2511,7 @@ SUMMARY:
 This EIP replaces the quadratic memory model in the EVM with a linear, page-based costing model. Memory is virtually addressable. Page allocation is included in the cost model. After applying this EIP, memory limits are invariant to the state of the message call stack.
 
 SPECIFICATION:
-Consider the following constants: ```python ALLOCATE_PAGE_COST = 100 PAGE_SIZE = 4096 MAXIMUM_MEMORY_SIZE = 64 * 1024 * 1024 ``` The memory costing algorithm is changed as follows: 1. For each page touched by an instruction, charge `ALLOCATE_PAGE_COST` gas if it has not been touched before in this message call. 2. The base gas cost for all memory instructions, e.g. `MLOAD` and `MSTORE`, remains the same, at 3. 3. The linear and quadratic terms in the memory expansion cost are removed. The behavior of `msize` remains the same. It returns the maximum byte touched by any memory instruction, rounded
+Consider the following constants: ```python ALLOCATE_PAGE_COST = 100 PAGE_SIZE = 4096 MAXIMUM_MEMORY_SIZE = 64 * 1024 * 1024 ``` The memory costing algorithm is changed as follows: 1. For each page touched by an instruction, charge `ALLOCATE_PAGE_COST` gas if it has not been touched before in this message call, except for page 0 which is free. 2. The base gas cost for all memory instructions, e.g. `MLOAD` and `MSTORE`, remains the same, at 3. 3. The linear and quadratic terms in the memory expansion cost are removed. The behavior of `msize` remains the same. It returns the maximum
 
 MOTIVATION:
 The EVM currently uses a quadratic pricing model for its memory. This was originally put in place to defend against DoS attacks. However, the memory model has several drawbacks. 1. It is anachronistic. Even at a gas limit of 30 million gas, users can only use 3MB of memory in a message call (and that burns all gas). Since the quadratic term for memory expansion starts kicking in at 724 bytes, users use much less memory in practice. To use even 64KB of memory -- the amount of memory available to a PC from the early 80's --
@@ -3615,7 +3615,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Glamsterdam network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7732](./eip-7732.md): Enshrined Proposer-Builder Separation * [EIP-7928](./eip-7928.md): Block-Level Access Lists ### Considered for Inclusion * [EIP-2780](./eip-2780.md): Reduce intrinsic transaction gas * [EIP-7688](./eip-7688.md): Forward compatible consensus data structures * [EIP-7708](./eip-7708.md): ETH transfers emit a log * [EIP-7778](./eip-7778.md): Block Gas Accounting without Refunds * [EIP-7843](./eip-7843.md): SLOTNUM opcode * [EIP-7904](./eip-7904.md): General Repricing * [EIP-7976](./eip-7976.md): Increase Calldata Floor Cost * [EIP-7981](./eip-7981.md): Increase Access List Cost * [EIP-7997](./eip-7997.md): Deterministic Factory Predeploy * [EIP-8024](./eip-8024.md): Backward compatible SWAPN, DUPN, EXCHANGE
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7732](./eip-7732.md): Enshrined Proposer-Builder Separation * [EIP-7928](./eip-7928.md): Block-Level Access Lists ### Considered for Inclusion * [EIP-2780](./eip-2780.md): Reduce intrinsic transaction gas * [EIP-7688](./eip-7688.md): Forward compatible consensus data structures * [EIP-7708](./eip-7708.md): ETH transfers emit a log * [EIP-7778](./eip-7778.md): Block Gas Accounting without Refunds * [EIP-7843](./eip-7843.md): SLOTNUM opcode * [EIP-7904](./eip-7904.md): General Repricing * [EIP-7954](./eip-7954.md): Increase Maxiumum Contract Size * [EIP-7976](./eip-7976.md): Increase Calldata Floor Cost * [EIP-7981](./eip-7981.md): Increase Access List Cost * [EIP-7997](./eip-7997.md): Deterministic Factory Predeploy *
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Glamsterdam network upgrade, as well as links to full specification.
@@ -4763,6 +4763,26 @@ External callers presently have no way of accessing return data from Ethereum, i
 
 RATIONALE:
 [EIP-658](./eip-658.md) originally proposed adding return data to transaction receipts. However, return data is not charged for (as it is not stored on the blockchain), so adding it to transaction receipts could result in DoS and spam opportunities. Instead, a simple Boolean `status` field was added to transaction receipts. This modified version of EIP 658 was included in the Byzantium hard fork. While the `status` field is useful, applications often need the return data as well. The primary advantage of using the strategy outlined here is efficiency: no extra data needs to be stored on the blockchain, and minimal
+
+
+=== EIP-8125 ===
+TITLE: Temporary Contract Storage
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-01-14
+REQUIRES: 2, 2, 0, 0, ,,  , 2, 9, 2, 9
+
+SUMMARY:
+This EIP introduces *temporary storage*: a new contract-accessible key-value store that persists across transactions and blocks, but is automatically cleared at a protocol-defined schedule. Two new opcodes are added: - `TMPSTORE(key, value)` to write temporary storage for the executing contract. - `TMPLOAD(key)` to read temporary storage for the executing contract. Temporary storage is intended for data that does not need indefinite retention, providing a safer alternative to using permanent state for ephemeral data and enabling bounded growth of this class of state.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants and parameters |Name|Value|Description| |-|:-:|-| | `FORK_BLOCK` | TBD | Activation block of this EIP | | `TEMP_STORAGE_PERIOD` | TBD | The number of blocks that the temporary storage holds for a given period | | `TEMP_STORAGE_SYSTEM_ADDRESS_0` | TBD | First reserved address used to store temporary storage | | `TEMP_STORAGE_SYSTEM_ADDRESS_1` | TBD | Second reserved address used to store temporary storage |
+
+MOTIVATION:
+![](../assets/eip-8125/1.png) *Figure 1: Over 60% of the storage slots are written once and never accessed again onchain.* Permanent contract storage is costly because it increases long-term node resource requirements (disk, I/O, state maintenance). However, many applications write data that is only valuable for a bounded time window. This EIP provides: - **Bounded lifetime semantics** without requiring explicit deletes. - **Predictable clearing** that can be relied upon at the application layer. - **A building block** for reducing state growth created by ephemeral use cases.
+
+RATIONALE:
+### Why not just use transient storage (EIP-1153)? [EIP-1153](./eip-1153.md) (transient storage) is discarded after every transaction, which is ideal for intra-tx operations. This EIP targets a different class of use cases where data must persist across multiple transactions/blocks, but does not need indefinite retention. ### Why two-period rollover? Two-period rollover provides a stronger usability guarantee: - An entry is retained for **at least** one full `TEMP_STORAGE_PERIOD` after it is written (it will be readable in the next period via the previous-period system account). - An entry is retained for **at most** two periods (once the current-period system account
 
 
 === EIP-7609 ===
@@ -7118,7 +7138,7 @@ RATIONALE:
 === EIP-7934 ===
 TITLE: RLP Execution Block Size Limit
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-04-16
 REQUIRES: 
 
@@ -7275,6 +7295,26 @@ EIP-7937 has maximum compatibility with existing EVM. It implements EVM64 simply
 
 RATIONALE:
 ### Stack behavior "Pure" in "pure EVM64" refers to the fact that all opcodes in EVM64 mode only operates on the least significant 64 bits. In this specification, we don't specifically define 64-bit stack. As far as this EIP is concerned, stack is still 256-bit. However, because it only operates on the least significant 64 bits. The most significant 192 bits becomes unobservable as long as the interpreter is in an EVM64 code section. Thus an EVM interpreter can optimize EVM64 execution as follows: * When entering EVM64 code section, truncate `inputs` to 64 bits. * Use 64-bit
+
+
+=== EIP-8099 ===
+TITLE: MEVless Protocol
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-09-25
+REQUIRES: 
+
+SUMMARY:
+This proposal introduces the MEVless protocol, a novel approach to prevent Maximum Extractable Value (MEV) attacks by implementing blind transaction sequencing. The core principle of MEVless is to prevent validators from seeing transaction content during the ordering phase, thereby eliminating the fundamental prerequisite for MEV attacks. The protocol separates block production into two phases: sequencing blocks that order transactions based on transaction hashes without revealing transaction content, and execution blocks that execute transactions in the predetermined order. This design eliminates the ability of miners and validators to perform MEV attacks such as sandwich attacks and front-running by removing
+
+SPECIFICATION:
+### Protocol Overview The MEVless protocol operates on a two-phase block system: 1. **Sequencing Blocks**: Order transactions based on transaction hashes and prepayment amounts without revealing transaction content. Sequencing blocks interval can be shorter than execution blocks. 2. **Execution Blocks**: Execute transactions in the predetermined order from sequencing blocks ### Block Types #### Sequencing Blocks - **Purpose**: Order transactions and collect prepayments - **Frequency**: Every odd-numbered block height - **Operations**: - Receive transaction hashes from users - Collect prepayments (gas fees + optional tips) - Order transactions by prepayment amount (highest first) - Publish ordered transaction sequence as
+
+MOTIVATION:
+MEV attacks, particularly sandwich attacks and front-running, represent a significant threat to blockchain ecosystems, especially in DeFi applications. The fundamental prerequisite for MEV attacks is that validators can see transaction content before ordering, which allows them to: 1. **Sandwich Attacks**: Insert buy and sell transactions around user transactions to manipulate prices and extract value 2. **Front-running**: Execute similar transactions before users to capture arbitrage opportunities 3. **Back-running**: Execute transactions after users to benefit from price movements Unlike legitimate arbitrage activities that provide liquidity, these attacks are purely extractive and harmful to the ecosystem. They reduce user confidence, increase
+
+RATIONALE:
+### Why Blind Sequencing? Blind sequencing eliminates the root cause of MEV attacks by preventing miners from seeing transaction content during the critical ordering phase. This approach is more efficient than encryption-based solutions and more decentralized than private mempool approaches. ### Why Two-Phase Blocks? Separating sequencing and execution allows for: - **Efficient Ordering**: Hash-based ordering is computationally lightweight - **Network Efficiency**: Small hash data reduces bandwidth requirements - **Commitment Mechanism**: Public ordering commitment prevents manipulation ### Why Random Block Production is Critical? Random block production is essential to prevent speculative MEV attacks. When block producers cannot predict when
 
 
 === EIP-1052 ===
@@ -7597,7 +7637,7 @@ Packet codes 0x00 and 0x01 are already used in all Whisper versions. Packet code
 === EIP-7843 ===
 TITLE: SLOTNUM opcode
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-12-06
 REQUIRES: 
 
@@ -7605,7 +7645,7 @@ SUMMARY:
 This EIP proposes to add a new opcode `SLOTNUM` (`0x4b`), that returns the corresponding slot number for the current block.
 
 SPECIFICATION:
-A new opcode `SLOTNUM` is introduced at `0x4b`. It shall return one stack element. ### Output One element `SlotNumber` is added to the stack; it is equal to the corresponding slot number for this block. `SlotNumber` is a `uint64` in big endian encoding. ### Gas Cost The gas cost for `SLOTNUM` is a fixed fee of `2`. ### RPC changes The slot number is calculated in the consensus layer and passed to the execution layer through the engine API. #### Header extension The header encoding shall be extended to include a `slot_number` field of type `uint64`. #### PayloadAttributes
+A new opcode `SLOTNUM` is introduced at `0x4b`. It shall return one stack element. ### Output One element `slotNumber` is added to the stack; it is equal to the corresponding slot number for this block. `slotNumber` is a `uint64` in big endian encoding. ### Gas Cost The gas cost for `SLOTNUM` is a fixed fee of `2`. ### RPC changes The slot number is calculated in the consensus layer and passed to the execution layer through the engine API. #### Header extension The header encoding shall be extended to include a `slotNumber` field of type `uint64`. #### Engine
 
 MOTIVATION:
 There are currently two ways to get the current slot number onchain: 1) Calculate from the block timestamp. This requires hardcoding the chain slot length into a smart contract. 2) Provide the slot number as calldata and prove it against the beacon block root (using [EIP-4788](./eip-4788.md)). Both of these approaches have significant drawbacks. (1) would break contracts in the event of a change to the slot length. (2) is expensive in terms of gas, encouraging approach (1) to be used instead. A better approach is for the slot length to be abstracted away from applications, and instead the
@@ -9104,7 +9144,7 @@ Together with [EIP-7708](./eip-7708.md) this EIP provides the ability for wallet
 === EIP-7708 ===
 TITLE: ETH transfers emit a log
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-05-17
 REQUIRES: 
 
@@ -9112,13 +9152,13 @@ SUMMARY:
 All ETH-transfers, including transactions, `CALL` and `SELFDESTRUCT` emit a log.
 
 SPECIFICATION:
-### Parameters * `MAGIC`: `TBD` ### Functionality Whenever (i) a nonzero-value `CALL`, (ii) a nonzero-value-transferring `SELFDESTRUCT`, or (iii) a nonzero-value-transferring transaction takes place, issue a log, identical to a LOG3, with three topics: (i) `MAGIC`, (ii) the sender address, (iii) the recipient address. The log data is a big-endian 32-byte encoding of the transfer value. The `LOG` of a value-transferring transaction should be placed before any logs created by EVM execution. The other two `LOG`s are placed at the time that the value transfer executes.
+### ETH transfer logs A log, identical to a LOG3, is issued for: - Any nonzero-value-transferring transaction, before any other logs created by EVM execution - Any nonzero-value-transferring `CALL`, at the time that the value transfer executes - Any nonzero-value-transferring `SELFDESTRUCT` to a different account, at the time that the value transfer executes | Field | Value | | - | - | | `address` emitting log | `0xfffffffffffffffffffffffffffffffffffffffe` ([`SYSTEM_ADDRESS`](./eip-4788.md)) | | `topics[0]` | `0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef` (`keccak256('Transfer(address,address,uint256)')`) | | `topics[1]` | `from` address (zero prefixed to fill uint256) | | `topics[2]` | `to` address (zero prefixed to fill uint256)
 
 MOTIVATION:
 Logs are often used to track when balance changes of assets on Ethereum. Logs work for [ERC-20](./eip-20.md) tokens, but they do not work for ETH. ETH transfers from EOAs can be read from the transaction list in the block, but ETH transfers from smart contract wallets are not automatically logged anywhere. This has already led to problems in the past, eg. early exchanges would often not properly support deposits from smart contract wallets, or only support them with a much longer delay. This EIP proposes that we automatically generate a log every time a value-transferring `CALL` or `SELFDESTRUCT`
 
 RATIONALE:
-This is the simplest possible implementation that ensures that all ETH transfers are implemented in some kind of record that can be easily accessed through making RPC calls into a node, or through asking for a Merkle branch that is hashed into the block root. The log type is compatible with the ERC-20 token standard, but does not introduce any overly-specific ERC-20 features (eg. ABI encodings) into the specification. ### Open questions 1. Should withdrawals also trigger a log? If so, what should the sender address be specified as? 2. Should fee payments trigger a log? It would
+This is the simplest possible implementation that ensures that all ETH transfers are implemented in some kind of record that can be easily accessed through making RPC calls into a node, or through asking for a Merkle branch that is hashed into the block root. The log type is compatible with the ERC-20 token standard, but does not introduce any overly-specific ERC-20 features (eg. ABI encodings) into the specification. ### Open questions 1. Magic value used for `address`? For address: (a) `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` (same as `eth_simulateV1`), (b) `0xfffffffffffffffffffffffffffffffffffffffe` ([`SYSTEM_ADDRESS`](./eip-4788.md)), (c) zero address 2. Should fee payments trigger a log?
 
 
 === EIP-7805 ===
