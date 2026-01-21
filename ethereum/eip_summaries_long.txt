@@ -607,7 +607,7 @@ RATIONALE:
 === EIP-7954 ===
 TITLE: Increase Maximum Contract Size
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2025-06-09
 REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
 

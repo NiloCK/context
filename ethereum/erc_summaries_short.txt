@@ -1148,6 +1148,23 @@ RATIONALE:
 `multicallPayable` is optional because it isn't always feasible to implement, due to the `msg.value` splitting.
 
 
+=== ERC-8092 ===
+TITLE: Associated Accounts
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-11-25
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 6, 4, 9, 2, ,,  , 7, 9, 3, 0
+
+SUMMARY:
+This specification defines a standard for establishing and verifying associations between blockchain accounts. This allows addresses to publicly declare, prove and revoke a relationship
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to
+
+RATIONALE:
+### Nested Structure Design The separation of `AssociatedAccountRecord` and `SignedAssociationRecord` into distinct structures serves a critical functional purpose. The inner `AssociatedAccountRecord` contains the immutable
+
+
 === ERC-1046 ===
 TITLE: tokenURI Interoperability
 TYPE: Standards Track ERC
