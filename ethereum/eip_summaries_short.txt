@@ -3245,6 +3245,26 @@ RATIONALE:
 We note that it was always expected that a contract account's behaviour is constrained by the code in that contract -- which means that
 
 
+=== EIP-8120 ===
+TITLE: MLOAD8 and CALLDATALOAD8 Opcodes
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-01-07
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces new EVM opcodes that allow loading a single byte from memory or calldata in a single operation, reducing gas cost and
+
+SPECIFICATION:
+### MLOAD8 (TBD) <!-- TODO: Replace TBD with assigned opcode value --> - **Stack input**: `offset` - **Stack output**: `value` Reads one byte from
+
+MOTIVATION:
+Currently, the only way to read a single byte from calldata or memory is to use `CALLDATALOAD` or `MLOAD` and then shift the loaded
+
+RATIONALE:
+### Opcode Symmetry `MLOAD8` serves as a natural counterpart to `MSTORE8 (0x53)`: one stores exactly one byte from the stack to memory, while the
+
+
 === EIP-7833 ===
 TITLE: Scheduled function calls
 TYPE: Standards Track Core
@@ -5043,7 +5063,7 @@ TITLE: Increase Access List Cost
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-12-27
-REQUIRES: 2, 9, 3, 0, ,,  , 7, 9, 7, 6
+REQUIRES: 2, 9, 3, 0, ,,  , 7, 6, 2, 3
 
 SUMMARY:
 This EIP charges access lists for their data footprint, preventing the circumvention of the [EIP-7623](./eip-7623.md) floor pricing. This effectively reduces the worst-case block size
@@ -5052,10 +5072,10 @@ SPECIFICATION:
 | Parameter | Value | Source | | -------------------------------------- | ----- | ------ | | `ACCESS_LIST_ADDRESS_COST` | `2400` | [EIP-2930](./eip-2930.md) | | `ACCESS_LIST_STORAGE_KEY_COST` |
 
 MOTIVATION:
-Access lists are only priced for storage but not for their data. Furthermore, access lists can circumvent the [EIP-7976](./eip-7976.md) floor pricing by contributing to
+Access lists are only priced for storage but not for their data. Furthermore, access lists can circumvent the [EIP-7623](./eip-7623.md) floor pricing by contributing to
 
 RATIONALE:
-Adding 60 gas per non-zero byte and 15 gas per zero byte ensures consistent pricing across all transaction data: - Address (20 bytes, typically
+Access list data is always charged at floor rate (added to `access_list_cost`), and access list tokens are included in the floor calculation. This ensures:
 
 
 === EIP-6789 ===
@@ -6433,7 +6453,7 @@ SUMMARY:
 This EIP modifies the block gas accounting mechanism to prevent the circumvention of block gas limits. It proposes that gas refunds, particularly those from
 
 SPECIFICATION:
-### Gas Accounting Changes 1. **Block Gas Accounting (Modified):** - When calculating gas for block gas limit enforcement, refunds are not subtracted - Block
+### Gas Accounting Changes 1. **User Gas Accounting (Unchanged):** - Users continue to receive gas refunds for operations that qualify (e.g., setting storage to
 
 MOTIVATION:
 Currently, gas refunds from operations like clearing storage slots (setting to zero) reduce both the transaction gas cost for users and the gas counted

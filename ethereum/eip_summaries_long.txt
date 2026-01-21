@@ -3245,6 +3245,26 @@ RATIONALE:
 We note that it was always expected that a contract account's behaviour is constrained by the code in that contract -- which means that the account's funds should not suddenly be spendable by some private key. It was just implicitly assumed in the past that a 160 bit address length is enough to provide collision resistance, and thus that this case could never occur. In that sense, this EIP should be seen as a clarification of protocol behaviour in a previously undefined case rather than an explicit upgrade of consensus rules. This does not exclude all possible attack
 
 
+=== EIP-8120 ===
+TITLE: MLOAD8 and CALLDATALOAD8 Opcodes
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-01-07
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces new EVM opcodes that allow loading a single byte from memory or calldata in a single operation, reducing gas cost and bytecode size compared to existing patterns based on `MLOAD (0x51)` or `CALLDATALOAD (0x35)` followed by bit shifting.
+
+SPECIFICATION:
+### MLOAD8 (TBD) <!-- TODO: Replace TBD with assigned opcode value --> - **Stack input**: `offset` - **Stack output**: `value` Reads one byte from memory at position offset and pushes it onto the stack as a 32-byte word, with the byte placed in the least significant position. Memory expansion occurs prior to the load, after which the loaded byte is read. If the accessed byte lies beyond the previously allocated memory, the returned value is 0 due to zero-initialization. Memory expansion rules apply in the same way as for `MSTORE8` (extending memory to at least `offset + 1`
+
+MOTIVATION:
+Currently, the only way to read a single byte from calldata or memory is to use `CALLDATALOAD` or `MLOAD` and then shift the loaded 32-byte word. For example, reading the byte at offset x from calldata requires: ``` PUSH x CALLDATALOAD PUSH1 248 SHR ``` This pattern increases runtime gas cost and adds three extra bytes to the deployed bytecode for each single-byte access. Contracts that frequently parse byte-oriented calldata or instruction streams incur unnecessary overhead. This EIP proposes two new opcodes that allow loading a single byte directly in one operation.
+
+RATIONALE:
+### Opcode Symmetry `MLOAD8` serves as a natural counterpart to `MSTORE8 (0x53)`: one stores exactly one byte from the stack to memory, while the other loads exactly one byte from memory to the stack. This symmetry improves conceptual clarity and developer ergonomics. ### Efficiency for Byte-Oriented Contracts Instruction-based architectures that interpret calldata as a sequence of byte-level commands benefit from reduced gas usage and smaller bytecode size when parsing instruction streams. A common pattern for reading a single byte from calldata today consists of the following instruction sequence: - `CALLDATALOAD` (3 gas) - `PUSH1` (3 gas) - `SHR`
+
+
 === EIP-7833 ===
 TITLE: Scheduled function calls
 TYPE: Standards Track Core
@@ -5043,19 +5063,19 @@ TITLE: Increase Access List Cost
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-12-27
-REQUIRES: 2, 9, 3, 0, ,,  , 7, 9, 7, 6
+REQUIRES: 2, 9, 3, 0, ,,  , 7, 6, 2, 3
 
 SUMMARY:
 This EIP charges access lists for their data footprint, preventing the circumvention of the [EIP-7623](./eip-7623.md) floor pricing. This effectively reduces the worst-case block size by ~21% with minimal impact on users.
 
 SPECIFICATION:
-| Parameter | Value | Source | | -------------------------------------- | ----- | ------ | | `ACCESS_LIST_ADDRESS_COST` | `2400` | [EIP-2930](./eip-2930.md) | | `ACCESS_LIST_STORAGE_KEY_COST` | `1900` | [EIP-2930](./eip-2930.md) | | `TOTAL_COST_FLOOR_PER_TOKEN` | `15` | [EIP-7976](./eip-7976.md) | Let `access_list_nonzero_bytes` and `access_list_zero_bytes` be the count of non-zero and zero bytes respectively in the addresses (20 bytes each) and storage keys (32 bytes each) contained within the access list. The current formula for access list costs in [EIP-2930](./eip-2930.md) is: ```python access_list_cost = ( ACCESS_LIST_ADDRESS_COST * access_list_addresses + ACCESS_LIST_STORAGE_KEY_COST * access_list_storage_keys ) ``` The formula for access list costs changes to: ```python #
+| Parameter | Value | Source | | -------------------------------------- | ----- | ------ | | `ACCESS_LIST_ADDRESS_COST` | `2400` | [EIP-2930](./eip-2930.md) | | `ACCESS_LIST_STORAGE_KEY_COST` | `1900` | [EIP-2930](./eip-2930.md) | | `TOTAL_COST_FLOOR_PER_TOKEN` | `10` | [EIP-7623](./eip-7623.md) | Let `access_list_nonzero_bytes` and `access_list_zero_bytes` be the count of non-zero and zero bytes respectively in the addresses (20 bytes each) and storage keys (32 bytes each) contained within the access list. Let `tokens_in_access_list = access_list_zero_bytes + access_list_nonzero_bytes * 4`. The access list cost formula changes from [EIP-2930](./eip-2930.md) to include data cost: ```python access_list_cost = ( ACCESS_LIST_ADDRESS_COST * access_list_addresses + ACCESS_LIST_STORAGE_KEY_COST * access_list_storage_keys + TOTAL_COST_FLOOR_PER_TOKEN
 
 MOTIVATION:
-Access lists are only priced for storage but not for their data. Furthermore, access lists can circumvent the [EIP-7976](./eip-7976.md) floor pricing by contributing to EVM gas while still leaving a non-negligible data footprint. This enables to achieve the maximal possible block size by combining access lists with calldata at a certain ratio.
+Access lists are only priced for storage but not for their data. Furthermore, access lists can circumvent the [EIP-7623](./eip-7623.md) floor pricing by contributing to EVM gas while still leaving a non-negligible data footprint. This enables achieving the maximal possible block size by combining access lists with calldata at a certain ratio.
 
 RATIONALE:
-Adding 60 gas per non-zero byte and 15 gas per zero byte ensures consistent pricing across all transaction data: - Address (20 bytes, typically mostly non-zero): ~3600 gas (2400 + 1200 assuming all non-zero) - Storage key (32 bytes, typically mostly non-zero): ~3820 gas (1900 + 1920 assuming all non-zero) No threshold mechanism is used. The per-byte costs are always applied to maintain simplicity and prevent circumvention. The additional cost makes [EIP-2930](./eip-2930.md) access lists economically irrational for gas optimization, effectively deprecating their use while maintaining compatibility. ### Access List Size Impact At a gas limit of 60M: -
+Access list data is always charged at floor rate (added to `access_list_cost`), and access list tokens are included in the floor calculation. This ensures: - Access list data always pays floor rate regardless of execution level - Access lists cannot be used to bypass the calldata floor pricing - Consistent pricing across all transaction data sources
 
 
 === EIP-6789 ===
@@ -6433,7 +6453,7 @@ SUMMARY:
 This EIP modifies the block gas accounting mechanism to prevent the circumvention of block gas limits. It proposes that gas refunds, particularly those from SSTORE operations setting storage slots to zero, should not reduce the gas counted toward the block gas limit, while still being applied to transaction gas costs for users.
 
 SPECIFICATION:
-### Gas Accounting Changes 1. **Block Gas Accounting (Modified):** - When calculating gas for block gas limit enforcement, refunds are not subtracted - Block gas accounting becomes: `block.gas_used += max(tx_gas_used, calldata_floor_gas_cost)` (incorporating the calldata floor from [EIP-7623](./eip-7623.md)) - Storage discounts that reflect actual reduced computational work (e.g., warm storage access, reverting to original values) remain applied to block gas accounting 2. **Receipt Changes:** - `cumulative_gas_used`: Now uses gas before refunds, matching block gas accounting - New field `gas_spent`: Gas actually spent by the transaction after refunds (what the user pays)
+### Gas Accounting Changes 1. **User Gas Accounting (Unchanged):** - Users continue to receive gas refunds for operations that qualify (e.g., setting storage to zero) - Transaction gas: `gas_spent = max(tx_gas_used - gas_refund, calldata_floor_gas_cost)` 2. **Block Gas Accounting (Modified):** - When calculating gas for block gas limit enforcement, refunds are not subtracted - Block gas accounting becomes: `block.gas_used += max(tx_gas_used, calldata_floor_gas_cost)` (incorporating the calldata floor from [EIP-7623](./eip-7623.md)) - Storage discounts that reflect actual reduced computational work (e.g., warm storage access, reverting to original values) remain applied to block gas accounting 3. **Receipt Changes:** - `cumulative_gas_used`: Now uses gas
 
 MOTIVATION:
 Currently, gas refunds from operations like clearing storage slots (setting to zero) reduce both the transaction gas cost for users and the gas counted toward the block gas limit. This creates a discrepancy between the computational work performed and the gas accounted for in the block. Example: Block `20878522` shows a net usage of 28.5 MGas, but contains 4.01 MGas of refunds, bringing the gross usage to 32.51 MGas—exceeding the block gas limit by 2.51 MGas. This mechanism can be exploited to perform more operations in a block than the gas limit intends to allow, potentially leading to:
