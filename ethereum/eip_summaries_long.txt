@@ -1616,16 +1616,16 @@ CREATED: 2025-10-03
 REQUIRES: 2, 9, 2, 6, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 2
 
 SUMMARY:
-This EIP updates the gas cost of state-access operations to reflect Ethereum’s larger state and the consequent slowdown of these operations. It raises the base costs for `GAS_STORAGE_UPDATE`, `GAS_COLD_SLOAD`, and `GAS_COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`. The design coordinates with EIP-8032: before EIP-8032, parameters assume worst-case contract size; after EIP-8032, they assume worst-case up to `ACTIVATION_THRESHOLD`, with additional depth-based scaling beyond.
+This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the base costs for `GAS_STORAGE_UPDATE`, `GAS_COLD_SLOAD`, and `GAS_COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`. The design coordinates with [EIP-8032](./eip-8032.md): before EIP-8032, parameters assume worst-case contract size; after EIP-8032, they assume worst-case up to `ACTIVATION_THRESHOLD`, with additional depth-based scaling beyond.
 
 SPECIFICATION:
-### Parameters Upon activation of this EIP, the following parameters of the gas model are renamed: | **Parameter** | **New name** | |:---:|:---:| | `GAS_STORAGE_UPDATE` | `GAS_COLD_STORAGE_WRITE` | | `GAS_COLD_SLOAD` | `GAS_COLD_STORAGE_ACCESS` | The following parameters of the gas model updated: | **Parameter** | **Current value** | **New value** | **Increase** |**Operations affected** | |:---:|:---:|:---:|:---:|:---:| | `GAS_COLD_STORAGE_WRITE` | 5,000 | TBD | TBD | `SSTORE` | | `GAS_COLD_STORAGE_ACCESS` | 2,100 | TBD | TBD | `SSTORE` and `SLOAD` | | `GAS_COLD_ACCOUNT_ACCESS` | 2,600 | TBD | TBD | `*CALL` opcodes, `BALANCE`, `SELFDESTRUCT` and `EXT*` opcodes | | `GAS_WARM_ACCESS`
+### Parameters Upon activation of this EIP, the following parameters of the gas model are renamed: | **Parameter** | **New name** | |:---:|:---:| | `GAS_STORAGE_UPDATE` | `GAS_COLD_STORAGE_WRITE` | | `GAS_COLD_SLOAD` | `GAS_COLD_STORAGE_ACCESS` | The following parameters of the gas model are updated: | **Parameter** | **Current value** | **New value** | **Increase** |**Operations affected** | |:---:|:---:|:---:|:---:|:---:| | `GAS_COLD_STORAGE_WRITE` | 5,000 | TBD | TBD | `SSTORE` | | `GAS_COLD_STORAGE_ACCESS` | 2,100 | TBD | TBD | `SSTORE` and `SLOAD` | | `GAS_COLD_ACCOUNT_ACCESS` | 2,600 | TBD | TBD | `*CALL` opcodes, `BALANCE`, `SELFDESTRUCT` and `EXT*` opcodes | |
 
 MOTIVATION:
-The gas price of accessing state has not been updated for quite some time. [EIP-2929](eip-2929.md) was included in the Berlin fork in March 2021 and raised the costs of state-accessing opcodes. Yet, since then, Ethereum's state has grown significantly, thus deteriorating the performance of these operations. This proposal further raises state access costs to better align them with the current performance of state access operations, in relation to other operations. Additionally, `EXTCODESIZE` and `EXTCODECOPY` have the same access cost as `BALANCE` and `EXTCODEHASH`. However, `EXTCODESIZE` and `EXTCODECOPY` require two database reads - first to load the account object
+The gas price of accessing state has not been updated for quite some time. [EIP-2929](./eip-2929.md) was included in the Berlin fork in March 2021 and raised the costs of state-accessing opcodes. Yet, since then, Ethereum's state has grown significantly, thus deteriorating the performance of these operations. This proposal further raises state access costs to better align them with the current performance of state access operations, in relation to other operations. Additionally, `EXTCODESIZE` and `EXTCODECOPY` have the same access cost as `BALANCE` and `EXTCODEHASH`. However, `EXTCODESIZE` and `EXTCODECOPY` require two database reads - first to load the account object
 
 RATIONALE:
-### Benchmarking This proposal does not yet have finalized numbers. To achieve this, we require stateful benchmarks, which are currently in development. Once we collect that data, we will set the final numbers. <-- TODO --> ### Special case for `EXTCODESIZE` and `EXTCODECOPY` Differently from other account read operations, `EXTCODESIZE` and `EXTCODECOPY` make two reads to the database. The first read is the same, where the object of the target account is loaded. This object includes the account's `nonce`, `balance`, `codeHash` and `storageRoot`. Then, these operations do another read to collect either the code size of the bytecode
+### Benchmarking This proposal does not yet have finalized numbers. To achieve this, we require stateful benchmarks, which are currently in development. Once we collect that data, we will set the final numbers. <-- TODO --> ### Special case for `EXTCODESIZE` and `EXTCODECOPY` Differently from other account read operations, `EXTCODESIZE` and `EXTCODECOPY` make two reads to the database. The first read is the same, where the object of the target account is loaded. This object includes the account's `nonce`, `balance`, `codeHash` and `storageRoot`. Then, these operations do another read to collect either the code size or the bytecode
 
 
 === EIP-8075 ===
@@ -1756,7 +1756,7 @@ RATIONALE:
 === EIP-7883 ===
 TITLE: ModExp Gas Cost Increase
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-02-11
 REQUIRES: 2565
 
@@ -3518,7 +3518,7 @@ CREATED: 2025-10-17
 REQUIRES: 
 
 SUMMARY:
-This proposal introduces the `milli-gas` counter as the EVM’s internal gas accounting. Gas costs are defined in `milli_gas` and internal EVM gas accounting is entirely carried out in `milli_gas`. At the end of transaction execution,`milli_gas` is rounded up to `gas`. Gas limits and transaction fees are still computed and verified using the current `gas_used` counter. This new counter enables a more precise accounting of cheap compute without impacting UX.
+This proposal introduces the `milli-gas` counter as the EVM's internal gas accounting. Gas costs are defined in `milli_gas` and internal EVM gas accounting is entirely carried out in `milli_gas`. At the end of transaction execution, `milli_gas` is rounded up to `gas`. Gas limits and transaction fees are still computed and verified using the current `gas_used` counter. This new counter enables a more precise accounting of cheap compute without impacting UX.
 
 SPECIFICATION:
 This proposal introduces a new `Uint` counter to the EVM, `milli_gas_left`. Gas costs are defined in `milli_gas` and internal EVM gas accounting is entirely carried out in `milli_gas`. Transaction fees, transaction gas limits, and block gas limits are still computed and verified using the current `gas_used` counter. There are no changes to blob gas accounting, refunds, or call data gas accounting. ### EVM environment The current `gas_left` variable from the internal state of the EVM is replaced by `milli_gas_left`: ```python @dataclass class Evm: """The internal state of the virtual machine.""" pc: Uint stack: List[U256] memory: bytearray code: Bytes
@@ -4112,7 +4112,7 @@ Roughly speaking, reducing the gas cost of Calldata leads to potentially larger 
 === EIP-7825 ===
 TITLE: Transaction Gas Limit Cap
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-11-23
 REQUIRES: 
 
@@ -4152,7 +4152,7 @@ RATIONALE:
 === EIP-7951 ===
 TITLE: Precompile for secp256r1 Curve Support
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-05-27
 REQUIRES: 
 
@@ -7118,7 +7118,7 @@ RATIONALE:
 === EIP-7939 ===
 TITLE: Count leading zeros (CLZ) opcode
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-04-28
 REQUIRES: 
 
@@ -7288,13 +7288,13 @@ SUMMARY:
 An EOF-only specification for EVM64 instruction set. This defines a separate "EVM64" type for EOF code section in addition to "regular EVM". The interpreter then enters EVM64 mode when entering the code section. This EIP is an alternative to [EIP-7937](./eip-7937.md).
 
 SPECIFICATION:
-Define `0x02` as an allowed `type` in `types_section`, as defined in EIP-7960. This denotes an EVM64 code section. ### EOF function execution When entering an EOF code section (either at the beginning of the contract call, or through `CALLF`), it enters "pure EVM64 mode". Unless defined below, no other opcodes are allowed. Those opcodes all only operates on the least significant 64-bit, in little endian. During EOF validation, the validation function should enforce that only allowed opcodes exist. ### Gas cost constants We define the following gas cost constants: * `G_BASE64`: 1 * `G_VERYLOW64`: 2 * `G_LOW64`: 3
+Define `0x02` as an allowed `type` in `types_section`, as defined in EIP-7960. This denotes an EVM64 code section. ### EOF function execution When entering an EOF code section (either at the beginning of the contract call, or through `CALLF`), it enters "pure EVM64 mode". Unless defined below, no other opcodes are allowed. Those opcodes all only operate on the least significant 64-bit, in little endian. During EOF validation, the validation function should enforce that only allowed opcodes exist. ### Gas cost constants We define the following gas cost constants: * `G_BASE64`: 1 * `G_VERYLOW64`: 2 * `G_LOW64`: 3
 
 MOTIVATION:
 EIP-7937 has maximum compatibility with existing EVM. It implements EVM64 simply as a group of additional opcodes (using a prefix opcode). This EIP defines an alternative method, using EOF container's code section. It has its pros and cons. The code size will obviously become shorter, due to not needing multibyte opcodes any more. On the other hand, interop with EVM system calls become more difficult because it cannot be done in an EVM64 code section. The advantages and disadvantages are discussed further in the Rationale section.
 
 RATIONALE:
-### Stack behavior "Pure" in "pure EVM64" refers to the fact that all opcodes in EVM64 mode only operates on the least significant 64 bits. In this specification, we don't specifically define 64-bit stack. As far as this EIP is concerned, stack is still 256-bit. However, because it only operates on the least significant 64 bits. The most significant 192 bits becomes unobservable as long as the interpreter is in an EVM64 code section. Thus an EVM interpreter can optimize EVM64 execution as follows: * When entering EVM64 code section, truncate `inputs` to 64 bits. * Use 64-bit
+### Stack behavior "Pure" in "pure EVM64" refers to the fact that all opcodes in EVM64 mode only operate on the least significant 64 bits. In this specification, we don't specifically define 64-bit stack. As far as this EIP is concerned, stack is still 256-bit. However, because they only operate on the least significant 64 bits. The most significant 192 bits becomes unobservable as long as the interpreter is in an EVM64 code section. Thus an EVM interpreter can optimize EVM64 execution as follows: * When entering EVM64 code section, truncate `inputs` to 64 bits. * Use 64-bit
 
 
 === EIP-8099 ===
@@ -9859,7 +9859,7 @@ It is very unlikely that any precompile will need to access or modify a contract
 === EIP-7823 ===
 TITLE: Set upper bounds for MODEXP
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-11-11
 REQUIRES: 198
 

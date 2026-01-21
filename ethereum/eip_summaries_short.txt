@@ -1616,13 +1616,13 @@ CREATED: 2025-10-03
 REQUIRES: 2, 9, 2, 6, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 2
 
 SUMMARY:
-This EIP updates the gas cost of state-access operations to reflect Ethereum’s larger state and the consequent slowdown of these operations. It raises the
+This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the
 
 SPECIFICATION:
 ### Parameters Upon activation of this EIP, the following parameters of the gas model are renamed: | **Parameter** | **New name** | |:---:|:---:| |
 
 MOTIVATION:
-The gas price of accessing state has not been updated for quite some time. [EIP-2929](eip-2929.md) was included in the Berlin fork in March 2021
+The gas price of accessing state has not been updated for quite some time. [EIP-2929](./eip-2929.md) was included in the Berlin fork in March 2021
 
 RATIONALE:
 ### Benchmarking This proposal does not yet have finalized numbers. To achieve this, we require stateful benchmarks, which are currently in development. Once we
@@ -1756,7 +1756,7 @@ RATIONALE:
 === EIP-7883 ===
 TITLE: ModExp Gas Cost Increase
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-02-11
 REQUIRES: 2565
 
@@ -3518,7 +3518,7 @@ CREATED: 2025-10-17
 REQUIRES: 
 
 SUMMARY:
-This proposal introduces the `milli-gas` counter as the EVM’s internal gas accounting. Gas costs are defined in `milli_gas` and internal EVM gas accounting is
+This proposal introduces the `milli-gas` counter as the EVM's internal gas accounting. Gas costs are defined in `milli_gas` and internal EVM gas accounting is
 
 SPECIFICATION:
 This proposal introduces a new `Uint` counter to the EVM, `milli_gas_left`. Gas costs are defined in `milli_gas` and internal EVM gas accounting is entirely
@@ -4112,7 +4112,7 @@ Roughly speaking, reducing the gas cost of Calldata leads to potentially larger 
 === EIP-7825 ===
 TITLE: Transaction Gas Limit Cap
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-11-23
 REQUIRES: 
 
@@ -4152,7 +4152,7 @@ RATIONALE:
 === EIP-7951 ===
 TITLE: Precompile for secp256r1 Curve Support
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-05-27
 REQUIRES: 
 
@@ -7118,7 +7118,7 @@ RATIONALE:
 === EIP-7939 ===
 TITLE: Count leading zeros (CLZ) opcode
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-04-28
 REQUIRES: 
 
@@ -7294,7 +7294,7 @@ MOTIVATION:
 EIP-7937 has maximum compatibility with existing EVM. It implements EVM64 simply as a group of additional opcodes (using a prefix opcode). This EIP defines
 
 RATIONALE:
-### Stack behavior "Pure" in "pure EVM64" refers to the fact that all opcodes in EVM64 mode only operates on the least significant 64
+### Stack behavior "Pure" in "pure EVM64" refers to the fact that all opcodes in EVM64 mode only operate on the least significant 64
 
 
 === EIP-8099 ===
@@ -9859,7 +9859,7 @@ It is very unlikely that any precompile will need to access or modify a contract
 === EIP-7823 ===
 TITLE: Set upper bounds for MODEXP
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-11-11
 REQUIRES: 198
 
