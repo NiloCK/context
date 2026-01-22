@@ -8602,7 +8602,7 @@ RATIONALE:
 === EIP-7892 ===
 TITLE: Blob Parameter Only Hardforks
 TYPE: Informational 
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-02-28
 REQUIRES: 7840
 

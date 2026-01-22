@@ -7506,7 +7506,7 @@ The protocol tries to be parsimonious. The transfer is associated with a (prefer
 === ERC-7634 ===
 TITLE: Limited Transfer Count NFT
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-02-22
 REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
 
