@@ -3419,7 +3419,7 @@ RATIONALE:
 === EIP-7910 ===
 TITLE: eth_config JSON-RPC Method
 TYPE: Standards Track Interface
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-03-18
 REQUIRES: 
 
@@ -8374,7 +8374,7 @@ EIP-1052 In order to include the function of `BALANCE`, let the `EXTCODEHASH` of
 === EIP-7935 ===
 TITLE: Set default gas limit to 60M
 TYPE: Informational 
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-04-22
 REQUIRES: 
 
