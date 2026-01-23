@@ -2107,7 +2107,7 @@ There have been numerous interesting uses of [EIP-721](./eip-721.md) and [EIP-11
 === ERC-7994 ===
 TITLE: Purpose-Bound ERC-20 with Conditional Unlock
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-07-29
 REQUIRES: 2, 0, ,,  , 7, 2, 9, 1
 
@@ -4040,6 +4040,26 @@ This standard aims to enhance the end user's experience by granting them confide
 
 RATIONALE:
 The proposed implementation does not modify any of the existing functionalities offered by [EIP-712](./eip-712.md) and [EIP-1193](./eip-1193.md). Its additive nature makes it inherently backward compatible.
+
+
+=== ERC-8106 ===
+TITLE: RWA Event-based Compliance Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-16
+REQUIRES: 20
+
+SUMMARY:
+This standard defines an event-based compliance framework for Real World Asset (RWA) tokens on [ERC-20](./eip-20.md), providing: 1. A standardized entity classification system distinguishing between
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Real World Asset tokenization requires compliance observability that existing [ERC-20](./eip-20.md) tokens do not provide: ### Missing Capabilities 1. **Entity Classification**: No standardized way to
+
+RATIONALE:
+### Event-Driven Model Events rather than reverts because: - Different jurisdictions can interpret events differently - Cheaper than state-based enforcement (~2000 gas per event
 
 
 === ERC-1844 ===

@@ -2107,7 +2107,7 @@ There have been numerous interesting uses of [EIP-721](./eip-721.md) and [EIP-11
 === ERC-7994 ===
 TITLE: Purpose-Bound ERC-20 with Conditional Unlock
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-07-29
 REQUIRES: 2, 0, ,,  , 7, 2, 9, 1
 
@@ -4040,6 +4040,26 @@ This standard aims to enhance the end user's experience by granting them confide
 
 RATIONALE:
 The proposed implementation does not modify any of the existing functionalities offered by [EIP-712](./eip-712.md) and [EIP-1193](./eip-1193.md). Its additive nature makes it inherently backward compatible. Its core design is modeled after existing solutions to existing problems (such as DKIM). As a result the proposed specification will be non disruptive, easy to implements for both wallets and dapps, with a predictable threat model.
+
+
+=== ERC-8106 ===
+TITLE: RWA Event-based Compliance Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-16
+REQUIRES: 20
+
+SUMMARY:
+This standard defines an event-based compliance framework for Real World Asset (RWA) tokens on [ERC-20](./eip-20.md), providing: 1. A standardized entity classification system distinguishing between Compliance Entities (CE) and Decentralized Entities (DE) 2. Event-driven compliance observation enabling auditability through standardized events and actual value flows, without enforcing hard transaction reverts This standard is intentionally minimal and does not prescribe business-specific RWA workflows, off-chain settlement mechanisms, minting policies, or specific transfer patterns.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions - **Compliance Entity (CE)**: An address representing a regulated legal entity (e.g., corporate treasury, custody account) - **Decentralized Entity (DE)**: An address representing a decentralized participant (e.g., end users, routers, settlement contracts) - **BizID**: A business correlation identifier (hash) linking related transfers to a single workflow - **Soft Policy**: Compliance policy expressed through event labeling, not transaction reversion ### Entity Registry Compliant
+
+MOTIVATION:
+Real World Asset tokenization requires compliance observability that existing [ERC-20](./eip-20.md) tokens do not provide: ### Missing Capabilities 1. **Entity Classification**: No standardized way to distinguish regulated corporate entities from decentralized participants 2. **Compliance Observability**: No uniform event semantics for tracking compliance-relevant transfers 3. **Flexible Enforcement**: Existing standards use hard reverts, making them incompatible with diverse regulatory frameworks ### Why Event-Based? This standard adopts an event-driven approach rather than enforcement through reverts: - **Regulatory Flexibility**: Different jurisdictions can interpret the same events differently - **Adaptability**: Compliance rules can evolve without contract upgrades - **Lower Costs**: Events are cheaper than
+
+RATIONALE:
+### Event-Driven Model Events rather than reverts because: - Different jurisdictions can interpret events differently - Cheaper than state-based enforcement (~2000 gas per event vs state writes) - Enables time-delayed enforcement where appropriate ### Soft Policy Flags Compliance flags are informational, not enforced: - Projects decide whether to revert based on flags - Off-chain systems can alert, review, or freeze post-transaction - Supports evolving regulations without contract changes ### Auditability Design Auditors reconstruct transaction flows using: 1. **Value Flows**: Every `ComplianceObserved` event corresponds to a real [ERC-20](./eip-20.md) balance change 2. **Standardized Events**: Uniform event structure for machine-readable compliance
 
 
 === ERC-1844 ===
