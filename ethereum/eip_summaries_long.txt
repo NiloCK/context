@@ -4850,7 +4850,7 @@ TITLE: Glamsterdam Gas Repricings
 TYPE: Meta 
 STATUS: Draft
 CREATED: 2025-08-21
-REQUIRES: 2, 7, 8, 0, ,,  , 2, 9, 2, 6, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 1, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 1, 1, ,,  , 8, 0, 3, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8, ,,  , 8, 0, 5, 3, ,,  , 8, 0, 5, 7, ,,  , 8, 0, 5, 8, ,,  , 8, 0, 5, 9
+REQUIRES: 2, 7, 8, 0, ,,  , 2, 9, 2, 6, ,,  , 7, 6, 8, 6, ,,  , 7, 7, 7, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 3, ,,  , 7, 9, 7, 1, ,,  , 7, 9, 7, 3, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 1, 1, ,,  , 8, 0, 3, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8, ,,  , 8, 0, 5, 3, ,,  , 8, 0, 5, 7, ,,  , 8, 0, 5, 8, ,,  , 8, 0, 5, 9
 
 SUMMARY:
 This Meta EIP documents all the proposals for Glamsterdam related to the gas repricing effort. The goal of this effort is to harmonize gas costs across the EVM, thereby reducing the impact of specific bottlenecks on scaling. Proposals include changes to the cost of single EVM operations, as well as bigger changes to the gas model. This Meta EIP is purely informational and does not aim to have an active role in the governance process for the Glamsterdam fork. Instead, it serves as a directory for all repricing-related proposals, helping to organize the work and keeping the community
