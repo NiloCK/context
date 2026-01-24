@@ -3192,6 +3192,26 @@ RATIONALE:
 1. We chose to have both `ERC5453_TYPE_A`(single-endorsement) and `ERC5453_TYPE_B`(multiple-endorsements, same nonce for entire contract) so we could balance a wider range of use cases. E.g. the same use cases of ERC-2612 and `ERC-4494` can be supported by `ERC5453_TYPE_A`. And threshold approvals can be done via `ERC5453_TYPE_B`. More complicated approval types can also be extended by defining new `ERC5453_TYPE_?` 2. We chose to include both `validSince` and `validBy` to allow maximum flexibility in expiration. This can be also be supported by EVM natively at if adopted `ERC-5081` but `ERC-5081` will not be adopted anytime soon, we choose to add
 
 
+=== ERC-8121 ===
+TITLE: Cross-Chain Function Calls via Hooks
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-12
+REQUIRES: 3, 6, 6, 8, ,,  , 7, 9, 3, 0
+
+SUMMARY:
+This ERC introduces hooks, a specification for cross-chain function calls. A hook fully specifies what function to call, with what parameters, on which contract, on which chain. Hooks are particularly useful for redirecting metadata to known contracts with verifiable security properties, such as credential registries for Proof-of-Personhood (PoP) or Know-Your-Agent (KYA) for AI agent identity.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview A hook is a fully specified function call containing a function selector, human-readable function call, return type, and an [ERC-7930](./eip-7930.md) interoperable address specifying both the target contract and chain. This makes hooks completely self-describing - any client can resolve them without external documentation. ### Hook Function Signature ```solidity function hook( bytes4 functionSelector, string calldata functionCall, string calldata returnType, bytes calldata target )
+
+MOTIVATION:
+Cross-chain reads require specifying exactly what function to call, on which contract, on which chain. Hooks provide a complete specification by combining a function selector, readable function call, return type, and [ERC-7930](./eip-7930.md) interoperable address. This enables secure resolution from known contracts with verifiable security properties, whether on the same chain or across chains. ### Use Cases - **Cross-Chain Metadata**: Resolve metadata from contracts on other chains - **Credential Resolution**: Redirect a Proof-of-Person (PoP) or Know-Your-Customer (KYC) record to a trusted credential registry - **Singleton Registries**: Point to canonical registries with known security properties on any chain - **Shared
+
+RATIONALE:
+Hooks provide a complete specification for cross-chain function calls by combining a function selector, human-readable function call, return type, and [ERC-7930](./eip-7930.md) interoperable address. This makes hooks entirely self-describing - any client can resolve them without external documentation or ABI files. ### Why Include Both Function Selector and Function String? Hooks include both a 4-byte function selector and a human-readable function call string. The selector provides type disambiguation (e.g., `getData(bytes32)` and `getData(bytes)` have different selectors, but `0x1234...` in the string is ambiguous), while the string provides human readability. Clients can verify the selector matches the function signature, rejecting mismatches
+
+
 === ERC-6123 ===
 TITLE: Smart Derivative Contract
 TYPE: Standards Track ERC
@@ -7871,7 +7891,7 @@ SUMMARY:
 This EIP proposes a standard extension to [ERC-20](./eip-20.md) tokens that enables issuers to apply an updatable multiplier to the UI (user interface) amount of tokens. This allows for efficient representation of stock splits, without requiring actual token minting or transfers. The extension provides a cosmetic layer that modifies how token balances are displayed to users while maintaining the underlying token economics.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface: ```solidity interface IScaledUIAmount { // Emitted when the UI multiplier is updated event UIMultiplierUpdated(uint256 oldMultiplier, uint256 newMultiplier, uint256 setAtTimestamp, uint256 effectiveAtTimestamp); // Returns the current UI multiplier // Multiplier is represented with 18 decimals (1e18 = 1.0) function uiMultiplier() external view returns (uint256); // Converts a raw token amount to UI amount function toUIAmount(uint256 rawAmount) external view returns (uint256); // Converts a UI amount to raw token
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface: ```solidity interface IScaledUIAmount { // OPTIONAL // Emitted when the UI multiplier is updated event UIMultiplierUpdated(uint256 oldMultiplier, uint256 newMultiplier, uint256 setAtTimestamp, uint256 effectiveAtTimestamp); // OPTIONAL // Emitted during a token transfer event TransferWithUIAmount(address indexed from, address indexed to, uint256 amount, uint256 uiAmount); // Returns the current UI multiplier // Multiplier is represented with 18 decimals (1e18 = 1.0) function uiMultiplier() external view returns (uint256); // OPTIONAL //
 
 MOTIVATION:
 Current ERC-20 implementations lack an efficient mechanism to handle real-world asset scenarios such as stock splits: When a company performs a 2-for-1 stock split, all shareholders should see their holdings double. Currently, this requires minting new tokens to all holders, which is gas-intensive and operationally complex. Moreover, the internal accounting in DeFi protocols would break from such a split. The inability to efficiently handle this scenario limits the adoption of tokenized real-world assets (RWAs) on Ethereum. This EIP addresses these limitations by introducing a multiplier mechanism that adjusts the displayed balance without altering the actual token supply.

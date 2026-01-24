@@ -3192,6 +3192,26 @@ RATIONALE:
 1. We chose to have both `ERC5453_TYPE_A`(single-endorsement) and `ERC5453_TYPE_B`(multiple-endorsements, same nonce for entire contract) so we could balance a wider range of use cases. E.g. the same use cases of ERC-2612 and `ERC-4494` can be supported by `ERC5453_TYPE_A`. And threshold approvals can be done via `ERC5453_TYPE_B`. More complicated approval
 
 
+=== ERC-8121 ===
+TITLE: Cross-Chain Function Calls via Hooks
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-12
+REQUIRES: 3, 6, 6, 8, ,,  , 7, 9, 3, 0
+
+SUMMARY:
+This ERC introduces hooks, a specification for cross-chain function calls. A hook fully specifies what function to call, with what parameters, on which contract, on which chain. Hooks are particularly useful for redirecting metadata to known contracts with verifiable security properties, such as credential registries for Proof-of-Personhood (PoP) or
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview A hook is a fully specified function call containing a function selector, human-readable
+
+MOTIVATION:
+Cross-chain reads require specifying exactly what function to call, on which contract, on which chain. Hooks provide a complete specification by combining a function selector, readable function call, return type, and [ERC-7930](./eip-7930.md) interoperable address. This enables secure resolution from known contracts with verifiable security properties, whether on the same
+
+RATIONALE:
+Hooks provide a complete specification for cross-chain function calls by combining a function selector, human-readable function call, return type, and [ERC-7930](./eip-7930.md) interoperable address. This makes hooks entirely self-describing - any client can resolve them without external documentation or ABI files. ### Why Include Both Function Selector and Function String?
+
+
 === ERC-6123 ===
 TITLE: Smart Derivative Contract
 TYPE: Standards Track ERC
@@ -7871,7 +7891,7 @@ SUMMARY:
 This EIP proposes a standard extension to [ERC-20](./eip-20.md) tokens that enables issuers to apply an updatable multiplier to the UI (user interface) amount of tokens. This allows for efficient representation of stock splits, without requiring actual token minting or transfers. The extension provides a cosmetic layer that modifies how
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface: ```solidity interface IScaledUIAmount { // Emitted when the UI multiplier is updated event UIMultiplierUpdated(uint256 oldMultiplier, uint256 newMultiplier, uint256
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface: ```solidity interface IScaledUIAmount { // OPTIONAL // Emitted when the UI multiplier is updated event UIMultiplierUpdated(uint256 oldMultiplier, uint256
 
 MOTIVATION:
 Current ERC-20 implementations lack an efficient mechanism to handle real-world asset scenarios such as stock splits: When a company performs a 2-for-1 stock split, all shareholders should see their holdings double. Currently, this requires minting new tokens to all holders, which is gas-intensive and operationally complex. Moreover, the internal
