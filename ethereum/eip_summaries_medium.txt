@@ -4522,7 +4522,7 @@ TITLE: P256 algorithm support
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-09-20
-REQUIRES: 7932
+REQUIRES: 7, 9, 3, 2, ,,  , 7, 9, 5, 1
 
 SUMMARY:
 This EIP adds a new [EIP-7932](./eip-7932.md) algorithm of type `0x0` for supporting P256 signatures.
