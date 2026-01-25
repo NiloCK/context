@@ -8154,7 +8154,7 @@ While this standard is perhaps not the greatest mechanism for communicating betw
 === EIP-7793 ===
 TITLE: Conditional Transactions
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-10-17
 REQUIRES: 7843
 
