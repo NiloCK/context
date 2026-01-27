@@ -1913,6 +1913,26 @@ RATIONALE:
 The main goals of the puppet design are low cost and modularity. It should be cheap to deploy and cheap to interact with. The
 
 
+=== ERC-8119 ===
+TITLE: Parameterized Storage Keys
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-06
+REQUIRES: 
+
+SUMMARY:
+This ERC defines a standard format for parameterized string keys used in EVM key-value storage using a colon and space separator. This format was
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Many EVM-based smart contracts use key-value storage to store metadata where string keys may need to represent multiple instances or variations of the same
+
+RATIONALE:
+The colon and space separator (`: `) was chosen because: - The space after the colon improves human readability compared to formats like `key:value`
+
+
 === ERC-2021 ===
 TITLE: Payoutable Token
 TYPE: Standards Track ERC
@@ -6487,7 +6507,7 @@ RATIONALE:
 === ERC-8034 ===
 TITLE: Referable NFT Royalties
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-10-02
 REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 5, 5, 2, 1
 
@@ -9326,6 +9346,26 @@ This standardised interface aims to change the way we think about long-term fina
 
 RATIONALE:
 This specification was designed to serve as an entry point to the quirky concept of money as a function of time and it is
+
+
+=== ERC-8113 ===
+TITLE: Series Accounting for Incentivized Vaults
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-25
+REQUIRES: 4, 6, 2, 6, ,,  , 7, 5, 4, 0
+
+SUMMARY:
+The following standard formalizes the Series Accounting Method for [ERC-7540](./eip-7540.md) and [ERC-4626](./eip-4626.md) type vaults, enabling them to collect performance fees on yields without introducing
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Current vault implementations typically implement a Highwater Mark based on the highest recorded price-per-share (the ratio of total assets to total shares of the
+
+RATIONALE:
+### Using “assets” instead of “shares” for redemption We cannot use `shares` to specify the amount a user wishes to redeem because shares are
 
 
 === ERC-2771 ===
