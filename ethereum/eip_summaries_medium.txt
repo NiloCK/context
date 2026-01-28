@@ -9166,7 +9166,7 @@ TITLE: ETH transfers emit a log
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-05-17
-REQUIRES: 
+REQUIRES: 1, 5, 5, 9, ,,  , 4, 7, 8, 8, ,,  , 6, 7, 8, 0
 
 SUMMARY:
 All ETH-transfers, including transactions, `CALL` and `SELFDESTRUCT` emit a log.

@@ -4902,16 +4902,16 @@ CREATED: 2024-11-27
 REQUIRES: 1, 5, 5, ,,  , 7, 9, 3, 0
 
 SUMMARY:
-This proposal defines an _Interoperable Name_, a human-readable _chain-specific address_ format that MAY represent the _target address_ as an ENS name. Additionally, the target chain component of an _Interoperable Name_ may be expressed as a human-readable label. This specification defines how such labels can be resolved, via the Ethereum Name Service (ENS), to chain-specific metadata. The result is _chain-specific addresses_ such as `wallet.ensdao.eth@eip155:1`, `0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7@eip155:1` or the maximally readable `example.eth@base`.
+This proposal defines an _Interoperable Name_, a human-readable _chain-specific address_ format that MAY represent the _target address_ as an ENS name. Additionally, the target chain component of an _Interoperable Name_ may be expressed as a human-readable label. This specification defines how such labels can be resolved, via the Ethereum Name Service (ENS), to chain-specific metadata. The result is _chain-specific addresses_ such as `wallet.ensdao.eth@eip155:1`, `0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7@eip155:1` or the maximally readable `wallet.ensdao.eth@ethereum`.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Terminology This section builds upon the Terminology defined in [ERC-7930]. **Interoperable Name** : A human-readable _chain-specific address_ format meant to be used by humans for user-facing interactions. e.g. `0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045@eip155:1#4CA88C9C` ### Interoperable Name Definition The format of an _Interoperable Name_ is `<address> @ <chain> # <checksum>` where the components match the following regular expressions: #### Syntax ```bnf <address> ::= [.-:_%a-zA-Z0-9]* <chain> ::= [.-:_a-zA-Z0-9]* <checksum>
 
 MOTIVATION:
-The core motivation for introducing the _Interoperable Name_ standard is to provide maximally readable, _chain-specific addresses_ for user-facing interactions. [ERC-7930] introduced a binary format for representing a target address on a specific blockchain. While this binary data is well suited for low-level usage (e.g. in smart contracts), its meaning is semantically opaque to human users. A foundational text representation (e.g. `0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7@eip155:1`) enables a significantly more readable _chain-specific address_ format. An expanded form that leverages the name resolution capabilities of the Ethereum Name Service (ENS) further improves readability, allowing addresses to be expressed in a maximally human-friendly form (e.g.
+The core motivation for introducing the _Interoperable Name_ standard is to provide maximally readable, _chain-specific addresses_ for user-facing interactions. [ERC-7930] introduced a binary format for representing a _target address_ on a specific blockchain. While this binary data is well suited for low-level usage (e.g. in smart contracts), its meaning is semantically opaque to human users. A foundational text representation (e.g. `0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7@eip155:1`) enables a significantly more readable _chain-specific address_ format. An expanded form that leverages the name resolution capabilities of the Ethereum Name Service (ENS) further improves readability, allowing addresses to be expressed in a maximally human-friendly form (e.g.
 
 RATIONALE:
-- Using ENS as the only resolving method means it's enough to use the same Interoperable Addresses v1 for this standard, without extending it to also store the name resolver used. This means however that wallets are free to show users both resolved and unresolved (raw) Interoperable Names.
+- The ENS protocol is a well-established blockchain identity primitive that allows the registration of names like `example.eth` and `wallet.ensdao.eth` that _resolve_ to addresses on a chain-specific basis. It is familiar and well understood. - We allow a raw _target address_ to be used in the `<address>` component for flexibility, and to cater to users who prefer traditional address representations.
 
 
 === ERC-7682 ===
@@ -9286,6 +9286,26 @@ In the ever-evolving landscape of blockchain technology and decentralized ecosys
 
 RATIONALE:
 ### Pull Mechanism We propose using a pull mechanism, where the contract transfers the token to itself, instead of receiving it via "safe transfer" for 2 reasons: 1. Customizability with Hooks. By initiating the process this way, smart contract developers have the flexibility to execute specific actions before and after transferring the tokens. 2. Lack of transfer with callback: [ERC-20](./eip-20.md) tokens lack a standardized transfer with callback method, such as the "safeTransfer" on [ERC-721](./eip-721.md), which means there is no reliable way to notify the receiver of a successful transfer, nor to know which is the destination token is.
+
+
+=== ERC-8063 ===
+TITLE: Groups - Multi-Member Containers
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-28
+REQUIRES: 165
+
+SUMMARY:
+This proposal specifies a general-purpose "Group" primitive as a first-class, onchain object. Each group is deployed as its own contract (identified by its contract address) and has an owner, an extensible set of members, and optional metadata. The standard defines a minimal interface for direct member management and membership introspection. Unlike token standards (e.g., [ERC-20](./eip-20.md)/[ERC-721](./eip-721.md)) that model units of transferable ownership, Groups model multi-party membership and coordination. The goal is to enable interoperable social, organizational, and collaborative primitives.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Contracts that implement this standard MUST support [ERC-165](./eip-165.md). ### Interface ```solidity /// SPDX-License-Identifier: CC0-1.0 pragma solidity ^0.8.20; interface IERC165 { function supportsInterface(bytes4 interfaceId) external view returns (bool); } /// @title IERC8063 — Minimal interface for onchain groups /// @notice A group is a contract with an owner and members interface IERC8063 is IERC165 { /// @dev Emitted when a member is added to the
+
+MOTIVATION:
+Tokens typically model ownership and transfer. Many applications instead need an addressable set of accounts with controlled join/leave semantics and shared state—e.g., project teams, DAOs, game parties, channels, or access cohorts. While [ERC-7743](./eip-7743.md) (MO-NFT) explores multi-ownership for a single token, it still anchors the abstraction to token semantics. Groups generalize this into a token-agnostic container where members can be added over time, without implying transfer or unitized ownership. Following the [ERC-20](./eip-20.md) design pattern, each group is its own contract identified by its address. External resources (tokens, NFTs, etc.) can be associated with groups through their own contracts, just
+
+RATIONALE:
+- **One contract per group**: Following the [ERC-20](./eip-20.md) model where each token is its own contract creates a simpler, more composable design. The contract address becomes the natural group identifier. - **Token-agnostic**: Separates membership from asset ownership/transfer semantics, suitable for social and coordination use cases. - **Direct member management**: Owner can add members directly without invitation/acceptance flow, simplifying the interface and reducing transaction costs. - **Voluntary exit only**: Members can leave voluntarily via `leaveGroup()` or transfer their position, but cannot be forcibly removed by the owner. This prevents centralization and ensures membership stability, similar to how ERC-20 token
 
 
 === ERC-4527 ===

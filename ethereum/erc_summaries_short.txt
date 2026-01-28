@@ -4911,7 +4911,7 @@ MOTIVATION:
 The core motivation for introducing the _Interoperable Name_ standard is to provide maximally readable, _chain-specific addresses_ for user-facing interactions. [ERC-7930] introduced a binary format
 
 RATIONALE:
-- Using ENS as the only resolving method means it's enough to use the same Interoperable Addresses v1 for this standard, without extending it
+- The ENS protocol is a well-established blockchain identity primitive that allows the registration of names like `example.eth` and `wallet.ensdao.eth` that _resolve_ to addresses
 
 
 === ERC-7682 ===
@@ -9286,6 +9286,26 @@ In the ever-evolving landscape of blockchain technology and decentralized ecosys
 
 RATIONALE:
 ### Pull Mechanism We propose using a pull mechanism, where the contract transfers the token to itself, instead of receiving it via "safe transfer"
+
+
+=== ERC-8063 ===
+TITLE: Groups - Multi-Member Containers
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-28
+REQUIRES: 165
+
+SUMMARY:
+This proposal specifies a general-purpose "Group" primitive as a first-class, onchain object. Each group is deployed as its own contract (identified by its contract
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Tokens typically model ownership and transfer. Many applications instead need an addressable set of accounts with controlled join/leave semantics and shared state—e.g., project teams,
+
+RATIONALE:
+- **One contract per group**: Following the [ERC-20](./eip-20.md) model where each token is its own contract creates a simpler, more composable design. The contract
 
 
 === ERC-4527 ===
