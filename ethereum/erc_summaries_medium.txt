@@ -7694,7 +7694,7 @@ SUMMARY:
 The following standard describes confidential fungible tokens via pointers. All amounts in this standard are represented by confidential pointers; therefore, balances and transfer amounts are confidential. Pointers refer to data stored elsewhere--onchain or offchain. The logistics of pointer resolution, operation, and location are implementation specific. The interface defines functions
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Nomenclature - All amounts in this ERC are pointer based amounts represented by `bytes32`
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Nomenclature All amounts in this ERC are pointer based amounts represented by `bytes32` pointers
 
 MOTIVATION:
 Confidential tokens enable private value transfer which is vital for many usecases such as payroll, confidential DeFi, institutional settlement, and more. A standard interface allows pointer based confidential tokens on Ethereum to be reused by other applications: from privacy-focused wallets to decentralized exchanges, while keeping transaction amounts private from
