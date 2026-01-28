@@ -9172,7 +9172,7 @@ SUMMARY:
 All ETH-transfers, including transactions, `CALL` and `SELFDESTRUCT` emit a log.
 
 SPECIFICATION:
-### ETH transfer logs A log, identical to a LOG3, is issued for: - Any nonzero-value-transferring transaction, before any other logs created by EVM
+### ETH transfer logs A log, identical to a LOG3, is issued for: - Any nonzero-value-transferring transaction to a different account, before any other
 
 MOTIVATION:
 Logs are often used to track when balance changes of assets on Ethereum. Logs work for [ERC-20](./eip-20.md) tokens, but they do not work for
