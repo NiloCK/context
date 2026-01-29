@@ -6892,6 +6892,26 @@ RATIONALE:
 For providing typical webpage for an NFT, it's much simple to include JSON-LD in HTML header tag with this extension. Just looking for JSON-LD compliant value's uri from `linked_data` array, fetch it and embed its content in HTML header tag. This means the minter of NFT can control the
 
 
+=== ERC-7945 ===
+TITLE: Confidential Transactions Supported Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-09
+REQUIRES: 20
+
+SUMMARY:
+Classic token contracts like [ERC-20](./eip-20.md) enable their token holders to make transfers and/or approve others to make transfers on their behalves. The generality of token standard [ERC-20](./eip-20.md) catalyzed decentralizing finance and many other blockchain applications. However, when it comes to privacy, although some technical schemes have been proposed, few
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Contract Interface The proposed contract implements the following 2 interfaces: `ITokenMetadata` and `IConfidentialToken` .
+
+MOTIVATION:
+Confidential transactions have been implemented in many blockchains, either natively through blockchain protocols like Monero and Zcash, or through smart contracts like Zether[^1] without modifying blockchain protocol. However, when it comes to the latter way, actually few standards are proposed yet on Ethereum (and/or other EVM-compatible blockchains) to illustrate
+
+RATIONALE:
+### Optional Accessor of "Confidential Total Supply" ```Solidity function confidentialTotalSupply() public view returns (bytes memory) ``` Confidentiality of transfer amount makes it hard to support such field like `totalSupply()` in [ERC-20](./eip-20.md). Because when it comes to the token "mint" or "burn", if every user in this contract can access
+
+
 === ERC-5023 ===
 TITLE: Shareable Non-Fungible Token
 TYPE: Standards Track ERC

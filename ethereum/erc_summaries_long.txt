@@ -6892,6 +6892,26 @@ RATIONALE:
 For providing typical webpage for an NFT, it's much simple to include JSON-LD in HTML header tag with this extension. Just looking for JSON-LD compliant value's uri from `linked_data` array, fetch it and embed its content in HTML header tag. This means the minter of NFT can control the appearance in the search result of Google, for example. In more common case for interoperability, the NFT metadata can include any schema and data with this extension. This means the NFT metadata can be used as a data source for any application. With the schema, the implementation is much
 
 
+=== ERC-7945 ===
+TITLE: Confidential Transactions Supported Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-09
+REQUIRES: 20
+
+SUMMARY:
+Classic token contracts like [ERC-20](./eip-20.md) enable their token holders to make transfers and/or approve others to make transfers on their behalves. The generality of token standard [ERC-20](./eip-20.md) catalyzed decentralizing finance and many other blockchain applications. However, when it comes to privacy, although some technical schemes have been proposed, few standards have been established, which limits the evolution of privacy-preserving blockchain applications. This proposal draws up a standard interface for fungible token contracts supporting confidential transactions. It provides basic transfer functionality without loss of generality, and allowance and approve functionalities. Contracts following the standard can provide confidentiality for users’
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Contract Interface The proposed contract implements the following 2 interfaces: `ITokenMetadata` and `IConfidentialToken` . #### `ITokenMetadata` ##### Methods ###### `name` ```Solidity function name() public view returns (string) ``` Returns the name of the token - e.g. `"MyConfidentialToken"` . OPTIONAL - This method can be used to improve usability, but interfaces and other contracts MUST NOT expect these values to be present. ###### `symbol`
+
+MOTIVATION:
+Confidential transactions have been implemented in many blockchains, either natively through blockchain protocols like Monero and Zcash, or through smart contracts like Zether[^1] without modifying blockchain protocol. However, when it comes to the latter way, actually few standards are proposed yet on Ethereum (and/or other EVM-compatible blockchains) to illustrate such contracts. Users and applications cannot easily detect whether a token contract supports confidential transactions or not, and so hardly can they make transfers without revealing the actual amount. Consequently, this proposal is to standardize the confidential transaction supported token contracts, meanwhile without loss of generality, by only specifying
+
+RATIONALE:
+### Optional Accessor of "Confidential Total Supply" ```Solidity function confidentialTotalSupply() public view returns (bytes memory) ``` Confidentiality of transfer amount makes it hard to support such field like `totalSupply()` in [ERC-20](./eip-20.md). Because when it comes to the token "mint" or "burn", if every user in this contract can access `totalSupply()` as well as decrypt it, these users will know the actual token value to be minted or burnt by comparing the `totalSupply()` before and after such operations, which means that confidentiality no longer exists. Contract implementation can optionally support `confidentialTotalSupply()` by evaluating if anti-money laundry (see next part)
+
+
 === ERC-5023 ===
 TITLE: Shareable Non-Fungible Token
 TYPE: Standards Track ERC

@@ -6892,6 +6892,26 @@ RATIONALE:
 For providing typical webpage for an NFT, it's much simple to include JSON-LD in HTML header tag with this extension. Just looking for JSON-LD
 
 
+=== ERC-7945 ===
+TITLE: Confidential Transactions Supported Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-09
+REQUIRES: 20
+
+SUMMARY:
+Classic token contracts like [ERC-20](./eip-20.md) enable their token holders to make transfers and/or approve others to make transfers on their behalves. The generality of
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Confidential transactions have been implemented in many blockchains, either natively through blockchain protocols like Monero and Zcash, or through smart contracts like Zether[^1] without
+
+RATIONALE:
+### Optional Accessor of "Confidential Total Supply" ```Solidity function confidentialTotalSupply() public view returns (bytes memory) ``` Confidentiality of transfer amount makes it hard to
+
+
 === ERC-5023 ===
 TITLE: Shareable Non-Fungible Token
 TYPE: Standards Track ERC
