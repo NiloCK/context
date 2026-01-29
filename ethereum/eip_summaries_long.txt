@@ -8716,6 +8716,26 @@ RATIONALE:
 ### Irregular state change to deploy Creator Contract Originally it was proposed to deploy the first EOF contract via irregular state change. This contract would execute `TXCREATE` instruction and could be used then as an entry point to deploy any other EOF code. This would also require an introduction of `InitcodeTransaction`, required by `TXCREATE`. It was decided against this variant for the benefit of reduced scope of changes. ### Constructor arguments outside of initcontainer vs in data section Alternative mechanism for providing constructor arguments to initcontainer execution was considered, where they are concatenated with data section of the
 
 
+=== EIP-8141 ===
+TITLE: Frame Transaction
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-01-29
+REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 4, 4
+
+SUMMARY:
+Add a new transaction whose validity and gas payment can be defined abstractly. Instead of relying solely on a single ECDSA signature, accounts may freely define and interpret their signature scheme using any cryptographic system.
+
+SPECIFICATION:
+### Constants | Name | Value | | ------------------------- | --------------------------------------- | | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `ENTRY_POINT` | `address(0xaa)` | | `MAX_FRAMES` | `10^3` | ### Opcodes | Name | Value | | -------------- | ------ | | `APPROVE` | `0xaa` | | `TXPARAMLOAD` | `0xb0` | | `TXPARAMSIZE` | `0xb1` | | `TXPARAMCOPY` | `0xb2` | ### New Transaction Type A new [EIP-2718](./eip-2718) transaction with type `FRAME_TX_TYPE` is introduced. Transactions of this type are referred to as "Frame transactions". The payload is defined as the RLP serialization of the following:
+
+MOTIVATION:
+This new transaction provides a native off-ramp from the elliptic curve based cryptographic system used to authenticate transactions today, to post-quantum (PQ) secure systems. In doing so, it realizes the original vision of account abstraction: unlinking accounts from a prescribed ECDSA key and support alternative fee payment schemes. The assumption of an account simply becomes an address with code. It leverages the EVM to support arbitrary *user-defined* definitions of validation and gas payment.
+
+RATIONALE:
+### Canonical signature hash The canonical signature hash is provided in `TXPARAMLOAD` to simplify the development of smart accounts. Computing the signature hash in EVM is complicated and expensive. While using the canonical signature hash is not mandatory, it is strongly recommended. Creating a bespoke signature requires precise commitment to the underlying transaction data. Without this, it's possible that some elements can be manipulated in-the-air while the transaction is pending and have unexpected effects. This is known as transaction malleability. Using the canonical signature hash avoids malleability of the frames other than `VERIFY`. The `frame.data` of `VERIFY` frames
+
+
 === EIP-7069 ===
 TITLE: Revamped CALL instructions
 TYPE: Standards Track Core

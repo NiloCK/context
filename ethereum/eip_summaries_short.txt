@@ -8716,6 +8716,26 @@ RATIONALE:
 ### Irregular state change to deploy Creator Contract Originally it was proposed to deploy the first EOF contract via irregular state change. This contract
 
 
+=== EIP-8141 ===
+TITLE: Frame Transaction
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-01-29
+REQUIRES: 2, 7, 1, 8, ,,  , 4, 8, 4, 4
+
+SUMMARY:
+Add a new transaction whose validity and gas payment can be defined abstractly. Instead of relying solely on a single ECDSA signature, accounts may
+
+SPECIFICATION:
+### Constants | Name | Value | | ------------------------- | --------------------------------------- | | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `ENTRY_POINT`
+
+MOTIVATION:
+This new transaction provides a native off-ramp from the elliptic curve based cryptographic system used to authenticate transactions today, to post-quantum (PQ) secure systems.
+
+RATIONALE:
+### Canonical signature hash The canonical signature hash is provided in `TXPARAMLOAD` to simplify the development of smart accounts. Computing the signature hash in
+
+
 === EIP-7069 ===
 TITLE: Revamped CALL instructions
 TYPE: Standards Track Core
