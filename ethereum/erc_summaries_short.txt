@@ -4902,16 +4902,16 @@ CREATED: 2024-11-27
 REQUIRES: 1, 5, 5, ,,  , 7, 9, 3, 0
 
 SUMMARY:
-This proposal defines an _Interoperable Name_, a human-readable _chain-specific address_ format that MAY represent the _target address_ as an ENS name. Additionally, the target
+This proposal defines an Interoperable Name, a chain-specific address format with the structure `<address>@<chain>#<checksum>`. The `<address>` can be an address, or an ENS name.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-The core motivation for introducing the _Interoperable Name_ standard is to provide maximally readable, _chain-specific addresses_ for user-facing interactions. [ERC-7930] introduced a binary format
+The current Ethereum address landscape is evolving toward an ecosystem with hundreds, and eventually thousands, of L2s that share the same address format as
 
 RATIONALE:
-- The ENS protocol is a well-established blockchain identity primitive that allows the registration of names like `example.eth` and `wallet.ensdao.eth` that _resolve_ to addresses
+- The Ethereum Name Service (ENS) is a well-established blockchain identity primitive that enables the registration of human-readable names (e.g. example.eth, wallet.ensdao.eth) which resolve
 
 
 === ERC-7682 ===
