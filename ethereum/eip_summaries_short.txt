@@ -1,7 +1,7 @@
 === EIP-7612 ===
 TITLE: Verkle state transition via an overlay tree
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-01-25
 REQUIRES: 4, 7, 6, 2, ,,  , 6, 8, 0, 0, ,,  , 7, 5, 4, 5
 

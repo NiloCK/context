@@ -7480,7 +7480,7 @@ MOTIVATION:
 ### Motivation for Diamond Contracts <img alt="Obligatory diamond" src="../assets/eip-8109/diamond.svg" width="17%" align="right">Through a single contract address, a diamond provides functionality from multiple implementation contracts (facets).
 
 RATIONALE:
-This standard provides standard events, an upgrade function and introspection functions so that GUIs, block explorers, command line programs, and other tools and software
+This standard provides standard events and introspection functions so that GUIs, block explorers, command line programs, and other tools and software can detect and
 
 
 === ERC-6786 ===

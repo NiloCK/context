@@ -7480,7 +7480,7 @@ MOTIVATION:
 ### Motivation for Diamond Contracts <img alt="Obligatory diamond" src="../assets/eip-8109/diamond.svg" width="17%" align="right">Through a single contract address, a diamond provides functionality from multiple implementation contracts (facets). Each facet is independent, yet facets can share internal functions and storage. This architecture allows large smart-contract systems to be composed from separate facets and
 
 RATIONALE:
-This standard provides standard events, an upgrade function and introspection functions so that GUIs, block explorers, command line programs, and other tools and software can detect and interoperate with diamond contracts. Software can retrieve function selectors and facet addresses from a diamond in order to use and show what
+This standard provides standard events and introspection functions so that GUIs, block explorers, command line programs, and other tools and software can detect and interoperate with diamond contracts. Software can retrieve function selectors and facet addresses from a diamond in order to use and show what functions a diamond
 
 
 === ERC-6786 ===
