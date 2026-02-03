@@ -1736,7 +1736,7 @@ This method allows contracts written without the [ERC-5169](./eip-5169.md) inter
 === ERC-7656 ===
 TITLE: Generalized Contract-Linked Services
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-03-15
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 1, 1, 6, 7, ,,  , 4, 3, 3, 7
 
@@ -6507,7 +6507,7 @@ RATIONALE:
 === ERC-8034 ===
 TITLE: Referable NFT Royalties
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-10-02
 REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 5, 5, 2, 1
 

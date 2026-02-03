@@ -549,7 +549,7 @@ TITLE: SSZ execution blocks
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-28
-REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 0, 6, ,,  , 7, 7, 9, 9
+REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 9, 9
 
 SUMMARY:
 This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
@@ -4540,7 +4540,7 @@ RATIONALE:
 === EIP-7594 ===
 TITLE: PeerDAS - Peer Data Availability Sampling
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-01-12
 REQUIRES: 4844
 
@@ -4924,7 +4924,7 @@ SUMMARY:
 This EIP adds a precompile that returns whether a specific chainID (EIP-155 unique identifier) is valid at a specific blockNumber. ChainID are assumed to
 
 SPECIFICATION:
-Adds a new precompile which uses 2 argument : a 32 bytes value that represent the chainID to test and a 32 bytes value
+Adds a new precompile which uses 2 arguments : a 32 bytes value that represents the chainID to test and a 32 bytes value
 
 MOTIVATION:
 [EIP-155](./eip-155.md) proposes to use the chain ID to prevent the replay of transactions between different chains. It would be a great benefit to have
@@ -9340,7 +9340,7 @@ TITLE: RPC Method for Transaction Gas Limit Cap
 TYPE: Standards Track Interface
 STATUS: Draft
 CREATED: 2026-01-11
-REQUIRES: 1, 4, 7, 4, ,,  , 7, 8, 2, 5
+REQUIRES: 7825
 
 SUMMARY:
 This EIP specifies a new Ethereum JSON-RPC method, `eth_txGasLimitCap`, which returns the maximum transaction gas limit (`tx.gas`) that the node will accept under the
