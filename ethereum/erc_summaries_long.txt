@@ -7823,6 +7823,26 @@ RATIONALE:
 The Vault interface is designed to be optimized for integrators with a feature complete yet minimal interface. Details such as accounting and allocation of deposited tokens are intentionally not specified, as Vaults are expected to be treated as black boxes on-chain and inspected off-chain before use. EIP-20 is enforced because implementation details like token approval and balance calculation directly carry over to the shares accounting. This standardization makes the Vaults immediately compatible with all EIP-20 use cases in addition to EIP-4626. The mint method was included for symmetry and feature completeness. Most current use cases of share-based Vaults
 
 
+=== ERC-8049 ===
+TITLE: Contract-Level Onchain Metadata
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-10
+REQUIRES: 
+
+SUMMARY:
+This ERC defines a standard for storing contract-level metadata onchain. It extends [ERC-7572](./eip-7572.md)'s contract-level metadata concept by providing onchain storage. Contracts MAY optionally use [ERC-8042](./eip-8042.md)'s Diamond Storage pattern for predictable storage locations, enabling cross-chain compatibility and supporting upgradable contracts.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Required Metadata Function and Event Contracts implementing this ERC MUST implement the following interface: ```solidity interface IERCXXXX { /// @notice Get contract metadata value for a key. function getContractMetadata(string calldata key) external view returns (bytes memory); /// @notice Emitted when contract metadata is updated. event ContractMetadataUpdated(string indexed indexedKey, string key, bytes value); } ``` - `getContractMetadata(key)`: Returns the contract metadata value for the
+
+MOTIVATION:
+[ERC-7572](./eip-7572.md) standardizes contract-level metadata via `contractURI()`, but it typically relies on offchain storage, which introduces trust and availability risks. This ERC enables fully onchain, verifiable contract metadata for trustless discovery in wallets and explorers, while preserving a familiar interface. Diamond Storage is optionally supported to provide predictable storage locations, making it easier to create inclusion proofs of individual metadata values for cross-chain verification and supporting upgradable contract deployments.
+
+RATIONALE:
+This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of contract metadata. The minimal interface with a single `getContractMetadata` function provides all necessary functionality. The optional `setContractMetadata` function enables flexible access control for metadata updates. The required `ContractMetadataUpdated` event provides transparent audit trails with indexed key for efficient filtering. Contracts that need predictable storage locations can optionally use Diamond Storage pattern. This makes the standard suitable for diverse use cases including contract identification, collaboration tracking, and custom metadata storage.
+
+
 === ERC-6860 ===
 TITLE: Web3 URL to EVM Call Message Translation
 TYPE: Standards Track ERC
