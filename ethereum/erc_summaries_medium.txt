@@ -3220,16 +3220,16 @@ CREATED: 2025-12-12
 REQUIRES: 3, 6, 6, 8, ,,  , 7, 9, 3, 0
 
 SUMMARY:
-This ERC introduces hooks, a specification for cross-chain function calls. A hook fully specifies what function to call, with what parameters, on which contract, on which chain. Hooks are particularly useful for redirecting metadata to known contracts with verifiable security properties, such as credential registries for Proof-of-Personhood (PoP) or
+This ERC introduces hooks for cross-chain function calls. A hook fully specifies what function to call, with what parameters, on which contract, on which chain. Hooks require clients to use [ERC-3668](./eip-3668.md) to resolve, enabling cross-chain and off-chain verifiable data resolution. Hooks are particularly useful for redirecting metadata to known
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview A hook is a fully specified function call containing a function selector, human-readable
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview A hook is a fully specified function call containing an optional function selector,
 
 MOTIVATION:
-Cross-chain reads require specifying exactly what function to call, on which contract, on which chain. Hooks provide a complete specification by combining a function selector, readable function call, return type, and [ERC-7930](./eip-7930.md) interoperable address. This enables secure resolution from known contracts with verifiable security properties, whether on the same
+There is a need to resolve data cross-chain, such as credentials like Proof-of-Personhood (PoP), for example from a dedicated identity chain. There is also a need to save these cross-chain function calls onchain, and there is currently no existing standard for saving this type of function call as a
 
 RATIONALE:
-Hooks provide a complete specification for cross-chain function calls by combining a function selector, human-readable function call, return type, and [ERC-7930](./eip-7930.md) interoperable address. This makes hooks entirely self-describing - any client can resolve them without external documentation or ABI files. ### Why Include Both Function Selector and Function String?
+Hooks provide a complete specification for cross-chain function calls, including [ERC-7930](./eip-7930.md) interoperable address. This makes hooks entirely self-describing - any client can resolve them without external documentation or ABI files. For use cases including resolving credentials from known registries including PoP (Proof of Personhood) and KYC (Know Your Customer)
 
 
 === ERC-6123 ===

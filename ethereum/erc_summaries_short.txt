@@ -3220,16 +3220,16 @@ CREATED: 2025-12-12
 REQUIRES: 3, 6, 6, 8, ,,  , 7, 9, 3, 0
 
 SUMMARY:
-This ERC introduces hooks, a specification for cross-chain function calls. A hook fully specifies what function to call, with what parameters, on which contract,
+This ERC introduces hooks for cross-chain function calls. A hook fully specifies what function to call, with what parameters, on which contract, on which
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Cross-chain reads require specifying exactly what function to call, on which contract, on which chain. Hooks provide a complete specification by combining a function
+There is a need to resolve data cross-chain, such as credentials like Proof-of-Personhood (PoP), for example from a dedicated identity chain. There is also
 
 RATIONALE:
-Hooks provide a complete specification for cross-chain function calls by combining a function selector, human-readable function call, return type, and [ERC-7930](./eip-7930.md) interoperable address. This
+Hooks provide a complete specification for cross-chain function calls, including [ERC-7930](./eip-7930.md) interoperable address. This makes hooks entirely self-describing - any client can resolve them
 
 
 === ERC-6123 ===
