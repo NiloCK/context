@@ -6946,7 +6946,7 @@ CREATED: 2025-06-11
 REQUIRES: 
 
 SUMMARY:
-This EIP proposes a new JSON-RPC method, `eth_sendRawTransactionSync`, which submits a signed raw transaction and waits synchronously for the transaction receipt or a configurable timeout before returning. This method addresses the user experience gap in high-frequency applications by offering stronger delivery guarantees than `eth_sendRawTransaction`.
+This EIP proposes a new JSON-RPC method, `eth_sendRawTransactionSync`, which submits a signed raw transaction and waits synchronously for the transaction receipt or a configurable timeout before returning. This method addresses the user experience gap in high-frequency applications by offering stronger delivery guarantees than `eth_sendRawTransaction`. Additionally, when a transaction cannot
 
 SPECIFICATION:
 ### Method Name `eth_sendRawTransactionSync` ### Parameters | Position | Type | Description | Required | |----------|--------|-----------------------------------|----------| | 1 | `DATA` | The signed transaction data | Yes | | 2 | `INT` | Maximum wait time in milliseconds | No | #### Parameter Validation Rules - **Transaction Data**. MUST

@@ -3605,7 +3605,7 @@ CREATED: 2025-12-20
 REQUIRES: 2, 5, 3, 5, ,,  , 8, 0, 4, 2, ,,  , 8, 1, 0, 9
 
 SUMMARY:
-This EIP introduces a **domain-based architectural pattern** for contracts implementing the Diamond execution model defined by [ERC-2535 (Diamond Standard)](./eip-2535.md) or [ERC-8109 (Diamond, Simplified)](./eip-8109.md), together with the storage identifier mechanism defined by [ERC-8042 (Diamond Storage Identifier)](./eip-8042). It defines a consistent naming convention for storage identifiers and a directory organization model
+This standard introduces a **domain-based architectural pattern** for contracts implementing the Diamond execution model defined by [ERC-2535 (Diamond Standard)](./eip-2535.md) or [ERC-8109 (Diamond, Simplified)](./eip-8109.md), together with the storage identifier mechanism defined by [ERC-8042 (Diamond Storage Identifier)](./eip-8042). It defines a consistent naming convention for storage identifiers and a directory organization model
 
 SPECIFICATION:
 ### 1. Domain Definition - A **domain** represents the conceptual ownership of a storage space. - Each **domain** corresponds to exactly one storage struct and one identifier. - A **domain** has a one-to-many relationship with the group of function selectors that access it. - A **domain** is independent of
@@ -7945,13 +7945,13 @@ TITLE: Scaled UI Amount Extension for ERC-20 Tokens
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-10-20
-REQUIRES: 20
+REQUIRES: 2, 0, ,,  , 1, 6, 5
 
 SUMMARY:
 This EIP proposes a standard extension to [ERC-20](./eip-20.md) tokens that enables issuers to apply an updatable multiplier to the UI (user interface) amount of tokens. This allows for efficient representation of stock splits, without requiring actual token minting or transfers. The extension provides a cosmetic layer that modifies how
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface: ```solidity interface IScaledUIAmount { // OPTIONAL // Emitted when the UI multiplier is updated event UIMultiplierUpdated(uint256 oldMultiplier, uint256
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Core Interface Compliant contracts MUST implement the `IScaledUIAmount` interface: ```solidity interface IScaledUIAmount { // Emitted when the UI multiplier
 
 MOTIVATION:
 Current ERC-20 implementations lack an efficient mechanism to handle real-world asset scenarios such as stock splits: When a company performs a 2-for-1 stock split, all shareholders should see their holdings double. Currently, this requires minting new tokens to all holders, which is gas-intensive and operationally complex. Moreover, the internal
