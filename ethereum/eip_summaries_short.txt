@@ -4711,15 +4711,15 @@ SPECIFICATION:
 === EIP-7607 ===
 TITLE: Hardfork Meta - Fusaka
 TYPE: Meta 
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-02-01
-REQUIRES: 7, 6, 0, 0, ,,  , 7, 7, 2, 3
+REQUIRES: 7, 5, 9, 4, ,,  , 7, 6, 0, 0, ,,  , 7, 6, 4, 2, ,,  , 7, 8, 2, 3, ,,  , 7, 8, 2, 5, ,,  , 7, 8, 8, 3, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 1, 0, ,,  , 7, 9, 1, 7, ,,  , 7, 9, 1, 8, ,,  , 7, 9, 3, 4, ,,  , 7, 9, 3, 5, ,,  , 7, 9, 3, 9, ,,  , 7, 9, 5, 1
 
 SUMMARY:
-This Meta EIP lists the EIPs formally Scheduled for Inclusion in the Fulu/Osaka network upgrade. It follows the Pectra upgrade, documented in [EIP-7600](./eip-7600.md)
+This Meta EIP lists the EIPs included in the Fulu/Osaka network upgrade. It follows the Pectra upgrade, documented in [EIP-7600](./eip-7600.md).
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Proposed for Inclusion` and `Declined for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for
+### Included EIPs #### Core EIPs * [EIP-7594](./eip-7594.md): PeerDAS - Peer Data Availability Sampling * [EIP-7823](./eip-7823.md): Set upper bounds for MODEXP * [EIP-7825](./eip-7825.md): Transaction
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Fusaka network upgrade, as well as links to full specification.
@@ -8254,7 +8254,7 @@ RATIONALE:
 === EIP-7918 ===
 TITLE: Blob base fee bounded by execution cost
 TYPE: Standards Track Core
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-03-25
 REQUIRES: 4, 8, 4, 4, ,,  , 7, 8, 4, 0
 
