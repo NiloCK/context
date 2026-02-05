@@ -7837,7 +7837,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-[ERC-7572](./eip-7572.md) standardizes contract-level metadata via `contractURI()`, but it typically relies on offchain storage, which introduces trust and availability risks. This ERC enables fully onchain,
+Contract metadata today typically relies on offchain storage such as URLs or IPFS, creating trust and availability risks—servers go down, domains expire, and malicious
 
 RATIONALE:
 This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of contract metadata. The
