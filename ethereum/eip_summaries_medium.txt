@@ -5021,6 +5021,26 @@ CREATED: 2017-01-30
 REQUIRES: 
 
 
+=== EIP-8131 ===
+TITLE: Add Auth Data to EIP-7623 Floor
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-01-21
+REQUIRES: 7, 6, 2, 3, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This EIP includes [EIP-7702](./eip-7702.md) authorization data in the [EIP-7623](./eip-7623.md) floor calculation, preventing circumvention of floor pricing through authorization lists.
+
+SPECIFICATION:
+| Parameter | Value | Source | |-----------|-------|--------| | `TOTAL_COST_FLOOR_PER_TOKEN` | `10` | [EIP-7623](./eip-7623.md) | | `FLOOR_COST_PER_AUTH` | `4040` | 101 bytes × 4 tokens × 10 gas | | `PER_EMPTY_ACCOUNT_COST` | `25000` | [EIP-7702](./eip-7702.md) | The [EIP-7623](./eip-7623.md) floor calculation is modified to include authorization data: ```python tokens_in_calldata =
+
+MOTIVATION:
+[EIP-7702](./eip-7702.md) authorization tuples are priced for execution (`PER_EMPTY_ACCOUNT_COST = 25,000` gas per authorization) but do not contribute to the [EIP-7623](./eip-7623.md) floor calculation. This enables achieving ~9% larger blocks than intended by combining calldata with authorization data at an optimal ratio, circumventing the floor pricing mechanism.
+
+RATIONALE:
+### Flat Cost Per Authorization Each authorization is charged a flat `FLOOR_COST_PER_AUTH = 4040` gas toward the floor, derived from: - 101 bytes per authorization tuple (as specified in [EIP-7702](./eip-7702.md)) - 4 tokens per byte (treating all bytes as non-zero) - 10 gas per token (`TOTAL_COST_FLOOR_PER_TOKEN`) This conservative approach
+
+
 === EIP-1193 ===
 TITLE: Ethereum Provider JavaScript API
 TYPE: Standards Track Interface
