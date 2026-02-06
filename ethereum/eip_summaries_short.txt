@@ -2973,7 +2973,7 @@ TITLE: Precompile for Falcon support
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-17
-REQUIRES: 
+REQUIRES: 7932
 
 SUMMARY:
 This proposal creates a precompiled contract that performs signature verifications using the Falcon-512 signature scheme by given parameters of the message hash, signature, and
@@ -3956,6 +3956,26 @@ Some blockchain applications interact with a blockchain much more frequently tha
 
 RATIONALE:
 Games and Metaverse applications imply lots of cases when the user interacts with the wallet, switching to it and approving transactions. This switching aspect
+
+
+=== EIP-8142 ===
+TITLE: Block-in-Blobs (BiB)
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-01-29
+REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 2, 8
+
+SUMMARY:
+zkEVMs allow validators to verify the correctness of an execution payload using a proof, without downloading or executing the payload itself. However, removing the
+
+SPECIFICATION:
+### Terminology **Type-3 transaction:** Refers to EIP-4844 blob-carrying transactions (transaction type 0x03). These transactions include blob versioned hashes that commit to blobs carrying user
+
+MOTIVATION:
+**Validation via re-execution** Today, validators verify execution payloads by: 1) Downloading the execution payload 2) Executing the payload locally 3) Checking the resulting state
+
+RATIONALE:
+### What is included in execution-payload data? Execution-payload data includes `bals` (Block Access Lists from EIP-7928) and `transactions`. **Why transactions?** Transaction data is the
 
 
 === EIP-6690 ===
@@ -5506,6 +5526,23 @@ Wallets are oftentimes maintaining security and safety of users' funds that can 
 
 RATIONALE:
 By limiting the capabilities of where the Ethereum Provider APIs are being injected we can reduce the surface area of where attacks can be
+
+
+=== EIP-8134 ===
+TITLE: Hardfork Meta - BPO1
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2026-01-24
+REQUIRES: 7892
+
+SUMMARY:
+This Meta EIP documents the activation details, parameter changes, and specification references for the first Blob-Parameter-Only (BPO) network upgrades, BPO1. It provides a canonical
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+RATIONALE:
+BPO-1 formalizes the first post-Fusaka adjustment to blob parameters, providing a controlled expansion of blob capacity to support empirical evaluation under mainnet conditions. This
 
 
 === EIP-3155 ===

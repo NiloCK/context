@@ -2973,7 +2973,7 @@ TITLE: Precompile for Falcon support
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-17
-REQUIRES: 
+REQUIRES: 7932
 
 SUMMARY:
 This proposal creates a precompiled contract that performs signature verifications using the Falcon-512 signature scheme by given parameters of the message hash, signature, and public key. This allows any EVM chain -- principally Ethereum roll-ups -- to integrate this precompiled contract easily. The signature scheme can be instantiated in two version: * Falcon, the standard signature scheme, fully compliant with the algorithm recommended by the NIST, * An EVM-friendly version where the hash function is efficiently computed in the Ethereum Virtual Machine. Three precompiled contracts are specified (formerly called `ETH_HASH_TO_POINT` / `HASH_TO_POINT_ETH` in drafts): * `FALCON_HASH_TO_POINT_SHAKE256` — NIST-compliant
@@ -3956,6 +3956,26 @@ Some blockchain applications interact with a blockchain much more frequently tha
 
 RATIONALE:
 Games and Metaverse applications imply lots of cases when the user interacts with the wallet, switching to it and approving transactions. This switching aspect might interfere with gaming per se and create a bad user experience. That is why such applications can benefit if the wallets can support the Silent Signing functionality allowing transactions to be signed with no user interaction.
+
+
+=== EIP-8142 ===
+TITLE: Block-in-Blobs (BiB)
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-01-29
+REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 2, 8
+
+SUMMARY:
+zkEVMs allow validators to verify the correctness of an execution payload using a proof, without downloading or executing the payload itself. However, removing the requirement to download the execution payload, also removes the implicit data availability (DA) guarantee; a block producer can publish a valid proof and withhold the execution-payload data since attesters no longer need them for consensus. This EIP introduces Block-in-Blobs (BiB), a mechanism that requires the execution-payload data (transactions and BALs) to be published in blob data, in the same beacon block that carries the corresponding execution payload's header. This ensures that execution payloads and
+
+SPECIFICATION:
+### Terminology **Type-3 transaction:** Refers to EIP-4844 blob-carrying transactions (transaction type 0x03). These transactions include blob versioned hashes that commit to blobs carrying user data. ### Overview and Invariants BiB ensures the proven payload is published: - The beacon block references a list of blob KZG commitments (via 4844/PeerDas) - A prefix of those commitments is reserved for the execution-payload data encoded into blobs - A zkEVM proof for the block must bind the proven execution payload to those prefixed blob commitments. **Payload availability invariant:** A valid block implies there exists an ordered list of blobs whose bytes
+
+MOTIVATION:
+**Validation via re-execution** Today, validators verify execution payloads by: 1) Downloading the execution payload 2) Executing the payload locally 3) Checking the resulting state root and other fields against the fields in the header Implicitly this guarantees execution payload availability because the payload cannot be verified unless the node downloads it. **Validation with zkEVMs** With zkEVMs, validators instead: 1) Download a proof attesting to the correctness of the execution payload 2) Download the execution payload header 3) Verify the proof with respects to the payload header (and other commitments) In this model, validators no longer require access to
+
+RATIONALE:
+### What is included in execution-payload data? Execution-payload data includes `bals` (Block Access Lists from EIP-7928) and `transactions`. **Why transactions?** Transaction data is the only component of the execution payload that cannot be derived from other components and is not provided by the consensus layer. **Why BALs?** While BALs are technically the output of executing transactions and could be recomputed, once zkEVM proofs become mandatory for consensus, validators no longer execute payloads. A malicious builder could publish a valid proof and withhold both the execution payload data and the BALs. This would prevent other builders from constructing subsequent
 
 
 === EIP-6690 ===
@@ -5506,6 +5526,23 @@ Wallets are oftentimes maintaining security and safety of users' funds that can 
 
 RATIONALE:
 By limiting the capabilities of where the Ethereum Provider APIs are being injected we can reduce the surface area of where attacks can be executed. Given the sensitivity of data that's passed to the Ethereum Provider APIs some basic levels of authentication and confidentiality should be met in order to ensure that request data is not being intercepted or tampered with. While there have been attempts to [limit request access via the wallet](./eip-2255.md) interface itself, there have not been limitations that have been set to where these Ethereum Provider APIs are expected to be or not be injected.
+
+
+=== EIP-8134 ===
+TITLE: Hardfork Meta - BPO1
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2026-01-24
+REQUIRES: 7892
+
+SUMMARY:
+This Meta EIP documents the activation details, parameter changes, and specification references for the first Blob-Parameter-Only (BPO) network upgrades, BPO1. It provides a canonical registry of blob targets, blob maximum limits, and associated configuration values to improve transparency, traceability, and ecosystem coordination for early-stage data availability scaling under Ethereum’s Surge roadmap.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). This section documents the Blob-Parameter-Only upgrade identified as **BPO1**. The upgrade modifies blob-related protocol parameters as defined in [EIP-7892](./eip-7892). No other protocol behavior is affected. All timestamps are expressed as Unix epoch seconds (UTC). ### BPO-1 Parameters | Field | Value | |--------------------------|------------| | BPO Identifier | BPO1 | | Activation Time (UTC) | 1765290071 | | Blob Target | 10 | | Blob
+
+RATIONALE:
+BPO-1 formalizes the first post-Fusaka adjustment to blob parameters, providing a controlled expansion of blob capacity to support empirical evaluation under mainnet conditions. This change enables the network to collect real-world performance data across clients, validators, and proposers, supporting evidence-based assessment of slot stability and system behavior before any further scaling decisions. Documenting BPO-1 as a standalone parameter update improves transparency and process clarity by establishing an authoritative record of blob parameter changes.
 
 
 === EIP-3155 ===
@@ -8590,7 +8627,7 @@ SUMMARY:
 This proposal adds precompiled contracts that perform signature verifications using the NIST module-lattice signature scheme. Two instantiations are supported: * **ML-DSA** — NIST-compliant version using SHAKE256 (FIPS-204), * **ML-DSA-ETH** — EVM-optimized version for cheaper on-chain verification: * Uses Keccak-based PRNG instead of SHAKE256 (leverages native KECCAK256 precompile) * Stores public-key polynomial `t1` in the NTT domain to skip one NTT during verification (convertible to regular encoding offline) Two precompile contracts are specified: * `VERIFY_MLDSA` — verifies a ML-DSA signature compliant to FIPS-204. * `VERIFY_MLDSA_ETH` — verifies a ML-DSA-ETH signature replacing SHAKE256 with a more efficient hash function, deviating
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The following specification provides two precompiled contracts: |**Precompiled contract**|**1**|**2**| |-|-|-| |**Name**|`MLDSA_VERIFY`|`MLDSA_VERIFY_ETH`| |**Address**| 0x12| 0x13| |**Gas cost**| 4500| 4500| While ML-DSA can be instantiated for three security levels: NIST level II, III and IV, this EIP only covers NIST level II, corresponding to 128 bits of security. For the two variants of ML-DSA of this EIP, the following parameters are fixed: * Polynomial degree: `n
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The following specification provides two precompiled contracts: |**Precompiled contract**|**1**|**2**| |-|-|-| |**Name**|`VERIFY_MLDSA`|`VERIFY_MLDSA_ETH`| |**Address**| 0x12| 0x13| |**Gas cost**| 4500| 4500| While ML-DSA can be instantiated for three security levels: NIST level II, III and IV, this EIP only covers NIST level II, corresponding to 128 bits of security. For the two variants of ML-DSA of this EIP, the following parameters are fixed: * Polynomial degree: `n
 
 MOTIVATION:
 Quantum computers pose a long-term risk to classical cryptographic algorithms. In particular, signature algorithms based on the hardness of the Elliptic Curve Discrete Logarithm Problem (ECDLP) such as secp256k1, are widely used in Ethereum and threatened by quantum algorithms. This exposes potentially on-chain assets and critical infrastructure to quantum adversaries. Integrating post-quantum signature schemes is crucial to future-proof Ethereum and other EVM-based environments. It shall be noted that infrastructure for post-quantum signatures should be deployed before quantum adversaries are known to be practical because it takes on the order of years for existing applications to integrate. Dilithium, a
