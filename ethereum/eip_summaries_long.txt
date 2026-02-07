@@ -7323,7 +7323,7 @@ MOTIVATION:
 While the stack is 1024 items deep, easy access is only possible for the top 16 items. Supporting more local variables is possible via manually keeping them in memory or through a "stack to memory elevation" in a compiler. This can result in complex and inefficient code. Furthermore, implementing higher level constructs, such as functions, on top of EVM will result in a list of input and output parameters as well as an instruction offset to return to. The number of these arguments (or stack items) can easily exceed 16 and thus will require extra care from a
 
 RATIONALE:
-### Use of an immediate operand Allowing dynamic selection of the arguments to swap or dup could be used to prevent static analysis of the contents of the stack. Since static analysis is an important tool for security auditors we want to do what we can to make their jobs easier. Hence, the operands require an immediate operand that is not dynamic in nature. ### Disallowed immediate range Allowing the encoding of the immediate operand to take the values `0x5b` or `0x60` to `0x7f` would create a backwards incompatibility. These values correspond to the `JUMPDEST` and `PUSH1` to
+### Use of an immediate operand Allowing dynamic selection of the arguments to swap or dup could be used to prevent static analysis of the contents of the stack. Since static analysis is an important tool for security auditors we want to do what we can to make their jobs easier. Hence, the operands require an immediate operand that is not dynamic in nature. ### Disallowed immediate range A property the EVM has is that it's not possible to jump to the middle of an instruction. In order to guarantee this property, the immediate operands of `PUSH*` instructions
 
 
 === EIP-1962 ===
