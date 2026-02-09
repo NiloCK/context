@@ -9783,23 +9783,23 @@ TBA
 
 
 === EIP-7904 ===
-TITLE: General Repricing
+TITLE: Compute Gas Cost Increase
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-02-05
 REQUIRES: 7883
 
 SUMMARY:
-This proposal revises the gas cost schedule for opcodes and data access, prioritizing computational complexity, while excluding network-related costs such as state persistence. The adjustments aim to enhance gas cost accuracy and rebalance the cost structure.
+This proposal raises the gas costs of 13 compute operations and precompiles performing worse than 60 million gas per second (Mgas/s). By removing these operations as bottlenecks, we can further increase the block gas limit, thus allowing for a higher throughput on the remaining operations.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | | ------------------------ | ----- | | `WARM_STORAGE_READ_COST` |
+Upon activation of this EIP, the following gas costs will be updated. ### Opcodes |Operation|Parameter|Current Gas|New Gas (Rounded)|Change| | :---: | :---: | :---: | :---: | :---: | |ADDMOD|constant|8|8|0.0| |DIV|constant|5|15|2.0| |KECCAK256|constant|30|45|0.5| |KECCAK256|msg_size|6|6|0.0| |MOD|constant|5|12|1.4| |MULMOD|constant|8|11|0.38| |SDIV|constant|5|20|3.0| |SMOD|constant|5|5|0| ### Precompiles |Operation|Parameter|Current Gas|New Gas (Rounded)|Change| | :---: | :---: | :---:
 
 MOTIVATION:
-Gas costs compromise of two components: network (social) cost and computation cost. Network cost reflects the blockchain’s effort to maintain state, including adding transactions, storage, logs, calldata, and receipts, while computation cost represents the non-durable processing effort of smart contracts. The importance of adequate gas costs arises from the
+Recent empirical measurements have shown that EVM operations don't have a price consistent with their computational complexity. Some operations are significantly underpriced, leading to potential bottlenecks in transaction processing. These bottlenecks limit the overall throughput of the Ethereum network, as they consume a disproportionate amount of computational resources relative
 
 RATIONALE:
-### Gas Cost Estimator Project The [Gas Cost Estimator](../assets/eip-7904/gas-cost-estimator-report.pdf) project serves as the empirical foundation for this EIP. This project conducted extensive testing across seven widely-used EVM implementations to measure the actual computational effort required by various opcodes and operations. Conducted in a controlled environment to eliminate external variables,
+### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The operations selected for repricing in this EIP were chosen based on their estimated million gas per second (Mgas/s) performance. For this EIP, a performance target of **60 million gas per second** is chosen. With this performance
 
 
 === EIP-3326 ===

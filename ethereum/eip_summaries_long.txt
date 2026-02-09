@@ -8784,7 +8784,7 @@ SUMMARY:
 Add a new transaction whose validity and gas payment can be defined abstractly. Instead of relying solely on a single ECDSA signature, accounts may freely define and interpret their signature scheme using any cryptographic system.
 
 SPECIFICATION:
-### Constants | Name | Value | | ------------------------- | --------------------------------------- | | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `ENTRY_POINT` | `address(0xaa)` | | `MAX_FRAMES` | `10^3` | ### Opcodes | Name | Value | | -------------- | ------ | | `APPROVE` | `0xaa` | | `TXPARAMLOAD` | `0xb0` | | `TXPARAMSIZE` | `0xb1` | | `TXPARAMCOPY` | `0xb2` | ### New Transaction Type A new [EIP-2718](./eip-2718) transaction with type `FRAME_TX_TYPE` is introduced. Transactions of this type are referred to as "Frame transactions". The payload is defined as the RLP serialization of the following:
+### Constants | Name | Value | | ------------------------- | --------------------------------------- | | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `ENTRY_POINT` | `address(0xaa)` | | `MAX_FRAMES` | `10^3` | ### Opcodes | Name | Value | | -------------- | ------ | | `APPROVE` | `0xaa` | | `TXPARAMLOAD` | `0xb0` | | `TXPARAMSIZE` | `0xb1` | | `TXPARAMCOPY` | `0xb2` | ### New Transaction Type A new [EIP-2718](./eip-2718.md) transaction with type `FRAME_TX_TYPE` is introduced. Transactions of this type are referred to as "Frame transactions". The payload is defined as the RLP serialization of the following:
 
 MOTIVATION:
 This new transaction provides a native off-ramp from the elliptic curve based cryptographic system used to authenticate transactions today, to post-quantum (PQ) secure systems. In doing so, it realizes the original vision of account abstraction: unlinking accounts from a prescribed ECDSA key and support alternative fee payment schemes. The assumption of an account simply becomes an address with code. It leverages the EVM to support arbitrary *user-defined* definitions of validation and gas payment.
@@ -9783,23 +9783,23 @@ TBA
 
 
 === EIP-7904 ===
-TITLE: General Repricing
+TITLE: Compute Gas Cost Increase
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-02-05
 REQUIRES: 7883
 
 SUMMARY:
-This proposal revises the gas cost schedule for opcodes and data access, prioritizing computational complexity, while excluding network-related costs such as state persistence. The adjustments aim to enhance gas cost accuracy and rebalance the cost structure.
+This proposal raises the gas costs of 13 compute operations and precompiles performing worse than 60 million gas per second (Mgas/s). By removing these operations as bottlenecks, we can further increase the block gas limit, thus allowing for a higher throughput on the remaining operations.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | | ------------------------ | ----- | | `WARM_STORAGE_READ_COST` | `5` | | `BASE_OPCODE_COST` | `1` | | `FAST_OPCODE_COST` | `2` | | `MID_OPCODE_COST` | `3` | | `EXP_BASE_COST` | `2` | | `EXP_PER_BYTE_COST` | `4` | | `COPY_PER_WORD_COST` | `1` | ### Cost formulas | Name | Formula | Description | | ------------------- | ----------------------- | ---------------------------------------------------- |
+Upon activation of this EIP, the following gas costs will be updated. ### Opcodes |Operation|Parameter|Current Gas|New Gas (Rounded)|Change| | :---: | :---: | :---: | :---: | :---: | |ADDMOD|constant|8|8|0.0| |DIV|constant|5|15|2.0| |KECCAK256|constant|30|45|0.5| |KECCAK256|msg_size|6|6|0.0| |MOD|constant|5|12|1.4| |MULMOD|constant|8|11|0.38| |SDIV|constant|5|20|3.0| |SMOD|constant|5|5|0| ### Precompiles |Operation|Parameter|Current Gas|New Gas (Rounded)|Change| | :---: | :---: | :---: | :---: | :---: | |BLAKE2F|constant|0|170|NA| |BLAKE2F|num_rounds|1|2|1.0| |BLS12_G1ADD|constant|375|643|0.71| |BLS12_G2ADD|constant|600|765|0.27| |ECADD|constant|150|314|1.09| |ECPAIRING|constant|45000|45000|0.0| |ECPAIRING|num_pairs|34000|34103|0.0| |ECRECOVER|constant|3000|3000|0| |POINT_EVALUATION|constant|50000|89363|0.79|
 
 MOTIVATION:
-Gas costs compromise of two components: network (social) cost and computation cost. Network cost reflects the blockchain’s effort to maintain state, including adding transactions, storage, logs, calldata, and receipts, while computation cost represents the non-durable processing effort of smart contracts. The importance of adequate gas costs arises from the nature of computations done on the Ethereum blockchain, and has been discussed in many research papers. Moreover it is paramount from the perspective of security and network stability. Gas cost is a natural deterrent from abusing the network's capacity. On the other hand, the network needs to be affordable
+Recent empirical measurements have shown that EVM operations don't have a price consistent with their computational complexity. Some operations are significantly underpriced, leading to potential bottlenecks in transaction processing. These bottlenecks limit the overall throughput of the Ethereum network, as they consume a disproportionate amount of computational resources relative to their gas cost. By increasing the gas costs of these underpriced operations, we can alleviate these bottlenecks. This change will enable a higher block gas limit, allowing more transactions to be processed per block. The result is an overall increase in network throughput, improving the efficiency and scalability
 
 RATIONALE:
-### Gas Cost Estimator Project The [Gas Cost Estimator](../assets/eip-7904/gas-cost-estimator-report.pdf) project serves as the empirical foundation for this EIP. This project conducted extensive testing across seven widely-used EVM implementations to measure the actual computational effort required by various opcodes and operations. Conducted in a controlled environment to eliminate external variables, the tests produced accurate and reproducible [results](../assets/eip-7904/final_gas_schedule_comparison.csv). The [findings](../assets/eip-7904/gas-cost-estimator.pdf) highlight misalignments between the current gas cost schedule and the real-world computational complexity of EVM operations. By recalibrating gas costs based on these measurements, this EIP seeks to align pricing with computational reality, thereby improving Ethereum’s performance and resilience. This
+### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The operations selected for repricing in this EIP were chosen based on their estimated million gas per second (Mgas/s) performance. For this EIP, a performance target of **60 million gas per second** is chosen. With this performance target, we will be able to increase the base throughput of the chain by 3x from our current 20Mgas/s performance. An important consideration for repricing is whether poor performance is isolated to a single client or affects multiple implementations. This is important for distinguishing between: - Operations that genuinely
 
 
 === EIP-3326 ===

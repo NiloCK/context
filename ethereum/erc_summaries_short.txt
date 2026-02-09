@@ -8871,10 +8871,10 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-[ERC-8001](./eip-8001) defines minimal primitives for multi-party agent coordination but explicitly defers trust to modules: > "Privacy, thresholds, bonding, and cross-chain are left to modules."
+[ERC-8001](./eip-8001.md) defines minimal primitives for multi-party agent coordination but explicitly defers trust to modules: > "Privacy, thresholds, bonding, and cross-chain are left to modules."
 
 RATIONALE:
-### Why ENS Instead of a New Identity System? ENS is finalised [EIP-137](./eip-137), battle-tested, and widely adopted. Creating a new identity system would: *
+### Why ENS Instead of a New Identity System? ENS is finalised [EIP-137](./eip-137.md), battle-tested, and widely adopted. Creating a new identity system would: *
 
 
 === ERC-7794 ===
