@@ -4026,16 +4026,16 @@ CREATED: 2024-12-23
 REQUIRES: 
 
 SUMMARY:
-This proposal introduces a mechanism to decouple state root computation from block validation by deferring the execution layer's state root reference by one block.
+This proposal decouples state root computation from block validation by deferring the execution layer's state root reference by one block. Each block's header contains
 
 SPECIFICATION:
-### Header Changes The block header structure is modified to support delayed state root computation: ```python @dataclass class Header: # Existing fields parent_hash: Hash32
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-The primary advantage of this proposal is **asynchronous state root computation**. In the current Ethereum protocol, blocks must compute and include their own post-state
+State root computation is a significant bottleneck in block production. With [EIP-7732](./eip-7732.md) (ePBS), builders have tighter timing constraints. [EIP-7928](./eip-7928.md) (Block-Level Access Lists) enables parallel
 
 RATIONALE:
-### Latency Reduction The separation of state root computation from block validation removes the primary latency bottleneck in block production and validation. Proposers and
+### ePBS Compatibility With [EIP-7732](./eip-7732.md), the `ExecutionPayloadEnvelope` contains a CL `state_root` verified at the end of `process_execution_payload`. This EIP changes only the EL header's
 
 
 === EIP-155 ===

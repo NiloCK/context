@@ -4026,16 +4026,16 @@ CREATED: 2024-12-23
 REQUIRES: 
 
 SUMMARY:
-This proposal introduces a mechanism to decouple state root computation from block validation by deferring the execution layer's state root reference by one block. Each block's `ExecutionPayload` contains the post-state root of the previous block rather than its own, enabling validators to attest to a block's validity without waiting
+This proposal decouples state root computation from block validation by deferring the execution layer's state root reference by one block. Each block's header contains the post-state root of the previous block rather than its own. Validators can attest to block validity without waiting for state root computation.
 
 SPECIFICATION:
-### Header Changes The block header structure is modified to support delayed state root computation: ```python @dataclass class Header: # Existing fields parent_hash: Hash32 ommers_hash: Hash32 coinbase: Address # Delayed state root - references the post-state of block (n-1) state_root: Root # Now points to parent block's post-state #
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Header The `state_root` field semantics change. No new fields are added. ```python class Header:
 
 MOTIVATION:
-The primary advantage of this proposal is **asynchronous state root computation**. In the current Ethereum protocol, blocks must compute and include their own post-state root before validators can attest to them. This requirement creates a bottleneck for block production, as the expensive state root computation must complete within critical
+State root computation is a significant bottleneck in block production. With [EIP-7732](./eip-7732.md) (ePBS), builders have tighter timing constraints. [EIP-7928](./eip-7928.md) (Block-Level Access Lists) enables parallel state access but doesn't help with state root computation for builders. With delayed state roots: 1. **Builders compute one state root per slot** (for the
 
 RATIONALE:
-### Latency Reduction The separation of state root computation from block validation removes the primary latency bottleneck in block production and validation. Proposers and builders no longer need to compute the state root within the same slot, enabling faster block building and validation. This latency reduction is particularly important
+### ePBS Compatibility With [EIP-7732](./eip-7732.md), the `ExecutionPayloadEnvelope` contains a CL `state_root` verified at the end of `process_execution_payload`. This EIP changes only the EL header's `state_root` semantics. The CL state root verification is unaffected. ### BAL Synergy [EIP-7928](./eip-7928.md) provides the block access list, which identifies all storage slots touched during
 
 
 === EIP-155 ===
