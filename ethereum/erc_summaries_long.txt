@@ -1921,16 +1921,16 @@ CREATED: 2025-01-06
 REQUIRES: 
 
 SUMMARY:
-This ERC defines a standard format for parameterized string keys used in EVM key-value storage using a colon and space separator. This format was inspired by TOON format (developed by Johann Schopplich), and we acknowledge this preceding work.
+This ERC defines a standard format for parameterized string keys used in EVM key-value storage using a forward slash (`/`) separator between the key label and its parameter.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Key Format String keys used in EVM key-value storage MAY include parameters to represent variations or instances of a metadata type. When keys include parameters, they MUST follow the format: ``` <key-label>: <key-parameter> ``` Where: - **`<key-label>`**: MUST contain only printable ASCII characters (0x21-0x7E), excluding spaces. This range includes letters, digits, and common punctuation, but excludes control characters (0x00-0x1F), space (0x20), and DEL
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Key Format String keys used in EVM key-value storage MAY include parameters to represent variations or instances of a metadata type. When keys include parameters, they MUST follow the format: ``` <key-label>/<key-parameter> ``` Where: - **`<key-label>`**: MUST contain only printable ASCII characters **except** space and the forward slash character. Concretely, allowed code points are `0x21-0x2E` and `0x30-0x7E` (letters, digits, and common punctuation), explicitly
 
 MOTIVATION:
 Many EVM-based smart contracts use key-value storage to store metadata where string keys may need to represent multiple instances or variations of the same metadata type. Without a standardized format for parameterized keys, different implementations use inconsistent formats, leading to interoperability issues and parsing difficulties.
 
 RATIONALE:
-The colon and space separator (`: `) was chosen because: - The space after the colon improves human readability compared to formats like `key:value` or `key-value` - It provides a clear, unambiguous separator that is easy to parse programmatically
+The forward slash (`/`) separator was chosen because: - It provides a clear, unambiguous separator that is easy to parse programmatically - It is visually concise while still being readable compared to formats like `key:value` or `key-value`
 
 
 === ERC-2021 ===
@@ -4580,7 +4580,7 @@ RATIONALE:
 === ERC-8111 ===
 TITLE: Bound Signatures
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-12-23
 REQUIRES: 
 
@@ -10265,7 +10265,7 @@ As we move to more token models, having a common staking interface which is fami
 === ERC-8019 ===
 TITLE: Minimal Wallet-Managed Auto-Login for SIWE
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-09-02
 REQUIRES: 4361
 
@@ -10273,10 +10273,10 @@ SUMMARY:
 Defines a wallet-local allowlist for automatic signing of [ERC-4361](./eip-4361.md) messages when simple, deterministic match rules succeed. Policies are created and managed only by the wallet/user.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The term “wallet” refers to wallet user interfaces, regardless of whether mobile, web-based or browser extensions. ### Overview Each allow-policy is defined as: ```json { "domain": "example.com", // exact match to SIWE domain "uriPrefix": "https://example.com/", // SIWE URI MUST start with this "allowedChains": [1], // list of allowed chainIds "allowedResources": ["https://example.com/login"], // exact set match "supportsEIP6492": true, // required for smooth UX when using
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The term “wallet” refers to wallet user interfaces, regardless of whether mobile, web-based or browser extensions. ### Overview Each allow-policy is defined as: ```js { "domain": "example.com", // exact match to SIWE domain "uriPrefix": "https://example.com/", // SIWE URI MUST start with this "allowedChains": [1], // list of allowed chainIds "allowedResources": ["https://example.com/login"], // exact set match "supportsEIP6492": true, // required for smooth UX when using
 
 MOTIVATION:
-Users repeatedly sign identical SIWE messages for trusted apps. A small, explicit match policy enables zero-prompt login without involving apps. Users already get prompted by their wallets if they trust a certain app when they initially connect to it - this flow can also authorize auto-login if applicable.
+Users repeatedly sign identical Sign-In With Ethereum (SIWE) messages for trusted apps. A small, explicit match policy enables zero-prompt login without involving apps. Users already get prompted by their wallets if they trust a certain app when they initially connect to it - this flow can also authorize auto-login if applicable.
 
 RATIONALE:
 * This ERC is designed with minimal modifications to existing apps in mind * From a security perspective, it's much easier to "outsource" the job of determining which apps to enable to this policy for to wallets - most wallets already maintain lists of "trusted" apps * [EIP-712](./eip-712.md) (typed data) is out of scope due to SIWE deciding to build on plain text.
@@ -10665,7 +10665,7 @@ The standard aims to standardise how multiple lending markets and risk providers
 === ERC-7893 ===
 TITLE: DeFi Protocol Solvency Proof Mechanism
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-01-30
 REQUIRES: 2, 0, ,,  , 1, 6, 5
 
@@ -10877,6 +10877,26 @@ For some "standard interfaces" like [the ERC-20 token interface](./eip-20.md), i
 
 RATIONALE:
 We tried to keep this specification as simple as possible. This implementation is also compatible with the current Solidity version.
+
+
+=== ERC-8126 ===
+TITLE: AI Agent Registration and Verification
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-15
+REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 3, 0, 0, 9
+
+SUMMARY:
+This ERC defines a standard interface for registering and verifying AI agents on Ethereum. It enables AI agents to self-register with verifiable credentials and undergo specialised verification processes including Ethereum Token Verification (ETV), Staking Contract Verification (SCV), Web Application Verification (WAV), and Wallet Verification (WV). Verification providers implementing this standard process results through Private Data Verification (PDV) to generate Zero-Knowledge Proofs. Detailed verification results are accessible only to AI Agent wallet holders, providing a unified risk scoring system (0-100) that helps users assess agent trustworthiness.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Required Standards This standard requires the following EIPs/ERCs: | Standard | Purpose in This ERC | |---------------------------------|---------------------| | [EIP-155](./eip-155.md) | Replay attack protection - ensures signatures include chain ID to prevent cross-chain replay attacks during agent registration and verification | | [EIP-712](./eip-712.md) | Typed structured data signing - enables human-readable signing requests for agent registration, preventing blind signing attacks and improving UX |
+
+MOTIVATION:
+As AI agents become increasingly prevalent in blockchain ecosystems, users need standardised ways to verify their authenticity and trustworthiness. Current solutions are fragmented, with no unified standard for agent registration or verification. This ERC addresses these challenges by providing: 1. **Self-Registration**: AI agents can register themselves with verifiable on-chain credentials 2. **Multi-Layer Verification**: Four specialised verification types assess different aspects of agent security 3. **Privacy-First Architecture**: Zero-Knowledge Proofs ensure verification without exposing sensitive data 4. **Unified Risk Scoring**: A standardised 0-100 risk score enables easy comparison between agents 5. **Micropayment Integration**: x402 protocol enables cost-effective verification without gas
+
+RATIONALE:
+### Required Standards Justification **EIP-155 (Replay Protection)**: Agent registrations involve wallet signatures. Without chain ID inclusion ([EIP-155](./eip-155.md)), a registration signature on mainnet could be replayed on testnets or L2s, potentially creating conflicting agent records across chains. **EIP-712 (Typed Data Signing)**: Registration requires users to sign structured data. [EIP-712](./eip-712.md) presents human-readable signing requests (e.g., "Register Agent: MyBot at 0x...") rather than opaque hashes, preventing phishing attacks where users unknowingly sign malicious transactions. **ERC-3009 (Transfer With Authorization)**: Verification fees use x402 micropayments. [ERC-3009](./eip-3009.md) enables gasless USDC transfers where the verification provider pays gas, improving UX by not requiring users to
 
 
 === ERC-8000 ===

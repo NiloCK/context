@@ -149,6 +149,26 @@ SPECIFICATION:
 ### Parameters * `MAGIC_ADDRESS`: `0xfe` (one byte) * `MAGIC_NULLIFIER`: `0x01` (one byte) * `MAGIC_POW`: `0x02` (one byte) * `MAGIC_CHANGE`: `0x0404040404040404040404040404040404040404040404040404040404040404` * `POW_LOG_DIFFICULTY`: `24` * `MAX_DEPOSIT`: `32 * 10**18` wei * `WormholeTxType`: `TBD` * `WORMHOLE_NULLIFIER_ADDRESS`: `TBD` * `RECEIPT_PREFIX`: `TBD` (datatype `List[bool]`) - - - We define a new [EIP-2718](./eip-2718.md) transaction type, where `TransactionType` is `WormholeTxType` and the `TransactionPayload` format is as follows: `[chain_id, nonce, max_priority_fee_per_gas, max_fee_per_gas, gas_limit, to, data, access_list, root_beacon_block_number, proof]` Verifying this type of transaction requires confirming that: 1. The proof is a zero-knowledge proof: * Private inputs: `secret`, `main_index`, `main_branch`, `privacy_pool_index`, `privacy_pool_branch`, `deposit_value`, `deposit_sender`, `change_value_salt`, `change_value`
 
 
+=== EIP-8149 ===
+TITLE: Multi KZG Point Evaluation Precompile
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-06
+REQUIRES: 4844
+
+SUMMARY:
+Add a precompile that verifies multiple KZG openings `(z_i, y_i)` for a single [EIP-4844](./eip-4844.md) blob commitment, returning the same 64-byte output as the existing point-evaluation precompile.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants | Name | Value | Comment | | - | - | - | | `MULTI_POINT_EVALUATION_PRECOMPILE_ADDRESS` | `TBD` | precompile address | | `MAX_MULTI_POINTS` | `128` | maximum number of evaluation points | | `MULTI_POINT_EVALUATION_BASE_GAS` | `TBD` | base gas cost | | `MULTI_POINT_EVALUATION_PER_POINT_GAS` | `TBD` | gas cost per evaluation point | We introduce a precompile to perform multi KZG point
+
+MOTIVATION:
+[EIP-4844](./eip-4844.md) provides a point-evaluation precompile at `0x0A` costing 50,000 gas per opening. Contracts needing multiple blob values (e.g., fraud proofs) must pay this cost repeatedly. A batch interface verifies *k* openings in one call, reducing overhead.
+
+RATIONALE:
+- Preserves [EIP-4844](./eip-4844.md) versioned-hash model and return format. - Adds a new precompile rather than modifying `0x0A` to avoid compatibility risks. - `MAX_MULTI_POINTS = 128` bounds input size while enabling meaningful savings.
+
+
 === EIP-3044 ===
 TITLE: Adds `baseFee` to `eth_getBlockByNumber`
 TYPE: Standards Track Interface
@@ -4882,7 +4902,7 @@ MOTIVATION:
 The main objective of the Glamsterdam fork is to improve L1 scalability. A crucial aspect of this initiative is to create a better alignment between gas costs and actual resource usage. Currently, the gas model often misprices operations, resulting in inefficiencies and unintended incentives. For instance, within the pure compute operations, there is a high variance in execution time per gas unit, which indicates that a single unit of computation is not priced equally across the various opcodes. By standardizing gas costs across EVM operations and other resources, we can reduce bottlenecks and enhance the utilization of EVM
 
 RATIONALE:
-Discussed in the individual EIPs.
+### Gas cost changes by operation The following tables summarize the preliminary gas cost changes. Numbers are not yet finalized and will be subject to change. #### Compute Opcodes — [EIP-7904](./eip-7904.md) (all increase) | Opcode | Name | Current | New | Direction | | --- | --- | ---: | ---: | --- | | 0x04 | `DIV` | 5 | 15 | increase | | 0x05 | `SDIV` | 5 | 20 | increase | | 0x06 | `MOD` | 5 | 12 | increase | | 0x09 | `MULMOD` | 8 | 11 | increase
 
 
 === EIP-649 ===
@@ -8696,6 +8716,26 @@ RATIONALE:
 EVM and/or account versioning has been discussed numerous times over the past years. This proposal aims to learn from them. See "Ethereum account versioning" on the Fellowship of Ethereum Magicians Forum for a good starting point. ### Execution vs. creation time validation This specification introduces creation time validation, which means: - All created contracts with *EOFn* prefix are valid according to version *n* rules. This is very strong and useful property. The client can trust that the deployed code is well-formed. - In the future, this allows to serialize `JUMPDEST` map in the EOF container and eliminate the
 
 
+=== EIP-8148 ===
+TITLE: Custom sweep threshold for validators
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-05
+REQUIRES: 7, 2, 5, 1, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP proposes an optional mechanism to set custom balance thresholds for sweep withdrawals for compounding withdrawal credentials (`0x02, 0x03`) validators. This mechanism allows validators to specify above which balance they want their rewards to be swept to their withdrawal address, providing greater flexibility and control over their staking rewards.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants #### Execution layer | Name | Value | Comment | | ----------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------ | | `SET_SWEEP_THRESHOLD_REQUEST_TYPE` | `0x03` | The [EIP-7685](./eip-7685.md) type prefix for set sweep threshold request | | `SET_SWEEP_THRESHOLD_REQUEST_PREDEPLOY_ADDRESS` | `TBD` | Where to call and store relevant details about set sweep threshold request mechanism | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | Address used to invoke system operation
+
+MOTIVATION:
+The current default sweep threshold (2,048 ETH) for validators using compounding withdrawal credentials (`0x02, 0x03`) may not meet the needs of all validators. Some validators may prefer to accumulate rewards on the validator balance, while others may want to sweep before reaching the current threshold of 2,048 ETH. By allowing optional custom sweep thresholds, validators can optimize their reward management according to their individual strategies and preferences. Since the introduction of the `0x02` compounding withdrawal credentials type, we have observed a very low rate of validators transitioning to `0x02`. One reason is that many validators do not want
+
+RATIONALE:
+### Overview Most of the considerations regarding the messaging format, queue, and rate-limiting are similar to those discussed in [EIP-7002](./eip-7002.md) for withdrawal requests, and so we refer the reader to that EIP for more details. ### Custom Sweep Thresholds The primary motivation for this EIP is to allow validators to set custom sweep thresholds for their withdrawals when using compounding withdrawal credentials (`0x02, 0x03`). This feature provides greater flexibility and control over how and when validators can access their staking rewards. ### `validator_sweep_thresholds` mapping in `BeaconState` To store the custom sweep thresholds for each validator, we introduce a
+
+
 === EIP-7998 ===
 TITLE: Turn `randao_reveal` into a VRF
 TYPE: Standards Track Core
@@ -9696,7 +9736,7 @@ SUMMARY:
 This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It dynamically sets the unit cost per new state byte at a given block gas limit, by targeting an average state growth of 100 GiB per year based on current network usage. It also introduces an independent metering for state creation costs, thus allowing for increased throughput and for larger contract deployments without being limited by the single transaction gas limit.
 
 SPECIFICATION:
-### New parameters | **Parameter** | **Value** | |:---:|:---:| | `TARGET_STATE_GROWTH_PER_YEAR` | 100 x 1024^3 bytes | Besides these fixed parameters, this EIP introduces a dynamic variable that controls the cost per byte of state created for a given block gas limit. The variable is `cost_per_state_byte` and is calculated as follows: ```python cost_per_state_byte = np.ceil(((gas_limit/2) * 7200 * 365) / TARGET_STATE_GROWTH_PER_YEAR) ``` ### Parameter changes Upon activation of this EIP, the following parameters of the gas model are updated. The "New State Gas" column shows the state gas cost (charged to the `state_gas` dimension), while the "New Regular
+### New parameters | **Parameter** | **Value** | |:---:|:---:| | `TARGET_STATE_GROWTH_PER_YEAR` | 100 × 1024^3 bytes | | `CPSB_SIGNIFICANT_BITS` | 5 | | `CPSB_OFFSET` | 9578 | Besides these fixed parameters, this EIP introduces a dynamic variable that controls the cost per byte of state created for a given block gas limit. The variable is `cost_per_state_byte` and is calculated as follows: ```python raw = ceil((gas_limit * 2_628_000) / (2 * TARGET_STATE_GROWTH_PER_YEAR)) shifted = raw + CPSB_OFFSET shift = max(bit_length(shifted) - CPSB_SIGNIFICANT_BITS, 0) cost_per_state_byte = max(((shifted >> shift) << shift) - CPSB_OFFSET, 1) ``` The raw value is the
 
 MOTIVATION:
 State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance, while contract deployment only costs 202 gas units per new byte created, new storage slots cost 625 gas units per new byte created. Also, deploying duplicated bytecode costs the same as deploying new bytecode, even though clients don't store duplicated code in the database. This proposal establishes a standard to harmonize all state creation operations. Additionally, state growth will become a bottleneck for scaling under higher block limits. As of May 2025, the current

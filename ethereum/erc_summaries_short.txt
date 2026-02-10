@@ -1921,7 +1921,7 @@ CREATED: 2025-01-06
 REQUIRES: 
 
 SUMMARY:
-This ERC defines a standard format for parameterized string keys used in EVM key-value storage using a colon and space separator. This format was
+This ERC defines a standard format for parameterized string keys used in EVM key-value storage using a forward slash (`/`) separator between the key
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -1930,7 +1930,7 @@ MOTIVATION:
 Many EVM-based smart contracts use key-value storage to store metadata where string keys may need to represent multiple instances or variations of the same
 
 RATIONALE:
-The colon and space separator (`: `) was chosen because: - The space after the colon improves human readability compared to formats like `key:value`
+The forward slash (`/`) separator was chosen because: - It provides a clear, unambiguous separator that is easy to parse programmatically - It is
 
 
 === ERC-2021 ===
@@ -4580,7 +4580,7 @@ RATIONALE:
 === ERC-8111 ===
 TITLE: Bound Signatures
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-12-23
 REQUIRES: 
 
@@ -10265,7 +10265,7 @@ As we move to more token models, having a common staking interface which is fami
 === ERC-8019 ===
 TITLE: Minimal Wallet-Managed Auto-Login for SIWE
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-09-02
 REQUIRES: 4361
 
@@ -10276,7 +10276,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Users repeatedly sign identical SIWE messages for trusted apps. A small, explicit match policy enables zero-prompt login without involving apps. Users already get prompted
+Users repeatedly sign identical Sign-In With Ethereum (SIWE) messages for trusted apps. A small, explicit match policy enables zero-prompt login without involving apps. Users
 
 RATIONALE:
 * This ERC is designed with minimal modifications to existing apps in mind * From a security perspective, it's much easier to "outsource" the
@@ -10665,7 +10665,7 @@ The standard aims to standardise how multiple lending markets and risk providers
 === ERC-7893 ===
 TITLE: DeFi Protocol Solvency Proof Mechanism
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-01-30
 REQUIRES: 2, 0, ,,  , 1, 6, 5
 
@@ -10877,6 +10877,26 @@ For some "standard interfaces" like [the ERC-20 token interface](./eip-20.md), i
 
 RATIONALE:
 We tried to keep this specification as simple as possible. This implementation is also compatible with the current Solidity version.
+
+
+=== ERC-8126 ===
+TITLE: AI Agent Registration and Verification
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-01-15
+REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 3, 0, 0, 9
+
+SUMMARY:
+This ERC defines a standard interface for registering and verifying AI agents on Ethereum. It enables AI agents to self-register with verifiable credentials and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+As AI agents become increasingly prevalent in blockchain ecosystems, users need standardised ways to verify their authenticity and trustworthiness. Current solutions are fragmented, with
+
+RATIONALE:
+### Required Standards Justification **EIP-155 (Replay Protection)**: Agent registrations involve wallet signatures. Without chain ID inclusion ([EIP-155](./eip-155.md)), a registration signature on mainnet could be
 
 
 === ERC-8000 ===

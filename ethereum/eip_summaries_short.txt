@@ -149,6 +149,26 @@ SPECIFICATION:
 ### Parameters * `MAGIC_ADDRESS`: `0xfe` (one byte) * `MAGIC_NULLIFIER`: `0x01` (one byte) * `MAGIC_POW`: `0x02` (one byte) * `MAGIC_CHANGE`: `0x0404040404040404040404040404040404040404040404040404040404040404` * `POW_LOG_DIFFICULTY`: `24` *
 
 
+=== EIP-8149 ===
+TITLE: Multi KZG Point Evaluation Precompile
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-06
+REQUIRES: 4844
+
+SUMMARY:
+Add a precompile that verifies multiple KZG openings `(z_i, y_i)` for a single [EIP-4844](./eip-4844.md) blob commitment, returning the same 64-byte output as the existing
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[EIP-4844](./eip-4844.md) provides a point-evaluation precompile at `0x0A` costing 50,000 gas per opening. Contracts needing multiple blob values (e.g., fraud proofs) must pay this cost
+
+RATIONALE:
+- Preserves [EIP-4844](./eip-4844.md) versioned-hash model and return format. - Adds a new precompile rather than modifying `0x0A` to avoid compatibility risks. - `MAX_MULTI_POINTS =
+
+
 === EIP-3044 ===
 TITLE: Adds `baseFee` to `eth_getBlockByNumber`
 TYPE: Standards Track Interface
@@ -4882,7 +4902,7 @@ MOTIVATION:
 The main objective of the Glamsterdam fork is to improve L1 scalability. A crucial aspect of this initiative is to create a better alignment
 
 RATIONALE:
-Discussed in the individual EIPs.
+### Gas cost changes by operation The following tables summarize the preliminary gas cost changes. Numbers are not yet finalized and will be subject
 
 
 === EIP-649 ===
@@ -8696,6 +8716,26 @@ RATIONALE:
 EVM and/or account versioning has been discussed numerous times over the past years. This proposal aims to learn from them. See "Ethereum account versioning"
 
 
+=== EIP-8148 ===
+TITLE: Custom sweep threshold for validators
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-05
+REQUIRES: 7, 2, 5, 1, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP proposes an optional mechanism to set custom balance thresholds for sweep withdrawals for compounding withdrawal credentials (`0x02, 0x03`) validators. This mechanism allows
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The current default sweep threshold (2,048 ETH) for validators using compounding withdrawal credentials (`0x02, 0x03`) may not meet the needs of all validators. Some
+
+RATIONALE:
+### Overview Most of the considerations regarding the messaging format, queue, and rate-limiting are similar to those discussed in [EIP-7002](./eip-7002.md) for withdrawal requests, and
+
+
 === EIP-7998 ===
 TITLE: Turn `randao_reveal` into a VRF
 TYPE: Standards Track Core
@@ -9696,7 +9736,7 @@ SUMMARY:
 This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It dynamically sets the unit
 
 SPECIFICATION:
-### New parameters | **Parameter** | **Value** | |:---:|:---:| | `TARGET_STATE_GROWTH_PER_YEAR` | 100 x 1024^3 bytes | Besides these fixed parameters, this EIP introduces
+### New parameters | **Parameter** | **Value** | |:---:|:---:| | `TARGET_STATE_GROWTH_PER_YEAR` | 100 × 1024^3 bytes | | `CPSB_SIGNIFICANT_BITS` | 5 | | `CPSB_OFFSET`
 
 MOTIVATION:
 State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance,
