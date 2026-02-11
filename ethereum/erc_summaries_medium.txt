@@ -9329,23 +9329,23 @@ RATIONALE:
 
 
 === ERC-8063 ===
-TITLE: Groups - Multi-Member Containers
+TITLE: Groups - Membership Tokens
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-10-28
-REQUIRES: 165
+REQUIRES: 2, 0, ,,  , 1, 6, 5
 
 SUMMARY:
-This proposal specifies a general-purpose "Group" primitive as a first-class, onchain object. Each group is deployed as its own contract (identified by its contract address) and has an owner, an extensible set of members, and optional metadata. The standard defines a minimal interface for direct member management and membership
+This proposal defines a "Group" as an [ERC-20](./eip-20.md) token where token balance represents membership level. Groups are standard ERC-20 tokens with the semantic interpretation that holding tokens means membership in the group. Unlike binary membership, this supports threshold-based membership: holding more tokens grants higher membership tiers or privileges. By
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Contracts that implement this standard MUST support [ERC-165](./eip-165.md). ### Interface ```solidity /// SPDX-License-Identifier: CC0-1.0 pragma
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Requirements A compliant Group contract: 1. **MUST** implement [ERC-20](./eip-20.md) 2. **MUST** implement [ERC-165](./eip-165.md) 3.
 
 MOTIVATION:
-Tokens typically model ownership and transfer. Many applications instead need an addressable set of accounts with controlled join/leave semantics and shared state—e.g., project teams, DAOs, game parties, channels, or access cohorts. While [ERC-7743](./eip-7743.md) (MO-NFT) explores multi-ownership for a single token, it still anchors the abstraction to token semantics. Groups
+Many applications need addressable groups of accounts with controlled membership and tiered access: - **DAOs**: Voting power proportional to token holdings - **Loyalty programs**: Bronze/Silver/Gold tiers based on token balance - **Access control**: Different features unlocked at different balance thresholds - **Partner networks**: Minimum token requirements for partnership benefits
 
 RATIONALE:
-- **One contract per group**: Following the [ERC-20](./eip-20.md) model where each token is its own contract creates a simpler, more composable design. The contract address becomes the natural group identifier. - **Token-agnostic**: Separates membership from asset ownership/transfer semantics, suitable for social and coordination use cases. - **Direct member management**:
+- **Pure ERC-20**: A Group is simply an ERC-20 token with membership semantics. No new token standard needed. - **No minting/burning mandate**: Different use cases need different minting policies. The standard doesn't prescribe one. - **Threshold-based membership**: More flexible than binary membership; supports tiered access, loyalty programs, and proportional
 
 
 === ERC-4527 ===

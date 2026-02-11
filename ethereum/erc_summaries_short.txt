@@ -9329,23 +9329,23 @@ RATIONALE:
 
 
 === ERC-8063 ===
-TITLE: Groups - Multi-Member Containers
+TITLE: Groups - Membership Tokens
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-10-28
-REQUIRES: 165
+REQUIRES: 2, 0, ,,  , 1, 6, 5
 
 SUMMARY:
-This proposal specifies a general-purpose "Group" primitive as a first-class, onchain object. Each group is deployed as its own contract (identified by its contract
+This proposal defines a "Group" as an [ERC-20](./eip-20.md) token where token balance represents membership level. Groups are standard ERC-20 tokens with the semantic interpretation
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Tokens typically model ownership and transfer. Many applications instead need an addressable set of accounts with controlled join/leave semantics and shared state—e.g., project teams,
+Many applications need addressable groups of accounts with controlled membership and tiered access: - **DAOs**: Voting power proportional to token holdings - **Loyalty programs**:
 
 RATIONALE:
-- **One contract per group**: Following the [ERC-20](./eip-20.md) model where each token is its own contract creates a simpler, more composable design. The contract
+- **Pure ERC-20**: A Group is simply an ERC-20 token with membership semantics. No new token standard needed. - **No minting/burning mandate**: Different use
 
 
 === ERC-4527 ===
