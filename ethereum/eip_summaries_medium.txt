@@ -549,14 +549,14 @@ TBA
 
 
 === EIP-7708 ===
-TITLE: ETH transfers emit a log
+TITLE: ETH transfers and burns emit a log
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-05-17
 REQUIRES: 1, 5, 5, 9, ,,  , 4, 7, 8, 8, ,,  , 6, 7, 8, 0
 
 SUMMARY:
-All ETH-transfers, including transactions, `CALL` and `SELFDESTRUCT` emit a log.
+All ETH transfers and burns emit a log.
 
 SPECIFICATION:
 ### ETH transfer logs A log, identical to a LOG3, is issued for: - Any nonzero-value-transferring transaction to a different account, before any other logs created by EVM execution - Any nonzero-value-transferring `CALL` to a different account, at the time that the value transfer executes - Any nonzero-value-transferring `SELFDESTRUCT`
@@ -8144,7 +8144,7 @@ TITLE: Block-in-Blobs (BiB)
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-01-29
-REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 2, 8
+REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 2, 8
 
 SUMMARY:
 zkEVMs allow validators to verify the correctness of an execution payload using a proof, without downloading or executing the payload itself. However, removing the requirement to download the execution payload, also removes the implicit data availability (DA) guarantee; a block producer can publish a valid proof and withhold the
