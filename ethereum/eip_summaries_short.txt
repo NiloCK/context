@@ -3936,6 +3936,26 @@ RATIONALE:
 Production implementation of exact-word memory copying and partial-word memory copying can be found in the Solidity, Vyper and Fe compilers. With [EIP-2929](./eip-2929.md) the call
 
 
+=== EIP-8159 ===
+TITLE: eth/71 - Block Access List Exchange
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-02-12
+REQUIRES: 7, 9, 2, 8, ,,  , 7, 9, 7, 5
+
+SUMMARY:
+This EIP modifies the 'eth' p2p protocol to support Block-level Access Lists (BALs). It adds two new messages, `GetBlockAccessLists` (0x12) and `BlockAccessLists` (0x13), enabling
+
+SPECIFICATION:
+### Block Header Extension The block header is extended with a new field after `requests-hash`: ``` block-header = [ ... requests-hash: B_32, block-access-list-hash: B_32,
+
+MOTIVATION:
+[EIP-7928](./eip-7928.md) introduces block-level access lists that record all state locations accessed during block execution. These lists enable parallel disk reads, parallel transaction execution, and
+
+RATIONALE:
+### Separate Messages vs. Block Body Extension BALs are transmitted via dedicated messages rather than extending block bodies because: 1. **Size**: BALs average ~70
+
+
 === EIP-5988 ===
 TITLE: Add Poseidon hash function precompile
 TYPE: Standards Track Core
