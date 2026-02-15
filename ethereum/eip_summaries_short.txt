@@ -1337,16 +1337,16 @@ CREATED: 2025-06-18
 REQUIRES: 7623
 
 SUMMARY:
-This EIP proposes an adjustment to calldata pricing by raising the floor cost from 10/40 to 15/60 gas per zero/non-zero calldata byte. This reduces
+This EIP proposes an adjustment to calldata pricing by raising the floor cost from 10/40 to 64/64 gas per calldata byte. This reduces the
 
 SPECIFICATION:
-| Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `15` | Let `tokens_in_calldata = zero_bytes_in_calldata
+| Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `16` | Let `tokens_in_calldata = zero_bytes_in_calldata
 
 MOTIVATION:
 While [EIP-7623](./eip-7623.md) successfully reduced the maximum possible block size by introducing a floor cost of 10/40 gas per byte for data-heavy transactions, continued increases
 
 RATIONALE:
-With [EIP-7623](./eip-7623.md)'s implementation, data-heavy transactions cost 10/40 gas per zero/non-zero byte, reducing the maximum possible EL payload size to approximately 1.07 MB (`45s_000_000/40`). This
+With [EIP-7623](./eip-7623.md)'s implementation, data-heavy transactions cost 10/40 gas per zero/non-zero byte, reducing the maximum possible EL payload size to approximately 1.07 MB (`45_000_000/40`). This
 
 
 === EIP-7840 ===

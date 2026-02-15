@@ -4653,6 +4653,26 @@ RATIONALE:
 ### Why the concept of namespaces? This provides every Ethereum address a reserved space, without the need to actively claim it in the contract. Initially addresses only have owner access in their own namespace. ### Why does a namespace always represent the initial owner address? The change of an owner of a list shouldn't break the link to a revocation key in it, as already existing off-chain data may depend on it.
 
 
+=== ERC-8153 ===
+TITLE: Facet-Based Diamonds
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-07
+REQUIRES: 2535
+
+SUMMARY:
+A diamond is a proxy contract that `delegatecall`s to multiple implementation contracts called facets. ![Diagram showing how a diamond contract works](../assets/eip-8153/basic-diamond-diagram.svg) Diamond contracts were originally standardized by [ERC-2535](./eip-2535). This ERC builds on that foundation by defining a facet-based architecture in which facets self-describe their function selectors through a standardized introspection interface. By moving selector discovery on-chain, this approach eliminates the need for off-chain selector management. As a result, diamond deployment and upgrades become simpler, more deterministic, and more gas efficient. This ERC introduces a facet introspection function, `exportSelectors()`, which every facet MUST implement. This function returns the list
+
+SPECIFICATION:
+### Terms 1. A **diamond** is a smart contract that routes external function calls to one or more implementation contracts, referred to as facets. A diamond is stateful: all persistent data is stored in the diamond’s contract storage. A diamond implements the requirements in the [Implementation Requirements](#implementation-requirements) section. 2. A **facet** is a smart contract that defines one or more external functions. A facet is deployed independently, and one or more of its functions are added to one or more diamonds. A facet’s functions are executed in the diamond’s context via `delegatecall`, so reads/writes affect the diamond’s storage.
+
+MOTIVATION:
+### Motivation for Diamond Contracts <img alt="Obligatory diamond" src="../assets/eip-8153/diamond.svg" width="17%" align="right">Through a single contract address, a diamond provides functionality from multiple implementation contracts (facets). Each facet is independent, yet facets can share internal functions and storage. This architecture allows large smart-contract systems to be composed from separate facets and presented as a single contract, simplifying deployment, testing, and integration with other contracts, off-chain software, and user interfaces. By decomposing large smart contracts into facets, diamonds can reduce complexity and make systems easier to reason about. Distinct areas of functionality can be isolated, organized, tested, and managed independently. Diamonds
+
+RATIONALE:
+### Eliminating Selector Management To deploy a facet-based diamond implementing this ERC, the deployer provides an array of facet addresses to the diamond constructor. The constructor calls `exportSelectors()` on each facet and registers those selectors in the diamond. Because facets self-describe their selectors, deployers no longer need to gather selectors off-chain or depend on specialized selector tooling. ### Reducing Deployment Gas Costs #### Reducing Calldata In a non-facet-based diamond, selectors are typically passed to the constructor as one or more `bytes4[]` arrays. These arrays are paid for in calldata and then copied into memory, incurring additional gas. In
+
+
 === ERC-1388 ===
 TITLE: Attestation Issuers Management List
 TYPE: Standards Track ERC

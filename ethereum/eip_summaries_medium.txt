@@ -1337,16 +1337,16 @@ CREATED: 2025-06-18
 REQUIRES: 7623
 
 SUMMARY:
-This EIP proposes an adjustment to calldata pricing by raising the floor cost from 10/40 to 15/60 gas per zero/non-zero calldata byte. This reduces the worst-case block size by ~33% with minimal impact.
+This EIP proposes an adjustment to calldata pricing by raising the floor cost from 10/40 to 64/64 gas per calldata byte. This reduces the worst-case block size by ~37% with minimal impact.
 
 SPECIFICATION:
-| Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `15` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`. Let `isContractCreation` be a boolean indicating the respective event. Let `execution_gas_used` be the gas used for EVM execution with the gas
+| Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `16` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`. Let `floor_tokens_in_calldata = (zero_bytes_in_calldata + nonzero_bytes_in_calldata) * 4`. Let `isContractCreation` be a boolean indicating the respective event. Let `execution_gas_used` be the
 
 MOTIVATION:
-While [EIP-7623](./eip-7623.md) successfully reduced the maximum possible block size by introducing a floor cost of 10/40 gas per byte for data-heavy transactions, continued increases in gas limit demands further optimization. The current floor cost still permits relatively large data-heavy payloads that contribute to block size variance. By increasing the
+While [EIP-7623](./eip-7623.md) successfully reduced the maximum possible block size by introducing a floor cost of 10/40 gas per byte for data-heavy transactions, continued increases in gas limit demands further optimization. The current floor cost still permits relatively large data-heavy payloads that contribute to block size variance. With 64/64 pricing,
 
 RATIONALE:
-With [EIP-7623](./eip-7623.md)'s implementation, data-heavy transactions cost 10/40 gas per zero/non-zero byte, reducing the maximum possible EL payload size to approximately 1.07 MB (`45s_000_000/40`). This EIP further reduces this to approximately 0.72 MB (`45_000_000/60`) for non zero bytes and maintains proportional costs for non-zero bytes. By increasing calldata costs from
+With [EIP-7623](./eip-7623.md)'s implementation, data-heavy transactions cost 10/40 gas per zero/non-zero byte, reducing the maximum possible EL payload size to approximately 1.07 MB (`45_000_000/40`). This EIP further reduces this to approximately 0.67 MB (`45_000_000/64`). By increasing calldata costs from 10/40 to 64/64 gas per byte for data-heavy transactions, this EIP
 
 
 === EIP-7840 ===
