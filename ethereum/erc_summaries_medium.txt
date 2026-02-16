@@ -2522,7 +2522,7 @@ RATIONALE:
 === ERC-8109 ===
 TITLE: Diamonds, Simplified
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Withdrawn
 CREATED: 2025-12-21
 REQUIRES: 
 
