@@ -3811,6 +3811,26 @@ RATIONALE:
 The structure proposed above follows the BIP43 generic structure and is similar to the widely adopted BIP44 specification.
 
 
+=== ERC-8152 ===
+TITLE: Content-Addressable Logic Modules (CALM)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-01-18
+REQUIRES: 
+
+SUMMARY:
+This standard defines Content-Addressable Logic Modules (CALM) - minimal, deterministic blocks of code designed for execution via delegatecall within Diamond ([ERC-2535](./eip-2535.md), [ERC-8109](./eip-8109.md)), UUPS ([ERC-1822](./eip-1822.md))
+
+SPECIFICATION:
+### Storage standards and Proxy-Scoped Execution It is expected CALM operates exclusively on the **storage context of the calling Proxy**. However no checks are
+
+MOTIVATION:
+Current libraries and Diamond Facets are scattered and duplicated within one chain, while being almost impossible to reuse on another chains on the same
+
+RATIONALE:
+### Pre-warming Contracts and Global Cache Efficiency CALMs align with the proposed [EIP-7863](./eip-7863.md), which introduces block-level warming for addresses and storage keys allowing accessed
+
+
 === ERC-2333 ===
 TITLE: BLS12-381 Key Generation
 TYPE: Standards Track ERC

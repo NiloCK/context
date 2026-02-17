@@ -3811,6 +3811,26 @@ RATIONALE:
 The structure proposed above follows the BIP43 generic structure and is similar to the widely adopted BIP44 specification.
 
 
+=== ERC-8152 ===
+TITLE: Content-Addressable Logic Modules (CALM)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-01-18
+REQUIRES: 
+
+SUMMARY:
+This standard defines Content-Addressable Logic Modules (CALM) - minimal, deterministic blocks of code designed for execution via delegatecall within Diamond ([ERC-2535](./eip-2535.md), [ERC-8109](./eip-8109.md)), UUPS ([ERC-1822](./eip-1822.md)) and other proxy architectures. A CALM's address is a direct cryptographic commitment to its runtime bytecode. By eliminating deployment-side effects (initialisation code - constructors, immutables), CALM ensures that identical logic resides at identical addresses across all EVM chains. RuntimeBytecode is the Identity.
+
+SPECIFICATION:
+### Storage standards and Proxy-Scoped Execution It is expected CALM operates exclusively on the **storage context of the calling Proxy**. However no checks are required to prevent possessing or initialising its own storage. To prevent storage collisions and ensure modularity, CALM MUST utilize deterministic storage offsets to manipulate the Proxy’s state. CALMs SHOULD comply with either [ERC-7201](./eip-7201.md) (Namespaced Storage) or [ERC-8042](./eip-8042.md) (Diamond Storage) or any future standard of storage separation by defining their internal state at unique, hashed storage locations and utilizing standardized storage slots for shared infrastructure state to ensure interoperability within a proxy. ### Deployment Constraints
+
+MOTIVATION:
+Current libraries and Diamond Facets are scattered and duplicated within one chain, while being almost impossible to reuse on another chains on the same deployed address. That complicates cross-chain verification and logic reuse increasing operational overhead for multi chain projects. By standardizing an "atomic" format - free of constructors, immutables, selfdestruct and having the deployment address equal to `f(constant, runtimeBytecode)` - we enable a global library of Content-Addressable Logic Modules that live at identical addresses on every chain with zero overhead and with option for permissionless redeployment on another chains.
+
+RATIONALE:
+### Pre-warming Contracts and Global Cache Efficiency CALMs align with the proposed [EIP-7863](./eip-7863.md), which introduces block-level warming for addresses and storage keys allowing accessed addresses to maintain their warm status throughout the execution of an entire block. This shift provides an economic incentive for Shared Logic. Once a canonical CALM address is invoked by the first transaction in a block, every subsequent call from any other transaction in that same block can benefit from discounted gas costs. By converging on standardized CALM addresses, the community effectively minimizes the "cold access" penalty across the network. Before [EIP-7863](./eip-7863.md) is delivered,
+
+
 === ERC-2333 ===
 TITLE: BLS12-381 Key Generation
 TYPE: Standards Track ERC
