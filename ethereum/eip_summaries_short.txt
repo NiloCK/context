@@ -3682,6 +3682,26 @@ CREATED: 2015-11-15
 REQUIRES: 
 
 
+=== EIP-8105 ===
+TITLE: Universal Enshrined Encrypted Mempool
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-12-17
+REQUIRES: 7732
+
+SUMMARY:
+This EIP proposes to enshrine an encrypted mempool into the protocol. It enables users to encrypt their transactions until they have been included in
+
+SPECIFICATION:
+### Key Provider Registry In the execution layer, a system contract called the key provider registry is deployed. It allows any account to register
+
+MOTIVATION:
+The goal of this EIP is to prevent users from malicious transaction reordering attacks as well as increase real time ("weak") censorship resistance of
+
+RATIONALE:
+### Key Provider Registration Registration is encryption technology agnostic to ensure neutrality of the protocol, to minimize barriers to entry for new key providers,
+
+
 === EIP-7756 ===
 TITLE: EOF/EVM Trace Specification
 TYPE: Standards Track Interface
@@ -5686,6 +5706,26 @@ State creation does not have a harmonized cost, with different methods incurring
 
 RATIONALE:
 ### Deriving the cost per byte The variable `cost_per_state_byte` is a dynamic parameter that depends on the block gas limit. The idea is to
+
+
+=== EIP-8135 ===
+TITLE: Hardfork Meta - BPO2
+TYPE: Meta 
+STATUS: Draft
+CREATED: 2026-01-24
+REQUIRES: 7, 8, 9, 2, ,,  , 8, 1, 3, 4
+
+SUMMARY:
+This Meta EIP documents the activation details, parameter changes, and specification references for the second Blob-Parameter-Only (BPO) network upgrade, **BPO2**. It provides a canonical
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Following the publication of the Meta EIP documenting **[BPO1](./eip-8134)**, this EIP extends the registry approach to **BPO2**, preserving continuity and enabling historical accuracy of
+
+RATIONALE:
+Following BPO-1, observations indicated that the network could tolerate increased blob limits, but did not yet provide sufficient data across a wider operating range.
 
 
 === EIP-8116 ===
@@ -9717,6 +9757,26 @@ MOTIVATION:
 
 RATIONALE:
 This EIP's proposed `eth_sendTransactionToContractFunction` method is intended to parallel `eth_sendTransaction` as much as possible since both methods result in the same behaviour when executing
+
+
+=== EIP-8146 ===
+TITLE: Block Access List Sidecars
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-03
+REQUIRES: 7, 7, 3, 2, ,,  , 7, 9, 2, 8
+
+SUMMARY:
+This EIP removes the block access list (BAL) from the `ExecutionPayloadEnvelope` and propagates it as an independent sidecar on a dedicated gossip topic. Builders
+
+SPECIFICATION:
+### Consensus Layer #### Presets | Name | Value | | - | - | | `MAX_BLOCK_ACCESS_LIST_SIZE` | `uint64(2**23)` (= 8 MiB) | ####
+
+MOTIVATION:
+[EIP-7928](./eip-7928.md) adds block access lists to the `ExecutionPayload`. Under [EIP-7732](./eip-7732.md), the execution payload travels inside a `SignedExecutionPayloadEnvelope` that the builder broadcasts after the beacon
+
+RATIONALE:
+### No Separate Signature The BAL sidecar requires no BLS signature. The builder commits to `block_access_list_root` in the signed `ExecutionPayloadBid`; verification is `hash_tree_root(sidecar.block_access_list) ==
 
 
 === EIP-7377 ===
