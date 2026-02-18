@@ -1385,6 +1385,26 @@ RATIONALE:
 ### Design Motivation The design of this standard is driven by the need to address specific challenges in the DeFi sector, particularly concerning the
 
 
+=== ERC-8041 ===
+TITLE: Fixed-Supply Agent NFT Collections
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-11
+REQUIRES: 7, 5, 7, 2, ,,  , 8, 0, 0, 4
+
+SUMMARY:
+An interface for creating fixed-supply collections of Agent NFTs that are registered in an [ERC-8004](./eip-8004.md) Agent Registry. While [ERC-8004](./eip-8004.md) provides an unlimited mint registry
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[ERC-8004](./eip-8004.md) establishes a singleton registry for AI Agent identity tokens with unlimited minting capability. This open registration model serves many use cases, but there
+
+RATIONALE:
+[ERC-8004](./eip-8004.md) agents are unlimited mint NFTs; this ERC was created to enable verifiable fixed-supply collections of agents. This standard attempts to make minting fixed-supply
+
+
 === ERC-6105 ===
 TITLE: No Intermediary NFT Trading Protocol
 TYPE: Standards Track ERC
