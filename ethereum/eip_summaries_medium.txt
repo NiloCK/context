@@ -5015,7 +5015,7 @@ TITLE: State-access gas cost update
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-03
-REQUIRES: 2, 9, 2, 6, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 2
+REQUIRES: 
 
 SUMMARY:
 This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the base costs for `GAS_STORAGE_UPDATE`, `GAS_COLD_SLOAD`, and `GAS_COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`. The design coordinates with [EIP-8032](./eip-8032.md): before EIP-8032, parameters assume

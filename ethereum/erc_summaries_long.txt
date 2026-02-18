@@ -5497,16 +5497,16 @@ CREATED: 2025-01-06
 REQUIRES: 
 
 SUMMARY:
-This ERC defines a standard format for parameterized string keys used in EVM key-value storage using a forward slash (`/`) separator between the key label and its parameter.
+This ERC defines standard formats for parameterized string keys used in EVM key-value storage. It supports two encodings: a slash form for a single parameter (`<key-label>/<key-parameter>`) and a bracket form for one or more parameters (`<key-label>[<key-parameter-1>][<key-parameter-2>]...`).
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Key Format String keys used in EVM key-value storage MAY include parameters to represent variations or instances of a metadata type. When keys include parameters, they MUST follow the format: ``` <key-label>/<key-parameter> ``` Where: - **`<key-label>`**: MUST contain only printable ASCII characters **except** space and the forward slash character. Concretely, allowed code points are `0x21-0x2E` and `0x30-0x7E` (letters, digits, and common punctuation), explicitly
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Key Format String keys used in EVM key-value storage MAY include parameters to represent variations or instances of a metadata type. When keys include parameters, they MUST follow the format: ``` <key-label>/<key-parameter> ``` or: ``` <key-label>[<key-parameter-1>][<key-parameter-2>]... ``` Where: - **`<key-label>`**: MUST contain only printable ASCII characters **except** space, the forward slash character (`/`), and the left bracket character (`[`). Concretely, allowed code points
 
 MOTIVATION:
 Many EVM-based smart contracts use key-value storage to store metadata where string keys may need to represent multiple instances or variations of the same metadata type. Without a standardized format for parameterized keys, different implementations use inconsistent formats, leading to interoperability issues and parsing difficulties.
 
 RATIONALE:
-The forward slash (`/`) separator was chosen because: - It provides a clear, unambiguous separator that is easy to parse programmatically - It is visually concise while still being readable compared to formats like `key:value` or `key-value`
+The forward slash (`/`) separator was chosen because: - It provides a clear, unambiguous separator that is easy to parse programmatically. - It is visually concise and user-friendly for casual or long text values, and it avoids requiring a trailing `]`. The bracket form was added because: - It provides an explicit structure for one or more ordered parameters. - It allows applications to represent multi-parameter keys without custom encoding inside a single string. Reserving `/` and `[` from `<key-label>` keeps both encodings unambiguous.
 
 
 === ERC-5564 ===

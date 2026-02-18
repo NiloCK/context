@@ -5015,7 +5015,7 @@ TITLE: State-access gas cost update
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-03
-REQUIRES: 2, 9, 2, 6, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 2
+REQUIRES: 
 
 SUMMARY:
 This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the
