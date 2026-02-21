@@ -4554,7 +4554,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Hegotá network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion ### Considered for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Declined for Inclusion ### Proposed for Inclusion ### Activation | Network Name | Activation Epoch | Activation Timestamp | | ------------ | ---------------- | -------------------- | | Sepolia | | | | Hoodi | | | | Mainnet | | | **Note**: rows in the table above will be filled as activation times are decided by client teams.
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Considered for Inclusion ### Declined for Inclusion ### Proposed for Inclusion ### Activation | Network Name | Activation Epoch | Activation Timestamp | | ------------ | ---------------- | -------------------- | | Sepolia | | | | Hoodi | | | | Mainnet | | | **Note**: rows in the table above will be filled as activation times are decided by client teams.
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the network upgrade, as well as links to full specification.
