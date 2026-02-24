@@ -948,6 +948,26 @@ RATIONALE:
 The approach of simply augmenting existing EIP functions with new `address` parameters, rather than crafting new interfaces for the most commonly used EIPs, is employed to ensure broader applicability of this namespacing proposal.
 
 
+=== ERC-8122 ===
+TITLE: Minimal Agent Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-17
+REQUIRES: 6, 9, 0, 9, ,,  , 7, 9, 3, 0, ,,  , 8, 0, 4, 8, ,,  , 8, 0, 4, 9, ,,  , 8, 1, 2, 7
+
+SUMMARY:
+This protocol proposes a lightweight onchain registry for **discovering AI agents** using [ERC-6909](./eip-6909.md) as the underlying registry design, [ERC-7930](./eip-7930.md) for cross-chain agent identification, and [ERC-8048](./eip-8048.md) for onchain metadata. Each agent is represented as a token ID with a single owner and fully onchain metadata, enabling agent discovery and ownership transfer without reliance on external storage.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Agent Registry The agent registry extends [ERC-6909](./eip-6909.md) and implements [ERC-8048](./eip-8048.md) for onchain metadata. Each agent is uniquely identified globally by: - *`agentRegistry`*: An [ERC-7930](./eip-7930.md) Interoperable Address (binary) pointing to the registry contract - *`agentId`*: The token ID (`uint256`) assigned by the registry per its implementation-defined scheme The ERC-7930 Interoperable Address encodes the chain type, chain reference, and contract address in a single binary
+
+MOTIVATION:
+While various offchain agent protocols handle things like agent-to-agent communication, they don't inherently cover agent discovery. To foster an open permissionless agent economy, we need a mechanism for discovering agents in a decentralized way, as well as decentralized registration and publishing of agent metadata. We also need a standard that anyone can use to deploy their own agent registry. [ERC-8004](./eip-8004.md) provides an existing agent registry standard, but it defines a singleton registry—one per chain. A registry standard that supports custom deployments is necessary for specialized use cases, such as curated collections of agents (e.g., Whitehat Hacking Agents, DeFi
+
+RATIONALE:
+The minimal agent registry is designed to be a simple, focused foundation for agent discovery, registration, and onchain metadata. ERC-6909 was chosen as the registry design because it is the most efficient minimal token standard, minimizing gas costs for agent registration and transfers. By storing all metadata onchain, we leverage the full power of Ethereum and its L2s: censorship resistance, atomic updates, composability with other smart contracts, and permanence. This approach ensures that agent information cannot be taken down or altered by external parties, and allows other protocols to build on top of the registry, whether for reputation
+
+
 === ERC-7895 ===
 TITLE: API for Hierarchical Accounts
 TYPE: Standards Track ERC
@@ -7029,6 +7049,26 @@ RATIONALE:
 To solve the initial problem of user-facing addresses being ambiguous in a multichain context, we need to map EIP-155 chain IDs with a user-facing format of displaying chain identifiers.
 
 
+=== ERC-8048 ===
+TITLE: Onchain Metadata for Token Registries
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-09-30
+REQUIRES: 8042
+
+SUMMARY:
+This ERC defines an onchain metadata standard for multi-token and NFT registries including [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md). The standard provides a key-value store allowing for arbitrary bytes to be stored onchain.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Scope This ERC is an optional extension that MAY be implemented by any [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), or [ERC-6909](./eip-6909.md) compliant registries. ### Required Metadata Function and Event Contracts implementing this ERC MUST implement the following interface: ```solidity interface IOnchainMetadata { /// @notice Get metadata value for a key. function getMetadata(uint256 tokenId, string calldata key) external view returns (bytes memory); /// @notice Emitted when metadata is
+
+MOTIVATION:
+This ERC addresses the need for fully onchain metadata while maintaining compatibility with existing [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md) standards. It has been a long-felt need for developers to store metadata onchain for NFTs and other multitoken contracts; however, there has been no uniform standard way to do this. Some projects have used the `tokenURI` field to store metadata onchain using Data URLs, which introduces gas inefficiencies and has other downstream effects (for example making storage proofs more complex). This standard provides a uniform way to store metadata onchain, and is backwards compatible with existing [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md)
+
+RATIONALE:
+This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of metadata. The minimal interface with a single `getMetadata` function provides all necessary functionality while remaining backwards compatible with existing [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md) standards. The optional `setMetadata` function enables flexible access control for metadata updates. The required `MetadataSet` event provides transparent audit trails with indexed tokenId and indexedKey for efficient filtering. This makes the standard suitable for diverse use cases including AI agents, proof of personhood systems, and custom metadata storage.
+
+
 === ERC-7522 ===
 TITLE: OIDC ZK Verifier for AA Account
 TYPE: Standards Track ERC
@@ -7741,6 +7781,26 @@ Confidential tokens enable private value transfer which is vital for many usecas
 
 RATIONALE:
 ### Technology Agnostic Design Using `bytes32` allows implementations using pointer based systems and privacy mechanisms including FHE systems, zero-knowledge proofs, secure enclaves, or future technologies to be compliant. ### Operator Model Time-limited operators provide granular control while enabling DeFi protocol integration and natural permission expiration. This approach reduces the load on the external system by removing the need to track approval amounts. ### Data Parameter The `bytes calldata data` parameter in transfer functions allows implementations to include cryptographic proofs, access permissions, or other privacy-mechanism-specific information.
+
+
+=== ERC-8161 ===
+TITLE: Transferable Tokenized Vault Requests
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-12
+REQUIRES: 1, 6, 5, ,,  , 7, 5, 4, 0
+
+SUMMARY:
+This standard extends [ERC-7540](./eip-7540.md) by adding optional transferability of pending deposit and redeem Requests. It introduces two separate interfaces that allow a controller to transfer their pending Request balance to a new controller. Implementations may support either or both interfaces independently.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Transferable Deposit Requests Vaults that support transferable deposit Requests MUST implement the `IERC7540DepositTransferable` interface. #### `transferDepositRequest` Transfers the entire pending deposit Request balance from `oldController` to `newController` for the given `requestId`. MUST only transfer the Pending balance. Claimable balances MUST NOT be affected. After a successful transfer, `pendingDepositRequest(requestId, oldController)` MUST decrease by the transferred amount and `pendingDepositRequest(requestId, newController)` MUST increase by the same
+
+MOTIVATION:
+[ERC-7540](./eip-7540.md) asynchronous Requests can remain in the Pending state for an extended period of time. During this period, controllers have no way to transfer their position to another address. This creates friction for users who need to migrate wallets, restructure positions across accounts, or integrate with protocols that compose on top of pending Request positions. By enabling transferability of pending Requests, this standard unlocks secondary market liquidity for pending positions and simplifies account management without requiring cancelation and re-submission of Requests. Transferability is kept optional and split into two separate interfaces so that implementations can choose to support
+
+RATIONALE:
+### Only Transferring Pending Balances This standard deliberately restricts transfers to the Pending state. Claimable balances already have a deterministic exchange rate and can be claimed by the controller at any time; transferring them would add complexity without significant benefit. Limiting scope to Pending balances keeps the interface simple and avoids edge cases around partial claimability. ### Separate Interfaces for Deposit and Redeem Transferability Following the design philosophy of [ERC-7540](./eip-7540.md) where deposit and redemption flows are independently optional, this standard keeps deposit and redeem transferability as separate interfaces. A Vault may have valid reasons to allow transferability of
 
 
 === ERC-5006 ===
@@ -8634,6 +8694,26 @@ Flash loans of multiple assets, or batch flash loans, are a common offering of f
 
 RATIONALE:
 The interfaces described in this ERC have been chosen as to cover the known flash lending use cases, while allowing for safe and gas efficient implementations. `flashFee` reverts on unsupported tokens, because returning a numerical value would be incorrect. `batchFlashLoan` has been chosen as a function name as descriptive enough, unlikely to clash with other functions in the lender, and including both the use cases in which the tokens lended are held or minted by the lender. `receiver` is taken as a parameter to allow flexibility on the implementation of separate loan initiators and receivers. Existing flash lenders
+
+
+=== ERC-8127 ===
+TITLE: Human Readable Token Identifiers
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-01-14
+REQUIRES: 7930
+
+SUMMARY:
+This ERC defines a format for identifying tokens in onchain registries using optional human readable aliases. A Token Identifier combines an optional human readable alias, a unique token ID from an onchain registry, and the registry location encoded as an [ERC-7930](./eip-7930.md) interoperable address. This format is useful for NFTs, real-world assets (RWAs), agents, and other tokenized assets. For example, agent registries like [ERC-8004](./eip-8004.md) can use this format to identify agents with human readable names.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Token Identifier Format A Token Identifier is a string with the following structure: ``` token-identifier = [<alias>.]<token-id>@<registry> ``` The `<token-id>` and `<registry>` components are REQUIRED for a fully specified identifier. The `<alias>` is an optional human readable identifier for the token, treated as case-insensitive. The alias SHOULD be included to improve usability. When present, the alias must be a valid label, which means:
+
+MOTIVATION:
+As tokenized assets become more prevalent in blockchain ecosystems, including NFTs, RWAs, and autonomous agents, there is a need for a consistent way to identify and reference them. Currently no format exists for identifying tokens with optional human readable aliases across different registries. Systems need to support multiple tokens with human readable aliases, while at the same time providing globally unique identifiers tied to onchain registration. This ERC addresses these needs by combining optional human readable aliases with onchain token IDs and registry locations in a single, parseable format. For example, agent registries like [ERC-8004](./eip-8004.md) can use this
+
+RATIONALE:
+The Token Identifier format combines several design elements to balance usability, uniqueness, and interoperability. Each component serves a specific purpose in creating a format that is partly human readable (alias and token ID) and partly opaque (registry), while remaining machine parseable and supporting the diverse needs of token registry systems including NFTs, RWAs, and agent registries. ### Comparison with [CAIP-19](https://github.com/ChainAgnostic/CAIPs/blob/ff573534d413153f8cbab0be94eddeca566d0792/CAIPs/caip-19.md) This format intentionally separates the identifier into two parts: a fully human readable portion (`<alias>.<token-id>`) and an opaque location portion (`@<registry>`). In many registries (including typical NFT, RWA, and agent registries), token IDs are simple decimal numbers rather
 
 
 === ERC-6170 ===
@@ -10725,7 +10805,7 @@ The standard aims to standardise how multiple lending markets and risk providers
 === ERC-7893 ===
 TITLE: DeFi Protocol Solvency Proof Mechanism
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-01-30
 REQUIRES: 2, 0, ,,  , 1, 6, 5
 

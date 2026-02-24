@@ -948,6 +948,26 @@ RATIONALE:
 The approach of simply augmenting existing EIP functions with new `address` parameters, rather than crafting new interfaces for the most commonly used EIPs, is
 
 
+=== ERC-8122 ===
+TITLE: Minimal Agent Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-17
+REQUIRES: 6, 9, 0, 9, ,,  , 7, 9, 3, 0, ,,  , 8, 0, 4, 8, ,,  , 8, 0, 4, 9, ,,  , 8, 1, 2, 7
+
+SUMMARY:
+This protocol proposes a lightweight onchain registry for **discovering AI agents** using [ERC-6909](./eip-6909.md) as the underlying registry design, [ERC-7930](./eip-7930.md) for cross-chain agent identification, and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+While various offchain agent protocols handle things like agent-to-agent communication, they don't inherently cover agent discovery. To foster an open permissionless agent economy, we
+
+RATIONALE:
+The minimal agent registry is designed to be a simple, focused foundation for agent discovery, registration, and onchain metadata. ERC-6909 was chosen as the
+
+
 === ERC-7895 ===
 TITLE: API for Hierarchical Accounts
 TYPE: Standards Track ERC
@@ -7029,6 +7049,26 @@ RATIONALE:
 To solve the initial problem of user-facing addresses being ambiguous in a multichain context, we need to map EIP-155 chain IDs with a user-facing
 
 
+=== ERC-8048 ===
+TITLE: Onchain Metadata for Token Registries
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-09-30
+REQUIRES: 8042
+
+SUMMARY:
+This ERC defines an onchain metadata standard for multi-token and NFT registries including [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md). The standard provides a key-value store allowing
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+This ERC addresses the need for fully onchain metadata while maintaining compatibility with existing [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md) standards. It has been a long-felt
+
+RATIONALE:
+This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of metadata. The minimal
+
+
 === ERC-7522 ===
 TITLE: OIDC ZK Verifier for AA Account
 TYPE: Standards Track ERC
@@ -7741,6 +7781,26 @@ Confidential tokens enable private value transfer which is vital for many usecas
 
 RATIONALE:
 ### Technology Agnostic Design Using `bytes32` allows implementations using pointer based systems and privacy mechanisms including FHE systems, zero-knowledge proofs, secure enclaves, or future
+
+
+=== ERC-8161 ===
+TITLE: Transferable Tokenized Vault Requests
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-02-12
+REQUIRES: 1, 6, 5, ,,  , 7, 5, 4, 0
+
+SUMMARY:
+This standard extends [ERC-7540](./eip-7540.md) by adding optional transferability of pending deposit and redeem Requests. It introduces two separate interfaces that allow a controller to
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[ERC-7540](./eip-7540.md) asynchronous Requests can remain in the Pending state for an extended period of time. During this period, controllers have no way to transfer
+
+RATIONALE:
+### Only Transferring Pending Balances This standard deliberately restricts transfers to the Pending state. Claimable balances already have a deterministic exchange rate and can
 
 
 === ERC-5006 ===
@@ -8634,6 +8694,26 @@ Flash loans of multiple assets, or batch flash loans, are a common offering of f
 
 RATIONALE:
 The interfaces described in this ERC have been chosen as to cover the known flash lending use cases, while allowing for safe and gas
+
+
+=== ERC-8127 ===
+TITLE: Human Readable Token Identifiers
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-01-14
+REQUIRES: 7930
+
+SUMMARY:
+This ERC defines a format for identifying tokens in onchain registries using optional human readable aliases. A Token Identifier combines an optional human readable
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+As tokenized assets become more prevalent in blockchain ecosystems, including NFTs, RWAs, and autonomous agents, there is a need for a consistent way to
+
+RATIONALE:
+The Token Identifier format combines several design elements to balance usability, uniqueness, and interoperability. Each component serves a specific purpose in creating a format
 
 
 === ERC-6170 ===
@@ -10725,7 +10805,7 @@ The standard aims to standardise how multiple lending markets and risk providers
 === ERC-7893 ===
 TITLE: DeFi Protocol Solvency Proof Mechanism
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-01-30
 REQUIRES: 2, 0, ,,  , 1, 6, 5
 
