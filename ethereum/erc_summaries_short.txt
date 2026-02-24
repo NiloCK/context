@@ -1921,7 +1921,7 @@ CREATED: 2025-01-06
 REQUIRES: 
 
 SUMMARY:
-This ERC defines standard formats for parameterized string keys used in EVM key-value storage. It supports two encodings: a slash form for a single
+This ERC defines standard formats for parameterized string keys used in EVM key-value storage. It supports two encodings: a slash/colon form for a single
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -1930,7 +1930,7 @@ MOTIVATION:
 Many EVM-based smart contracts use key-value storage to store metadata where string keys may need to represent multiple instances or variations of the same
 
 RATIONALE:
-The forward slash (`/`) separator was chosen because: - It provides a clear, unambiguous separator that is easy to parse programmatically. - It is
+The slash (`/`) and colon (`:`) separators were chosen for the single-parameter form because: - They provide clear, unambiguous separators that are easy to
 
 
 === ERC-2021 ===

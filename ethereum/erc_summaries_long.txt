@@ -1921,16 +1921,16 @@ CREATED: 2025-01-06
 REQUIRES: 
 
 SUMMARY:
-This ERC defines standard formats for parameterized string keys used in EVM key-value storage. It supports two encodings: a slash form for a single parameter (`<key-label>/<key-parameter>`) and a bracket form for one or more parameters (`<key-label>[<key-parameter-1>][<key-parameter-2>]...`).
+This ERC defines standard formats for parameterized string keys used in EVM key-value storage. It supports two encodings: a slash/colon form for a single parameter (`<key-label>/<key-parameter>` or `<key-label>:<key-parameter>`) and a bracket form for one or more parameters (`<key-label>[<key-parameter-1>][<key-parameter-2>]...`).
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Key Format String keys used in EVM key-value storage MAY include parameters to represent variations or instances of a metadata type. When keys include parameters, they MUST follow the format: ``` <key-label>/<key-parameter> ``` or: ``` <key-label>[<key-parameter-1>][<key-parameter-2>]... ``` Where: - **`<key-label>`**: MUST contain only printable ASCII characters **except** space, the forward slash character (`/`), and the left bracket character (`[`). Concretely, allowed code points
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Key Format String keys used in EVM key-value storage MAY include parameters to represent variations or instances of a metadata type. When keys include parameters, they MUST follow the format: ``` <key-label>/<key-parameter> or <key-label>:<key-parameter> ``` or: ``` <key-label>[<key-parameter-1>][<key-parameter-2>]... ``` Where: - **`<key-label>`**: MUST contain only printable ASCII characters **except** space, the forward slash character (`/`), the colon character (`:`), and the left bracket
 
 MOTIVATION:
 Many EVM-based smart contracts use key-value storage to store metadata where string keys may need to represent multiple instances or variations of the same metadata type. Without a standardized format for parameterized keys, different implementations use inconsistent formats, leading to interoperability issues and parsing difficulties.
 
 RATIONALE:
-The forward slash (`/`) separator was chosen because: - It provides a clear, unambiguous separator that is easy to parse programmatically. - It is visually concise and user-friendly for casual or long text values, and it avoids requiring a trailing `]`. The bracket form was added because: - It provides an explicit structure for one or more ordered parameters. - It allows applications to represent multi-parameter keys without custom encoding inside a single string. Reserving `/` and `[` from `<key-label>` keeps both encodings unambiguous.
+The slash (`/`) and colon (`:`) separators were chosen for the single-parameter form because: - They provide clear, unambiguous separators that are easy to parse programmatically. - Using whichever comes first ensures one parse rule; both may appear in the parameter. - They are visually concise and user-friendly for casual or long text values, and avoid requiring a trailing `]`. - Excluding both from the label is not restrictive, since labels are intended to be ASCII/domain-friendly. - Disallowing a space immediately after the separator keeps parsing simple and avoids ambiguity; parameters with spaces elsewhere (e.g., `key/hello world`) remain
 
 
 === ERC-2021 ===
