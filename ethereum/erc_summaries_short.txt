@@ -11118,13 +11118,13 @@ CREATED: 2023-06-30
 REQUIRES: 2, 0, ,,  , 4, 6, 2, 6
 
 SUMMARY:
-This specification explains a tokenized reserve mechanism standard. Current smart contracts record transactions and are made public. The reserve will implement added functionality allowing
+This document describes a tokenized reserve mechanism. This includes functionality that allow stakeholders to participate in goverance stategies wthin the reserve.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Tokenized vaults store [ERC-20](./eip-20.md) tokens that are represented by shares within vault contracts. Implementations can follow the [ERC-4626](./eip-4626.md) standard to provide basic functionality for
+Tokenized vaults store [ERC-20](./eip-20.md) tokens that are represented by shares within vault smart contracts. Implementations can follow the [ERC-4626](./eip-4626.md) standard to provide basic functionality
 
 RATIONALE:
 This proposed standard is designed to be a core implementation of a tokenized reserve interface. Other non-specified conditions should be addressed on a case-by-case
