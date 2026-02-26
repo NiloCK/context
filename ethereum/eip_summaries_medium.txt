@@ -9002,7 +9002,7 @@ CREATED: 2019-05-16
 REQUIRES: 
 
 SUMMARY:
-It is part of the State Rent roadmap. This particular change prepares Ethereum for introduction of the block proofs (current understanding is that they can be introuced without a hard fork). The introduction of the block proofs allows any Ethereum node that wishes to receive them, to process transactions
+It is part of the State Rent roadmap. This particular change prepares Ethereum for introduction of the block proofs (current understanding is that they can be introduced without a hard fork). The introduction of the block proofs allows any Ethereum node that wishes to receive them, to process transactions
 
 SPECIFICATION:
 Not very formal at the moment, but will be formalised with more research and prototyping. Gas of operations `SLOAD` and `SSTORE` increases by `X` gas when the storage slots accessed (read by `SLOAD` or written by `SSTORE`) were not previously accessed (by another `SLOAD` or `SSTORE`) during the same
