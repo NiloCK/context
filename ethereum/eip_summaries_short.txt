@@ -2621,10 +2621,10 @@ SPECIFICATION:
 > _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ###
 
 MOTIVATION:
-In 2016 the lead author set out to write a compiler from the EVM to code for virtual or real register machines. The design
+The EVM currently lacks explicit call and return instructions. Instead, calls and returns must be synthesized using the dynamic `JUMP` instruction, which takes its
 
 RATIONALE:
-### How can dynamic jumps cause quadratic control flow? Static analysis amounts to most anything you can do with a program without actually running
+### Why these three opcodes? This proposal aims to be the smallest possible change to the EVM. We introduce only three industry-standard instructions —
 
 
 === EIP-7889 ===

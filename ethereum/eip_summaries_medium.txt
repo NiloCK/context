@@ -2618,13 +2618,13 @@ SUMMARY:
 This is the smallest possible change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB` transfers control to the `destination` on the `stack`. * `ENTERSUB` marks a `CALLSUB` destination. * `RETURNSUB` returns to the `PC` after the most
 
 SPECIFICATION:
-> _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ### `CALLSUB (0x..)` Transfers control to a subsidiary operation. 1. Pop the `destination` on top on the `stack`. 2. Push the current `PC + 1` to
+> _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ### `CALLSUB (0x..)` Transfers control to a subsidiary operation. 1. Pop the `destination` on top of the `stack`. 2. Push the current `PC + 1` to
 
 MOTIVATION:
-In 2016 the lead author set out to write a compiler from the EVM to code for virtual or real register machines. The design was simple -- traverse the EVM stack code in one pass, emitting register code for the target machine. I was immediately stymied by the presence
+The EVM currently lacks explicit call and return instructions. Instead, calls and returns must be synthesized using the dynamic `JUMP` instruction, which takes its destination from the stack. This creates two fundamental problems: * **Inefficiency**: Synthesizing calls and returns with jumps wastes bytecode space and gas. * **Complexity**: Even
 
 RATIONALE:
-### How can dynamic jumps cause quadratic control flow? Static analysis amounts to most anything you can do with a program without actually running it. And traversing the flow of control — in a way that follows every possible path only once — is a fundamental first step for
+### Why these three opcodes? This proposal aims to be the smallest possible change to the EVM. We introduce only three industry-standard instructions — `CALLSUB`, `ENTERSUB`, and `RETURNSUB` — sufficient to eliminate the need for dynamic jumps in synthesizing calls and returns and We do _not_ include: * **Immediate
 
 
 === EIP-7889 ===
