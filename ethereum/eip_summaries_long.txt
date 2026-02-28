@@ -628,24 +628,44 @@ RATIONALE:
 This EIP mostly achieves what a transient storage tries to do (EIP-1087 and EIP-1153), but without the complexity of introducing the concept of "dirty maps", or an extra storage struct. * We don't suffer from the optimization limitation of EIP-1087. EIP-1087 requires keeping a dirty map for storage changes, and implicitly makes the assumption that a transaction's storage changes are committed to the storage trie at the end of a transaction. This works well for some implementations, but not for others. After EIP-658, an efficient storage cache implementation would probably use an in-memory trie (without RLP encoding/decoding) or
 
 
-=== EIP-7851 ===
-TITLE: Deactivate/Reactivate a Delegated EOA's Key
+=== EIP-8130 ===
+TITLE: Account Abstraction by Account Configuration
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
+CREATED: 2025-10-14
+REQUIRES: 1, 1, 5, 3, ,,  , 2, 7, 1, 8
+
+SUMMARY:
+This proposal defines a new [EIP-2718](./eip-2718.md) transaction type and an onchain system contract that together provide account abstraction — batching, gas sponsorship, and authentication using any cryptographic system. Accounts configure signing keys with account-specified verifiers in the system contract; the protocol validates transactions natively for well-known algorithms, and via sandboxed pure-function contracts for any other scheme.
+
+SPECIFICATION:
+### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | TBD <!-- TODO --> | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE` | TBD <!-- TODO --> | Magic byte for payer signature domain separation | | `AA_BASE_COST` | 15000 | Base intrinsic gas cost | | `ACCOUNT_CONFIG_ADDRESS` | TBD <!-- TODO --> | Account Configuration system contract address | | `KNOWN_VERIFIER_ADDRESSES` | TBD <!-- TODO --> | Well-known verifier addresses (K1, P256, WebAuthn P256, BLS, DELEGATE) | | `NONCE_MANAGER_ADDRESS` | TBD <!-- TODO --> | Nonce Manager precompile address | | `KEY_CHANGE_TYPE` | TBD <!--
+
+MOTIVATION:
+Requiring code execution to validate transactions leads to wasted compute, denial-of-service vectors, and compensatory systems (tracing, staking, reputation). This proposal uses pure-function verifiers with known state inputs — a node can determine validity from state alone, and new signature schemes are deployed as EVM contracts without protocol changes. This provides a native path to post-quantum secure authentication. The system contract is accessible via the EVM, so wallet code can layer additional logic — recovery, multisig, spending limits, session keys — on top. The protocol handles authentication, gas payment, and calldata delivery to be interpreted by the account.
+
+RATIONALE:
+### Why Verifier Contracts? Key storage and signature verification have fundamentally different upgrade characteristics. Storage is mechanical — `(verifier, public_key)` in deterministic slots works on any EVM chain. But if verification logic were bundled into the storage contract, it would freeze at deploy time with no permissionless upgrade path. Separating them means new algorithms are deployed as new verifier contracts without touching the storage layer. The uniform `IAuthVerifier.verify()` interface eliminates registration, wallet callbacks, and special casing — the verifier address in `key_config` is the sole identifier for authentication logic. The storage contract is pure Solidity (SLOAD/SSTORE-dominated, no gas
+
+
+=== EIP-7851 ===
+TITLE: Deactivate a Delegated EOA's Key
+TYPE: Standards Track Core
+STATUS: Draft
 CREATED: 2024-12-27
 REQUIRES: 7702
 
 SUMMARY:
-This EIP introduces a precompiled contract that enables Externally Owned Accounts (EOAs) with delegated control to smart contracts via [EIP-7702](./eip-7702) to deactivate or reactivate their private keys. This design does not require additional storage fields or account state changes. By leveraging delegated code, reactivation can be performed securely through mechanisms such as social recovery.
+This EIP introduces a system contract that enables an [EIP-7702](./eip-7702) delegated EOA to schedule an irreversible deactivation of its ECDSA private key for ECDSA-authenticated transaction sending and [EIP-7702](./eip-7702) authorizations. Deactivation uses a 7-day delay (cancellation window). After finalization, the key is permanently deactivated in-protocol. The system contract mapping serves as the single source of truth for key status.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | |-----------------------------------|----------------------| | `PRECOMPILE_ADDRESS` | `0xTBD` | | `PRECOMPILE_GAS_COST` | `13000` | ### Definitions * `||` is the byte/byte-array concatenation operator. ### Delegated Code Encoding The deactivation status is encoded by appending or removing the `0x00` byte at the end of the delegated code. The transitions between two states are as follows: * Active state: `0xef0100 || address`.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | |-----------------------------------|------------------------------| | `SYSTEM_CONTRACT_ADDRESS` | `0xTBD` | | `DEACTIVATION_DELAY` | `604800` (7 days in seconds) | ### System Contract The system contract is deployed at `SYSTEM_CONTRACT_ADDRESS` following the same mechanism as [EIP-4788](./eip-4788) and [EIP-2935](./eip-2935): a pre-signed deployment transaction using Nick's method is included at fork activation. Deployment parameters TBD. #### Status Semantics Let `ts = finalizationTimestamp[account]`: | Condition
 
 MOTIVATION:
-[EIP-7702](./eip-7702) enables EOAs to gain smart contract capabilities, but the private key of the EOA still retains full control over the account. With this EIP, EOAs can fully migrate to smart contract wallets, while retaining private key recovery options with reactivation. The flexible deactivate and reactivate design also paves the way for native account abstraction. e.g., [EIP-7701](./eip-7701).
+[EIP-7702](./eip-7702) enables EOAs to gain smart contract wallet behavior, but the EOA's ECDSA key retains unrestricted signing authority that can override any delegated contract logic. This EIP provides a one-way migration path toward smart contract control, including post-quantum migration strategies, by allowing a delegated EOA to permanently disable its ECDSA transaction-signing authority after a safety delay.
 
 RATIONALE:
-### Cost of Precompiled Contract The `PRECOMPILE_GAS_COST` represents the gas required to validate and potentially update an account's code. A fair cost for calling this precompiled contract can be determined by analyzing its impact on the node: * Reading the code of the address: `2600`. * Changing the code hash (from non-zero to non-zero): `5000`. * Deploying at most `24` bytes of code: `200 * 24 = 4800`. The primary operation consumes a total of `12400` gas. To account for additional overhead, such as context switching during state transitions, as well as code prefix and length validations, the
+Following the system contract pattern of [EIP-4788](./eip-4788), [EIP-2935](./eip-2935), and [EIP-7002](./eip-7002), this EIP uses a system contract to consolidate deactivation, cancellation, and status queries into a single on-chain entry point. Alternatives considered: - **Account-state field**: adding a `timestamp` field in account state requires account RLP encoding and p2p protocol changes. - **Reusing existing account fields**: deactivation status could be encoded into the nonce or appended to the delegated EOA's 23-byte code. However, the delay mechanism requires storing a finalization timestamp. A nonce is an incrementing counter and a delegation designator is a code prefix. Neither is designed to carry
 
 
 === EIP-4895 ===
@@ -925,6 +945,26 @@ TYPE: Standards Track Core
 STATUS: Stagnant
 CREATED: 2017-04-25
 REQUIRES: 
+
+
+=== EIP-8151 ===
+TITLE: Private Key Deactivation Aware ecRecover
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-09
+REQUIRES: 7851
+
+SUMMARY:
+This EIP modifies the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` to respect [EIP-7851](./eip-7851.md) key deactivation. After performing ECDSA public key recovery, the precompile checks whether the recovered address has a deactivated private key. If so, it returns 32 zero bytes (the existing failure sentinel of `ecRecover`) instead of the recovered address.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). | Constant | Value | |----------------------------|----------------------------------------------| | `ECRECOVER_ADDRESS` | `0x0000000000000000000000000000000000000001` | | `COLD_ACCOUNT_ACCESS_COST` | 2600 | | `WARM_ACCOUNT_ACCESS_COST` | 100 | ### Modified `ecRecover` Behavior Starting at the activation of this EIP, the `ecRecover` precompile at address `ECRECOVER_ADDRESS` MUST perform the following steps: 1. Perform ECDSA public key recovery from the input `(hash, v, r, s)` as currently specified, yielding a `recovered_address`. 2. If
+
+MOTIVATION:
+[EIP-7851](./eip-7851.md) enables delegated EOAs (per [EIP-7702](./eip-7702.md)) to deactivate their private keys, preventing those keys from authorizing transactions or new delegation authorizations. However, the `ecRecover` precompile is currently a pure cryptographic function with no awareness of account state. Even after an EOA's key is deactivated, on-chain signature verification through `ecRecover` continues to succeed for that key. This affects contracts that rely on `ecRecover` for signature-based authorization, such as ERC-20 contracts implementing `permit` ([ERC-2612](./eip-2612.md)). Since many such contracts are immutable and cannot be updated to add deactivation checks, modifying `ecRecover` at the protocol level is a practical path.
+
+RATIONALE:
+### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., ERC-20 `permit` implementations) are immutable and cannot be upgraded to incorporate deactivation checks. A protocol-level change ensures these existing contracts automatically benefit from key deactivation without requiring redeployment. ### Returning 32 Zero Bytes When a deactivated key is detected, the precompile returns 32 zero bytes rather than triggering an execution failure (`success = 0`). Currently, malformed `v`, out of range `r`/`s`, and failed recovery all return 32 zero bytes with `success = 1`, and `ecRecover`
 
 
 === EIP-6953 ===
@@ -2813,6 +2853,26 @@ Exert from EIP-1193 > A common convention in the Ethereum web application ("dapp
 
 RATIONALE:
 The implementation was chosen to help the ease of implementation for both providers and dapp developers. Since `ProviderMessage` is widely used by dapp developers already it means that the implementation path would be as trivial as adding and additional `if` clause to their existing message listener. This also provides a benefit to dapps in the event that a provider has not yet implemented the events, it will not cause the dapp panic with `undefined` should it be implemented natively (eg: `ethereum.txCancel(...)` which would error with `ethereum.txReplacement()` is not a function).
+
+
+=== EIP-8136 ===
+TITLE: Cell-Level Deltas for Data Column Broadcast
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2025-01-23
+REQUIRES: 7594
+
+SUMMARY:
+Cell-Level Deltas for Data Column Broadcast optimizes PeerDAS (EIP-7594) by allowing more efficient transfers of blob data columns across the network. Instead of having to exchange full data columns, peers exchange only the cells they need within a column. This becomes especially useful when the majority of cells within a column are already present from the local mempool. This optimization is backwards compatible and can be progressively deployed. It does not require a hard fork. Nodes that do not implement this optimization still receive and transmit full data columns.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Cell-Level Deltas uses Gossipsub's Partial Messages Extension to exchange cell bitmaps and request/provide cells. <!--TODO: link to final spec above: (https://github.com/libp2p/specs/pull/685)--> *Editor's Note*: Update the libp2p spec link to a proper commit once the PR is merged. In an effort to maintain a single source of truth, the specification is defined in the ethereum/consensus-specs repo. <!-- TODO: link to final spec: [ethereum/consensus-specs](https://github.com/ethereum/consensus-specs/pull/4558)--> *Editor's Note*:
+
+MOTIVATION:
+In the vast majority of cases, all or nearly all blobs referenced in a block are available in the mempool. Leveraging the blob data a node already has locally lets a node avoid wasting bandwidth for cells it already has. In the current design, if even a single blob is not present in the local mempool, the Consensus Layer will have to wait to receive the full data column from the network before passing its data availability checks. With this optimization, the client need only wait to receive the missing cells.
+
+RATIONALE:
+The design is guided by two main factors: 1. Minimal semantic changes. 2. Backwards compatible (no hard fork required). These two factors lead the design into something that extends the existing gossipsub behavior rather than introducing a new protocol. The mesh and gossip properties of gossipsub are unchanged. If a node's gossipsub peers support this extension they can both make use of it. Otherwise, the behavior falls back to traditional gossipsub. The biggest difference the extension introduces is defaulting to a pull-based dissemination strategy of cells rather than a push based one. Eager pushing of data is still
 
 
 === EIP-706 ===

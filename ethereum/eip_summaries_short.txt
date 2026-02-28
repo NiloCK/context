@@ -628,24 +628,44 @@ RATIONALE:
 This EIP mostly achieves what a transient storage tries to do (EIP-1087 and EIP-1153), but without the complexity of introducing the concept of "dirty
 
 
-=== EIP-7851 ===
-TITLE: Deactivate/Reactivate a Delegated EOA's Key
+=== EIP-8130 ===
+TITLE: Account Abstraction by Account Configuration
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
+CREATED: 2025-10-14
+REQUIRES: 1, 1, 5, 3, ,,  , 2, 7, 1, 8
+
+SUMMARY:
+This proposal defines a new [EIP-2718](./eip-2718.md) transaction type and an onchain system contract that together provide account abstraction — batching, gas sponsorship, and authentication
+
+SPECIFICATION:
+### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | TBD <!-- TODO --> | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE`
+
+MOTIVATION:
+Requiring code execution to validate transactions leads to wasted compute, denial-of-service vectors, and compensatory systems (tracing, staking, reputation). This proposal uses pure-function verifiers with
+
+RATIONALE:
+### Why Verifier Contracts? Key storage and signature verification have fundamentally different upgrade characteristics. Storage is mechanical — `(verifier, public_key)` in deterministic slots works
+
+
+=== EIP-7851 ===
+TITLE: Deactivate a Delegated EOA's Key
+TYPE: Standards Track Core
+STATUS: Draft
 CREATED: 2024-12-27
 REQUIRES: 7702
 
 SUMMARY:
-This EIP introduces a precompiled contract that enables Externally Owned Accounts (EOAs) with delegated control to smart contracts via [EIP-7702](./eip-7702) to deactivate or reactivate
+This EIP introduces a system contract that enables an [EIP-7702](./eip-7702) delegated EOA to schedule an irreversible deactivation of its ECDSA private key for ECDSA-authenticated
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-[EIP-7702](./eip-7702) enables EOAs to gain smart contract capabilities, but the private key of the EOA still retains full control over the account. With this
+[EIP-7702](./eip-7702) enables EOAs to gain smart contract wallet behavior, but the EOA's ECDSA key retains unrestricted signing authority that can override any delegated contract
 
 RATIONALE:
-### Cost of Precompiled Contract The `PRECOMPILE_GAS_COST` represents the gas required to validate and potentially update an account's code. A fair cost for calling
+Following the system contract pattern of [EIP-4788](./eip-4788), [EIP-2935](./eip-2935), and [EIP-7002](./eip-7002), this EIP uses a system contract to consolidate deactivation, cancellation, and status queries into
 
 
 === EIP-4895 ===
@@ -925,6 +945,26 @@ TYPE: Standards Track Core
 STATUS: Stagnant
 CREATED: 2017-04-25
 REQUIRES: 
+
+
+=== EIP-8151 ===
+TITLE: Private Key Deactivation Aware ecRecover
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-09
+REQUIRES: 7851
+
+SUMMARY:
+This EIP modifies the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` to respect [EIP-7851](./eip-7851.md) key deactivation. After performing ECDSA public key recovery, the precompile checks whether
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[EIP-7851](./eip-7851.md) enables delegated EOAs (per [EIP-7702](./eip-7702.md)) to deactivate their private keys, preventing those keys from authorizing transactions or new delegation authorizations. However, the `ecRecover`
+
+RATIONALE:
+### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., ERC-20
 
 
 === EIP-6953 ===
@@ -2813,6 +2853,26 @@ Exert from EIP-1193 > A common convention in the Ethereum web application ("dapp
 
 RATIONALE:
 The implementation was chosen to help the ease of implementation for both providers and dapp developers. Since `ProviderMessage` is widely used by dapp developers
+
+
+=== EIP-8136 ===
+TITLE: Cell-Level Deltas for Data Column Broadcast
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2025-01-23
+REQUIRES: 7594
+
+SUMMARY:
+Cell-Level Deltas for Data Column Broadcast optimizes PeerDAS (EIP-7594) by allowing more efficient transfers of blob data columns across the network. Instead of having
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+In the vast majority of cases, all or nearly all blobs referenced in a block are available in the mempool. Leveraging the blob data
+
+RATIONALE:
+The design is guided by two main factors: 1. Minimal semantic changes. 2. Backwards compatible (no hard fork required). These two factors lead the
 
 
 === EIP-706 ===
