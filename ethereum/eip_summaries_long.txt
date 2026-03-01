@@ -4620,7 +4620,7 @@ The given `EVM_CODE` corresponds to ``` CALLDATASIZE PUSH0 PUSH0 CALLDATACOPY CA
 === EIP-7956 ===
 TITLE: Tx Ordering via Block-level Randomness
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-05-24
 REQUIRES: 7998
 
@@ -9682,7 +9682,7 @@ Same as #158 except that several edge cases are avoided since we do not break in
 === EIP-7957 ===
 TITLE: EVM64 - EOF support
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-05-26
 REQUIRES: 3, 5, 4, 0, ,,  , 3, 6, 7, 0, ,,  , 4, 2, 0, 0, ,,  , 7, 9, 3, 7
 
