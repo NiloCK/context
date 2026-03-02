@@ -8527,7 +8527,7 @@ MOTIVATION:
 Clear system specifications are crucial for: - Ensuring meaningful benchmark comparisons across different client implementations. - Enabling informed decision-making about protocol upgrades and their
 
 RATIONALE:
-### Storage - **Recommended**: 4 TB NVMe M.2 drive with: - **Sequential R/W**: 7,000 MB/s - **Random 4K R/W**: Up to 1,000,000 IOPS -
+### Storage - **Recommended**: 4 TB NVMe M.2 drive with: - **Sequential R/W**: At least ~500 MB/s - **Random 4K Read IOPS**: At least
 
 
 === EIP-8012 ===
