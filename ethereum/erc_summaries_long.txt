@@ -2582,7 +2582,7 @@ This standard provides standard events and introspection functions so that GUIs,
 === ERC-7832 ===
 TITLE: Sustainable collaborative NFT collections
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-12-04
 REQUIRES: 721
 
@@ -6522,7 +6522,7 @@ Signed Typed Data provides a strong foundation for Verifiable Claims that can be
 === ERC-8034 ===
 TITLE: Referable NFT Royalties
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-10-02
 REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 5, 5, 2, 1
 
@@ -6530,7 +6530,7 @@ SUMMARY:
 This ERC proposes Royalty Distribution, a standalone royalty distribution for Referable Non-Fungible Tokens (rNFTs). It enables royalty distribution to multiple recipients at the primary level and referenced NFTs in the directed acyclic graph (DAG), with a single depth limit to control propagation. The standard is independent of [ERC-2981](./eip-2981.md). and token-standard-agnostic, but expects [ERC-5521](./eip-5521.md) rNFTs, which in practice build on [ERC-721](./eip-721.md) ownership semantics. It includes a function to query fixed royalty amounts (in basis points) for transparency. Royalties are voluntary, transparent, and configurable on-chain, supporting collaborative ecosystems and fair compensation.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface The IRNFTRoyalty interface defines the royalty distribution for rNFTs and MUST inherit `ERC165` so that supporting contracts can advertise compliance via [ERC-165](./eip-165.md): ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity ^0.8.0; interface IRNFTRoyalty is ERC165 { struct RoyaltyInfo { address recipient; // Address to receive royalty uint256 royaltyAmount; // Royalty amount (in wei for sale-based queries, basis points for fixed queries) } struct ReferenceRoyalty { RoyaltyInfo[] royaltyInfos; // Array
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Interface The `IRNFTRoyalty` interface defines the royalty distribution for rNFTs and MUST inherit `ERC165` so that supporting contracts can advertise compliance via [ERC-165](./eip-165.md): ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity ^0.8.0; interface IRNFTRoyalty is ERC165 { struct RoyaltyInfo { address recipient; // Address to receive royalty uint256 royaltyAmount; // Royalty amount (in wei for sale-based queries, basis points for fixed queries) } struct ReferenceRoyalty { RoyaltyInfo[] royaltyInfos; // Array
 
 MOTIVATION:
 [ERC-5521](./eip-5521.md) introduces Referable NFTs (rNFTs), which form a DAG through "referring" and "referred" relationships. Existing royalty standards like [ERC-2981](./eip-2981.md) do not account for this structure or support multiple recipients per level. This EIP addresses the need for a royalty mechanism that: - Supports multiple recipients per royalty level (e.g., creators and collaborators). - Distributes royalties to referenced NFTs in the DAG. - Limits royalty propagation with a single reference depth. - Provides a function to query fixed royalty amounts without a sale price. - Provides a function to query fixed royalty amounts with a sale price. - Operates

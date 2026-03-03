@@ -4304,7 +4304,7 @@ MOTIVATION:
 As Ethereum moves toward a higher block gas limit on mainnet, the worst-case total size of a block receipts list also becomes larger, and may eventually exceed the 10MiB message size limit commonly applied in clients. This can lead to sync failures.
 
 RATIONALE:
-Since [EIP-7825] caps the gas limit of a single transaction to ~16.7M gas, a single transaction receipt will always be limited in size. Specifically, a transaction can produce at most 16777216/8 = 2MiB of log data. However, a block can contain contain multiple transactions, and thus the entire block
+Since [EIP-7825] caps the gas limit of a single transaction to ~16.7M gas, a single transaction receipt will always be limited in size. Specifically, a transaction can produce at most 16777216/8 = 2MiB of log data. However, a block can contain multiple transactions, and thus the entire block receipts
 
 
 === EIP-2997 ===
@@ -7992,7 +7992,7 @@ Allowing for more targeted return opcodes allows for saving gas at all levels of
 === EIP-8134 ===
 TITLE: Hardfork Meta - BPO1
 TYPE: Meta 
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-01-24
 REQUIRES: 7892
 
@@ -8992,6 +8992,26 @@ This meta-EIP specifies the changes included in the Ethereum hardfork that remov
 
 SPECIFICATION:
 - Codename: Petersburg - Aliases: St. Petersfork, Peter's Fork, Constantinople Fix - Activation: - `Block >= 7_280_000` on the Ethereum Mainnet - `Block >= 4_939_394` on the Ropsten testnet - `Block >= 10_255_201` on the Kovan testnet - `Block >= 4_321_234` on the Rinkeby testnet - `Block >= 0`
+
+
+=== EIP-8163 ===
+TITLE: Reserve `EXTENSION (0xae)` opcode
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-13
+REQUIRES: 141
+
+SUMMARY:
+Reserve an opcode `EXTENSION (0xae)` which will be guaranteed to not become a valid opcode on Ethereum L1 EVM, but which will be available to be used in other EVMs as a prefix to encode extension instructions.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### `EXTENSION (0xae)` Reserve a new opcode `EXTENSION (0xae)` which MUST behave exactly like `INVALID
+
+MOTIVATION:
+Currently, non-Ethereum-L1 EVM chains cannot innovate on the EVM by introducing new instructions, because they run a risk of becoming incompatible with the Ethereum L1 EVM and the EVMs on other chains, in the event that these decide to implement new features using overlapping opcodes. By setting aside a
+
+RATIONALE:
+### No effect on `JUMPDEST` analysis An alternative considered was to have `EXTENSION`: - invalidate `0x5b` byte following it as a jump destination and - skip over `PUSHx` instructions following it however that would require this EIP to prescribe the size of the immediate arguments. It would also run
 
 
 === EIP-8149 ===

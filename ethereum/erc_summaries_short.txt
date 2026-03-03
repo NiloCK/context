@@ -2582,7 +2582,7 @@ This standard provides standard events and introspection functions so that GUIs,
 === ERC-7832 ===
 TITLE: Sustainable collaborative NFT collections
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-12-04
 REQUIRES: 721
 
@@ -6522,7 +6522,7 @@ Signed Typed Data provides a strong foundation for Verifiable Claims that can be
 === ERC-8034 ===
 TITLE: Referable NFT Royalties
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-10-02
 REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 5, 5, 2, 1
 
