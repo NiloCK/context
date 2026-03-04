@@ -1317,7 +1317,7 @@ CREATED: 2020-07-11
 REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0
 
 SUMMARY:
-Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `4,500` and define a consistent gas accounting model based on actual state operations. This more granular approach makes a simple ETH transfer `6,000` from additional costs related to the `to` account. If a non-create transaction has `value > 0` and targets
+Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `4,500` and define a consistent gas accounting model based on actual state operations. This more granular approach makes a simple ETH transfer `6,000` due to additional costs related to the `to` account. If a non-create transaction has `value > 0` and
 
 SPECIFICATION:
 After `FORK_BLOCK`, set the following parameters and rules: ### Parameters | Name | Value | Description | | -------------------------- | -----: | ----------------------------------------------------------------------- | | `TX_BASE_COST` | 4,500 | Base cost of any transaction | | `GAS_NEW_ACCOUNT` | 25,000 | Surcharge when a value-transferring transaction creates a new account
