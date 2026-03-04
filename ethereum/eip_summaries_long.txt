@@ -633,19 +633,19 @@ TITLE: Account Abstraction by Account Configuration
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-14
-REQUIRES: 1, 1, 5, 3, ,,  , 2, 7, 1, 8
+REQUIRES: 1, 1, 5, 3, ,,  , 2, 7, 1, 8, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This proposal defines a new [EIP-2718](./eip-2718.md) transaction type and an onchain system contract that together provide account abstraction — batching, gas sponsorship, and authentication using any cryptographic system. Accounts configure signing keys with account-specified verifiers in the system contract; the protocol validates transactions natively for well-known algorithms, and via sandboxed pure-function contracts for any other scheme.
+This proposal defines a new [EIP-2718](./eip-2718.md) transaction type and an onchain system contract that together provide account abstraction — batching, gas sponsorship, and authentication using any cryptographic system. Accounts configure authorized keys and verifiers in the system contract; the protocol validates transactions using native implementations for recognized algorithms, and via sandboxed pure-function contracts for any other scheme.
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | TBD <!-- TODO --> | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE` | TBD <!-- TODO --> | Magic byte for payer signature domain separation | | `AA_BASE_COST` | 15000 | Base intrinsic gas cost | | `ACCOUNT_CONFIG_ADDRESS` | TBD <!-- TODO --> | Account Configuration system contract address | | `KNOWN_VERIFIER_ADDRESSES` | TBD <!-- TODO --> | Well-known verifier addresses (K1, P256, WebAuthn P256, BLS, DELEGATE) | | `NONCE_MANAGER_ADDRESS` | TBD <!-- TODO --> | Nonce Manager precompile address | | `KEY_CHANGE_TYPE` | TBD <!--
+### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | TBD <!-- TODO --> | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE` | TBD <!-- TODO --> | Magic byte for payer signature domain separation | | `AA_BASE_COST` | 15000 | Base intrinsic gas cost | | `ACCOUNT_CONFIG_ADDRESS` | TBD <!-- TODO --> | Account Configuration system contract address | | `NATIVE_VERIFIER_ADDRESSES` | TBD <!-- TODO --> | Native verifier addresses (K1, P256_RAW, P256_WEBAUTHN, DELEGATE) | | `NONCE_MANAGER_ADDRESS` | TBD <!-- TODO --> | Nonce Manager precompile address | | `MAX_ACCOUNT_CHANGES` | 10 | Maximum account
 
 MOTIVATION:
-Requiring code execution to validate transactions leads to wasted compute, denial-of-service vectors, and compensatory systems (tracing, staking, reputation). This proposal uses pure-function verifiers with known state inputs — a node can determine validity from state alone, and new signature schemes are deployed as EVM contracts without protocol changes. This provides a native path to post-quantum secure authentication. The system contract is accessible via the EVM, so wallet code can layer additional logic — recovery, multisig, spending limits, session keys — on top. The protocol handles authentication, gas payment, and calldata delivery to be interpreted by the account.
+Provide account abstraction primitives that enable post-quantum authentication and migration, privacy systems, and programmable accounts — in a highly performant, highly optimizable way. Pure-function verifiers with known state inputs let nodes determine validity from state alone, enabling aggressive caching and parallel execution without execution tracing, staking or reputation systems. Permissionless deployment of new authentication mechanisms as EVM contracts, proving utility before protocol enshrining, following the same path as precompiles today. Permissionless pay-during-execution flows enable arbitrary gas payment mechanisms, including ERC-20 token payments, without protocol-level token awareness. Shared account infrastructure for wallets to build on and clients to optimize.
 
 RATIONALE:
-### Why Verifier Contracts? Key storage and signature verification have fundamentally different upgrade characteristics. Storage is mechanical — `(verifier, public_key)` in deterministic slots works on any EVM chain. But if verification logic were bundled into the storage contract, it would freeze at deploy time with no permissionless upgrade path. Separating them means new algorithms are deployed as new verifier contracts without touching the storage layer. The uniform `IAuthVerifier.verify()` interface eliminates registration, wallet callbacks, and special casing — the verifier address in `key_config` is the sole identifier for authentication logic. The storage contract is pure Solidity (SLOAD/SSTORE-dominated, no gas
+### Why Verifier Contracts? Enables permissionless extension of signature algorithms — deploy a new verifier contract, no protocol changes required. Pure-function verifiers allow heavy node-level optimization (caching, parallel execution, deterministic gas). High-use verifiers can be promoted to native auth types with dedicated recovery optimizations, following the same path as precompiles today. Non-standard verifiers (e.g., DELEGATE) can implement custom logic beyond pure signature checking if/when needed. **Storage layout is consensus-critical**: Because the protocol reads storage slots directly on 8130 chains, the keccak-derived slot layout becomes a consensus rule. The layout is intentionally simple — one slot per key (keccak-derived
 
 
 === EIP-7851 ===
@@ -5791,7 +5791,7 @@ RATIONALE:
 === EIP-8135 ===
 TITLE: Hardfork Meta - BPO2
 TYPE: Meta 
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-01-24
 REQUIRES: 7, 8, 9, 2, ,,  , 8, 1, 3, 4
 
