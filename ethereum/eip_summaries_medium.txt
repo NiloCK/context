@@ -636,7 +636,7 @@ CREATED: 2025-10-14
 REQUIRES: 1, 1, 5, 3, ,,  , 2, 7, 1, 8, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This proposal defines a new [EIP-2718](./eip-2718.md) transaction type and an onchain system contract that together provide account abstraction — batching, gas sponsorship, and authentication using any cryptographic system. Accounts configure authorized keys and verifiers in the system contract; the protocol validates transactions using native implementations for recognized algorithms, and
+This proposal defines a new [EIP-2718](./eip-2718.md) transaction type and an onchain system contract that together provide account abstraction — batching, gas sponsorship, and authentication using any cryptographic system. Accounts configure authorized owners and verifiers in the system contract; the protocol validates transactions by calling verifier contracts in a sandboxed
 
 SPECIFICATION:
 ### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | TBD <!-- TODO --> | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE` | TBD <!-- TODO --> | Magic byte for payer signature domain separation | | `AA_BASE_COST` | 15000 | Base intrinsic gas cost | |
@@ -645,7 +645,7 @@ MOTIVATION:
 Provide account abstraction primitives that enable post-quantum authentication and migration, privacy systems, and programmable accounts — in a highly performant, highly optimizable way. Pure-function verifiers with known state inputs let nodes determine validity from state alone, enabling aggressive caching and parallel execution without execution tracing, staking or reputation systems.
 
 RATIONALE:
-### Why Verifier Contracts? Enables permissionless extension of signature algorithms — deploy a new verifier contract, no protocol changes required. Pure-function verifiers allow heavy node-level optimization (caching, parallel execution, deterministic gas). High-use verifiers can be promoted to native auth types with dedicated recovery optimizations, following the same path as
+### Why Verifier Contracts? Enables permissionless extension of signature algorithms — deploy a new verifier contract, no protocol changes required. Pure-function verifiers allow heavy node-level optimization — sandbox results are fully determined by `(codehash, calldata)`, enabling permanent caching. The verifier returns the `ownerId` rather than accepting it as input,
 
 
 === EIP-7851 ===
