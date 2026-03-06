@@ -1390,7 +1390,7 @@ TITLE: Fixed-Supply Agent NFT Collections
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-10-11
-REQUIRES: 7, 5, 7, 2, ,,  , 8, 0, 0, 4
+REQUIRES: 7, 5, 7, 2, ,,  , 8, 0, 0, 4, ,,  , 8, 1, 1, 9
 
 SUMMARY:
 An interface for creating fixed-supply collections of Agent NFTs that are registered in an [ERC-8004](./eip-8004.md) Agent Registry. While [ERC-8004](./eip-8004.md) provides an unlimited mint registry for agent identities, many use cases require limited collections. Collections can be created with fixed supply limits while maintaining the association between agents and their
@@ -1399,7 +1399,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119.html) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174.html). ### Collection Structure Every compliant collection contract MUST maintain the following collection properties: - `maxSupply`:
 
 MOTIVATION:
-[ERC-8004](./eip-8004.md) establishes a singleton registry for AI Agent identity tokens with unlimited minting capability. This open registration model serves many use cases, but there is a clear need for: 1. **Fixed-supply collections**: Ability to create limited editions (e.g., "Genesis 100", "Season 1") 2. **Collection metadata**: Associate agents with specific
+[ERC-8004](./eip-8004.md) establishes a singleton registry for AI Agent identity tokens with unlimited minting capability. This open registration model serves many use cases, but there is a clear need for: 1. **Fixed-supply collections**: Ability to create limited editions (e.g., "Genesis 100", "Season 1") 2. **Multiple collections per agent**: Agents may
 
 RATIONALE:
 [ERC-8004](./eip-8004.md) agents are unlimited mint NFTs; this ERC was created to enable verifiable fixed-supply collections of agents. This standard attempts to make minting fixed-supply [ERC-8004](./eip-8004.md) agents as convenient as possible. The `getCollectionSupply()` function allows clients to query current supply without relying on an indexer. Collection configuration (maxSupply, startBlock, open)
@@ -2220,6 +2220,26 @@ Currently, reading data from Web3 generally relies on a translation done by a We
 
 RATIONALE:
 The purpose of the proposal is to add a decentralized presentation layer for Ethereum. With the layer, we are able to render any web content (including HTML/CSS/JPG/PNG/SVG, etc) on-chain using human-readable URLs, and thus EVM can be served as a decentralized backend. The design of the standard is based
+
+
+=== ERC-8183 ===
+TITLE: Agentic Commerce
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-25
+REQUIRES: 20
+
+SUMMARY:
+This specification defines the **Agentic Commerce Protocol**: a **job** with escrowed budget, four states (Open → Funded → Submitted → Terminal), and an **evaluator** who alone may mark the job completed. The client funds the job; the provider submits work; the evaluator attests completion or rejection once submitted (or
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### State Machine A **job** has exactly one of six states: | State | Meaning
+
+MOTIVATION:
+Many use cases need only: client locks funds, provider submits work, one attester (evaluator) signals "done" and triggers payment—or client rejects or timeout triggers refund. The Agentic Commerce Protocol specifies that minimal surface so implementations stay small and composable. The evaluator can be the client (e.g. `evaluator = client`
+
+RATIONALE:
+- **Single attester after submission**: Once Submitted, only the evaluator can complete or reject; the client cannot pull funds back unilaterally, so the provider is protected after starting work. Evaluator = client covers the "no third party" case. - **Explicit submission**: The Submitted state gives the evaluator (and indexers/UIs)
 
 
 === ERC-7604 ===

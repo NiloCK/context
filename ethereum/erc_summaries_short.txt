@@ -1390,7 +1390,7 @@ TITLE: Fixed-Supply Agent NFT Collections
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-10-11
-REQUIRES: 7, 5, 7, 2, ,,  , 8, 0, 0, 4
+REQUIRES: 7, 5, 7, 2, ,,  , 8, 0, 0, 4, ,,  , 8, 1, 1, 9
 
 SUMMARY:
 An interface for creating fixed-supply collections of Agent NFTs that are registered in an [ERC-8004](./eip-8004.md) Agent Registry. While [ERC-8004](./eip-8004.md) provides an unlimited mint registry
@@ -2220,6 +2220,26 @@ Currently, reading data from Web3 generally relies on a translation done by a We
 
 RATIONALE:
 The purpose of the proposal is to add a decentralized presentation layer for Ethereum. With the layer, we are able to render any web
+
+
+=== ERC-8183 ===
+TITLE: Agentic Commerce
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-25
+REQUIRES: 20
+
+SUMMARY:
+This specification defines the **Agentic Commerce Protocol**: a **job** with escrowed budget, four states (Open → Funded → Submitted → Terminal), and an **evaluator**
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Many use cases need only: client locks funds, provider submits work, one attester (evaluator) signals "done" and triggers payment—or client rejects or timeout triggers
+
+RATIONALE:
+- **Single attester after submission**: Once Submitted, only the evaluator can complete or reject; the client cannot pull funds back unilaterally, so the provider
 
 
 === ERC-7604 ===
