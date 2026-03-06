@@ -642,7 +642,7 @@ SPECIFICATION:
 ### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | TBD <!-- TODO --> | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE` | TBD <!-- TODO --> | Magic byte for payer signature domain separation | | `AA_BASE_COST` | 15000 | Base intrinsic gas cost | |
 
 MOTIVATION:
-Provide account abstraction primitives that enable post-quantum authentication and migration, privacy systems, and programmable accounts — in a highly performant, highly optimizable way. Pure-function verifiers with known state inputs let nodes determine validity from state alone, enabling aggressive caching and parallel execution without execution tracing, staking or reputation systems.
+Provide a minimal, high-performance account abstraction base layer that nodes can validate from a bounded set of state. Pure-function verifiers with known state inputs enable aggressive caching and parallel validation. Once validated, revalidation is a single SLOAD without the need for no execution tracing or staking/reputation. Enable post-quantum authentication
 
 RATIONALE:
 ### Why Verifier Contracts? Enables permissionless extension of signature algorithms — deploy a new verifier contract, no protocol changes required. Pure-function verifiers allow heavy node-level optimization — sandbox results are fully determined by `(codehash, calldata)`, enabling permanent caching. The verifier returns the `ownerId` rather than accepting it as input,

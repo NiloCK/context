@@ -642,7 +642,7 @@ SPECIFICATION:
 ### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | TBD <!-- TODO --> | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE`
 
 MOTIVATION:
-Provide account abstraction primitives that enable post-quantum authentication and migration, privacy systems, and programmable accounts — in a highly performant, highly optimizable way. Pure-function
+Provide a minimal, high-performance account abstraction base layer that nodes can validate from a bounded set of state. Pure-function verifiers with known state inputs
 
 RATIONALE:
 ### Why Verifier Contracts? Enables permissionless extension of signature algorithms — deploy a new verifier contract, no protocol changes required. Pure-function verifiers allow heavy
