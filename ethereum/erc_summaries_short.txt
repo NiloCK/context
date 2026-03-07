@@ -6947,7 +6947,7 @@ The concept of "token commitments" as an abstraction serves as a powerful tool f
 === ERC-7786 ===
 TITLE: Cross-Chain Messaging Gateway
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-10-14
 REQUIRES: 7930
 
