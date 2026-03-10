@@ -5652,7 +5652,7 @@ Since the `utilityUri` could contain information that has to be restricted to so
 === ERC-8063 ===
 TITLE: Groups - Membership Tokens
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-10-28
 REQUIRES: 2, 0, ,,  , 1, 6, 5
 

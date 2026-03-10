@@ -4463,6 +4463,26 @@ RATIONALE:
 Currently, the state-querying JSON-RPC methods specified above have no option to unambiguously specify which block to query the state for. This can cause issues
 
 
+=== EIP-8178 ===
+TITLE: Binary SSZ Transport for the Engine API
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-01
+REQUIRES: 
+
+SUMMARY:
+This EIP specifies a binary SSZ transport for Engine API communication between consensus layer (CL) and execution layer (EL) clients. The binary transport replaces
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Fast communication between the consensus layer and execution layer is critical for block propagation and validation timing. The JSON-RPC transport introduces unnecessary overhead in
+
+RATIONALE:
+### Why REST instead of raw SSZ over TCP? REST is well understood, easy to debug, and infrastructure already exists for it (load balancers,
+
+
 === EIP-7863 ===
 TITLE: Block-level Warming
 TYPE: Standards Track Core
@@ -10034,6 +10054,26 @@ The importance of math checks in smart contract projects is very clear. It was a
 
 RATIONALE:
 EVM uses two's complement for negative numbers. The opcodes listed above triggers one or two flags depending if they are used for signed and
+
+
+=== EIP-8175 ===
+TITLE: Composable Transaction
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-26
+REQUIRES: 2, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8
+
+SUMMARY:
+This EIP introduces a new [EIP-2718](./eip-2718.md) transaction type called the "Composable transaction". The base transaction fields follow [EIP-1559](./eip-1559.md) with the access list removed. Instead
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Each Ethereum upgrade has introduced new transaction types for new capabilities: [EIP-1559](./eip-1559.md) for priority fees, [EIP-4844](./eip-4844.md) for blobs, and [EIP-7702](./eip-7702.md) for authorizations. Both [EIP-4844](./eip-4844.md)
+
+RATIONALE:
+### Simplification over EIP-8141 [EIP-8141](./eip-8141.md) introduces frames, new opcodes, per-frame gas accounting, and multiple execution modes to achieve sponsorship. The Composable transaction achieves the
 
 
 === EIP-3529 ===

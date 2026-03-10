@@ -4463,6 +4463,26 @@ RATIONALE:
 Currently, the state-querying JSON-RPC methods specified above have no option to unambiguously specify which block to query the state for. This can cause issues for applications which need to make multiple calls to the RPC. For instance, a wallet which just executed a transfer may want to display the balances of both the sender and recipient. If there is a re-org in between when the balance of the sender is queried via `eth_getBalance` and when the balance of the recipient is queried, the balances may not reconcile. As a slightly more complicated example, the UI for a decentralized
 
 
+=== EIP-8178 ===
+TITLE: Binary SSZ Transport for the Engine API
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-01
+REQUIRES: 
+
+SUMMARY:
+This EIP specifies a binary SSZ transport for Engine API communication between consensus layer (CL) and execution layer (EL) clients. The binary transport replaces JSON-RPC with resource-oriented REST endpoints and raw SSZ encoding for fast, efficient CL-EL communication. SSZ container definitions are provided for all Engine API structures and methods across all forks for backwards compatibility.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Transport The binary SSZ transport uses resource-oriented REST over HTTP. Endpoints are organized by resource type (payloads, forkchoice, blobs) with per-endpoint versioning, following the same conventions as the Beacon API. #### Base URL All endpoints are served under the `/engine` prefix on the existing Engine API port (default `8551`): ``` http://localhost:8551/engine ``` #### Content Types | Header | Value | Description | |
+
+MOTIVATION:
+Fast communication between the consensus layer and execution layer is critical for block propagation and validation timing. The JSON-RPC transport introduces unnecessary overhead in this critical path: - Binary data (hashes, addresses, transactions, blobs) is hex-encoded, doubling wire size. - JSON parsing and generation adds CPU overhead on both sides. - The CL uses SSZ natively, forcing a round-trip conversion (SSZ → JSON, then JSON → internal types) at the Engine API boundary. Binary SSZ eliminates all of this. The CL sends raw SSZ bytes over HTTP; the EL deserializes directly. No hex encoding, no JSON parsing, no
+
+RATIONALE:
+### Why REST instead of raw SSZ over TCP? REST is well understood, easy to debug, and infrastructure already exists for it (load balancers, proxies, monitoring). The Beacon API already uses REST with SSZ and it works well. Going lower level (raw TCP, custom framing) adds complexity without a clear benefit for the EL-CL link, which is typically localhost communication. ### Why same port instead of a separate port? Serving both JSON-RPC and SSZ REST on the same port simplifies deployment and configuration. There's no need for operators to manage an additional port, firewall rule, or JWT secret.
+
+
 === EIP-7863 ===
 TITLE: Block-level Warming
 TYPE: Standards Track Core
@@ -10034,6 +10054,26 @@ The importance of math checks in smart contract projects is very clear. It was a
 
 RATIONALE:
 EVM uses two's complement for negative numbers. The opcodes listed above triggers one or two flags depending if they are used for signed and unsigned numbers. The conditions described for each opcode is made with implementation friendliness in mind. The only exception is EXP as it is hard to give a concise test as most of the others relied on the inverse operation and there is no native `LOG`. Most `EXP` implementations will internally use `MUL` so the flag `carry` can be drawn from that instruction, not the `overflow`. Both flags are cleaned at the same time because
+
+
+=== EIP-8175 ===
+TITLE: Composable Transaction
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-26
+REQUIRES: 2, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8
+
+SUMMARY:
+This EIP introduces a new [EIP-2718](./eip-2718.md) transaction type called the "Composable transaction". The base transaction fields follow [EIP-1559](./eip-1559.md) with the access list removed. Instead of fixed-position signature fields, all signatures are encoded as typed capabilities in a trailing RLP list. Each capability carries a capability type and a signature type, providing domain separation and future-proofing for alternative signature schemes. A payer signature capability enables native transaction sponsorship. The signing hash for each capability includes only the capabilities that precede it, allowing both sender-first and payer-first signing flows without circular dependencies. This is a simpler alternative to [EIP-8141](./eip-8141.md) (Frame
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Parameters | Parameter | Value | | ---------------------- | ------ | | `COMPOSABLE_TX_TYPE` | `0x05` | | `CAP_SENDER_SIGNATURE` | `0x00` | | `CAP_PAYER_SIGNATURE` | `0x01` | | `SIG_BLINDED` | `0x00` | | `SIG_SECP256K1` | `0x01` | | `SIG_ED25519` | `0x02` | ### Composable transaction A new [EIP-2718](./eip-2718.md) transaction is introduced where the `TransactionType` is `COMPOSABLE_TX_TYPE` and the `TransactionPayload` is the RLP serialization of:
+
+MOTIVATION:
+Each Ethereum upgrade has introduced new transaction types for new capabilities: [EIP-1559](./eip-1559.md) for priority fees, [EIP-4844](./eip-4844.md) for blobs, and [EIP-7702](./eip-7702.md) for authorizations. Both [EIP-4844](./eip-4844.md) and [EIP-7702](./eip-7702.md) extend and reuse mostly the fields from [EIP-1559](./eip-1559.md), yet each required an entirely new transaction type. This leads to combinatorial growth: new features cannot be combined across types. This EIP proposes a single extensible transaction format where new capabilities are added as typed capabilities, allowing future enhancements without new transaction types. Transaction sponsorship — where a third party pays gas on behalf of the sender — has been a long-sought feature. [EIP-8141](./eip-8141.md)
+
+RATIONALE:
+### Simplification over EIP-8141 [EIP-8141](./eip-8141.md) introduces frames, new opcodes, per-frame gas accounting, and multiple execution modes to achieve sponsorship. The Composable transaction achieves the same result by adding a single payer signature capability to the transaction model, with no new opcodes or execution modes. The payer simply co-signs the transaction and their account is charged for gas, minimizing implementation burden and attack surface. ### Capability type as first element in signing hash Including the capability type as the first element of the RLP list prevents cross-role signature confusion. Without this, a sender and payer signing the same transaction
 
 
 === EIP-3529 ===
