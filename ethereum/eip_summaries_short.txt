@@ -633,19 +633,19 @@ TITLE: Account Abstraction by Account Configuration
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-14
-REQUIRES: 1, 1, 5, 3, ,,  , 2, 7, 1, 8, ,,  , 7, 7, 0, 2
+REQUIRES: 2, 7, 1, 8, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This proposal defines a new [EIP-2718](./eip-2718.md) transaction type and an onchain system contract that together provide account abstraction — batching, gas sponsorship, and authentication
+This proposal introduces a new [EIP-2718](./eip-2718.md) transaction type and an onchain Account Configuration system that together provide account abstraction — custom authentication, call batching,
 
 SPECIFICATION:
 ### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | TBD <!-- TODO --> | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE`
 
 MOTIVATION:
-Provide a minimal, high-performance account abstraction base layer that nodes can validate from a bounded set of state. Pure-function verifiers with known state inputs
+Account abstraction proposals that delegate validation to wallet code force nodes to simulate arbitrary EVM before accepting a transaction. This requires full state access,
 
 RATIONALE:
-### Why Verifier Contracts? Enables permissionless extension of signature algorithms — deploy a new verifier contract, no protocol changes required. Pure-function verifiers allow heavy
+### Why Verifier Contracts? Enables permissionless extension — deploy a new verifier contract, nodes update their allowlist, no protocol upgrade required. The verifier returns
 
 
 === EIP-7851 ===

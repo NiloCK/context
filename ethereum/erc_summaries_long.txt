@@ -4128,6 +4128,26 @@ RATIONALE:
 Storage proofs (often referred to as space-time proofs) have long been a subject of interest, with numerous implementations and related projects existing. 1. Compared to existing copy proofs based on zero-knowledge proofs, our storage proof is based on "Nash Consensus," with its core principles being: a. The public network (on-chain) cannot verify the optimality of a proof but relies on economic game theory. This significantly reduces the costs of construction and verification. b. Data without value typically lacks game value and is naturally eliminated from the system. There is no commitment to elusive perpetual storage. 2. It can
 
 
+=== ERC-8167 ===
+TITLE: Modular Dispatch Proxies
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-16
+REQUIRES: 
+
+SUMMARY:
+This proposal standardizes dispatch proxies, which dispatch calls to logic modules, called delegates, according to function selector. A modular proxy architecture facilitates upgrades, extensions, and hardening, while working around codesize limits. This minimal standard interface allows tooling to discover the ABI of these proxies and examine their upgrade history.
+
+SPECIFICATION:
+A modular dispatch proxy MUST use `delegatecall` to relay the entire calldata to the delegate corresponding to the first four bytes of the calldata. ```solidity interface IERC8167 { // RECOMMENDED // Emitted when assigning a delegate logic module to a selector // An address(0) delegate signals removal event SelectorDelegated(bytes4 indexed selector, address indexed delegate); // REQUIRED // Returns the delegate for the selector, using address(0) for function not found function implementation(bytes4 selector) external view returns (address); // REQUIRED // Surfaces the ABI // SHOULD return all function selectors with implementations function selectors() external view returns (bytes4[] memory); //
+
+MOTIVATION:
+Proxy contracts utilizing `delegatecall` are widely used for both code sharing and upgradeability. Most common proxies forward calldata to a single implementation contract. Sometimes the implementation address is hardcoded, a pattern used by cloning factories to reduce deployment costs, and sometimes the implementation address is mutable, a pattern used by upgradeable proxies. However, monolithic proxy architectures can bump into codesize limits. Additionally, replacing the implementation of an entire contract at once can be riskier than smaller, more incremental changes. ### Shared Logic Modules Many contracts share common code for things like tokens but cannot share their entire implementation
+
+RATIONALE:
+### `bytes4 selector` The most widely-supported ABI is Solidity's 4-byte ABI, which uses the first four bytes of calldata, called the selector, to dispatch functions. The dispatch proxy also uses those same four bytes to dispatch function calls to their delegate. ### `implementation(bytes4)` While implementations can be discovered with `eth_getStorageAt`, a common interface can support a variety of possible storage layouts and implementations. This function's naming is consistent with monolithic proxies, but with a selector parameter. ### `selectors()` This is a minimal function to surface ABI to tools. While selectors are ambiguous, they can be resolved if their
+
+
 === ERC-191 ===
 TITLE: Signed Data Standard
 TYPE: Standards Track ERC

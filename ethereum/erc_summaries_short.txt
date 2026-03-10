@@ -4128,6 +4128,26 @@ RATIONALE:
 Storage proofs (often referred to as space-time proofs) have long been a subject of interest, with numerous implementations and related projects existing. 1. Compared
 
 
+=== ERC-8167 ===
+TITLE: Modular Dispatch Proxies
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-16
+REQUIRES: 
+
+SUMMARY:
+This proposal standardizes dispatch proxies, which dispatch calls to logic modules, called delegates, according to function selector. A modular proxy architecture facilitates upgrades, extensions,
+
+SPECIFICATION:
+A modular dispatch proxy MUST use `delegatecall` to relay the entire calldata to the delegate corresponding to the first four bytes of the calldata.
+
+MOTIVATION:
+Proxy contracts utilizing `delegatecall` are widely used for both code sharing and upgradeability. Most common proxies forward calldata to a single implementation contract. Sometimes
+
+RATIONALE:
+### `bytes4 selector` The most widely-supported ABI is Solidity's 4-byte ABI, which uses the first four bytes of calldata, called the selector, to dispatch
+
+
 === ERC-191 ===
 TITLE: Signed Data Standard
 TYPE: Standards Track ERC

@@ -4128,6 +4128,26 @@ RATIONALE:
 Storage proofs (often referred to as space-time proofs) have long been a subject of interest, with numerous implementations and related projects existing. 1. Compared to existing copy proofs based on zero-knowledge proofs, our storage proof is based on "Nash Consensus," with its core principles being: a. The public network
 
 
+=== ERC-8167 ===
+TITLE: Modular Dispatch Proxies
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-16
+REQUIRES: 
+
+SUMMARY:
+This proposal standardizes dispatch proxies, which dispatch calls to logic modules, called delegates, according to function selector. A modular proxy architecture facilitates upgrades, extensions, and hardening, while working around codesize limits. This minimal standard interface allows tooling to discover the ABI of these proxies and examine their upgrade history.
+
+SPECIFICATION:
+A modular dispatch proxy MUST use `delegatecall` to relay the entire calldata to the delegate corresponding to the first four bytes of the calldata. ```solidity interface IERC8167 { // RECOMMENDED // Emitted when assigning a delegate logic module to a selector // An address(0) delegate signals removal event SelectorDelegated(bytes4
+
+MOTIVATION:
+Proxy contracts utilizing `delegatecall` are widely used for both code sharing and upgradeability. Most common proxies forward calldata to a single implementation contract. Sometimes the implementation address is hardcoded, a pattern used by cloning factories to reduce deployment costs, and sometimes the implementation address is mutable, a pattern used
+
+RATIONALE:
+### `bytes4 selector` The most widely-supported ABI is Solidity's 4-byte ABI, which uses the first four bytes of calldata, called the selector, to dispatch functions. The dispatch proxy also uses those same four bytes to dispatch function calls to their delegate. ### `implementation(bytes4)` While implementations can be discovered with
+
+
 === ERC-191 ===
 TITLE: Signed Data Standard
 TYPE: Standards Track ERC
