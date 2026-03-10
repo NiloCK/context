@@ -9061,23 +9061,23 @@ Using proxies that delegate their own logic to another contract is becoming an i
 
 
 === ERC-8117 ===
-TITLE: Compressed Display Format for Addresses
+TITLE: Anti-Poisoning Compact EVM Address Format
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-12-30
-REQUIRES: 55
+REQUIRES: 5, 5, ,,  , 1, 1, 9, 1
 
 SUMMARY:
-This ERC proposes a standard presentation layer transformation for Ethereum addresses containing long sequences of identical hexadecimal digits. It defines two representation formats: a
+This ERC proposes a standard presentation-layer transformation whose primary purpose is to **prevent address-poisoning attacks**. Addresses with long leading zeros — increasingly common due
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
 
 MOTIVATION:
-As the Ethereum ecosystem matures, addresses with long repeating sequences are becoming increasingly common due to several factors: **Vanity Addresses & CREATE2:** Factories and
+**Address Poisoning Attacks:** Address poisoning exploits the fact that wallets typically display addresses in truncated form (`0xd28b…6922`), so users learn to verify only the
 
 RATIONALE:
-### Industry Precedents & Alignment **Regex Alignment (ASCII Mode):** We selected the curly brace syntax `Byte{n}` (e.g., `0{8}`) because it aligns with the universal
+### Subscript vs. Superscript (UI Mode) This ERC selects **Subscript** (`0x0₈`) rather than superscript notation for the following reasons: **Industry Alignment:** As described in
 
 
 === ERC-8001 ===
