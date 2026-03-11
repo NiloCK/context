@@ -4587,13 +4587,13 @@ SUMMARY:
 Recoverable ECDSA signatures can flip `s` and `v` while remaining valid, so they can be compressed to 64 bytes by restricting `v`.
 
 SPECIFICATION:
-Smart contracts accepting bound signatures MUST supply `27` for `v`. ```solidity address signer = ecrecover(digest, 27, r, s); require(signer != address(0)); ``` ECDSA signatures MUST be bound before supplied to such contracts. ```ts const SECP256K1_N: bigint = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141n function bind(sig: Signature, v: 27 | 28 = 27): Signature { if (sig.v === v) { return sig } const s = SECP256K1_N - sig.s return new Signature(sig.r, s, v) } ```
+Smart contracts accepting bound signatures MUST exclusively use `27` for `v` and MUST NOT accept any other value. ```solidity address signer = ecrecover(digest, 27, r, s); require(signer != address(0)); ``` ECDSA signatures MUST be bound before supplied to such contracts. ```ts const SECP256K1_N: bigint = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141n function bind(sig: Signature, v: 27 | 28 = 27): Signature { if (sig.v === v) { return sig } const s = SECP256K1_N - sig.s return new Signature(sig.r, s, v) } ```
 
 MOTIVATION:
 ECDSA signatures are often encoded with three parameters: `v`, `r`, and `s`. In the Solidity ABI encoding, this is 96 bytes. By eliminating the degree of freedom, `v`, the encoded size of a recoverable signature can be reduced to 64 bytes. Additionally, such signatures are not malleable.
 
 RATIONALE:
-Another signature compression approach, [ERC-2098](./eip-2098.md), stores the y-parity bit in the most-significant bit of the low `s`. Bound signatures are preferable because they are valid inputs to the `ecrecover` precompile. They require less gas because they do not need to be unpacked by the smart contract. `27` was chosen over `28` to make the y-parity falsy.
+Another signature compression approach, [ERC-2098](./eip-2098.md), stores the y-parity bit in the most-significant bit of the low `s`. Bound signatures are preferable because they are valid inputs to the `ecrecover` precompile. They require less gas because they do not need to be unpacked by the smart contract. A contract allowing both `27` and `28` reintroduces malleability. `27` was chosen over `28` to make the y-parity falsy.
 
 
 === ERC-6786 ===

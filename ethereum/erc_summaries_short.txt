@@ -4587,7 +4587,7 @@ SUMMARY:
 Recoverable ECDSA signatures can flip `s` and `v` while remaining valid, so they can be compressed to 64 bytes by restricting `v`.
 
 SPECIFICATION:
-Smart contracts accepting bound signatures MUST supply `27` for `v`. ```solidity address signer = ecrecover(digest, 27, r, s); require(signer != address(0)); ``` ECDSA signatures
+Smart contracts accepting bound signatures MUST exclusively use `27` for `v` and MUST NOT accept any other value. ```solidity address signer = ecrecover(digest, 27,
 
 MOTIVATION:
 ECDSA signatures are often encoded with three parameters: `v`, `r`, and `s`. In the Solidity ABI encoding, this is 96 bytes. By eliminating the
