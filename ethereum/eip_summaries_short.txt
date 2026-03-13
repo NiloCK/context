@@ -1136,23 +1136,23 @@ This Meta EIP provides a global view of all changes included in the Glamsterdam 
 
 
 === EIP-7906 ===
-TITLE: Restricted Behavior Transaction Type
+TITLE: Transaction Assertions via State Diff Opcode
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-02-21
 REQUIRES: 
 
 SUMMARY:
-This proposal allows the transaction payload to define write protections for balances and storage slots that are enforced at the protocol level. These protected
+This proposal introduces a new opcode that allows contracts to inspect the transaction outcomes on-chain. This opcode will allow contract deveolopres to define assertions
 
 SPECIFICATION:
-### Constants | Name | Value | |------------|-------| | RESTRICTED_TX_COST | TBD | |TRACE_CALL_GAS_COST|TBD| |GET_TRACE_CALL_ADDRESS|TBD| |RESTRICTED_EXECUTION_TX_TYPE|TBD| ### New Transaction Type We introduce a new
+### Constants | Name | Value | |-----------------|-------| | TXTRACE_GAS_COST| TBD | | EVENTDATACOPY_GAS_COST | TBD | ### Transaction Trace Opcode We introduce a
 
 MOTIVATION:
 The total value of crypto assets that have been stolen to date exceeds the yearly GDP of a medium-sized nation. This level of loss
 
 RATIONALE:
-### New Transaction Type and Assertion Frame One of the main advantages of a new Transaction Type for the Restricted Behaviour feature is the
+### Selection Parameter Design The `TXTRACE` opcode follows the same `(param, index)` pattern used by `TXPARAM` in [EIP-8141](./eip-8141.md). This keeps the interface consistent and
 
 
 === EIP-858 ===
