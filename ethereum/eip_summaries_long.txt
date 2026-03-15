@@ -4355,7 +4355,7 @@ Roughly speaking, reducing the gas cost of Calldata leads to potentially larger 
 === EIP-7768 ===
 TITLE: No-Ether transactions with free-for-all tips
 TYPE: Meta 
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-09-14
 REQUIRES: 
 
@@ -8675,7 +8675,7 @@ Another option to solve the problem of inter-frame communication is repricing th
 === EIP-7792 ===
 TITLE: Verifiable logs
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2024-10-21
 REQUIRES: 6466
 
