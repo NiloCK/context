@@ -2775,6 +2775,26 @@ RATIONALE:
 ### Conversion of all gas-related mechanics into vectors This allows the same logic that is used for handling gas to handle all three types of gas. As a result, it's arguably a net simplification of protocol gas handling logic, despite the fact that the total number of gas types increases from 2 to 3 ### Target ratios The target ratios for execution gas and blobs are set to 2; the target ratio for calldata is set to 4. This greatly decreases the number of scenarios in which calldata actually hits the limit, which mitigates economic impact of the
 
 
+=== EIP-8189 ===
+TITLE: snap/2 - BAL-Based State Healing
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-03-06
+REQUIRES: 7928
+
+SUMMARY:
+This EIP upgrades the `snap` protocol from version 1 to version 2, removing `GetTrieNodes` (0x06) / `TrieNodes` (0x07) and replacing them with `GetBlockAccessLists` (0x06) / `BlockAccessLists` (0x07) to enable BAL-based state healing during snap sync.
+
+SPECIFICATION:
+### Protocol Version The protocol version is incremented from `snap/1` to `snap/2`. Peers negotiate the version during the RLPx capability handshake. ### Removed Messages | Message | ID | Reason | |---------|----|--------| | `GetTrieNodes` | 0x06 | Replaced by BAL-based healing | | `TrieNodes` | 0x07 | Replaced by BAL-based healing | ### New Messages The freed message IDs are reused for BAL exchange. #### GetBlockAccessLists (0x06) `[request-id: P, [blockhash₁: B_32, blockhash₂: B_32, ...]]` Request BALs for the given block hashes. The number of hashes per request is subject to implementation-defined limits. BALs are only available for blocks
+
+MOTIVATION:
+[EIP-7928](./eip-7928.md) introduces block-level access lists (BALs) that capture all state changes per block, committed to block headers via `block-access-list-hash`. With BALs available, the snap sync healing phase — which iteratively fetches individual Merkle trie nodes via `GetTrieNodes` to resolve state inconsistencies — can be replaced entirely. Instead of discovering and fetching trie nodes across many round trips, a syncing node downloads BALs for the blocks that advanced during sync and applies state diffs sequentially. Each BAL is verified against its header commitment. The set of blocks to catch up is known upfront, eliminating iterative discovery.
+
+RATIONALE:
+### Separate Protocol vs. eth/71 This follows the established snap design philosophy. `GetByteCodes` was duplicated from `eth` into `snap` for the same reason: > *This functionality was duplicated into `snap` from `eth/65` to permit `eth` long term to become a chain maintenance protocol only and move synchronization primitives out into satellite protocols only.* Synchronization primitives belong in satellite protocols. `snap` is optional and independently versioned; duplicating BAL exchange here avoids coupling sync functionality to `eth`. ### Removing GetTrieNodes BAL-based healing makes trie node fetching for state reconciliation unnecessary. Removing these messages avoids maintaining two healing mechanisms and frees
+
+
 === EIP-7266 ===
 TITLE: Remove BLAKE2 compression precompile
 TYPE: Standards Track Core

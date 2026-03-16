@@ -2775,6 +2775,26 @@ RATIONALE:
 ### Conversion of all gas-related mechanics into vectors This allows the same logic that is used for handling gas to handle all three types
 
 
+=== EIP-8189 ===
+TITLE: snap/2 - BAL-Based State Healing
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-03-06
+REQUIRES: 7928
+
+SUMMARY:
+This EIP upgrades the `snap` protocol from version 1 to version 2, removing `GetTrieNodes` (0x06) / `TrieNodes` (0x07) and replacing them with `GetBlockAccessLists` (0x06)
+
+SPECIFICATION:
+### Protocol Version The protocol version is incremented from `snap/1` to `snap/2`. Peers negotiate the version during the RLPx capability handshake. ### Removed Messages
+
+MOTIVATION:
+[EIP-7928](./eip-7928.md) introduces block-level access lists (BALs) that capture all state changes per block, committed to block headers via `block-access-list-hash`. With BALs available, the snap
+
+RATIONALE:
+### Separate Protocol vs. eth/71 This follows the established snap design philosophy. `GetByteCodes` was duplicated from `eth` into `snap` for the same reason: >
+
+
 === EIP-7266 ===
 TITLE: Remove BLAKE2 compression precompile
 TYPE: Standards Track Core
