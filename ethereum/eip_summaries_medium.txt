@@ -1369,6 +1369,26 @@ RATIONALE:
 ### Gas cost The execution of the `SETDELEGATE` instruction involves fewer moving pieces than what EIP-7702 gas costs account for: - there is no signature recovery - there is no dedicated calldata that must be accounted for that is not already paid for at the transaction level - there
 
 
+=== EIP-8182 ===
+TITLE: Private ETH and ERC-20 Transfers
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-03
+REQUIRES: 2, 0, ,,  , 7, 1, 2
+
+SUMMARY:
+This EIP introduces protocol-level private ETH and ERC-20 transfers with public deposits and withdrawals, implemented as a fixed-address system contract with a companion proof-verification precompile. A recursive proof architecture separates protocol invariants enforced by a hard-fork-managed outer circuit from permissionless inner authentication circuits, allowing users to choose compatible authentication
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### 1. Overview This EIP defines: 1. A **system contract** deployed at a fixed address,
+
+MOTIVATION:
+Ethereum transactions and balances are public by default. This deters real demand from users and organizations that require basic financial privacy: payroll, treasury operations, institutional flows, and ordinary payments. Ethereum has no canonical private transfer system. Private transfers are possible through app-layer pools, but multiple incompatible deployments coexist and
+
+RATIONALE:
+### System Contract, Fork-Managed Outer Circuit, and No Admin Pause A bug in the ZK scheme can compromise funds held in the pool but does not alter consensus rules, the validator set, or ETH supply semantics. Native integration (e.g., [EIP-7503](./eip-7503.md)) can expose the protocol itself to ZK-scheme failures, including
+
+
 === EIP-5450 ===
 TITLE: EOF - Stack Validation
 TYPE: Standards Track Core
@@ -2783,7 +2803,7 @@ CREATED: 2026-03-06
 REQUIRES: 7928
 
 SUMMARY:
-This EIP upgrades the `snap` protocol from version 1 to version 2, removing `GetTrieNodes` (0x06) / `TrieNodes` (0x07) and replacing them with `GetBlockAccessLists` (0x06) / `BlockAccessLists` (0x07) to enable BAL-based state healing during snap sync.
+This EIP upgrades the `snap` protocol from version 1 to version 2, removing `GetTrieNodes` (0x06) / `TrieNodes` (0x07) and adding `GetBlockAccessLists` (0x08) / `BlockAccessLists` (0x09) to enable BAL-based state healing during snap sync.
 
 SPECIFICATION:
 ### Protocol Version The protocol version is incremented from `snap/1` to `snap/2`. Peers negotiate the version during the RLPx capability handshake. ### Removed Messages | Message | ID | Reason | |---------|----|--------| | `GetTrieNodes` | 0x06 | Replaced by BAL-based healing | | `TrieNodes` | 0x07 | Replaced by
@@ -5831,7 +5851,7 @@ RATIONALE:
 === EIP-8135 ===
 TITLE: Hardfork Meta - BPO2
 TYPE: Meta 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-01-24
 REQUIRES: 7, 8, 9, 2, ,,  , 8, 1, 3, 4
 
@@ -8032,7 +8052,7 @@ Allowing for more targeted return opcodes allows for saving gas at all levels of
 === EIP-8134 ===
 TITLE: Hardfork Meta - BPO1
 TYPE: Meta 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-01-24
 REQUIRES: 7892
 
