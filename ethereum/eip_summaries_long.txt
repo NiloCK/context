@@ -4600,7 +4600,7 @@ Perpetually valid signed voluntary exits allow simpler staking operation designs
 === EIP-7898 ===
 TITLE: Uncouple execution payload from beacon block
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-03-01
 REQUIRES: 
 
@@ -8858,6 +8858,26 @@ Treat the first occurrence of `tx.to` in an access list as `calldata` for gas ac
 
 MOTIVATION:
 Currently, a transaction must read at least 25 distinct storage slots in `tx.to` before it's more expensive to forego an access list. ``` ACCESS_LIST_ADDRESS_COST + (ACCESS_LIST_STORAGE_KEY_COST + WARM_STORAGE_READ_COST) * x = COLD_SLOAD_COST * x x = 24 ``` EIP-2930 requires the address under which the storage keys reside be declared explicitly, since it must be added to the EIP-2929 `accessed_addresses` list. However, `tx.to` is a special case that is added by default, so paying `ACCESS_LIST_ADDRESS_COST` for `tx.to` is essentially paying twice for the same address. Avoiding overpayment here will reduce the differential to just 5 unique reads before
+
+
+=== EIP-7885 ===
+TITLE: Precompile for NTT operations
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-02-12
+REQUIRES: 
+
+SUMMARY:
+This proposal creates a precompiled contract that performs NTT and Inverse NTT transformations. This provides a way to efficiently perform fast polynomial multiplication for post-quantum and STARK cryptography.
+
+SPECIFICATION:
+### Constants <!-- TODO --> | Name | Value | Comment | |---------------------|-------|--------------------| | NTT_FW | TBD | precompile address | | NTT_INV | TBD | precompile address | | NTT_VECMULMOD | TBD | precompile address | | NTT_VECADDMOD | TBD | precompile address | We introduce *four* separate precompiles to perform the following operations: - NTT_FW - to perform the forward NTT transformation (Negative wrap convolution) with a gas cost of `600` gas, - NTT_INV - to perform the inverse NTT transformation (Negative wrap convolution) with a gas cost of `600` gas, - NTT_VECMULMOD - to perform
+
+MOTIVATION:
+With the recent advances in quantum computing, there are increased concerns for the quantum threat against Ethereum. Today ECDSA is the EOA signature algorithms, which is vulnerable to attacks by quantum computers. Efficient replacement algorithms use polynomial multiplication as the core operation. Once NTT and Inverse NTT are available, the remaining of the verification algorithm is trivial. Choosing to integrate NTT and InvNTT instead of a specific algorithm provides agility, as DILITHIUM or FALCON or any equivalent can be implemented with a modest cost from those operators. NTT is also of interest to speed-up STARK verifiers. This single
+
+RATIONALE:
+If $f$ and $g$ are two polynomials of $R$, then $f\times g= \text{NTT\_INV}(\text{NTT\_VECMULMOD}( \text{NTT\_FW}(a), \text{NTT\_FW}(b)))$ is equal to the product of $f$ and $g$ in $R$. The algorithm has a complexity of $n \log_2n$ rather than $n^2$ with the classical schoolbook multiplication algorithm. ### Gas Cost Analysis The gas cost model for EIP-7885 precompiles is designed to target approximately 50-55 mgas/s performance, consistent with existing precompiled contracts like ECRECOVER. Two implementations with different gas costs are available: #### NTT Precompiles (0x12, 0x13) - Scheme-Specific Cost Model **Gas Costs by Implementation**: | Scheme | Ring Degree | nocgo NTT_FW
 
 
 === EIP-7761 ===

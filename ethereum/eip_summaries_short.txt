@@ -4600,7 +4600,7 @@ Perpetually valid signed voluntary exits allow simpler staking operation designs
 === EIP-7898 ===
 TITLE: Uncouple execution payload from beacon block
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-03-01
 REQUIRES: 
 
@@ -8858,6 +8858,26 @@ Treat the first occurrence of `tx.to` in an access list as `calldata` for gas ac
 
 MOTIVATION:
 Currently, a transaction must read at least 25 distinct storage slots in `tx.to` before it's more expensive to forego an access list. ``` ACCESS_LIST_ADDRESS_COST
+
+
+=== EIP-7885 ===
+TITLE: Precompile for NTT operations
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-02-12
+REQUIRES: 
+
+SUMMARY:
+This proposal creates a precompiled contract that performs NTT and Inverse NTT transformations. This provides a way to efficiently perform fast polynomial multiplication for
+
+SPECIFICATION:
+### Constants <!-- TODO --> | Name | Value | Comment | |---------------------|-------|--------------------| | NTT_FW | TBD | precompile address | | NTT_INV |
+
+MOTIVATION:
+With the recent advances in quantum computing, there are increased concerns for the quantum threat against Ethereum. Today ECDSA is the EOA signature algorithms,
+
+RATIONALE:
+If $f$ and $g$ are two polynomials of $R$, then $f\times g= \text{NTT\_INV}(\text{NTT\_VECMULMOD}( \text{NTT\_FW}(a), \text{NTT\_FW}(b)))$ is equal to the product of $f$ and $g$
 
 
 === EIP-7761 ===
