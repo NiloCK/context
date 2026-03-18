@@ -2191,6 +2191,26 @@ RATIONALE:
 Gas should reflect the cost of use. The revert cost reflects the cost of access during execution, but not the cost of modification.
 
 
+=== EIP-8184 ===
+TITLE: LUCID encrypted mempool
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-04
+REQUIRES: 2, 7, 1, 8, ,,  , 7, 8, 0, 5
+
+SUMMARY:
+This EIP specifies LUCID, a mechanism for carrying encrypted transactions through Ethereum's public inclusion pipeline while keeping their contents hidden until after the scheduling
+
+SPECIFICATION:
+### Constants and parameters ```python TOB_GAS_FRACTION_DENOMINATOR = 8 TOB_FEE_FRACTION = 64 MAX_SIGNATURE_SIZE = 2**16 MAX_ST_COMMITS_PER_IL = 2 MAX_STS_PER_BUNDLE = 16 MAX_BYTES_PER_ST = 2**24 //
+
+MOTIVATION:
+Transaction ordering power has, in practice, made the public mempool unusable for a large share of economically meaningful transactions on Ethereum. When pending transactions
+
+RATIONALE:
+### Probabilistic front-running Attackers may attempt to probabilistically front-run transactions by preparing various options, that are only executed if they turn out to be
+
+
 === EIP-7199 ===
 TITLE: Linter Scope
 TYPE: Meta 

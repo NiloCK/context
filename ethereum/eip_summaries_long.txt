@@ -2191,6 +2191,26 @@ RATIONALE:
 Gas should reflect the cost of use. The revert cost reflects the cost of access during execution, but not the cost of modification.
 
 
+=== EIP-8184 ===
+TITLE: LUCID encrypted mempool
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-04
+REQUIRES: 2, 7, 1, 8, ,,  , 7, 8, 0, 5
+
+SUMMARY:
+This EIP specifies LUCID, a mechanism for carrying encrypted transactions through Ethereum's public inclusion pipeline while keeping their contents hidden until after the scheduling decision has been fixed. By requiring commitment before reveal and delaying decryption until that point, LUCID protects MEV-sensitive order flow, limits probabilistic front-running by minimizing pre-execution information leakage, and broadens the practical censorship resistance of inclusion lists. The design remains open to different off-protocol decryption schemes, including trustless self-decryption, rather than coupling Ethereum to a single enshrined cryptographic construction.
+
+SPECIFICATION:
+### Constants and parameters ```python TOB_GAS_FRACTION_DENOMINATOR = 8 TOB_FEE_FRACTION = 64 MAX_SIGNATURE_SIZE = 2**16 MAX_ST_COMMITS_PER_IL = 2 MAX_STS_PER_BUNDLE = 16 MAX_BYTES_PER_ST = 2**24 // 64 # Byte bound implied by EIP-7976 and EIP-7825 MAX_ST_COMMITS = MAX_ST_COMMITS_PER_IL * IL_COMMITTEE_SIZE # IL_COMMITTEE_SIZE defined in EIP-7805 MAX_ST_TICKETS = MAX_ST_COMMITS * MAX_STS_PER_BUNDLE tob_gas_limit = block.gas_limit // TOB_GAS_FRACTION_DENOMINATOR tob_gas_limit_per_il = tob_gas_limit // IL_COMMITTEE_SIZE ``` ### Overview: from submission to execution This subsection provides an overview of the LUCID mechanism. LUCID relies on sealed transactions (STs), consisting of a signed ST ticket used for charging the sender and binding to a key publisher and
+
+MOTIVATION:
+Transaction ordering power has, in practice, made the public mempool unusable for a large share of economically meaningful transactions on Ethereum. When pending transactions can be inspected before inclusion, sophisticated actors can front-run, sandwich, or simply copy profitable strategies, turning transparent block production into an industrialized market for toxic MEV. The natural response has been a migration toward private order flow. Users, wallets, searchers, and applications increasingly route transactions through private relays, builder-run mempools, order flow auctions, and other trusted intermediaries that can shield transaction contents until inclusion. These arrangements replace a public and permissionless inclusion path with
+
+RATIONALE:
+### Probabilistic front-running Attackers may attempt to probabilistically front-run transactions by preparing various options, that are only executed if they turn out to be profitable upon observing revealed keys of other transactions. LUCID tackles non-reveal of ST-commitments and probabilistic front-running from five different angles: 1. The public mempool need not reveal the plaintext transaction, its calldata, or its signer. While the signed ST ticket is visible, the revealed `plaintext_tx` may be signed by a different account than the ticket signer, which is not revealed until after commitment, when the decryption key is released. 2. After commitment, an attacker
+
+
 === EIP-7199 ===
 TITLE: Linter Scope
 TYPE: Meta 
