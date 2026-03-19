@@ -1374,16 +1374,16 @@ TITLE: Private ETH and ERC-20 Transfers
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-03-03
-REQUIRES: 2, 0, ,,  , 7, 1, 2
+REQUIRES: 20
 
 SUMMARY:
-This EIP introduces protocol-level private ETH and ERC-20 transfers with public deposits and withdrawals, implemented as a fixed-address system contract with a companion proof-verification precompile. A recursive proof architecture separates protocol invariants enforced by a hard-fork-managed outer circuit from permissionless inner authentication circuits, allowing users to choose compatible authentication
+This EIP introduces protocol-level private ETH and [ERC-20](./eip-20.md) transfers with public deposits and withdrawals, implemented as a system contract with a companion proof-verification precompile. A recursive proof architecture separates protocol invariants enforced by a hard-fork-managed outer circuit from permissionless inner authentication circuits, allowing users to choose compatible authentication methods
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### 1. Overview This EIP defines: 1. A **system contract** deployed at a fixed address,
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### 1. Overview This EIP defines: 1. A **system contract** deployed at a protocol-defined address,
 
 MOTIVATION:
-Ethereum transactions and balances are public by default. This deters real demand from users and organizations that require basic financial privacy: payroll, treasury operations, institutional flows, and ordinary payments. Ethereum has no canonical private transfer system. Private transfers are possible through app-layer pools, but multiple incompatible deployments coexist and
+Sending assets publicly on Ethereum is straightforward. A user chooses ETH or a token, specifies a recipient using an Ethereum address or ENS name, and clicks send in an Ethereum wallet. Recipients, wallets, and applications already know how to interpret that transfer because they rely on the same shared
 
 RATIONALE:
 ### System Contract, Fork-Managed Outer Circuit, and No Admin Pause A bug in the ZK scheme can compromise funds held in the pool but does not alter consensus rules, the validator set, or ETH supply semantics. Native integration (e.g., [EIP-7503](./eip-7503.md)) can expose the protocol itself to ZK-scheme failures, including

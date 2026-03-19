@@ -1374,16 +1374,16 @@ TITLE: Private ETH and ERC-20 Transfers
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-03-03
-REQUIRES: 2, 0, ,,  , 7, 1, 2
+REQUIRES: 20
 
 SUMMARY:
-This EIP introduces protocol-level private ETH and ERC-20 transfers with public deposits and withdrawals, implemented as a fixed-address system contract with a companion proof-verification
+This EIP introduces protocol-level private ETH and [ERC-20](./eip-20.md) transfers with public deposits and withdrawals, implemented as a system contract with a companion proof-verification precompile.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Ethereum transactions and balances are public by default. This deters real demand from users and organizations that require basic financial privacy: payroll, treasury operations,
+Sending assets publicly on Ethereum is straightforward. A user chooses ETH or a token, specifies a recipient using an Ethereum address or ENS name,
 
 RATIONALE:
 ### System Contract, Fork-Managed Outer Circuit, and No Admin Pause A bug in the ZK scheme can compromise funds held in the pool but
