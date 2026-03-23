@@ -11035,19 +11035,19 @@ TITLE: Basket Token
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2024-02-11
-REQUIRES: 2, 0, ,,  , 7, 2, 1
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 1, 7, 3
 
 SUMMARY:
-The Basket Token Standard (BTS) allows for the implementation of multi-asset tokenized funds. This standard provides basic functionality for anyone to deploy unique, non-fungible BTS tokens that can contain an unlimited number of underlying [ERC-20](./eip-20.md) tokens. The deployer receives a BTS token representative of their ownership of the fund,
+This standard defines a multi-asset basket token that extends [ERC-20](./eip-20.md). A basket holds a set of [ERC-20](./eip-20.md) constituent tokens at configurable target weights. The basket contract itself is the share token: holders of the basket's [ERC-20](./eip-20.md) supply have a proportional claim on its underlying reserves. A designated owner, identified
 
 SPECIFICATION:
-### BTS BTS is a smart contract enabling the creation of on-chain tokenized funds backed by assets, allowing users to manage assets and liquidity through functions like initialization, contribution, withdrawal, rebalancing, and token distribution. #### Purpose The purpose of the BTS is to allow anyone to build an on-chain
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions - **Basket:** A collection of [ERC-20](./eip-20.md) tokens held at specified target weights, managed
 
 MOTIVATION:
-The motivation is to provide infrastructure that will enable the on-chain creation and management of asset-backed tokenized investment funds as no such standardized infrastructure curently exists. Providing the necessary infrastructure will help facilitate the onboarding of traditional fund management onto blockchain. No existing standard is capable of achieving this
+[ERC-4626](./eip-4626.md) standardized single-asset vaults for yield-bearing tokens. [ERC-7575](./eip-7575.md) extended that model to multi-asset vault entry points while preserving ERC-4626 semantics. However, neither standard addresses manager-rebalanced, weighted basket share tokens, where a designated owner actively adjusts the constituent set and target allocations over time. There is no standard specifically for
 
 RATIONALE:
-<!-- TODO -->
+### Relationship to [ERC-4626](./eip-4626.md) and [ERC-7575](./eip-7575.md) [ERC-4626](./eip-4626.md) standardizes single-asset vaults with `deposit(assets, receiver)` and `withdraw(assets, receiver, owner)`. [ERC-7575](./eip-7575.md) extends that model to multi-asset vault entry points while preserving ERC-4626 share semantics. We considered extending either, but manager-rebalanced weighted baskets diverge from both: - Contributions involve multiple tokens at specified
 
 
 === ERC-7946 ===

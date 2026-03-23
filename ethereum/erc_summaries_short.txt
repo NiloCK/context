@@ -11035,19 +11035,19 @@ TITLE: Basket Token
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2024-02-11
-REQUIRES: 2, 0, ,,  , 7, 2, 1
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 1, 7, 3
 
 SUMMARY:
-The Basket Token Standard (BTS) allows for the implementation of multi-asset tokenized funds. This standard provides basic functionality for anyone to deploy unique, non-fungible
+This standard defines a multi-asset basket token that extends [ERC-20](./eip-20.md). A basket holds a set of [ERC-20](./eip-20.md) constituent tokens at configurable target weights. The
 
 SPECIFICATION:
-### BTS BTS is a smart contract enabling the creation of on-chain tokenized funds backed by assets, allowing users to manage assets and liquidity
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-The motivation is to provide infrastructure that will enable the on-chain creation and management of asset-backed tokenized investment funds as no such standardized infrastructure
+[ERC-4626](./eip-4626.md) standardized single-asset vaults for yield-bearing tokens. [ERC-7575](./eip-7575.md) extended that model to multi-asset vault entry points while preserving ERC-4626 semantics. However, neither standard addresses
 
 RATIONALE:
-<!-- TODO -->
+### Relationship to [ERC-4626](./eip-4626.md) and [ERC-7575](./eip-7575.md) [ERC-4626](./eip-4626.md) standardizes single-asset vaults with `deposit(assets, receiver)` and `withdraw(assets, receiver, owner)`. [ERC-7575](./eip-7575.md) extends that model to multi-asset vault
 
 
 === ERC-7946 ===

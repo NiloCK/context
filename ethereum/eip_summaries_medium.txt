@@ -2202,7 +2202,7 @@ SUMMARY:
 This EIP specifies LUCID, a mechanism for carrying encrypted transactions through Ethereum's public inclusion pipeline while keeping their contents hidden until after the scheduling decision has been fixed. By requiring commitment before reveal and delaying decryption until that point, LUCID protects MEV-sensitive order flow, limits probabilistic front-running by minimizing
 
 SPECIFICATION:
-### Constants and parameters ```python TOB_GAS_FRACTION_DENOMINATOR = 8 TOB_FEE_FRACTION = 64 MAX_SIGNATURE_SIZE = 2**16 MAX_ST_COMMITS_PER_IL = 2 MAX_STS_PER_BUNDLE = 16 MAX_BYTES_PER_ST = 2**24 // 64 # Byte bound implied by EIP-7976 and EIP-7825 MAX_ST_COMMITS = MAX_ST_COMMITS_PER_IL * IL_COMMITTEE_SIZE # IL_COMMITTEE_SIZE defined in EIP-7805 MAX_ST_TICKETS = MAX_ST_COMMITS * MAX_STS_PER_BUNDLE tob_gas_limit
+### Constants and parameters ```python TOB_GAS_FRACTION_DENOMINATOR = 8 TOB_FEE_FRACTION = 128 MAX_SIGNATURE_SIZE = 2**16 MAX_ST_COMMITS_PER_IL = 2 MAX_STS_PER_BUNDLE = 64 MAX_BYTES_PER_ST = 2**24 // 64 # Byte bound implied by EIP-7976 and EIP-7825 MAX_ST_COMMITS = MAX_ST_COMMITS_PER_IL * IL_COMMITTEE_SIZE # IL_COMMITTEE_SIZE defined in EIP-7805 MAX_ST_TICKETS = MAX_ST_COMMITS * MAX_STS_PER_BUNDLE tob_gas_limit
 
 MOTIVATION:
 Transaction ordering power has, in practice, made the public mempool unusable for a large share of economically meaningful transactions on Ethereum. When pending transactions can be inspected before inclusion, sophisticated actors can front-run, sandwich, or simply copy profitable strategies, turning transparent block production into an industrialized market for toxic
