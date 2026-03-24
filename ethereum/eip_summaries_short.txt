@@ -1377,7 +1377,7 @@ CREATED: 2026-03-03
 REQUIRES: 20
 
 SUMMARY:
-This EIP introduces protocol-level private ETH and [ERC-20](./eip-20.md) transfers with public deposits and withdrawals, implemented as a system contract with a companion proof-verification precompile.
+This EIP introduces protocol-level private ETH and compatible [ERC-20](./eip-20.md) transfers with public deposits and withdrawals, implemented as a system contract with a companion proof-verification
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
