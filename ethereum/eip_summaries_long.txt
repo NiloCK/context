@@ -1569,6 +1569,26 @@ RATIONALE:
 The design decision to restore the `WalletLibrary` contract code in a single state transition was made after lengthy discussions of [alternate proposals](https://gist.github.com/5chdn/a9bb8617cc8523a030126a3d1c60baf3) that explored different ways to improve the Ethereum protocol to allow contract revivals by adding different built-in contracts. It was eventually concluded that all of these proposals changing the EVM semantics around self-destructed contracts were introducing unwanted side-effects and [potential risks](https://medium.com/@weka/on-paritys-proposed-changes-to-selfdestruct-behaviour-c3f0e5bc0f49) to the existing smart-contract ecosystem on the Ethereum platform. The total supply of Ether is neither changed nor does this proposal require the transfer of any tokens or assets including Ether. It is assumed that
 
 
+=== EIP-8101 ===
+TITLE: Payload Chunking with Chunk Access Lists
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-12-01
+REQUIRES: 4, 8, 4, 4, ,,  , 4, 8, 9, 5, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 2, 8
+
+SUMMARY:
+This EIP introduces Payload Chunking, a protocol upgrade that restructures Ethereum block propagation into self-contained execution chunks with separated Chunk Access Lists (CALs). The proposer propagates beacon and execution payload headers, followed by CALs and chunks as independent network messages. CALs contain state diffs from chunk execution, enabling parallel chunk validation: chunk N can be validated once CALs 0..N are available. After all chunks validate successfully, the consensus layer finalizes the block. This architecture transforms block validation from a monolithic operation into a streaming pipeline while preserving block atomicity. Chunks exist only as a propagation and validation construct;
+
+SPECIFICATION:
+### Constants | Name | Value | Description | |------|-------|-------------| | `CHUNK_GAS_LIMIT` | `2**24` (16,777,216) | Maximum gas per chunk, from [EIP-7825](./eip-7825.md) | | `MAX_CHUNKS_PER_BLOCK` | `2**8` (256) | Maximum chunks per block | | `MAX_TRANSACTIONS_PER_CHUNK` | `2**16` (65,536) | Maximum transactions per chunk | | `CHUNK_INCLUSION_PROOF_DEPTH` | `floorlog2(get_generalized_index(BeaconBlockBody, 'chunk_headers_root')) + 1 + ceillog2(MAX_CHUNKS_PER_BLOCK)` (13) | SSZ Merkle proof depth for message inclusion | | `MAX_CAL_SIZE` | `2**24` (16,777,216) | Maximum size in bytes of RLP-encoded CAL | ### Type Aliases ```python ChunkIndex = uint8 # Chunk position within block (0 to MAX_CHUNKS_PER_BLOCK-1) Root = Bytes32 # 32-byte
+
+MOTIVATION:
+As Ethereum's gas limit increases, block sizes and execution complexity grow correspondingly. The current monolithic block structure requires validators to download and decompress the entire execution payload before beginning execution, creating a bottleneck in the consensus timeline. This sequential dependency—download, decompress, then execute—becomes increasingly problematic as blocks grow larger. This proposal addresses these constraints by: - **Parallel propagation**: Nodes propagate parts of the block separately, improving propagation speed through the network - **Streaming validation**: Execution begins as chunks arrive rather than after full payload receipt - **Parallel chunk execution**: CALs provide state diffs enabling independent validation of chunks
+
+RATIONALE:
+### Incremental CALs Chunk N applies CALs 0..N-1 to the parent state to reconstruct its pre-state. This incremental approach provides: 1. **Parallel Execution**: Multiple chunks can execute concurrently once their prerequisite CALs arrive. Alternative designs where each CAL contains cumulative state diffs would cause CAL sizes to grow linearly with chunk count, creating worst-case bandwidth issues. 2. **Early Rejection**: Invalid chunks cause immediate block rejection without processing subsequent chunks. 3. **Bounded Resources**: Each chunk validation is independently bounded by `CHUNK_GAS_LIMIT`. ### CL-Driven Architecture The consensus layer orchestrates chunk execution because: 1. **Consistency**: Existing CL-EL interaction follows CL-driven patterns
+
+
 === EIP-7623 ===
 TITLE: Increase calldata cost
 TYPE: Standards Track Core

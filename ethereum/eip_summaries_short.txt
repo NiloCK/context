@@ -1569,6 +1569,26 @@ RATIONALE:
 The design decision to restore the `WalletLibrary` contract code in a single state transition was made after lengthy discussions of [alternate proposals](https://gist.github.com/5chdn/a9bb8617cc8523a030126a3d1c60baf3) that explored
 
 
+=== EIP-8101 ===
+TITLE: Payload Chunking with Chunk Access Lists
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-12-01
+REQUIRES: 4, 8, 4, 4, ,,  , 4, 8, 9, 5, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 2, 8
+
+SUMMARY:
+This EIP introduces Payload Chunking, a protocol upgrade that restructures Ethereum block propagation into self-contained execution chunks with separated Chunk Access Lists (CALs). The
+
+SPECIFICATION:
+### Constants | Name | Value | Description | |------|-------|-------------| | `CHUNK_GAS_LIMIT` | `2**24` (16,777,216) | Maximum gas per chunk, from [EIP-7825](./eip-7825.md) | |
+
+MOTIVATION:
+As Ethereum's gas limit increases, block sizes and execution complexity grow correspondingly. The current monolithic block structure requires validators to download and decompress the
+
+RATIONALE:
+### Incremental CALs Chunk N applies CALs 0..N-1 to the parent state to reconstruct its pre-state. This incremental approach provides: 1. **Parallel Execution**: Multiple
+
+
 === EIP-7623 ===
 TITLE: Increase calldata cost
 TYPE: Standards Track Core
