@@ -2221,7 +2221,7 @@ TITLE: Increase Access List Cost
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-12-27
-REQUIRES: 2, 9, 3, 0, ,,  , 7, 6, 2, 3
+REQUIRES: 2, 9, 3, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 9, 7, 6
 
 SUMMARY:
 This EIP charges access lists for their data footprint, preventing the circumvention of the [EIP-7623](./eip-7623.md) floor pricing. This effectively reduces the worst-case block size
