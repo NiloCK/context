@@ -5424,6 +5424,26 @@ RATIONALE:
 Currently the gas specified as part of these opcodes is simply a maximum value. And due to the behavior of [EIP-150](./eip-150.md) it is possible for an external call to be given less gas than intended (less than the gas specified as part of the CALL) while the rest of
 
 
+=== EIP-8198 ===
+TITLE: Quick Slots
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-17
+REQUIRES: 7892
+
+SUMMARY:
+This EIP makes `SLOT_DURATION_MS` a runtime configuration on the consensus layer rather than a compile-time constant, then uses that infrastructure to reduce slot duration. Block gas limits and blob parameters scale proportionally to maintain constant throughput per unit time.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). All arithmetic in this specification uses integer division (truncating toward zero). Formulas are written with
+
+MOTIVATION:
+Slot time is the heartbeat of Ethereum's user experience. Every second shaved off means faster transaction landings, faster exchange deposits, and faster real-world payments. But the benefits extend well beyond UX. ### User experience Twelve seconds is slow. It is perceptible in payments, exchange deposits, and every on-chain interaction.
+
+RATIONALE:
+### Why infrastructure first The bottleneck is not picking a number. It is the hardcoded twelve-second assumption spread across every consensus and execution client. Delivering this change as a fork forces client teams to audit and remove these assumptions — once that work is done, future slot duration changes
+
+
 === EIP-210 ===
 TITLE: Blockhash refactoring
 TYPE: Standards Track Core
