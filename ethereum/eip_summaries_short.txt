@@ -7887,7 +7887,7 @@ CREATED: 2026-02-26
 REQUIRES: 2, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8
 
 SUMMARY:
-This EIP introduces a new [EIP-2718](./eip-2718.md) transaction type called the "Composable transaction". The base transaction fields follow [EIP-1559](./eip-1559.md) with the access list removed. Instead
+This EIP introduces a new [EIP-2718](./eip-2718.md) transaction type with [EIP-1559](./eip-1559.md) gas fields, typed `capabilities` (CALL and CREATE) that define the transaction's operations, a separate
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -7896,7 +7896,7 @@ MOTIVATION:
 Each Ethereum upgrade has introduced new transaction types for new capabilities: [EIP-1559](./eip-1559.md) for priority fees, [EIP-4844](./eip-4844.md) for blobs, and [EIP-7702](./eip-7702.md) for authorizations. Both [EIP-4844](./eip-4844.md)
 
 RATIONALE:
-### Simplification over EIP-8141 [EIP-8141](./eip-8141.md) introduces frames, new opcodes, per-frame gas accounting, and multiple execution modes to achieve sponsorship. The Composable transaction achieves the
+### Linear growth of transaction types Rather than defining a new transaction type per feature (blobs, authorizations, sponsorship), each potentially combined with each other,
 
 
 === EIP-8141 ===
