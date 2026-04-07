@@ -1648,6 +1648,26 @@ RATIONALE:
 By having a trusted contract (`Operator`) that may act on behalf of the EOA wallet, this ERC provides batch call capabilities and keeps the EOA as the caller of the target contracts.
 
 
+=== ERC-8199 ===
+TITLE: Sandboxed Smart Wallet
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-03-19
+REQUIRES: 1, 6, 5, ,,  , 1, 7, 3, ,,  , 8, 0, 2, 3
+
+SUMMARY:
+Automation through Agents in a wallet is a widely being adopted, and many approaches have been discussed and proposed for secure delegation of access/assets to agents. Including session keys, Trusted Execution Environment (TEE) based policy engine, shared account key, in which some degree of trust and trade-offs exist. This
+
+SPECIFICATION:
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. A Sandboxed Smart Wallet MUST implement the following interface: ```solidity /// @title Sandboxed Smart Wallet Standard
+
+MOTIVATION:
+Automation through an agentic infrastructure as a wallet is an inevitable flow of the industry. Although agents bring in a highly autonomous system with convenience, it is important that these adoptions should incorporate security mechanisms together. Session key like architecture, although having the advantage of shared owner wallet, has
+
+RATIONALE:
+1. The interface of `SandboxedSmartWallet` is kept with only the essentials for agentic operations. The additional capability, e.g., [ERC-4337](./eip-4337.md) based gas abstraction, etc is left untouched for the wallet developers to decide on their preference of the stack. 2. The initial bootstrapping process is to transfer the initial funds
+
+
 === ERC-8127 ===
 TITLE: Human Readable Token Identifiers
 TYPE: Standards Track ERC
@@ -6581,7 +6601,7 @@ The formula proposed was deemed very resilient and provides a coherent incentiva
 === ERC-7673 ===
 TITLE: Distinguishable base256emoji Addresses
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-04-01
 REQUIRES: 
 

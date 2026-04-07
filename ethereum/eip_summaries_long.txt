@@ -4880,6 +4880,26 @@ RATIONALE:
 By reusing the execution context's refund counter we can reuse its 50% DoS protection, which limits its block elasticity contribution to 2x. The gas costs are based on similar opcodes `SELFBALANCE` and `SSTORE`. Most accounts will store no gas, so the per-account storage overhead should be minimal or even zero in the normal case. The opcode numbers chosen are in the same `0x4X` range as `SELFBALANCE` and `GASLIMIT`.
 
 
+=== EIP-8164 ===
+TITLE: Native Key Delegation for EOAs
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-02-17
+REQUIRES: 2, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 3, 5, 4, 1, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This EIP extends the delegation designator system introduced by [EIP-7702](./eip-7702.md) to support **native key delegation** — permanently converting an EOA's authentication from ECDSA over secp256k1 to an alternative signature scheme. A new code prefix `0xef0101` designates an account whose authentication key is an Ed25519 public key embedded directly in the account's code field. Once set, the original ECDSA key is rendered permanently inert. A single new transaction type supports both ECDSA-signed key migration and Ed25519-authenticated transaction origination. Accounts may be created without any party ever possessing the ECDSA private key, using a crafted-signature technique analogous to Nick's method
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants | Name | Value | Description | |------|-------|-------------| | `NATIVE_KEY_TX_TYPE` | `Bytes1(0x06)` | Transaction type for native key operations | | `NATIVE_KEY_MAGIC` | `0x07` | Domain separator for native key authorization signing | | `ED25519_DESIGNATION` | `0xef0101` | 3-byte code prefix for Ed25519 native key accounts | | `PER_NATIVE_AUTH_BASE_COST` | `12500` | Gas charged per native key authorization tuple (matches [EIP-7702](./eip-7702.md) `PER_AUTH_BASE_COST`) | |
+
+MOTIVATION:
+EIP-7702 brought code delegation to EOAs but retained ECDSA over secp256k1 as the sole native authentication mechanism. This constrains the ecosystem to a single signature scheme with known limitations: - **Quantum vulnerability.** secp256k1 ECDSA is vulnerable to quantum attacks. Ed25519 shares this property, but the framework established here generalizes to post-quantum schemes via future `0xef01XX` designators. - **Hardware ecosystem mismatch.** Secure enclaves and hardware security modules increasingly ship with native Ed25519 (or Ed448, secp256r1) support. Forcing ECDSA introduces bridging complexity and enlarges the trusted computing base. - **Smart contract wallet overhead.** Smart contract wallets and EIP-7702 code delegation
+
+RATIONALE:
+### Permanent Delegation Native key delegation is permanent. Once an account's code is set to `0xef0101 || pubkey`, the ECDSA key is dead — the protocol will never accept it again. This is a deliberate and safe design choice for two reasons. First, permanence is safe because the new key is the root key. The holder of the installed Ed25519 private key can always rotate to a new key via an Ed25519-signed authorization tuple. There is no loss of authority: the account owner retains full, exclusive control through the current native key. Reverting to ECDSA would only re-introduce
+
+
 === EIP-7958 ===
 TITLE: EVM64 - Little endian opcodes
 TYPE: Standards Track Core
