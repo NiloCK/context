@@ -1656,7 +1656,7 @@ CREATED: 2026-03-19
 REQUIRES: 1, 6, 5, ,,  , 1, 7, 3, ,,  , 8, 0, 2, 3
 
 SUMMARY:
-Automation through Agents in a wallet is a widely being adopted, and many approaches have been discussed and proposed for secure delegation of access/assets
+Automation through Agents in a wallet is widely being adopted, and many approaches have been discussed and proposed for secure delegation of access/assets to
 
 SPECIFICATION:
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be

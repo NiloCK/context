@@ -1656,7 +1656,7 @@ CREATED: 2026-03-19
 REQUIRES: 1, 6, 5, ,,  , 1, 7, 3, ,,  , 8, 0, 2, 3
 
 SUMMARY:
-Automation through Agents in a wallet is a widely being adopted, and many approaches have been discussed and proposed for secure delegation of access/assets to agents. Including session keys, Trusted Execution Environment (TEE) based policy engine, shared account key, in which some degree of trust and trade-offs exist. This
+Automation through Agents in a wallet is widely being adopted, and many approaches have been discussed and proposed for secure delegation of access/assets to agents. Including session keys, Trusted Execution Environment (TEE) based policy engine, shared account key, in which some degree of trust and trade-offs exist. This standard
 
 SPECIFICATION:
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. A Sandboxed Smart Wallet MUST implement the following interface: ```solidity /// @title Sandboxed Smart Wallet Standard

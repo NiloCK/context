@@ -6641,10 +6641,10 @@ TITLE: Reduce intrinsic transaction gas
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2020-07-11
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 7, 7, 0, 8
 
 SUMMARY:
-Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `4,500` and define a consistent gas accounting model based on actual state operations. This more granular approach makes a simple ETH transfer `6,000` due to additional costs related to the `to` account. If a non-create transaction has `value > 0` and
+Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `4,500` and define a consistent gas accounting model based on actual state operations. This more granular approach makes a simple ETH transfer `7,756` due to additional costs related to the `to` account and the [EIP-7708](./eip-7708.md) transfer log. If a non-create transaction
 
 SPECIFICATION:
 After `FORK_BLOCK`, set the following parameters and rules: ### Parameters | Name | Value | Description | | -------------------------- | -----: | ----------------------------------------------------------------------- | | `TX_BASE_COST` | 4,500 | Base cost of any transaction | | `GAS_NEW_ACCOUNT` | 25,000 | Surcharge when a value-transferring transaction creates a new account
