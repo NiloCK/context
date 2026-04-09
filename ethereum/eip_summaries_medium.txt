@@ -7907,7 +7907,7 @@ CREATED: 2026-02-26
 REQUIRES: 2, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8
 
 SUMMARY:
-This EIP introduces a new [EIP-2718](./eip-2718.md) transaction type with [EIP-1559](./eip-1559.md) gas fields, typed `capabilities` (CALL and CREATE) that define the transaction's operations, a separate `signatures` list for authentication, a `fee_auth` field that executes account code to sponsor gas, and three new opcodes — `RETURNETH`, `SIG`, and `SIGHASH` — for
+This EIP introduces a new [EIP-2718](./eip-2718.md) transaction type with [EIP-1559](./eip-1559.md) gas fields, typed `capabilities` (CALL and CREATE) that define the transaction's operations, a separate `signatures` list for authentication, a `fee_auth` field that executes account code to sponsor gas, and four new opcodes — `RETURNETH`, `SIG`, `SIGHASH`, and `TX_GAS_LIMIT` —
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Parameters | Parameter | Value | | --- | --- | | `COMPOSABLE_TX_TYPE` |
