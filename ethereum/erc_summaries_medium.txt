@@ -4769,7 +4769,7 @@ TITLE: Onchain Metadata for Token Registries
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-09-30
-REQUIRES: 8042
+REQUIRES: 165
 
 SUMMARY:
 This ERC defines an onchain metadata standard for multi-token and NFT registries including [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md). The standard provides a key-value store allowing for arbitrary bytes to be stored onchain.
@@ -4781,7 +4781,7 @@ MOTIVATION:
 This ERC addresses the need for fully onchain metadata while maintaining compatibility with existing [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md) standards. It has been a long-felt need for developers to store metadata onchain for NFTs and other multitoken contracts; however, there has been no uniform standard way to do this. Some
 
 RATIONALE:
-This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of metadata. The minimal interface with a single `getMetadata` function provides all necessary functionality while remaining backwards compatible with existing [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md) standards. The optional `setMetadata` function
+This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of metadata. The minimal interface with a single `metadata` function provides all necessary functionality while remaining backwards compatible with existing [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md) standards. The optional `setMetadata` function
 
 
 === ERC-7254 ===
@@ -9993,7 +9993,7 @@ TITLE: Contract-Level Onchain Metadata
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-10-10
-REQUIRES: 
+REQUIRES: 165
 
 SUMMARY:
 This ERC defines a standard for storing contract-level metadata onchain. It extends [ERC-7572](./eip-7572.md)'s contract-level metadata concept by providing onchain storage. Contracts MAY optionally use [ERC-8042](./eip-8042.md)'s Diamond Storage pattern for predictable storage locations, enabling cross-chain compatibility and supporting upgradable contracts.
@@ -10005,7 +10005,7 @@ MOTIVATION:
 Contract metadata today typically relies on offchain storage such as URLs or IPFS, creating trust and availability risks—servers go down, domains expire, and malicious actors can modify data without onchain record. Storing metadata onchain makes contract identity censorship-resistant and enables wallets and block explorers to display verifiable information without
 
 RATIONALE:
-This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of contract metadata. The minimal interface with a single `getContractMetadata` function provides all necessary functionality. The optional `setContractMetadata` function enables flexible access control for metadata updates. The required `ContractMetadataUpdated`
+This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of contract metadata. The minimal interface with a single `contractMetadata` function provides all necessary functionality. The optional `setContractMetadata` function enables flexible access control for metadata updates. The required `ContractMetadataUpdated`
 
 
 === ERC-7962 ===
