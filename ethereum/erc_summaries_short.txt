@@ -1778,7 +1778,7 @@ CREATED: 2022-07-12
 REQUIRES: 1, 3, 7, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
 
 SUMMARY:
-This EIP standardizes an interface for smart contracts to hold of [EIP-721](./eip-721.md) and [EIP-1155](./eip-1155.md) tokens on behalf of ENS domains.
+This EIP standardizes an interface for smart contracts to hold [EIP-721](./eip-721.md) and [EIP-1155](./eip-1155.md) tokens on behalf of ENS domains.
 
 SPECIFICATION:
 1. Compliant contracts MUST implement `ERC721TokenReceiver`, as defined in [EIP-721](./eip-721.md). 2. Compliant contracts implement the following interface: ```solidity interface IERC_ENS_TRUST is ERC721Receiver, ERC1155Receiver {
@@ -2437,16 +2437,16 @@ CREATED: 2024-02-08
 REQUIRES: 165
 
 SUMMARY:
-Extends tokens using `uint256 tokenId` to support `tokenName` in type `string` and be able to convert backward to `tokenId`.
+Extends tokens using `uint256 tokenId` to support `tokenName` of type `string` and to convert back to `tokenId`.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-For Marketplaces, Explorers, Wallets, DeFi and dApps to better display and operate NFTs that comes with a name.
+For Marketplaces, Explorers, Wallets, DeFi and dApps to better display and operate NFTs that come with a name.
 
 RATIONALE:
-1. We allow default way to map `tokenId` and `tokenName` for convenience, but we also allow contract to implement their own way to map
+1. We allow a default way to map `tokenId` and `tokenName` for convenience, but we also allow contracts to implement their own ways of
 
 
 === ERC-5744 ===
@@ -3542,7 +3542,7 @@ MOTIVATION:
 [ERC-721](./eip-721.md) requires a `Transfer` event to be emitted whenever a transfer or mint (i.e. transfer from `0x0`) or burn (i.e. transfer to `0x0`) occurs,
 
 RATIONALE:
-Using the existing `Transfer` event instead of creating a new event (e.g. `Creation`) allows this EIP to be backward compatible with existing indexers.E
+Using the existing `Transfer` event instead of creating a new event (e.g. `Creation`) allows this EIP to be backward compatible with existing indexers.
 
 
 === ERC-6808 ===
@@ -5043,10 +5043,10 @@ SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
 
 MOTIVATION:
-Liens are widely used for finance use cases, such as car and property liens. An example use case for an NFT lien is for
+Liens are widely used in financial use cases, such as car and property liens. An example use case for an NFT lien is for
 
 RATIONALE:
-1. We only support `ERC-721` NFTs for simplicity and gas efficiency. We have not considered other ERCs, which can be left for future extensions.
+1. We only support [ERC-721](./eip-721.md) NFTs for simplicity and gas efficiency. We have not considered other ERCs, which can be left for future extensions.
 
 
 === ERC-2848 ===
@@ -6257,7 +6257,7 @@ MOTIVATION:
 It is oftentimes necessary to separate the code that is to be executed from the actual execution of the code. A typical use case
 
 RATIONALE:
-* Originally, this interface was part of part of `ERC-1202`. However, the proposal itself can potentially have many use cases outside of voting. It
+* Originally, this interface was part of [ERC-1202](./eip-1202.md). However, the proposal itself can potentially have many use cases outside of voting. It is possible
 
 
 === ERC-7555 ===
@@ -6385,10 +6385,10 @@ CREATED: 2022-07-15
 REQUIRES: 5750
 
 SUMMARY:
-An interface for better identification and detection of ERC by numbers. It designates a field in which it's called `majorERCIdentifier` which is normally known
+An interface for better identification and detection of ERCs by number. It designates a field called `majorERCIdentifier` which is normally known or referred to
 
 SPECIFICATION:
-In the following description, we use ERC and ERC inter-exchangeably. This was because while most of the time the description applies to an ERC
+In the following description, we use ERC and ERC interchangeably. This was because while most of the time the description applies to an ERC
 
 MOTIVATION:
 This ERC is created as a competing standard for [ERC-165](./eip-165.md). Here are the major differences between this ERC and [ERC-165](./eip-165.md). 1. [ERC-165](./eip-165.md) uses the
@@ -7190,7 +7190,7 @@ CREATED: 2022-08-12
 REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 5, 7, 5, 0
 
 SUMMARY:
-This EIP establish a general protocol for permitting approving function calls in the same transaction rely on [ERC-5750](./eip-5750.md). Unlike a few prior art ([ERC-2612](./eip-2612.md)
+This EIP establishes a general protocol for permitting and approving function calls in the same transaction relying on [ERC-5750](./eip-5750.md). Unlike a few prior art
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -8676,7 +8676,7 @@ CREATED: 2022-08-09
 REQUIRES: 165
 
 SUMMARY:
-An interface for security notice using asymmetric encryption. The interface exposes a asymmetric encryption key and a destination of delivery.
+An interface for security notice using asymmetric encryption. The interface exposes an asymmetric encryption key and a destination of delivery.
 
 SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
