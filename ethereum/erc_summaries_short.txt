@@ -8656,16 +8656,16 @@ CREATED: 2018-07-08
 REQUIRES: 5269
 
 SUMMARY:
-This EIP is an API for implementing voting with smart contract. This standard provides functionalities to voting as well as to view the vote
+This EIP defines an API for implementing voting with smart contracts. This standard provides functionality for voting, viewing vote results, and setting voting status.
 
 SPECIFICATION:
 1. Compliant contracts MUST implement the `IERC1202Core` below ```solidity interface IERC1202Core { event VoteCast( address indexed voter, uint256 indexed proposalId, uint8 support, uint256 weight,
 
 MOTIVATION:
-Voting is one of the earliest example of EVM programming, and also a key to DAO/organizational governance process. We foresee many DAOs will ultimately
+Voting is one of the earliest examples of EVM programming and is also a key part of DAO and organizational governance processes. We expect
 
 RATIONALE:
-We made the following design decisions and here are the rationales. ### Granularity and Anonymity We created a `view` function `ballotOf` primarily making it
+We made the following design decisions, and here are the rationales. ### Granularity and Anonymity We created a `view` function, `ballotOf`, primarily to make
 
 
 === ERC-5437 ===
