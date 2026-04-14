@@ -4384,6 +4384,26 @@ RATIONALE:
 This implements all of the logic in transitioning to a Verkle tree, and at the same time reforms gas costs, but does so in a minimally disruptive way that does not require simultaneously changing the whole tree structure. Instead, we add a new Verkle tree that starts out empty,
 
 
+=== EIP-8133 ===
+TITLE: Upgrade Nomenclature
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2026-01-23
+REQUIRES: 1, 5, 0, ,,  , 6, 0, 6, ,,  , 6, 0, 7, ,,  , 6, 0, 8, ,,  , 6, 0, 9, ,,  , 7, 7, 9, ,,  , 1, 0, 1, 3, ,,  , 1, 2, 8, 3, ,,  , 1, 6, 7, 9, ,,  , 1, 7, 1, 6, ,,  , 2, 3, 8, 7, ,,  , 4, 3, 4, 5, ,,  , 5, 1, 3, 3, ,,  , 7, 5, 6, 9, ,,  , 7, 6, 0, 0, ,,  , 7, 6, 0, 9, ,,  , 7, 8, 9, 2
+
+SUMMARY:
+This EIP documents the naming conventions used for Ethereum network upgrades across the Execution Layer, Consensus Layer, post-Merge combined upgrades, and Blob-Parameter-Only upgrades. It provides a canonical reference for how upgrade names have evolved to improve clarity, consistency, and shared understanding across the ecosystem. In brief: early upgrades used
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Ethereum upgrade naming conventions have evolved alongside protocol architecture, governance maturity, and coordination practices. Early
+
+MOTIVATION:
+Ethereum has undergone multiple major network upgrades, including the transition from Proof of Work to Proof of Stake. Each upgrade has been assigned a distinct and meaningful name, and after the initial upgrades, consistent naming patterns emerged and continue to be followed. As upgrades now occur more frequently and
+
+RATIONALE:
+### Why These Names? **Early upgrades** used thematic or milestone-inspired names reflecting the state of the network at launch. "Frontier" conveyed an experimental frontier environment for developers; "Homestead" signaled a transition to a more stable and production-ready network; "Tangerine Whistle" emphasized urgency (an emergency whistle), deployed to mitigate active
+
+
 === EIP-7069 ===
 TITLE: Revamped CALL instructions
 TYPE: Standards Track Core
@@ -6112,7 +6132,7 @@ TITLE: Account Abstraction by Account Configuration
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-14
-REQUIRES: 2, 7, 1, 8, ,,  , 7, 7, 0, 2
+REQUIRES: 2718
 
 SUMMARY:
 This proposal introduces a new [EIP-2718](./eip-2718.md) transaction type and an onchain Account Configuration system that together provide account abstraction — custom authentication, call batching, and gas sponsorship. Accounts register owners with onchain verifier contracts. Transactions declare which verifier to use, enabling nodes to filter transactions without executing wallet code.

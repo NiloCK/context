@@ -116,23 +116,23 @@ The existing convention is to use the 'Ethereum' coin type, leading to paths sta
 
 
 === ERC-8126 ===
-TITLE: AI Agent Registration and Verification
+TITLE: AI Agent Verification
 TYPE: Standards Track ERC
-STATUS: Draft
-CREATED: 2025-01-15
-REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 3, 0, 0, 9
+STATUS: Review
+CREATED: 2026-01-15
+REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 3, 0, 0, 9, ,,  , 8, 0, 0, 4
 
 SUMMARY:
-This ERC defines a standard interface for registering and verifying AI agents on Ethereum. It enables AI agents to self-register with verifiable credentials and
+This ERC defines a standard interface for verifying AI agents on Ethereum that have been registered via [ERC-8004](./eip-8004.md). It enables AI agents to undergo
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-As AI agents become increasingly prevalent in blockchain ecosystems, users need standardised ways to verify their authenticity and trustworthiness. Current solutions are fragmented, with
+As AI agents become increasingly prevalent in blockchain ecosystems, users need standardized ways to verify their authenticity and trustworthiness. Current solutions are fragmented, with
 
 RATIONALE:
-### Required Standards Justification **EIP-155 (Replay Protection)**: Agent registrations involve wallet signatures. Without chain ID inclusion ([EIP-155](./eip-155.md)), a registration signature on mainnet could be
+### Required Standards Justification **[EIP-155](./eip-155.md) (Replay Protection)**: Verification requests involve signed messages from agent owners to authorize providers or payments. Without chain ID inclusion
 
 
 === ERC-7674 ===
@@ -3753,7 +3753,7 @@ REQUIRES:
 === ERC-8167 ===
 TITLE: Modular Dispatch Proxies
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-02-16
 REQUIRES: 
 
@@ -5966,7 +5966,7 @@ RATIONALE:
 === ERC-8161 ===
 TITLE: Transferable Tokenized Vault Requests
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-02-12
 REQUIRES: 1, 6, 5, ,,  , 7, 5, 4, 0
 
@@ -6360,7 +6360,7 @@ This standard was designed to maximize compatibility with ERC-4626 while minimiz
 === ERC-7945 ===
 TITLE: Confidential Transactions Supported Token
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-05-09
 REQUIRES: 20
 
@@ -6374,7 +6374,7 @@ MOTIVATION:
 Confidential transactions have been implemented in many blockchains, either natively through blockchain protocols like Monero and Zcash, or through smart contracts like Zether[^1] without
 
 RATIONALE:
-### Optional Accessor of "Confidential Total Supply" ```Solidity function confidentialTotalSupply() public view returns (bytes memory) ``` Confidentiality of transfer amount makes it hard to
+### Optional Accessor of "Confidential Total Supply" ```solidity function confidentialTotalSupply() external view returns (bytes memory) ``` Confidentiality of transfer amount makes it hard to
 
 
 === ERC-5269 ===
