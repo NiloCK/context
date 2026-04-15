@@ -5579,13 +5579,13 @@ TITLE: Sparse Blobpool
 TYPE: Standards Track Networking
 STATUS: Draft
 CREATED: 2025-10-29
-REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 7, 0
+REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 7, 0, ,,  , 8, 1, 5, 9
 
 SUMMARY:
 This proposal introduces the sparse blobpool, a construction that brings cell-level, custody-aligned sampling in the Execution Layer (EL). For every new type 3 (blob-carrying) transaction, an EL node fetches full blob payloads only with probability p = 0.15, and otherwise it merely samples the blobs, using the same custody
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Execution clients :: devp2p changes We introduce a new devp2p protocol version, `eth/71` extending
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Execution clients :: devp2p changes We introduce a new devp2p protocol version, `eth/72` extending
 
 MOTIVATION:
 As Blob Parameter Only (BPO) forks progressively increase throughput, the full-replication nature of today's EL blobpool will begin dominating bandwidth utilization, causing us to hit [EIP-7870](./eip-7870.md) limits. Furthermore, this traffic will compete, and potentially starve, block and attestation propagation, risking instability and liveness issues. This behavior has already been
@@ -7586,6 +7586,26 @@ MOTIVATION:
 
 RATIONALE:
 ### One Monolithic EIP This EIP could be split up into multiple EIPs, one for each of the subtypes and one for the meta-type. Alternatively, each of the subtypes could be a unique TransactionType. The reason we chose to go with a single EIP with subtypes is because these
+
+
+=== EIP-8205 ===
+TITLE: Withdrawal credentials preregistration
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-26
+REQUIRES: 4, 7, 8, 8, ,,  , 6, 1, 1, 0, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP introduces a preregistration mechanism that allows a validator key holder to commit to specific withdrawal credentials before any deposit is made, addressing a known deposit front-running vulnerability in delegated staking. Preregistrations are submitted through a new [EIP-7685](./eip-7685.md) request type via a system contract on the execution layer,
+
+SPECIFICATION:
+### Configuration #### Execution layer | Name | Value | Comment | | ----------------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- | | `VALIDATOR_PREREGISTRATION_REQUEST_PREDEPLOY_ADDRESS` | `TBD` | Where to call and store relevant details about preregistration mechanism | | `VALIDATOR_PREREGISTRATION_REQUEST_TYPE` | `TBD` | The [EIP-7685](./eip-7685.md) type prefix for preregistration request | |
+
+MOTIVATION:
+In delegated staking, the entity funding a validator and the entity generating the BLS keypair are distinct parties. This separation is common across liquid staking protocols, staking-as-a-service providers, and any arrangement where one party provides capital and another operates the validator. The BLS key is the validator's identity: the
+
+RATIONALE:
+### Enforcement at deposit ingestion Invalid deposits are already silently ignored by the consensus layer if the signature is invalid. This EIP adds one optional validation condition: if a preregistration exists for a pubkey, only deposits with matching withdrawal credentials and a valid BLS signature are accepted. Deposits with
 
 
 === EIP-7039 ===

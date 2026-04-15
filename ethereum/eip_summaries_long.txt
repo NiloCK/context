@@ -5579,13 +5579,13 @@ TITLE: Sparse Blobpool
 TYPE: Standards Track Networking
 STATUS: Draft
 CREATED: 2025-10-29
-REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 7, 0
+REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 7, 0, ,,  , 8, 1, 5, 9
 
 SUMMARY:
 This proposal introduces the sparse blobpool, a construction that brings cell-level, custody-aligned sampling in the Execution Layer (EL). For every new type 3 (blob-carrying) transaction, an EL node fetches full blob payloads only with probability p = 0.15, and otherwise it merely samples the blobs, using the same custody assignment as its Consensus Layer (CL) counterpart. For full nodes, this means downloading as little as 1/8 of the data (8 out of 128 cells), so that the average bandwidth consumption compared to the (current) full blobpool is 0.15 + 0.85/8 ~ 0.25, a ~4x reduction. The choice of
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Execution clients :: devp2p changes We introduce a new devp2p protocol version, `eth/71` extending the existing `eth/70` protocol (TODO: spec for eth/70 missing). **Modify `NewPooledTransactionHashes` (`0x08`) message.** Add a new field `cell_mask` of type `B_16` (`uint128`). This field MUST be interpreted as a bitarray of length `CELLS_PER_EXT_BLOB`, carrying `1` in the indices of colums the announcer has available for **all type 3 txs
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Execution clients :: devp2p changes We introduce a new devp2p protocol version, `eth/72` extending the existing `eth/71` protocol. **Modify `NewPooledTransactionHashes` (`0x08`) message.** Add a new field `cell_mask` of type `B_16` (`uint128`). This field MUST be interpreted as a bitarray of length `CELLS_PER_EXT_BLOB`, carrying `1` in the indices of columns the announcer has available for **all type 3 txs announced within the message**. This
 
 MOTIVATION:
 As Blob Parameter Only (BPO) forks progressively increase throughput, the full-replication nature of today's EL blobpool will begin dominating bandwidth utilization, causing us to hit [EIP-7870](./eip-7870.md) limits. Furthermore, this traffic will compete, and potentially starve, block and attestation propagation, risking instability and liveness issues. This behavior has already been observed in Fusaka devnets, where the average bandwidth consumption _of a full node_ is dominated by the EL blobpool, since column propagation on the CL benefits from sampling. ![](../assets/eip-8070/bandwidth-breakdown-fusaka-devnets.png) **Figure 1.** _Breakdown of the average bandwidth consumption (download) of full nodes in Fusaka Devnet 5, for blob count target/max
@@ -7586,6 +7586,26 @@ MOTIVATION:
 
 RATIONALE:
 ### One Monolithic EIP This EIP could be split up into multiple EIPs, one for each of the subtypes and one for the meta-type. Alternatively, each of the subtypes could be a unique TransactionType. The reason we chose to go with a single EIP with subtypes is because these 4 transactions all have a *lot* in common and each separate EIP would be almost identical to the previous. We felt that in this case, splitting into multiple EIPs wasn't worth the duplication of EIP content. ### ChainID not encoded with `v` While we could save one byte in
+
+
+=== EIP-8205 ===
+TITLE: Withdrawal credentials preregistration
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-26
+REQUIRES: 4, 7, 8, 8, ,,  , 6, 1, 1, 0, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP introduces a preregistration mechanism that allows a validator key holder to commit to specific withdrawal credentials before any deposit is made, addressing a known deposit front-running vulnerability in delegated staking. Preregistrations are submitted through a new [EIP-7685](./eip-7685.md) request type via a system contract on the execution layer, rate-limited by an [EIP-1559](./eip-1559.md)-style exponential fee mechanism. The consensus layer stores the preregistration in beacon state and enforces it at deposit processing time: matching deposits proceed and the preregistration is consumed; mismatched deposits are silently rejected. The mechanism is fully optional — deposits for public keys without a preregistration
+
+SPECIFICATION:
+### Configuration #### Execution layer | Name | Value | Comment | | ----------------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- | | `VALIDATOR_PREREGISTRATION_REQUEST_PREDEPLOY_ADDRESS` | `TBD` | Where to call and store relevant details about preregistration mechanism | | `VALIDATOR_PREREGISTRATION_REQUEST_TYPE` | `TBD` | The [EIP-7685](./eip-7685.md) type prefix for preregistration request | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | Address used to invoke system operation on contract | | `EXCESS_VALIDATOR_PREREGISTRATION_REQUESTS_STORAGE_SLOT` | `0` | | | `VALIDATOR_PREREGISTRATION_REQUEST_COUNT_STORAGE_SLOT` | `1` | | | `VALIDATOR_PREREGISTRATION_REQUEST_QUEUE_HEAD_STORAGE_SLOT` | `2` | Pointer to head of the preregistration request message queue | | `VALIDATOR_PREREGISTRATION_REQUEST_QUEUE_TAIL_STORAGE_SLOT` | `3` | Pointer to the tail
+
+MOTIVATION:
+In delegated staking, the entity funding a validator and the entity generating the BLS keypair are distinct parties. This separation is common across liquid staking protocols, staking-as-a-service providers, and any arrangement where one party provides capital and another operates the validator. The BLS key is the validator's identity: the first deposit for a given pubkey establishes the withdrawal credentials permanently under first-deposit-wins semantics. The key holder can therefore submit a deposit with attacker-controlled withdrawal credentials before the funding party's deposit is processed. The funding party has no on-chain guarantee that the withdrawal credentials it intends will be honored.
+
+RATIONALE:
+### Enforcement at deposit ingestion Invalid deposits are already silently ignored by the consensus layer if the signature is invalid. This EIP adds one optional validation condition: if a preregistration exists for a pubkey, only deposits with matching withdrawal credentials and a valid BLS signature are accepted. Deposits with mismatched credentials or invalid signatures are treated as invalid and ignored. The check only applies to pubkeys that have been preregistered — all other deposits are processed as before. ### Deposit BLS verification at ingestion Without early BLS verification, an attacker could consume a preregistration by depositing with matching
 
 
 === EIP-7039 ===

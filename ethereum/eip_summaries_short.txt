@@ -5579,7 +5579,7 @@ TITLE: Sparse Blobpool
 TYPE: Standards Track Networking
 STATUS: Draft
 CREATED: 2025-10-29
-REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 7, 0
+REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 7, 0, ,,  , 8, 1, 5, 9
 
 SUMMARY:
 This proposal introduces the sparse blobpool, a construction that brings cell-level, custody-aligned sampling in the Execution Layer (EL). For every new type 3 (blob-carrying)
@@ -7586,6 +7586,26 @@ MOTIVATION:
 
 RATIONALE:
 ### One Monolithic EIP This EIP could be split up into multiple EIPs, one for each of the subtypes and one for the meta-type.
+
+
+=== EIP-8205 ===
+TITLE: Withdrawal credentials preregistration
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-26
+REQUIRES: 4, 7, 8, 8, ,,  , 6, 1, 1, 0, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP introduces a preregistration mechanism that allows a validator key holder to commit to specific withdrawal credentials before any deposit is made, addressing
+
+SPECIFICATION:
+### Configuration #### Execution layer | Name | Value | Comment | | ----------------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- | | `VALIDATOR_PREREGISTRATION_REQUEST_PREDEPLOY_ADDRESS` | `TBD` |
+
+MOTIVATION:
+In delegated staking, the entity funding a validator and the entity generating the BLS keypair are distinct parties. This separation is common across liquid
+
+RATIONALE:
+### Enforcement at deposit ingestion Invalid deposits are already silently ignored by the consensus layer if the signature is invalid. This EIP adds one
 
 
 === EIP-7039 ===
