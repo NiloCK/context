@@ -1699,19 +1699,19 @@ TITLE: Frame Transaction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-01-29
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 4, 8, 4, 4
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 9, 9, 7
 
 SUMMARY:
 Add a new transaction whose validity and gas payment can be defined abstractly. Instead of relying solely on a single ECDSA signature, accounts may freely define and interpret their signature scheme using any cryptographic system.
 
 SPECIFICATION:
-### Constants | Name | Value | |---------------------------|-----------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `ENTRY_POINT` | `address(0xaa)` | | `MAX_FRAMES` | `10^3` | ### Opcodes | Name | Value | |-----------------|--------| | `APPROVE` | `0xaa` | | `TXPARAM` | `0xb0` | | `FRAMEDATALOAD` | `0xb1` | | `FRAMEDATACOPY` | `0xb2` | ### New Transaction Type A new [EIP-2718](./eip-2718.md) transaction with type `FRAME_TX_TYPE` is introduced. Transactions of this type are referred to as "Frame transactions". The payload is defined as the RLP serialization of the following: ``` [chain_id, nonce, sender, frames, max_priority_fee_per_gas, max_fee_per_gas, max_fee_per_blob_gas,
+### Constants | Name | Value | |---------------------------|-----------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `FRAME_TX_PER_FRAME_COST` | `475` | | `ENTRY_POINT` | `address(0xaa)` | | `MAX_FRAMES` | `64` | `ENTRY_POINT` is a protocol-defined distinguished caller address used for `DEFAULT` and `VERIFY` frames. It is not specified as a deployed contract or precompile, and contracts MUST NOT assume anything about its code, balance, or caller type beyond address equality. Contracts called from `DEFAULT` or `VERIFY` frames therefore observe `CALLER = ENTRY_POINT`, so heuristics that infer EOA-or-contract properties from `CALLER` may not behave as expected. Its
 
 MOTIVATION:
 This new transaction provides a native off-ramp from the elliptic curve based cryptographic system used to authenticate transactions today, to post-quantum (PQ) secure systems. In doing so, it realizes the original vision of account abstraction: unlinking accounts from a prescribed ECDSA key and support alternative fee payment schemes. The assumption of an account simply becomes an address with code. It leverages the EVM to support arbitrary *user-defined* definitions of validation and gas payment.
 
 RATIONALE:
-### Canonical signature hash The canonical signature hash is provided in `TXPARAMLOAD` to simplify the development of smart accounts. Computing the signature hash in EVM is complicated and expensive. While using the canonical signature hash is not mandatory, it is strongly recommended. Creating a bespoke signature requires precise commitment to the underlying transaction data. Without this, it's possible that some elements can be manipulated in-the-air while the transaction is pending and have unexpected effects. This is known as transaction malleability. Using the canonical signature hash avoids malleability of the frames other than `VERIFY`. The `frame.data` of `VERIFY` frames
+### Canonical signature hash The canonical signature hash is provided in `TXPARAM` to simplify the development of smart accounts. Computing the signature hash in EVM is complicated and expensive. While using the canonical signature hash is not mandatory, it is strongly recommended. Creating a bespoke signature requires precise commitment to the underlying transaction data. Without this, it's possible that some elements can be manipulated in-the-air while the transaction is pending and have unexpected effects. This is known as transaction malleability. Using the canonical signature hash avoids malleability of the frames other than `VERIFY`. The `frame.data` of `VERIFY` frames
 
 
 === EIP-7892 ===
