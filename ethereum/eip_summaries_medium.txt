@@ -7681,7 +7681,7 @@ SUMMARY:
 This EIP proposes an adjustment to calldata pricing by raising the floor cost from 10/40 to 64/64 gas per calldata byte. This reduces the worst-case block size by ~37% with minimal impact.
 
 SPECIFICATION:
-| Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `16` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`. Let `floor_tokens_in_calldata = (zero_bytes_in_calldata + nonzero_bytes_in_calldata) * 4`. Let `isContractCreation` be a boolean indicating the respective event. Let `execution_gas_used` be the
+| Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `16` | Let `tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4`. Let `floor_tokens_in_calldata = (zero_bytes_in_calldata + nonzero_bytes_in_calldata) * 4`. Equivalently, the floor cost is `64` gas per calldata byte (both zero and
 
 MOTIVATION:
 While [EIP-7623](./eip-7623.md) successfully reduced the maximum possible block size by introducing a floor cost of 10/40 gas per byte for data-heavy transactions, continued increases in gas limit demands further optimization. The current floor cost still permits relatively large data-heavy payloads that contribute to block size variance. With 64/64 pricing,
