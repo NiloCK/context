@@ -5575,7 +5575,7 @@ RATIONALE:
 
 
 === EIP-8070 ===
-TITLE: Sparse Blobpool
+TITLE: eth/72 - Sparse Blobpool
 TYPE: Standards Track Networking
 STATUS: Draft
 CREATED: 2025-10-29
