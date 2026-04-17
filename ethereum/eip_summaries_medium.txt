@@ -5654,6 +5654,26 @@ RATIONALE:
 This EIP aims to reduce the total number of validators without changing anything about the economic security of the protocol. It provides a mechanism by which large node operators who control significant amounts of stake can consolidate into fewer validators. We analyze the reasoning behind each of the core
 
 
+=== EIP-8200 ===
+TITLE: EVMification
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-21
+REQUIRES: 1, 5, 2, ,,  , 2, 5, 3, 7, ,,  , 7, 6, 6, 6, ,,  , 7, 8, 2, 3, ,,  , 7, 8, 8, 3
+
+SUMMARY:
+Replaces the RIPEMD-160 (`0x03`), MODEXP (`0x05`), BLAKE2f (`0x09`), BLS12_MAP_FP_TO_G1 (`0x10`), and BLS12_MAP_FP2_TO_G2 (`0x11`) precompiles. At the start of executing the block in which this change activates, deploy EVM bytecode at each precompile address that provides equivalent functionality. This follows the same approach as [EIP-7666](./eip-7666.md), which EVMifies the identity precompile
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants | Parameter | Value | | - | - | | `RIPEMD160_ADDRESS` |
+
+MOTIVATION:
+Ethereum's precompiles impose ongoing maintenance costs and increase the risk of consensus bugs across client implementations. Some also represent a significant barrier for zkEVM implementations since each precompile usually requires a separate, optimized non-EVM implementation. [EIP-7666](./eip-7666.md) demonstrates this approach with the identity precompile. This EIP extends the same technique
+
+RATIONALE:
+### Same mechanism as EIP-7666 This EIP follows the same deployment mechanism established by [EIP-7666](./eip-7666.md): deploying EVM bytecode directly at the precompile address at fork time. This preserves backward compatibility for contracts that call these addresses, as they continue to work with the same interface. ### Accepting EVM gas
+
+
 === EIP-7703 ===
 TITLE: Increase calldata cost
 TYPE: Standards Track Core

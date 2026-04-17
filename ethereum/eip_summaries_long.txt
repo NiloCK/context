@@ -1705,7 +1705,7 @@ SUMMARY:
 Add a new transaction whose validity and gas payment can be defined abstractly. Instead of relying solely on a single ECDSA signature, accounts may freely define and interpret their signature scheme using any cryptographic system.
 
 SPECIFICATION:
-### Constants | Name | Value | |---------------------------|-----------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `FRAME_TX_PER_FRAME_COST` | `475` | | `ENTRY_POINT` | `address(0xaa)` | | `MAX_FRAMES` | `64` | `ENTRY_POINT` is a protocol-defined distinguished caller address used for `DEFAULT` and `VERIFY` frames. It is not specified as a deployed contract or precompile, and contracts MUST NOT assume anything about its code, balance, or caller type beyond address equality. Contracts called from `DEFAULT` or `VERIFY` frames therefore observe `CALLER = ENTRY_POINT`, so heuristics that infer EOA-or-contract properties from `CALLER` may not behave as expected. Its
+### Constants | Name | Value | |---------------------------|-----------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `FRAME_TX_PER_FRAME_COST` | `475` | | `ENTRY_POINT` | `address(0xaa)` | | `MAX_FRAMES` | `64` | `ENTRY_POINT` is a protocol-defined distinguished caller address used for `DEFAULT` and `VERIFY` frames. It is not specified as a deployed contract or precompile, and contracts MUST NOT assume anything about its code, balance, or caller type beyond address equality. Contracts called from `DEFAULT` or `VERIFY` frames therefore observe `CALLER = ENTRY_POINT` and `CALLVALUE = 0`, so heuristics that infer EOA-or-contract properties from `CALLER` may not
 
 MOTIVATION:
 This new transaction provides a native off-ramp from the elliptic curve based cryptographic system used to authenticate transactions today, to post-quantum (PQ) secure systems. In doing so, it realizes the original vision of account abstraction: unlinking accounts from a prescribed ECDSA key and support alternative fee payment schemes. The assumption of an account simply becomes an address with code. It leverages the EVM to support arbitrary *user-defined* definitions of validation and gas payment.
@@ -5652,6 +5652,26 @@ As of October 3, 2023, there are currently over 830,000 validators participating
 
 RATIONALE:
 This EIP aims to reduce the total number of validators without changing anything about the economic security of the protocol. It provides a mechanism by which large node operators who control significant amounts of stake can consolidate into fewer validators. We analyze the reasoning behind each of the core features. ### Increasing the `MAX_EFFECTIVE_BALANCE`, while creating a `MIN_ACTIVATION_BALANCE` While increasing the `MAX_EFFECTIVE_BALANCE` to allow larger-stake validators, it is important to keep the lower bound of `32 ETH` (by introducing a new constant – `MIN_ACTIVATION_BALANCE`) to encourage solo-staking. ### Allowing for multiple validator indices to be combined through the
+
+
+=== EIP-8200 ===
+TITLE: EVMification
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-21
+REQUIRES: 1, 5, 2, ,,  , 2, 5, 3, 7, ,,  , 7, 6, 6, 6, ,,  , 7, 8, 2, 3, ,,  , 7, 8, 8, 3
+
+SUMMARY:
+Replaces the RIPEMD-160 (`0x03`), MODEXP (`0x05`), BLAKE2f (`0x09`), BLS12_MAP_FP_TO_G1 (`0x10`), and BLS12_MAP_FP2_TO_G2 (`0x11`) precompiles. At the start of executing the block in which this change activates, deploy EVM bytecode at each precompile address that provides equivalent functionality. This follows the same approach as [EIP-7666](./eip-7666.md), which EVMifies the identity precompile (`0x04`).
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants | Parameter | Value | | - | - | | `RIPEMD160_ADDRESS` | `0x0000000000000000000000000000000000000003` | | `MODEXP_ADDRESS` | `0x0000000000000000000000000000000000000005` | | `BLAKE2F_ADDRESS` | `0x0000000000000000000000000000000000000009` | | `BLS12_MAP_FP_TO_G1_ADDRESS` | `0x0000000000000000000000000000000000000010` | | `BLS12_MAP_FP2_TO_G2_ADDRESS` | `0x0000000000000000000000000000000000000011` | | `RIPEMD160_EVM_CODE` | <-- TODO: bytecode --> | | `MODEXP_EVM_CODE` | <-- TODO: bytecode --> | | `BLAKE2F_EVM_CODE` | <-- TODO: bytecode --> | | `BLS12_MAP_FP_TO_G1_EVM_CODE` |
+
+MOTIVATION:
+Ethereum's precompiles impose ongoing maintenance costs and increase the risk of consensus bugs across client implementations. Some also represent a significant barrier for zkEVM implementations since each precompile usually requires a separate, optimized non-EVM implementation. [EIP-7666](./eip-7666.md) demonstrates this approach with the identity precompile. This EIP extends the same technique to five additional precompiles that either see limited use or can be evmified with a small cost: - **RIPEMD-160** (`0x03`): A hash function with minimal on-chain usage. Its primary historical use case (Bitcoin-style address derivation) is not common in Ethereum contracts. - **MODEXP** (`0x05`): Modular exponentiation. In our analysis,
+
+RATIONALE:
+### Same mechanism as EIP-7666 This EIP follows the same deployment mechanism established by [EIP-7666](./eip-7666.md): deploying EVM bytecode directly at the precompile address at fork time. This preserves backward compatibility for contracts that call these addresses, as they continue to work with the same interface. ### Accepting EVM gas costs Rather than attempting to replicate the exact gas formulas of the original precompiles, this EIP accepts the natural EVM execution gas costs. Gas repricings have been done in the Ethereum ecosystem several times before and their effects are well understood. Nevertheless, we will carry out an impact analysis
 
 
 === EIP-7703 ===
