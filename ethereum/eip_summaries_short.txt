@@ -8798,7 +8798,7 @@ MOTIVATION:
 The total value of crypto assets that have been stolen to date exceeds the yearly GDP of a medium-sized nation. This level of loss
 
 RATIONALE:
-### Selection Parameter Design The `TXTRACE` opcode follows the same `(param, index)` pattern used by `TXPARAM` in [EIP-8141](./eip-8141.md). This keeps the interface consistent and
+### Selection Parameter Design The `TXTRACE` opcode follows the same `(param, index)` two-argument pattern used by `FRAMEPARAM` in [EIP-8141](./eip-8141.md). This keeps the interface consistent
 
 
 === EIP-3534 ===
