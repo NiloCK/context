@@ -9642,7 +9642,7 @@ MOTIVATION:
 Sending assets publicly on Ethereum is straightforward. A user chooses ETH or a token, specifies a recipient using an Ethereum address or ENS name,
 
 RATIONALE:
-### System Contract, Fork-Managed Outer Circuit, and No Admin Pause A bug in the ZK scheme can compromise funds held in the pool but
+### System Contract, Fork-Managed Outer Circuit, and No Admin Pause The pool is a protocol-managed account at a fixed address because its security depends
 
 
 === EIP-7792 ===
