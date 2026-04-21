@@ -4701,6 +4701,26 @@ RATIONALE:
 2 years was chosen because it gives miners sufficient time to find alternative uses for their hardware and/or get their hardware back out onto
 
 
+=== EIP-8188 ===
+TITLE: State Tiering by Write Age
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-10
+REQUIRES: 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 8, 0, 3, 7
+
+SUMMARY:
+This proposal introduces _renewal-age pricing_ for Ethereum state writes. It adds a `last_written_period` field to the RLP encoding of accounts and storage slots to
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Ethereum state continues to grow and its access costs are not uniform in practice: 1. **Renewal age is unpriced:** Writing to state that has
+
+RATIONALE:
+### How can clients utilize the write-age metadata? The `last_written_period` field identifies the recently mutated active set. Unlike local heuristics such as caches or
+
+
 === EIP-2029 ===
 TITLE: State Rent A - State counters contract
 TYPE: Standards Track Core

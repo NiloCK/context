@@ -4701,6 +4701,26 @@ RATIONALE:
 2 years was chosen because it gives miners sufficient time to find alternative uses for their hardware and/or get their hardware back out onto the open market (e.g., in the form of gaming GPUs) without flooding the market suddenly. This proposal should ONLY be considered as a last resort as something we have in our pocket should the "network need to attract hashing power quickly and then bleed it off over time" rather than "something that is scheduled to be included in X hard fork" ; Recommendation to have in a fast track state, but NOT deployed to
 
 
+=== EIP-8188 ===
+TITLE: State Tiering by Write Age
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-10
+REQUIRES: 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 8, 0, 3, 7
+
+SUMMARY:
+This proposal introduces _renewal-age pricing_ for Ethereum state writes. It adds a `last_written_period` field to the RLP encoding of accounts and storage slots to track when each piece of state was last mutated. The gas cost of state-writing opcodes depends on whether the target state is in the **Active** or **Inactive** tier, determined by how many periods have elapsed since its last write. Writing to Inactive state is more expensive than writing to Active state. Read costs are unchanged. This creates an economic incentive for state hygiene without mandating deletion, and provides clients with consensus-level metadata that identifies
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Parameters | Name | Value | Description | | --- | ---: | --- | | `PERIOD_LENGTH` | TBD | Blocks per period (target: ~6 months) | | `PERIOD_START_BLOCK` | fork block | Anchor block from which period numbering begins | | `INACTIVE_MIN_AGE` | TBD | Periods of write-inactivity before state enters the Inactive tier | #### Tier Gas Constants `INACTIVE > ACTIVE`
+
+MOTIVATION:
+Ethereum state continues to grow and its access costs are not uniform in practice: 1. **Renewal age is unpriced:** Writing to state that has not been mutated in years costs the same as writing to state mutated recently, despite different resource profiles. Recently mutated state is more likely to stay in the performance-critical mutable working set, while older state more often falls onto slower paths with deeper database lookups and higher write overhead. A flat write cost overcharges for the active set and undercharges mutations to long-unmodified state. 2. **Abandoned state imposes uncompensated costs:** Once state is written,
+
+RATIONALE:
+### How can clients utilize the write-age metadata? The `last_written_period` field identifies the recently mutated active set. Unlike local heuristics such as caches or snapshots, it is consensus-verified and consistent across all clients. This enables several categories of client-level optimization. **Mutable tier vs stable tier:** From a client-storage perspective, Active and Inactive state can be viewed as a mutable tier and a stable tier. The protocol does not mandate any storage architecture, but the tier signal allows clients to isolate recently mutated state in a storage path optimized for repeated rewrites, while storing write-inactive state in a path
+
+
 === EIP-2029 ===
 TITLE: State Rent A - State counters contract
 TYPE: Standards Track Core
