@@ -4792,7 +4792,7 @@ CREATED: 2025-12-17
 REQUIRES: 3541
 
 SUMMARY:
-This is the smallest possible change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM:
+This is the smallest possible change to the EVM interpreter to support calls and returns. This proposal introduces three new control-flow instructions to the
 
 SPECIFICATION:
 > _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ###
@@ -4801,7 +4801,7 @@ MOTIVATION:
 The EVM currently lacks explicit call and return instructions. Instead, calls and returns must be synthesized using the dynamic `JUMP` instruction, which takes its
 
 RATIONALE:
-### Why these three opcodes? This proposal aims to be the smallest possible change to the EVM. We introduce only three industry-standard instructions —
+### Why these three opcodes? This proposal aims to be the smallest possible change to the EVM. We introduce only industry-standard instructions — `CALLSUB`,
 
 
 === EIP-8136 ===
