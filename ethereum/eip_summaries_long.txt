@@ -1649,6 +1649,26 @@ RATIONALE:
 The purpose of a Provider is to _provide_ a consumer with access to Ethereum. In general, a Provider must enable an Ethereum web application to do two things: - Make Ethereum RPC requests - Respond to state changes in the Provider's Ethereum chain, Client, and Wallet The Provider API specification consists of a single method and five events. The `request` method and the `message` event alone, are sufficient to implement a complete Provider. They are designed to make arbitrary RPC requests and communicate arbitrary messages, respectively. The remaining four events can be separated into two categories: - Changes
 
 
+=== EIP-8202 ===
+TITLE: Scheme-Agile Transactions
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-22
+REQUIRES: 2, ,,  , 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 7, 8, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 7, 6
+
+SUMMARY:
+This EIP introduces a new [EIP-2718](./eip-2718.md) typed transaction (`TransactionType = 0x05`) called `SchemedTransaction`. A `SchemedTransaction` has one common [EIP-1559](./eip-1559.md)-style fee header and one common execution payload (`to`, `value`, `data`). Optional features are attached as flat typed components inside the payload rather than by minting a new top-level transaction family for every combination. The transaction has two typed attachment lists: * `authorizations` - ordered transaction authorizations * `extensions` - flat typed extensions, unique by `extension_id` Scheme agility is expressed as an authorization capability, not a separate transaction family. This EIP initially defines one required top-level authorization role, `SENDER`, and
+
+SPECIFICATION:
+### Constants | Name | Value | Description | | ------------------------ | ------- | ------------------------------------------------------- | | `SCHEMED_TX_TYPE` | `0x05` | [EIP-2718](./eip-2718.md) transaction type byte | | `ROLE_SENDER` | `0x00` | Top-level sender authorization | | `ROLE_PAYER` | `0x01` | Reserved for future use | | `SCHEME_SECP256K1` | `0x00` | secp256k1 ECDSA | | `SCHEME_EPHEMERAL_K1` | `0x01` | Ephemeral secp256k1 with Merkle-committed key rotation | | `EXT_BLOB` | `0x01` | Blob extension | | `EXT_SET_CODE` | `0x02` | Set-code / delegation extension | | `SET_CODE_AUTH_MAGIC` | `0x05` | Domain byte for set-code authorization messages | | `PER_AUTH_BASE_COST` |
+
+MOTIVATION:
+### Stop proliferating top-level transaction families Ethereum currently adds new features such as blobs and set-code authorizations by minting fresh [EIP-2718](./eip-2718.md) transaction types whose payloads are each mostly [EIP-1559](./eip-1559.md)-shaped with a few appended fields. That approach does not compose well. A user who wants passkey signing, blobs, and set-code authorization should not require yet another top-level transaction family. The cleaner model is: * [EIP-1559](./eip-1559.md) is the common fee header * call/create is the base execution payload * blobs are an optional extension * set-code authorization is an optional pre-execution extension * scheme agility is the sender authorization mechanism
+
+RATIONALE:
+### Why a single outer transaction type? A single new transaction type is still needed because the transaction body itself changes. The point of this EIP is not to avoid adding one new outer type - it is to avoid adding a new outer type for every future combination of features. ### Why make scheme agility an authorization capability? Signature scheme choice determines how the sender proves control of the transaction. That is an authorization concern, not a payload family. Defining scheme agility as an authorization capability means future signature schemes only register: * a `scheme_id` * a
+
+
 === EIP-7684 ===
 TITLE: Return deposits for distinct credentials
 TYPE: Standards Track Core
@@ -6788,6 +6808,26 @@ Following EIP-4844, the execution layer (EL) maintains a hard-coded blob target 
 
 RATIONALE:
 ### Why not have the CL also compute the blob base fee and remove any notion of blob counts from EL processing? Hoisting the full computation into the CL is possible, but it does violate the separation of concerns between these two layers of the protocol stack. The CL maintains a maximum value to address e.g. DoS risks, and the EL maintains knowledge of the target value to address fee accounting. Putting the target computation in the CL violates the respective responsibilities of each layer.
+
+
+=== EIP-8173 ===
+TITLE: Foundations of EVM Control Flow
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2026-02-16
+REQUIRES: 
+
+SUMMARY:
+This Informational EIP provides foundational context for understanding control flow in the EVM. It covers the historical development of control flow mechanisms in computing, the technical foundations of control flow analysis, and the impact of static control flow on Ethereum's scaling roadmap. This document serves as background material for proposals for static control flow, including [EIP-615](./eip-615.md): Subroutines and Static Jumps for the EVM, [EIP-4750](./eip-4750.md): EOF Functions, [EIP-7979](./eip-7979.md): Call and Return Opcodes, [EIP-8013](./eip-8013.md): Static Relative Jumps, discussions around RISC-V migration and ZK verification infrastructure, and discussions still to come.
+
+SPECIFICATION:
+Four EIPs currently specify new EVM opcodes and semantics for static control flow: [EIP-615: Subroutines and Static Jumps for the EVM](./eip-615.md), [EIP-4750: EOF - Functions](./eip-4750.md), [EIP-7979: Call and Return Opcodes for the EVM](./eip-7979.md), and [EIP-8013: Static relative jumps and calls for the EVM](./eip-8013.md). They are all implemented with the standard Turing return stack architecture, and are for the most part compatible with each other other. In particular, EIP-7979 can be used to implement every other EIP here.
+
+MOTIVATION:
+### Historical Context #### Babbage 1833: Jumps and Conditional Jumps In 1833 Charles Babbage began the design of the Analytical Engine: a steam-powered, mechanical, Turing-complete computer. Programs were to be encoded on punched cards which controlled a system of rods, gears and other machinery to implement arithmetic, storage (for 1,000 40-digits decimal numbers) and conditional jumps. Jumps were supported by cards that shuffled the card deck forwards or backwards a fixed number of cards. #### Lovelace 1842: Computer Programing The first published description of the Analytical Engine was in French, by L. F. Menabre, 1842[^1]. The English translator,
+
+RATIONALE:
+Static control flow has been a cornerstone of efficient computation since Babbage and Turing. The EVM's reliance on dynamic jumps is an anomaly among virtual machines and a significant barrier to analysis, compilation, and scaling. Proposals to introduce explicit call/return opcodes and enforce static control flow bring the EVM in line with industry best practices and unlock a range of optimizations critical to Ethereum's scaling roadmap. Static control flow is not a silver bullet. But it is a _foundational piece_ that enables: * Better tooling and security analysis for language developers auditors * Faster execution via compilation for
 
 
 === EIP-141 ===

@@ -1649,6 +1649,26 @@ RATIONALE:
 The purpose of a Provider is to _provide_ a consumer with access to Ethereum. In general, a Provider must enable an Ethereum web application
 
 
+=== EIP-8202 ===
+TITLE: Scheme-Agile Transactions
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-03-22
+REQUIRES: 2, ,,  , 1, 5, 5, ,,  , 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 7, 8, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 7, 6
+
+SUMMARY:
+This EIP introduces a new [EIP-2718](./eip-2718.md) typed transaction (`TransactionType = 0x05`) called `SchemedTransaction`. A `SchemedTransaction` has one common [EIP-1559](./eip-1559.md)-style fee header and one common
+
+SPECIFICATION:
+### Constants | Name | Value | Description | | ------------------------ | ------- | ------------------------------------------------------- | | `SCHEMED_TX_TYPE` | `0x05` | [EIP-2718](./eip-2718.md) transaction type
+
+MOTIVATION:
+### Stop proliferating top-level transaction families Ethereum currently adds new features such as blobs and set-code authorizations by minting fresh [EIP-2718](./eip-2718.md) transaction types whose
+
+RATIONALE:
+### Why a single outer transaction type? A single new transaction type is still needed because the transaction body itself changes. The point of
+
+
 === EIP-7684 ===
 TITLE: Return deposits for distinct credentials
 TYPE: Standards Track Core
@@ -6788,6 +6808,26 @@ Following EIP-4844, the execution layer (EL) maintains a hard-coded blob target 
 
 RATIONALE:
 ### Why not have the CL also compute the blob base fee and remove any notion of blob counts from EL processing? Hoisting the
+
+
+=== EIP-8173 ===
+TITLE: Foundations of EVM Control Flow
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2026-02-16
+REQUIRES: 
+
+SUMMARY:
+This Informational EIP provides foundational context for understanding control flow in the EVM. It covers the historical development of control flow mechanisms in computing,
+
+SPECIFICATION:
+Four EIPs currently specify new EVM opcodes and semantics for static control flow: [EIP-615: Subroutines and Static Jumps for the EVM](./eip-615.md), [EIP-4750: EOF -
+
+MOTIVATION:
+### Historical Context #### Babbage 1833: Jumps and Conditional Jumps In 1833 Charles Babbage began the design of the Analytical Engine: a steam-powered, mechanical,
+
+RATIONALE:
+Static control flow has been a cornerstone of efficient computation since Babbage and Turing. The EVM's reliance on dynamic jumps is an anomaly among
 
 
 === EIP-141 ===
