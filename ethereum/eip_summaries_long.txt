@@ -4818,7 +4818,7 @@ RATIONALE:
 === EIP-8012 ===
 TITLE: Generalized consolidation requests
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-08-22
 REQUIRES: 
 
@@ -6170,7 +6170,7 @@ RATIONALE:
 === EIP-8025 ===
 TITLE: Optional Execution Proofs
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Stagnant
 CREATED: 2025-09-17
 REQUIRES: 
 
