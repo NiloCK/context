@@ -7000,6 +7000,26 @@ RATIONALE:
 ### Status changes After the merge, the `TD` field of the `Status` message became meaningless since the difficulty of post-merge blocks are 0. It could in theory be used to distinguish synced with unsynced nodes, but the same thing can be accomplished with the forkid as well. The new `earliestBlock` field is technically not required for history expiry, but there are a couple reasons why adding it can help: - It improves peer finding for clients that still want to sync history from p2p after the agreed-upon removal of pre-merge history has taken place. Without `earliestBlock`, the client
 
 
+=== EIP-8237 ===
+TITLE: Independent CL/EL Sync
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-04-22
+REQUIRES: 7732
+
+SUMMARY:
+This EIP modifies the `ExecutionPayloadBid` container introduced in [EIP-7732](./eip-7732.md) by replacing the `execution_requests_root` field with `partial_header_hash` included in the `BeaconBlockBody` a SHA256 accumulator that chains together all the fields that need independent validation by the consensus layer. This same field is added to the `ExecutionPayload` container for independent validation in the execution layer. Together, these changes allow consensus layer clients to perform range sync without downloading execution payloads, as the accumulator provides a single commitment that can be verified against the beacon block bid without requiring the full payload or interaction with the execution engine.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Consensus Layer #### Modified Containers ##### `ExecutionPayloadBid` The `execution_requests_root` field is removed. ```python class ExecutionPayloadBid(Container): parent_block_hash: Hash32 parent_block_root: Root block_hash: Hash32 prev_randao: Bytes32 fee_recipient: ExecutionAddress gas_limit: uint64 builder_index: BuilderIndex slot: Slot value: Gwei execution_payment: Gwei blob_kzg_commitments: List[KZGCommitment, MAX_BLOB_COMMITMENTS_PER_BLOCK] # [Modified in Gloas:EIP-8237] # Removed execution_requests_root ``` ##### `BeaconBlockBody` The field `partial_header_hash` is added. It consists of a SHA256 accumulator. This avoids requiring SSZ
+
+MOTIVATION:
+Before the Glamsterdam fork, beacon blocks contain embedded execution payloads. When consensus layer clients perform range sync, they request large ranges of blocks, execute the consensus state transition function, and send each payload to the execution engine for validation. The only objects that need to be consistent between both layers are the block hash of the payload and the execution requests that originate in the execution layer but are used as input for the consensus state transition function. [EIP-7732](./eip-7732.md) separates execution payloads from beacon blocks. Execution payloads are broadcast independently in `ExecutionPayloadEnvelope` objects. This separation allows, in principle,
+
+RATIONALE:
+### SHA256 Instead of Hash Tree Root SHA256 is chosen over `hash_tree_root` because the execution layer does not currently implement SSZ hashing infrastructure. Using plain SHA256 over the concatenation of serialized request data allows both layers to compute the accumulator using only primitives they already have. The accumulator does not need to be Merkle-provable; it only needs to provide a binding commitment to the chain of values. ### Accumulator Pattern An accumulator that chains across blocks (rather than a per-block hash) is essential for the independent sync use case. During range sync, the consensus layer processes blocks sequentially.
+
+
 === EIP-7840 ===
 TITLE: Add blob schedule to EL config files
 TYPE: Informational 

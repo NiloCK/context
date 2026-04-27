@@ -7000,6 +7000,26 @@ RATIONALE:
 ### Status changes After the merge, the `TD` field of the `Status` message became meaningless since the difficulty of post-merge blocks are 0. It
 
 
+=== EIP-8237 ===
+TITLE: Independent CL/EL Sync
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-04-22
+REQUIRES: 7732
+
+SUMMARY:
+This EIP modifies the `ExecutionPayloadBid` container introduced in [EIP-7732](./eip-7732.md) by replacing the `execution_requests_root` field with `partial_header_hash` included in the `BeaconBlockBody` a SHA256 accumulator that
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Before the Glamsterdam fork, beacon blocks contain embedded execution payloads. When consensus layer clients perform range sync, they request large ranges of blocks, execute
+
+RATIONALE:
+### SHA256 Instead of Hash Tree Root SHA256 is chosen over `hash_tree_root` because the execution layer does not currently implement SSZ hashing infrastructure. Using
+
+
 === EIP-7840 ===
 TITLE: Add blob schedule to EL config files
 TYPE: Informational 
