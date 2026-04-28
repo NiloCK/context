@@ -4801,7 +4801,7 @@ MOTIVATION:
 This ERC addresses the need for fully onchain metadata while maintaining compatibility with existing [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md) standards. It has been a long-felt need for developers to store metadata onchain for NFTs and other multitoken contracts; however, there has been no uniform standard way to do this. Some
 
 RATIONALE:
-This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of metadata. The minimal interface with a single `metadata` function provides all necessary functionality while remaining backwards compatible with existing [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md) standards. The optional `setMetadata` function
+This ERC standardizes a simple string-key, bytes-value metadata store for existing token registries. The optional `setMetadata` function allows updates under the contract’s chosen write policy, and `MetadataSet` provides an onchain audit trail. **Onchain Metadata Contract Reference** extends this model to already-deployed tokens by pointing `metadata_contract` to a sidecar via
 
 
 === ERC-7254 ===

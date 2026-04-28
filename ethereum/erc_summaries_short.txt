@@ -4801,7 +4801,7 @@ MOTIVATION:
 This ERC addresses the need for fully onchain metadata while maintaining compatibility with existing [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md) standards. It has been a long-felt
 
 RATIONALE:
-This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of metadata. The minimal
+This ERC standardizes a simple string-key, bytes-value metadata store for existing token registries. The optional `setMetadata` function allows updates under the contract’s chosen write
 
 
 === ERC-7254 ===
