@@ -1719,7 +1719,7 @@ TITLE: Frame Transaction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-01-29
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 9, 9, 7
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 4, 8, 4, 4
 
 SUMMARY:
 Add a new transaction whose validity and gas payment can be defined abstractly. Instead of relying solely on a single ECDSA signature, accounts may freely define and interpret their signature scheme using any cryptographic system.
@@ -9254,7 +9254,7 @@ EOAs are the most widely used type of wallet. This EIP would drastically expand 
 === EIP-8013 ===
 TITLE: Static relative jumps and calls for the EVM
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2025-08-19
 REQUIRES: 7979
 
@@ -10270,7 +10270,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Hegotá network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Considered for Inclusion ### Declined for Inclusion ### Proposed for Inclusion ### Activation | Network Name | Activation Epoch | Activation Timestamp | | ------------ | ---------------- | -------------------- | | Sepolia | | | | Hoodi | | | | Mainnet | | | **Note**: rows in the table above will be filled as activation times are decided by client teams.
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Considered for Inclusion * [EIP-8141](./eip-8141.md): Frame Transaction ### Declined for Inclusion ### Proposed for Inclusion * [EIP-7716](./eip-7716.md): Anti-correlation attestation penalties * [EIP-8205](./eip-8205.md): Withdrawal credentials preregistration ### Activation | Network Name | Activation Epoch | Activation Timestamp | | ------------ | ---------------- | -------------------- | | Sepolia | | | | Hoodi | | | | Mainnet | | | **Note**: rows in the table above
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the network upgrade, as well as links to full specification.
