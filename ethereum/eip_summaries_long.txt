@@ -9122,19 +9122,19 @@ TITLE: State Creation Gas Cost Increase
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-01
-REQUIRES: 2, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 8, 0, 1, 1
+REQUIRES: 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 8
 
 SUMMARY:
-This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It dynamically sets the unit cost per new state byte at a given block gas limit, by targeting an average state growth of 100 GiB per year based on current network usage. It also introduces an independent metering for state creation costs, thus allowing for increased throughput and for larger contract deployments without being limited by the single transaction gas limit.
+This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It introduces a new variable,`CPSB` (cost per state byte), and sets this unit of gas costs per new state byte by targeting an average state growth of 100 GiB per year at a reference block gas limit of 96M gas units. It also introduces an independent metering for state creation costs, thus allowing for increased throughput and for larger contract deployments without being limited by the single transaction gas limit.
 
 SPECIFICATION:
-### New parameters | **Parameter** | **Value** | |:---:|:---:| | `TARGET_STATE_GROWTH_PER_YEAR` | 100 × 1024^3 bytes | | `CPSB_SIGNIFICANT_BITS` | 5 | | `CPSB_OFFSET` | 9578 | Besides these fixed parameters, this EIP introduces a dynamic variable that controls the cost per byte of state created for a given block gas limit. The variable is `cost_per_state_byte` and is calculated as follows: ```python raw = ceil((gas_limit * 2_628_000) / (2 * TARGET_STATE_GROWTH_PER_YEAR)) shifted = raw + CPSB_OFFSET shift = max(bit_length(shifted) - CPSB_SIGNIFICANT_BITS, 0) cost_per_state_byte = max(((shifted >> shift) << shift) - CPSB_OFFSET, 1) ``` The raw value is the
+### New parameters | **Parameter** | **Value** | |:---:|:---:| | `CPSB` | 1174 | | `STATE_BYTES_PER_STORAGE_SET` | 32 | | `STATE_BYTES_PER_NEW_ACCOUNT` | 112 | | `STATE_BYTES_PER_AUTH_BASE` | 23 | | `SYSTEM_MAX_SSTORES_PER_CALL` | 16 | ### Parameter changes Upon activation of this EIP, the following parameters of the gas model are updated. The "New State Gas" column shows the state gas cost (charged to the state-gas dimension), while the "New Regular Gas" column shows additional regular gas costs that accompany the state gas charge. | **Parameter** | **Current** | **New State Gas** | **New Regular Gas** | **Operations affected**
 
 MOTIVATION:
 State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance, while contract deployment only costs 202 gas units per new byte created, new storage slots cost 625 gas units per new byte created. Also, deploying duplicated bytecode costs the same as deploying new bytecode, even though clients don't store duplicated code in the database. This proposal establishes a standard to harmonize all state creation operations. Additionally, state growth will become a bottleneck for scaling under higher block limits. As of May 2025, the current
 
 RATIONALE:
-### Deriving the cost per byte The variable `cost_per_state_byte` is a dynamic parameter that depends on the block gas limit. The idea is to have a cost that scales as the block gas limit increases, thus avoiding excessive state growth. To compute this variable, we target a specific state growth per year, which we set to 100 GiB. Then, we assume this growth rate is achieved at an average gas utilization. With multidimensional metering, blocks can be filled up to 50% of the target for both regular gas and state gas. Thus, we consider that on average, blocks
+### Deriving the cost per state byte (CPSB) `CPSB` is a fixed parameter derived from a reference block gas limit. The derivation pins the cost so that, at the reference block gas limit and under expected average utilization, total state growth stays at the target rate. If a future block gas limit increase materially changes the expected state growth rate, `CPSB` can be re-derived in a subsequent EIP. #### Inputs - **Target state growth**: 100 GiB per year, i.e., `100 × 2^30 = 107,374,182,400` bytes. - **Reference block gas limit**: 96M gas units. - **Slot time**: 12 seconds,
 
 
 === EIP-4345 ===
