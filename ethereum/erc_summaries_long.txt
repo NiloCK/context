@@ -4687,7 +4687,7 @@ RATIONALE:
 === ERC-7943 ===
 TITLE: uRWA - Universal Real World Asset Interface
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-06-10
 REQUIRES: 165
 
@@ -4695,7 +4695,7 @@ SUMMARY:
 This EIP proposes the Universal RWA (uRWA) standard, a set of interfaces for tokenized Real World Assets (RWAs) such as securities, real estate, commodities, or other physical/financial assets on the blockchain. Real World Assets often require regulatory compliance features not found in standard tokens, including the ability to freeze assets, perform enforcement transfers for legal compliance, and restrict transfers to authorized users. The uRWA standard extends common token standards like [ERC-20](./eip-20.md), [ERC-721](./eip-721.md), or [ERC-1155](./eip-1155.md) by introducing essential compliance functions while remaining minimal and not opinionated about specific implementation details. This enables DeFi protocols and applications to interact with
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", and "MAY" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The following defines the standard interfaces for an [ERC-7943](./eip-7943.md) token contract, which MUST extend from one base token interface such as [ERC-20](./eip-20.md), [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), or [ERC-6909](./eip-6909.md). Note that [ERC-6909](./eip-6909.md)-based implementations can use the multi token interface: ```solidity /// @notice Interface for ERC-20 based implementations. interface IERC7943Fungible is IERC165 { /// @notice Emitted when tokens are taken from one address and transferred to another. /// @param from The address from which tokens were taken.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", and "MAY" in this document are to be interpreted as described in RFC 2119 and RFC 8174. The following defines the standard interfaces for an [ERC-7943](./eip-7943.md) token contract, which MUST extend from one base token interface such as [ERC-20](./eip-20.md), [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), or [ERC-6909](./eip-6909.md). Note that [ERC-6909](./eip-6909.md)-based implementations can use the multi token interface. ```solidity /// @notice Interface for ERC-20 based implementations. interface IERC7943Fungible is IERC165 { /// @notice Emitted when tokens are taken from one address and transferred to another. /// @param from The address from which tokens were taken.
 
 MOTIVATION:
 Real World Assets (RWAs) represent a significant opportunity to bridge traditional finance and decentralized finance (DeFi). By tokenizing assets like real estate, corporate bonds, commodities, art, or securities, we can unlock benefits such as fractional ownership, programmable compliance, enhanced liquidity through secondary markets for traditionally illiquid assets, and integration with decentralized protocols. However, tokenizing real world assets introduces regulatory requirements often absent in purely digital assets, such as allowlists for users, transfer restrictions, asset freezing, or law enforcement rules. Existing token standards like [ERC-20](./eip-20.md), [ERC-721](./eip-721.md), and [ERC-1155](./eip-1155.md) lack the inherent structure to address these compliance needs directly within

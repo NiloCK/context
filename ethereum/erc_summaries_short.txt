@@ -4687,7 +4687,7 @@ RATIONALE:
 === ERC-7943 ===
 TITLE: uRWA - Universal Real World Asset Interface
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-06-10
 REQUIRES: 165
 

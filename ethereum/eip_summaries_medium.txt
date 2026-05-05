@@ -7060,6 +7060,26 @@ RATIONALE:
 The transaction must fill the entire block to prevent MEV attacks. While some cascading reverts are highly consequential, others are considerably simpler. The budget ensures the full network cost of the operation is paid. For example, reversing a token transfer to the wrong recipient would be relatively cheap. On
 
 
+=== EIP-8197 ===
+TITLE: Cryptographically Agile Transactions
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-04
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+CATX (Cryptographically Agile Transactions) is an [EIP-2718](./eip-2718.md) transaction format that separates the transaction body from its signatures using a flat structure: `[payload_type, payload_body, (sig_type, sig_body)+]`. This enables future migration to post-quantum cryptography without modifying transaction semantics, supports multi-signature payloads resistant to key substitution attacks using chained signature hashes, and
+
+SPECIFICATION:
+### Parameters | Name | Description | Value | |----------------------|------------------------------------------------------|--------| | `CA_TX_TYPE` | [EIP-2718](./eip-2718.md) transaction type | TBD | | `ECDSA_SIG_TYPE` | ECDSA signature identifier | `0x00` | | `SET_CODE_AUTH_TYPE` | [EIP-7702](./eip-7702.md) authorization type (MAGIC) | `0x05` | This EIP defines the transaction format and encoding rules. The assignment
+
+MOTIVATION:
+Current Ethereum transactions tightly couple body and signature by embedding algorithm-specific fields in the transaction, requiring new transaction types for each signature algorithm. CATX addresses three key concerns: 1. **Post-quantum cryptography adoption**: Signature types are independent of payload types, enabling migration to PQC algorithms without modifying transaction semantics 2.
+
+RATIONALE:
+### Separation of Format and Algorithm Registry This EIP intentionally limits its scope to the transaction format—encoding, signature hash chaining, and address derivation rules—without establishing a comprehensive signature type registry. Algorithm assignments, `sig_body` encoding rules, and gas cost adjustments for new signature types are concerns that evolve independently of
+
+
 === EIP-7862 ===
 TITLE: Delayed State Root
 TYPE: Standards Track Core

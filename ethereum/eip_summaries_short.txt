@@ -7060,6 +7060,26 @@ RATIONALE:
 The transaction must fill the entire block to prevent MEV attacks. While some cascading reverts are highly consequential, others are considerably simpler. The budget
 
 
+=== EIP-8197 ===
+TITLE: Cryptographically Agile Transactions
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2025-03-04
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+CATX (Cryptographically Agile Transactions) is an [EIP-2718](./eip-2718.md) transaction format that separates the transaction body from its signatures using a flat structure: `[payload_type, payload_body, (sig_type,
+
+SPECIFICATION:
+### Parameters | Name | Description | Value | |----------------------|------------------------------------------------------|--------| | `CA_TX_TYPE` | [EIP-2718](./eip-2718.md) transaction type | TBD | | `ECDSA_SIG_TYPE` | ECDSA signature
+
+MOTIVATION:
+Current Ethereum transactions tightly couple body and signature by embedding algorithm-specific fields in the transaction, requiring new transaction types for each signature algorithm. CATX
+
+RATIONALE:
+### Separation of Format and Algorithm Registry This EIP intentionally limits its scope to the transaction format—encoding, signature hash chaining, and address derivation rules—without
+
+
 === EIP-7862 ===
 TITLE: Delayed State Root
 TYPE: Standards Track Core
