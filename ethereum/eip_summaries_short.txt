@@ -6324,6 +6324,26 @@ RATIONALE:
 This one Method actually returns 3 different important data points: 1. The 4 fields of an account-object as specified in the yellow paper `[nonce,
 
 
+=== EIP-8246 ===
+TITLE: Remove SELFDESTRUCT Burn
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-01
+REQUIRES: 1, 6, 1, ,,  , 6, 7, 8, 0
+
+SUMMARY:
+This EIP removes the remaining cases where `SELFDESTRUCT` burns ETH. Accounts marked for selfdestruction still have their code, storage, and nonce cleared at transaction
+
+SPECIFICATION:
+The behaviour of `SELFDESTRUCT` is changed in the following way: 1. When `SELFDESTRUCT` is executed in the same transaction as the contract was created,
+
+MOTIVATION:
+The remaining burn behavior of `SELFDESTRUCT` is almost completely unused, but it still forces special-case handling in EVM implementations, specifications, and tests. After [EIP-6780](./eip-6780.md),
+
+RATIONALE:
+This change removes burn behavior at its source instead of adding dedicated handling for it elsewhere. The chosen design preserves the state-clearing effect of
+
+
 === EIP-7723 ===
 TITLE: Network Upgrade Inclusion Stages
 TYPE: Meta 

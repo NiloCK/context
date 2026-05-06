@@ -6324,6 +6324,26 @@ RATIONALE:
 This one Method actually returns 3 different important data points: 1. The 4 fields of an account-object as specified in the yellow paper `[nonce, balance, storageHash, codeHash ]`, which allows storing a hash of the account-object in order to keep track of changes. 2. The MerkleProof for the account
 
 
+=== EIP-8246 ===
+TITLE: Remove SELFDESTRUCT Burn
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-01
+REQUIRES: 1, 6, 1, ,,  , 6, 7, 8, 0
+
+SUMMARY:
+This EIP removes the remaining cases where `SELFDESTRUCT` burns ETH. Accounts marked for selfdestruction still have their code, storage, and nonce cleared at transaction finalization, but any remaining balance is preserved.
+
+SPECIFICATION:
+The behaviour of `SELFDESTRUCT` is changed in the following way: 1. When `SELFDESTRUCT` is executed in the same transaction as the contract was created, and if the beneficiary address is the executing account address, the balance of this account remains unchanged. 2. During transaction finalization, all accounts marked for
+
+MOTIVATION:
+The remaining burn behavior of `SELFDESTRUCT` is almost completely unused, but it still forces special-case handling in EVM implementations, specifications, and tests. After [EIP-6780](./eip-6780.md), ETH can still be burned only when a contract created in the same transaction executes `SELFDESTRUCT`, either with itself as beneficiary or in a case
+
+RATIONALE:
+This change removes burn behavior at its source instead of adding dedicated handling for it elsewhere. The chosen design preserves the state-clearing effect of `SELFDESTRUCT` for contracts created in the same transaction. The account may still survive in the state, but only as a balance-only account. This removes the
+
+
 === EIP-7723 ===
 TITLE: Network Upgrade Inclusion Stages
 TYPE: Meta 
