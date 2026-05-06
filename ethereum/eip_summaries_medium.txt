@@ -1719,7 +1719,7 @@ TITLE: Frame Transaction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-01-29
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 4, 8, 4, 4
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4
 
 SUMMARY:
 Add a new transaction whose validity and gas payment can be defined abstractly. Instead of relying solely on a single ECDSA signature, accounts may freely define and interpret their signature scheme using any cryptographic system.
