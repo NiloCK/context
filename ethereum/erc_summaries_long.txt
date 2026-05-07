@@ -5032,15 +5032,15 @@ RATIONALE:
 === ERC-8152 ===
 TITLE: Content-Addressable Logic Modules (CALM)
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-01-18
 REQUIRES: 
 
 SUMMARY:
-This standard defines Content-Addressable Logic Modules (CALM) - minimal, deterministic blocks of code designed for execution via delegatecall within Diamond ([ERC-2535](./eip-2535.md), [ERC-8109](./eip-8109.md)), UUPS ([ERC-1822](./eip-1822.md)) and other proxy architectures. A CALM's address is a direct cryptographic commitment to its runtime bytecode. By eliminating deployment-side effects (initialisation code - constructors, immutables), CALM ensures that identical logic resides at identical addresses across all EVM chains. RuntimeBytecode is the Identity.
+This standard defines Content-Addressable Logic Modules (CALM) - minimal, deterministic blocks of code designed for execution via delegatecall within Diamond ([ERC-2535](./eip-2535.md), [ERC-8153](./eip-8153.md)), UUPS ([ERC-1822](./eip-1822.md)), Modular Dispatch Proxies ([ERC-8167](./eip-8167.md)) and other proxy architectures. A CALM's address is a direct cryptographic commitment to its runtime bytecode. By eliminating deployment-side effects (initialisation code - constructors, immutables), CALM ensures that identical logic resides at identical addresses across all EVM chains. Runtime Bytecode is Identity.
 
 SPECIFICATION:
-### Storage standards and Proxy-Scoped Execution It is expected CALM operates exclusively on the **storage context of the calling Proxy**. However no checks are required to prevent possessing or initialising its own storage. To prevent storage collisions and ensure modularity, CALM MUST utilize deterministic storage offsets to manipulate the Proxy’s state. CALMs SHOULD comply with either [ERC-7201](./eip-7201.md) (Namespaced Storage) or [ERC-8042](./eip-8042.md) (Diamond Storage) or any future standard of storage separation by defining their internal state at unique, hashed storage locations and utilizing standardized storage slots for shared infrastructure state to ensure interoperability within a proxy. ### Deployment Constraints
+### Storage standards and Proxy-Scoped Execution It is expected CALM operates exclusively on the **storage context of the calling Proxy**. However no checks are required to prevent possessing or initialising its own storage. To prevent storage collisions and ensure modularity, CALM MUST utilize deterministic storage offsets to manipulate the Proxy’s state. CALMs SHOULD comply with either [ERC-7201](./eip-7201.md) (Namespaced Storage) or [ERC-8042](./eip-8042.md) (Diamond Storage) or any future standard of storage separation by defining their internal state at unique, hashed storage locations and utilizing standardized storage slots for shared infrastructure state to ensure interoperability within a proxy. Exceptionally CALM CAN
 
 MOTIVATION:
 Current libraries and Diamond Facets are scattered and duplicated within one chain, while being almost impossible to reuse on another chains on the same deployed address. That complicates cross-chain verification and logic reuse increasing operational overhead for multi chain projects. By standardizing an "atomic" format - free of constructors, immutables, selfdestruct and having the deployment address equal to `f(constant, runtimeBytecode)` - we enable a global library of Content-Addressable Logic Modules that live at identical addresses on every chain with zero overhead and with option for permissionless redeployment on another chains.
@@ -5384,6 +5384,26 @@ Abstract tokens enable zero-cost token minting, facilitating high-volume applica
 
 RATIONALE:
 ### Meta format The abstract token message `meta` field is simply a byte array to preserve the widest possible accesibility. * Applications handling abstract tokens can interact with the implementation contract for token metadata rather than parsing this field, so legibility is of secondary importance * A byte array can be decoded as a struct and checked for errors within the implementation contract * Future token standards will include unpredictable metadata ### Proof format Similar considerations went into defining the `proof` field as a plain byte array: * The contents of this field may vary, e.g. an array
+
+
+=== ERC-8255 ===
+TITLE: Expiring Token Approvals
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-05-06
+REQUIRES: 2, 0, ,,  , 2, 6, 1, 2
+
+SUMMARY:
+This specification extends [ERC-20](./eip-20.md) approvals with an expiration timestamp. Existing `approve(address,uint256)` calls remain valid, but approvals created through that function expire after the token contract's default maximum approval duration. If the token also implements [ERC-2612](./eip-2612.md), approvals created through `permit` expire under the same default-duration rule without changing the `permit` signature. A new overload allows token owners to approve a spender for a shorter duration, and a new view function exposes both the current allowance and its expiration.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Compliant contracts MUST implement the following interface in addition to [ERC-20](./eip-20.md): ```solidity interface IERC8255 /* is IERC20 */ { /// @notice Returns the maximum approval duration, in seconds. function maxApprovalDuration() external view returns (uint32); /// @notice Returns the expiration timestamp and current allowance. function allowanceAndExpiration(address owner, address spender) external view returns (uint64 expiration, uint256 allowance); /// @notice Approves `spender` for `amount` tokens for `duration`
+
+MOTIVATION:
+ERC-20 approvals are commonly granted for values much larger than the intended immediate spend, including unlimited approvals. These allowances remain valid until explicitly changed, creating a durable authorization that can be used long after the user has forgotten the original interaction. Expiring approvals preserve the existing ERC-20 approval workflow while bounding the lifetime of each authorization. Wallets and applications can continue to call `approve(address,uint256)` or, where supported, `permit`, while contracts and interfaces that understand this extension can request shorter-lived approvals and display expiration information to users.
+
+RATIONALE:
+Using `approve(address,uint256)` as an expiring approval with a default duration preserves the existing ERC-20 approval flow. Applications that are unaware of this extension can keep using the existing ABI, and users receive a bounded authorization instead of a permanent one. The `approve(address,uint256,uint32)` overload allows applications to request a shorter duration without introducing a new verb or changing the meaning of ERC-20 `approve`. A `uint32` duration is sufficient to express approximately 136 years in seconds, which is longer than any reasonable expiring approval. The ERC-2612 `permit` signature is unchanged so that existing wallets, typed-data encoders, and permit-aware applications do
 
 
 === ERC-7272 ===
