@@ -5403,7 +5403,7 @@ MOTIVATION:
 ERC-20 approvals are commonly granted for values much larger than the intended immediate spend, including unlimited approvals. These allowances remain valid until explicitly changed, creating a durable authorization that can be used long after the user has forgotten the original interaction. Expiring approvals preserve the existing ERC-20 approval workflow
 
 RATIONALE:
-Using `approve(address,uint256)` as an expiring approval with a default duration preserves the existing ERC-20 approval flow. Applications that are unaware of this extension can keep using the existing ABI, and users receive a bounded authorization instead of a permanent one. The `approve(address,uint256,uint32)` overload allows applications to request a shorter
+Using `approve(address,uint256)` as an expiring approval with a default duration preserves the existing ERC-20 approval flow. Applications that are unaware of this extension can keep using the existing ABI, and users receive a bounded authorization instead of a permanent one. The `approveForDuration(address,uint256,uint32)` function allows applications to request a shorter
 
 
 === ERC-7272 ===
