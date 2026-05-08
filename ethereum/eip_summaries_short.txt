@@ -6335,7 +6335,7 @@ SUMMARY:
 This EIP removes the remaining cases where `SELFDESTRUCT` burns ETH. Accounts marked for selfdestruction still have their code, storage, and nonce cleared at transaction
 
 SPECIFICATION:
-The behaviour of `SELFDESTRUCT` is changed in the following way: 1. When `SELFDESTRUCT` is executed in the same transaction as the contract was created,
+The behavior of `SELFDESTRUCT` changes as follows: 1. When `SELFDESTRUCT` is executed in the same transaction as the contract was created, and if the
 
 MOTIVATION:
 The remaining burn behavior of `SELFDESTRUCT` is almost completely unused, but it still forces special-case handling in EVM implementations, specifications, and tests. After [EIP-6780](./eip-6780.md),
