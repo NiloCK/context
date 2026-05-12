@@ -1719,16 +1719,16 @@ TITLE: Frame Transaction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-01-29
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-Add a new transaction whose validity and gas payment can be defined abstractly. Instead of relying solely on a single ECDSA signature, accounts may
+Adds a new transaction whose validity and gas payment can be defined abstractly. This is achieved by decomposing the transaction into a sequence of
 
 SPECIFICATION:
 ### Constants | Name | Value | |---------------------------|-----------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `FRAME_TX_PER_FRAME_COST` | `475` | |
 
 MOTIVATION:
-This new transaction provides a native off-ramp from the elliptic curve based cryptographic system used to authenticate transactions today, to post-quantum (PQ) secure systems.
+The frame transaction type offers UX and security benefits across many areas: - it provides a native off-ramp from the elliptic curve based cryptographic
 
 RATIONALE:
 ### Canonical signature hash The canonical signature hash is provided in `TXPARAM` to simplify the development of smart accounts. Computing the signature hash in
@@ -9823,6 +9823,26 @@ ASIC-based miners will have lower operational costs than GPU-based miners, which
 
 RATIONALE:
 This EIP is aimed at breaking existing ASIC-based miners via small changes to the existing ethash algorithm. We hope to accomplish the following: 1.
+
+
+=== EIP-8250 ===
+TITLE: Keyed Nonces for Frame Transactions
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-04-16
+REQUIRES: 8141
+
+SUMMARY:
+Replaces the single sender nonce of an [EIP-8141](./eip-8141.md) frame transaction with a `(nonce_key, nonce_seq)` pair. `nonce_key == 0` aliases the legacy account nonce; each
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+A frame transaction currently consumes one linear sender nonce, so a delayed transaction blocks every later frame transaction from the same sender. This is
+
+RATIONALE:
+A contract-managed nullifier table inside a `VERIFY` frame is not sufficient: `VERIFY` is static-call-like and cannot write ordinary contract state, and deferring the spent-mark
 
 
 === EIP-5345 ===
