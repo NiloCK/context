@@ -9184,7 +9184,7 @@ SUMMARY:
 This EIP defines a resolver profile for ENS that provides features for storage and lookup of DNS records. This allows ENS to be used as a store of authoritative DNS information.
 
 SPECIFICATION:
-The resolver profile to support DNS on ENS follows the resolver specification as defined in [ERC-137](./eip-137.md). Traditionally, DNS is a zone-based system in that all of the records for a zone are kept together in the same file. This has the benefit of simplicity and atomicity of zone updates,
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. The resolver profile to support DNS on ENS follows the resolver specification as defined in [ERC-137](./eip-137.md). Traditionally, DNS is a
 
 MOTIVATION:
 ENS is a highly desirable store for DNS information. It provides the distributed authority of DNS without conflating ownership and authoritative serving of information. With ENS, the owner of a domain has full control over their own DNS records. Also, ENS has the ability (through smart contracts) for a
