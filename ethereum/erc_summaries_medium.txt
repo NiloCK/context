@@ -118,7 +118,7 @@ The existing convention is to use the 'Ethereum' coin type, leading to paths sta
 === ERC-8126 ===
 TITLE: AI Agent Verification
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-01-15
 REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 3, 0, 0, 9, ,,  , 8, 0, 0, 4
 
@@ -1713,12 +1713,12 @@ The "offer" and "consideration" structs from Seaport were used to create a simil
 === ERC-4337 ===
 TITLE: Account Abstraction Using Alt Mempool
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2021-09-29
-REQUIRES: 712
+REQUIRES: 7, 1, 2, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-An account abstraction proposal which completely avoids the need for consensus-layer protocol changes. Instead of adding new protocol features and changing the bottom-layer transaction type, this proposal instead introduces a higher-layer pseudo-transaction object called a `UserOperation`. Users send `UserOperation` objects into a separate mempool. A special class of actor
+Historically, users could interact with Ethereum only by sending transactions from special accounts controlled by private keys, with transaction validation entirely enforced by fixed protocol rules. Account abstraction is an alternative model that allows each account to supply its own validation logic executed as smart contract code, while the
 
 SPECIFICATION:
 ### Definitions * **UserOperation** - a structure that describes a transaction to be sent on behalf of a user. To avoid confusion, it is not named "transaction". * Like a transaction, it contains `to`, `calldata`, `maxFeePerGas`, `maxPriorityFeePerGas`, `nonce`, `signature`. * Unlike a transaction, it contains several other fields, described
@@ -2008,6 +2008,26 @@ The [ERC-721](./eip-721.md) standard enabled an explosion of non-fungible token 
 
 RATIONALE:
 ### Singleton Registry This proposal specifies a single, canonical registry that can be permissionlessly deployed to any chain at a known address. It purposefully does not specify a common interface that can be implemented by multiple registry contracts. This approach enables several critical properties. #### Counterfactual Accounts All token
+
+
+=== ERC-8226 ===
+TITLE: Regulated Agent Mandate
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-04-12
+REQUIRES: 165
+
+SUMMARY:
+This standard defines a compliance delegation layer for AI agents operating on tokenized regulated assets. It specifies how a verified principal can delegate scoped, time-bounded, and financially capped authority to an on-chain agent, and how regulated token contracts verify mandate validity through a pre-transfer compliance hook before executing transfers.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHOULD", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). All implementations MUST implement [ERC-165](./eip-165.md). RAMS defines two interfaces that MUST be deployed as separate contracts: | Interface | Role |
+
+MOTIVATION:
+The market for tokenized real-world assets is entering a phase of institutional adoption. Platforms operating under regulatory frameworks are beginning to support programmable, agent-driven portfolio management on regulated instruments. AI agents that can autonomously execute securities transactions are no longer theoretical — they are being built now, without a
+
+RATIONALE:
+RAMS is defined as a separate ERC rather than an extension of any specific agent identity or token compliance standard because mandate delegation is a distinct concern. Agent identity standards (such as [ERC-8004](./eip-8004.md)) handle discovery and trust signals. Token compliance frameworks (such as [ERC-7943](./eip-7943.md) or [ERC-3643](./eip-3643.md)) handle investor eligibility.
 
 
 === ERC-2390 ===

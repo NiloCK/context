@@ -118,7 +118,7 @@ The existing convention is to use the 'Ethereum' coin type, leading to paths sta
 === ERC-8126 ===
 TITLE: AI Agent Verification
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-01-15
 REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 3, 0, 0, 9, ,,  , 8, 0, 0, 4
 
@@ -1713,12 +1713,12 @@ The "offer" and "consideration" structs from Seaport were used to create a simil
 === ERC-4337 ===
 TITLE: Account Abstraction Using Alt Mempool
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2021-09-29
-REQUIRES: 712
+REQUIRES: 7, 1, 2, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-An account abstraction proposal which completely avoids the need for consensus-layer protocol changes. Instead of adding new protocol features and changing the bottom-layer transaction type, this proposal instead introduces a higher-layer pseudo-transaction object called a `UserOperation`. Users send `UserOperation` objects into a separate mempool. A special class of actor called bundlers package up a set of these objects into a transaction making a `handleOps` call to a special contract, and that transaction then gets included in a block.
+Historically, users could interact with Ethereum only by sending transactions from special accounts controlled by private keys, with transaction validation entirely enforced by fixed protocol rules. Account abstraction is an alternative model that allows each account to supply its own validation logic executed as smart contract code, while the protocol provides only minimal constraints. This document is an account abstraction proposal which completely avoids the need for consensus-layer protocol changes. Instead of adding new protocol features and changing the bottom-layer transaction type, this proposal instead introduces a higher-layer pseudo-transaction object called a `UserOperation`. Users send `UserOperation` objects into
 
 SPECIFICATION:
 ### Definitions * **UserOperation** - a structure that describes a transaction to be sent on behalf of a user. To avoid confusion, it is not named "transaction". * Like a transaction, it contains `to`, `calldata`, `maxFeePerGas`, `maxPriorityFeePerGas`, `nonce`, `signature`. * Unlike a transaction, it contains several other fields, described below. * Notably, the `signature` field usage is not defined by the protocol, but by the Smart Contract Account implementation. * **Sender** - the Smart Contract Account sending a `UserOperation`. * **EntryPoint** - a singleton contract to execute bundles of `UserOperations`. Bundlers should whitelist the supported `EntryPoint`. * **Bundler**
@@ -2008,6 +2008,26 @@ The [ERC-721](./eip-721.md) standard enabled an explosion of non-fungible token 
 
 RATIONALE:
 ### Singleton Registry This proposal specifies a single, canonical registry that can be permissionlessly deployed to any chain at a known address. It purposefully does not specify a common interface that can be implemented by multiple registry contracts. This approach enables several critical properties. #### Counterfactual Accounts All token bound accounts are created using the create2 opcode, enabling accounts to exist in a counterfactual state prior to their creation. This allows token bound accounts to receive assets prior to contract creation. A singleton account registry ensures a common addressing scheme is used for all token bound account addresses.
+
+
+=== ERC-8226 ===
+TITLE: Regulated Agent Mandate
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-04-12
+REQUIRES: 165
+
+SUMMARY:
+This standard defines a compliance delegation layer for AI agents operating on tokenized regulated assets. It specifies how a verified principal can delegate scoped, time-bounded, and financially capped authority to an on-chain agent, and how regulated token contracts verify mandate validity through a pre-transfer compliance hook before executing transfers. Regulated Agent Mandate Standard, or RAMS, is agnostic to the agent identity system, the token standard, and the token compliance framework. It is designed to work with any trustless agent identity system that maps wallet addresses to agent identifiers (such as [ERC-8004](./eip-8004.md)), any token standard ([ERC-20](./eip-20.md), [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md)), and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHOULD", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). All implementations MUST implement [ERC-165](./eip-165.md). RAMS defines two interfaces that MUST be deployed as separate contracts: | Interface | Role | Deployed by | |---|---|---| | `IComplianceProvider` | Verifies principal eligibility (identity + compliance) | Compliance operator or platform | | `IAgentMandate` | Mandate lifecycle, execution recording, freeze, principal resolution, and views | RAMS registry operator | RAMS-aware regulated token contracts consult the RAMS registry inside their existing pre-transfer compliance
+
+MOTIVATION:
+The market for tokenized real-world assets is entering a phase of institutional adoption. Platforms operating under regulatory frameworks are beginning to support programmable, agent-driven portfolio management on regulated instruments. AI agents that can autonomously execute securities transactions are no longer theoretical — they are being built now, without a standard that makes their operation legally defensible. An agent purchasing a tokenized fund unit on behalf of an investor must satisfy three conditions that no existing standard addresses jointly: 1. The principal on whose behalf the agent acts must be a verified, Know Your Customer (KYC)-cleared legal identity, not
+
+RATIONALE:
+RAMS is defined as a separate ERC rather than an extension of any specific agent identity or token compliance standard because mandate delegation is a distinct concern. Agent identity standards (such as [ERC-8004](./eip-8004.md)) handle discovery and trust signals. Token compliance frameworks (such as [ERC-7943](./eip-7943.md) or [ERC-3643](./eip-3643.md)) handle investor eligibility. RAMS handles the delegation of authority from a principal to an agent. Coupling RAMS to a specific identity or compliance standard would limit its applicability across the fragmented regulated token ecosystem. A single `IComplianceProvider` interface is used rather than separate identity and compliance interfaces because identity verification is a
 
 
 === ERC-2390 ===

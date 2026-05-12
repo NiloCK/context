@@ -118,7 +118,7 @@ The existing convention is to use the 'Ethereum' coin type, leading to paths sta
 === ERC-8126 ===
 TITLE: AI Agent Verification
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-01-15
 REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 3, 0, 0, 9, ,,  , 8, 0, 0, 4
 
@@ -1713,12 +1713,12 @@ The "offer" and "consideration" structs from Seaport were used to create a simil
 === ERC-4337 ===
 TITLE: Account Abstraction Using Alt Mempool
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2021-09-29
-REQUIRES: 712
+REQUIRES: 7, 1, 2, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-An account abstraction proposal which completely avoids the need for consensus-layer protocol changes. Instead of adding new protocol features and changing the bottom-layer transaction
+Historically, users could interact with Ethereum only by sending transactions from special accounts controlled by private keys, with transaction validation entirely enforced by fixed
 
 SPECIFICATION:
 ### Definitions * **UserOperation** - a structure that describes a transaction to be sent on behalf of a user. To avoid confusion, it is
@@ -2008,6 +2008,26 @@ The [ERC-721](./eip-721.md) standard enabled an explosion of non-fungible token 
 
 RATIONALE:
 ### Singleton Registry This proposal specifies a single, canonical registry that can be permissionlessly deployed to any chain at a known address. It purposefully
+
+
+=== ERC-8226 ===
+TITLE: Regulated Agent Mandate
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-04-12
+REQUIRES: 165
+
+SUMMARY:
+This standard defines a compliance delegation layer for AI agents operating on tokenized regulated assets. It specifies how a verified principal can delegate scoped,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHOULD", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC
+
+MOTIVATION:
+The market for tokenized real-world assets is entering a phase of institutional adoption. Platforms operating under regulatory frameworks are beginning to support programmable, agent-driven
+
+RATIONALE:
+RAMS is defined as a separate ERC rather than an extension of any specific agent identity or token compliance standard because mandate delegation is
 
 
 === ERC-2390 ===
