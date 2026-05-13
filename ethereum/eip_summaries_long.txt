@@ -826,23 +826,23 @@ Choosing common word use promotes interoperability of implementations and increa
 
 
 === EIP-7851 ===
-TITLE: Deactivate a Delegated EOA's Key
+TITLE: Disable ECDSA Authority for Delegated EOAs
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-12-27
 REQUIRES: 7702
 
 SUMMARY:
-This EIP introduces a system contract that enables an [EIP-7702](./eip-7702) delegated EOA to schedule an irreversible deactivation of its ECDSA private key for ECDSA-authenticated transaction sending and [EIP-7702](./eip-7702) authorizations. Deactivation uses a 7-day delay (cancellation window). After finalization, the key is permanently deactivated in-protocol. The system contract mapping serves as the single source of truth for key status.
+This EIP extends [EIP-7702](./eip-7702.md) with a magic address that changes an active delegation, `0xef0100 || delegate_address`, into a deactivated delegation, `0xef0101 || delegate_address`. The deactivated designation preserves delegated code execution while irreversibly disabling the authority's ECDSA transaction and [EIP-7702](./eip-7702.md) authorization capability.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Parameters | Constant | Value | |-----------------------------------|------------------------------| | `SYSTEM_CONTRACT_ADDRESS` | `0xTBD` | | `DEACTIVATION_DELAY` | `604800` (7 days in seconds) | ### System Contract The system contract is deployed at `SYSTEM_CONTRACT_ADDRESS` following the same mechanism as [EIP-4788](./eip-4788) and [EIP-2935](./eip-2935): a pre-signed deployment transaction using Nick's method is included at fork activation. Deployment parameters TBD. #### Status Semantics Let `ts = finalizationTimestamp[account]`: | Condition
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. `||` denotes byte concatenation. ### Parameters | Parameter | Value | | --- | --- | | `DEACTIVATE_ADDRESS` | `0x0000000000000000000000000000000000007851` | This EIP introduces `0xef0101` as a new delegation prefix. Account code `0xef0101 || delegate_address` permanently locks the delegation to `delegate_address` and marks the authority's ECDSA authority as deactivated. Clients MUST treat the deactivated delegation as a delegation for code execution. Any operation that
 
 MOTIVATION:
-[EIP-7702](./eip-7702) enables EOAs to gain smart contract wallet behavior, but the EOA's ECDSA key retains unrestricted signing authority that can override any delegated contract logic. This EIP provides a one-way migration path toward smart contract control, including post-quantum migration strategies, by allowing a delegated EOA to permanently disable its ECDSA transaction-signing authority after a safety delay.
+[EIP-7702](./eip-7702.md) allows an EOA to delegate execution to wallet code, but the ECDSA key can still sign transactions and replace or clear the delegation. Users who have fully moved authority into delegated code need a small protocol-level mechanism to burn that residual ECDSA authority.
 
 RATIONALE:
-Following the system contract pattern of [EIP-4788](./eip-4788), [EIP-2935](./eip-2935), and [EIP-7002](./eip-7002), this EIP uses a system contract to consolidate deactivation, cancellation, and status queries into a single on-chain entry point. Alternatives considered: - **Account-state field**: adding a `timestamp` field in account state requires account RLP encoding and p2p protocol changes. - **Reusing existing account fields**: deactivation status could be encoded into the nonce or appended to the delegated EOA's 23-byte code. However, the delay mechanism requires storing a finalization timestamp. A nonce is an incrementing counter and a delegation designator is a code prefix. Neither is designed to carry
+Using a magic address makes the deactivation intent explicit in the authorization payload without changing [EIP-7702](./eip-7702.md)'s payload format. `DEACTIVATE_ADDRESS` is a reserved operation marker, not an ordinary delegate target. A payload-level deactivation flag is not used because it would add implementation complexity and plumbing across transaction encoding, signing, and validation. Using a same-delegate authorization as the deactivation trigger is not used because it is unintuitive and consumes the normal meaning of reauthorizing the same delegate address. With `DEACTIVATE_ADDRESS`, a pending deactivation authorization can be invalidated by consuming the authority nonce with any normal transaction or [EIP-7702](./eip-7702.md) authorization, including
 
 
 === EIP-6404 ===
@@ -8682,23 +8682,23 @@ The proposed changes address forward compatibility by applying Postel's Law (als
 
 
 === EIP-8151 ===
-TITLE: Private Key Deactivation Aware ecRecover
+TITLE: ECDSA Authority Deactivation Aware ecRecover
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-02-09
 REQUIRES: 7851
 
 SUMMARY:
-This EIP modifies the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` to respect [EIP-7851](./eip-7851.md) key deactivation. After performing ECDSA public key recovery, the precompile checks whether the recovered address has a deactivated private key. If so, it returns 32 zero bytes (the existing failure sentinel of `ecRecover`) instead of the recovered address.
+This EIP modifies the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` to respect [EIP-7851](./eip-7851.md) ECDSA authority deactivation. After performing ECDSA public key recovery, the precompile checks whether the recovered address has deactivated ECDSA authority. If so, it returns 32 zero bytes (the existing failure sentinel of `ecRecover`) instead of the recovered address.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). | Constant | Value | |----------------------------|----------------------------------------------| | `ECRECOVER_ADDRESS` | `0x0000000000000000000000000000000000000001` | | `COLD_ACCOUNT_ACCESS_COST` | 2600 | | `WARM_ACCOUNT_ACCESS_COST` | 100 | ### Modified `ecRecover` Behavior Starting at the activation of this EIP, the `ecRecover` precompile at address `ECRECOVER_ADDRESS` MUST perform the following steps: 1. Perform ECDSA public key recovery from the input `(hash, v, r, s)` as currently specified, yielding a `recovered_address`. 2. If
 
 MOTIVATION:
-[EIP-7851](./eip-7851.md) enables delegated EOAs (per [EIP-7702](./eip-7702.md)) to deactivate their private keys, preventing those keys from authorizing transactions or new delegation authorizations. However, the `ecRecover` precompile is currently a pure cryptographic function with no awareness of account state. Even after an EOA's key is deactivated, on-chain signature verification through `ecRecover` continues to succeed for that key. This affects contracts that rely on `ecRecover` for signature-based authorization, such as ERC-20 contracts implementing `permit` ([ERC-2612](./eip-2612.md)). Since many such contracts are immutable and cannot be updated to add deactivation checks, modifying `ecRecover` at the protocol level is a practical path.
+[EIP-7851](./eip-7851.md) enables delegated EOAs (per [EIP-7702](./eip-7702.md)) to deactivate their ECDSA authority, preventing that authority from signing transactions or new delegation authorizations. However, the `ecRecover` precompile is currently a pure cryptographic function with no awareness of account state. Even after an EOA's ECDSA authority is deactivated, on-chain signature verification through `ecRecover` continues to succeed for that authority. This affects contracts that rely on `ecRecover` for signature-based authorization, such as ERC-20 contracts implementing `permit` ([ERC-2612](./eip-2612.md)). Since many such contracts are immutable and cannot be updated to add deactivation checks, modifying `ecRecover` at the protocol level is a practical path.
 
 RATIONALE:
-### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., ERC-20 `permit` implementations) are immutable and cannot be upgraded to incorporate deactivation checks. A protocol-level change ensures these existing contracts automatically benefit from key deactivation without requiring redeployment. ### Returning 32 Zero Bytes When a deactivated key is detected, the precompile returns 32 zero bytes rather than triggering an execution failure (`success = 0`). Currently, malformed `v`, out of range `r`/`s`, and failed recovery all return 32 zero bytes with `success = 1`, and `ecRecover`
+### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., ERC-20 `permit` implementations) are immutable and cannot be upgraded to incorporate deactivation checks. A protocol-level change ensures these existing contracts automatically benefit from ECDSA authority deactivation without requiring redeployment. ### Returning 32 Zero Bytes When deactivated ECDSA authority is detected, the precompile returns 32 zero bytes rather than triggering an execution failure (`success = 0`). Currently, malformed `v`, out of range `r`/`s`, and failed recovery all return 32 zero bytes with `success = 1`, and
 
 
 === EIP-6110 ===

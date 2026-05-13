@@ -826,23 +826,23 @@ Choosing common word use promotes interoperability of implementations and increa
 
 
 === EIP-7851 ===
-TITLE: Deactivate a Delegated EOA's Key
+TITLE: Disable ECDSA Authority for Delegated EOAs
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-12-27
 REQUIRES: 7702
 
 SUMMARY:
-This EIP introduces a system contract that enables an [EIP-7702](./eip-7702) delegated EOA to schedule an irreversible deactivation of its ECDSA private key for ECDSA-authenticated
+This EIP extends [EIP-7702](./eip-7702.md) with a magic address that changes an active delegation, `0xef0100 || delegate_address`, into a deactivated delegation, `0xef0101 || delegate_address`. The
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-[EIP-7702](./eip-7702) enables EOAs to gain smart contract wallet behavior, but the EOA's ECDSA key retains unrestricted signing authority that can override any delegated contract
+[EIP-7702](./eip-7702.md) allows an EOA to delegate execution to wallet code, but the ECDSA key can still sign transactions and replace or clear the delegation.
 
 RATIONALE:
-Following the system contract pattern of [EIP-4788](./eip-4788), [EIP-2935](./eip-2935), and [EIP-7002](./eip-7002), this EIP uses a system contract to consolidate deactivation, cancellation, and status queries into
+Using a magic address makes the deactivation intent explicit in the authorization payload without changing [EIP-7702](./eip-7702.md)'s payload format. `DEACTIVATE_ADDRESS` is a reserved operation marker,
 
 
 === EIP-6404 ===
@@ -8682,20 +8682,20 @@ The proposed changes address forward compatibility by applying Postel's Law (als
 
 
 === EIP-8151 ===
-TITLE: Private Key Deactivation Aware ecRecover
+TITLE: ECDSA Authority Deactivation Aware ecRecover
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-02-09
 REQUIRES: 7851
 
 SUMMARY:
-This EIP modifies the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` to respect [EIP-7851](./eip-7851.md) key deactivation. After performing ECDSA public key recovery, the precompile checks whether
+This EIP modifies the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` to respect [EIP-7851](./eip-7851.md) ECDSA authority deactivation. After performing ECDSA public key recovery, the precompile checks
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-[EIP-7851](./eip-7851.md) enables delegated EOAs (per [EIP-7702](./eip-7702.md)) to deactivate their private keys, preventing those keys from authorizing transactions or new delegation authorizations. However, the `ecRecover`
+[EIP-7851](./eip-7851.md) enables delegated EOAs (per [EIP-7702](./eip-7702.md)) to deactivate their ECDSA authority, preventing that authority from signing transactions or new delegation authorizations. However, the `ecRecover`
 
 RATIONALE:
 ### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., ERC-20
