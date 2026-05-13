@@ -4629,19 +4629,19 @@ TITLE: Cross Chain Intents
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2024-04-11
-REQUIRES: 
+REQUIRES: 7930
 
 SUMMARY:
-The following standard allows for the implementation of a standard API for cross-chain value-transfer systems. This standard provides generic order structs, as well as
+This ERC defines a solver-facing interface for intent protocols. A protocol exposes orders as opaque payloads and provides a *resolver* contract that translates those
 
 SPECIFICATION:
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
 
 MOTIVATION:
-Intent-based systems have become the preeminent solution for end-user cross-chain interaction by abstracting away the complexity and time constraints of traditional bridges. One of
+An order is an offer of payment in exchange for the fulfillment of a set of requirements. Intent protocols allow users to express desired
 
 RATIONALE:
-### Generic OrderData A key consideration is to ensure that a broad range of cross-chain intent designs can work within the same standard. To
+### Resolver-Centric Standardization A key consideration is to ensure that a broad range of intent designs can work within the same standard. To enable
 
 
 === ERC-3440 ===

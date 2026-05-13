@@ -833,10 +833,10 @@ CREATED: 2024-12-27
 REQUIRES: 7702
 
 SUMMARY:
-This EIP extends [EIP-7702](./eip-7702.md) with a magic address that changes an active delegation, `0xef0100 || delegate_address`, into a deactivated delegation, `0xef0101 || delegate_address`. The
+This EIP extends [EIP-7702](./eip-7702.md) with a magic address that changes a standard delegation, `0xef0100 || delegate_address`, into a permanent delegation, `0xef0101 || delegate_address`. The
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+`||` denotes byte concatenation. ### Parameters | Parameter | Value | | --- | --- | | `DEACTIVATE_ADDRESS` | `0x0000000000000000000000000000000000007851` | This EIP introduces
 
 MOTIVATION:
 [EIP-7702](./eip-7702.md) allows an EOA to delegate execution to wallet code, but the ECDSA key can still sign transactions and replace or clear the delegation.
@@ -2701,19 +2701,19 @@ TITLE: State-access gas cost update
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-03
-REQUIRES: 
+REQUIRES: 7, 9, 0, 4, ,,  , 8, 0, 3, 7
 
 SUMMARY:
 This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the
 
 SPECIFICATION:
-### Parameters Upon activation of this EIP, the following parameters of the gas model are renamed: | **Parameter** | **New name** | |:---:|:---:| |
+### Parameters Upon activation of this EIP, the following parameters of the gas model are introduced/updated: | **Parameter** | **Description** | **Current value** |
 
 MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](./eip-2929.md) was included in the Berlin fork in March 2021
 
 RATIONALE:
-### Benchmarking This proposal does not yet have finalized numbers. To achieve this, we require stateful benchmarks, which are currently in development. Once we
+### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The parameters selected for repricing in this EIP were chosen based on
 
 
 === EIP-170 ===
@@ -9162,13 +9162,13 @@ TITLE: State Creation Gas Cost Increase
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-01
-REQUIRES: 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 8
+REQUIRES: 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 8
 
 SUMMARY:
-This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It introduces a new variable,`CPSB`
+This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It introduces a new variable,
 
 SPECIFICATION:
-### New parameters | **Parameter** | **Value** | |:---:|:---:| | `CPSB` | 1174 | | `STATE_BYTES_PER_STORAGE_SET` | 32 | | `STATE_BYTES_PER_NEW_ACCOUNT` | 112 |
+### New parameters | **Parameter** | **Value** | |:---:|:---:| | `CPSB` | 1530 | | `STATE_BYTES_PER_STORAGE_SET` | 64 | | `STATE_BYTES_PER_NEW_ACCOUNT` | 120 |
 
 MOTIVATION:
 State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance,

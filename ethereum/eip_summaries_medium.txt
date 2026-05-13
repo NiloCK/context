@@ -833,10 +833,10 @@ CREATED: 2024-12-27
 REQUIRES: 7702
 
 SUMMARY:
-This EIP extends [EIP-7702](./eip-7702.md) with a magic address that changes an active delegation, `0xef0100 || delegate_address`, into a deactivated delegation, `0xef0101 || delegate_address`. The deactivated designation preserves delegated code execution while irreversibly disabling the authority's ECDSA transaction and [EIP-7702](./eip-7702.md) authorization capability.
+This EIP extends [EIP-7702](./eip-7702.md) with a magic address that changes a standard delegation, `0xef0100 || delegate_address`, into a permanent delegation, `0xef0101 || delegate_address`. The permanent delegation preserves delegated code behavior while irreversibly disabling the authority's ECDSA transaction and [EIP-7702](./eip-7702.md) authorization capability.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. `||` denotes byte concatenation. ### Parameters | Parameter | Value | | --- | ---
+`||` denotes byte concatenation. ### Parameters | Parameter | Value | | --- | --- | | `DEACTIVATE_ADDRESS` | `0x0000000000000000000000000000000000007851` | This EIP introduces `0xef0101` as a new delegation prefix. Account code `0xef0101 || delegate_address` permanently locks the delegation to `delegate_address` and marks the authority's ECDSA authority as deactivated.
 
 MOTIVATION:
 [EIP-7702](./eip-7702.md) allows an EOA to delegate execution to wallet code, but the ECDSA key can still sign transactions and replace or clear the delegation. Users who have fully moved authority into delegated code need a small protocol-level mechanism to burn that residual ECDSA authority.
@@ -2701,19 +2701,19 @@ TITLE: State-access gas cost update
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-03
-REQUIRES: 
+REQUIRES: 7, 9, 0, 4, ,,  , 8, 0, 3, 7
 
 SUMMARY:
-This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the base costs for `GAS_STORAGE_UPDATE`, `GAS_COLD_SLOAD`, and `GAS_COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`. The design coordinates with [EIP-8032](./eip-8032.md): before EIP-8032, parameters assume
+This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the base costs for `STORAGE_WRITE`, `COLD_STORAGE_ACCESS`, and `COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`.
 
 SPECIFICATION:
-### Parameters Upon activation of this EIP, the following parameters of the gas model are renamed: | **Parameter** | **New name** | |:---:|:---:| | `GAS_STORAGE_UPDATE` | `GAS_COLD_STORAGE_WRITE` | | `GAS_COLD_SLOAD` | `GAS_COLD_STORAGE_ACCESS` | The following parameters of the gas model are updated: | **Parameter** | **Current value** | **New
+### Parameters Upon activation of this EIP, the following parameters of the gas model are introduced/updated: | **Parameter** | **Description** | **Current value** | **New value** | **Increase** | **Operations affected** | | :---: | :---: | :---: | :---: | :---: | :---: | | `COLD_ACCOUNT_ACCESS` | Cold
 
 MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](./eip-2929.md) was included in the Berlin fork in March 2021 and raised the costs of state-accessing opcodes. Yet, since then, Ethereum's state has grown significantly, thus deteriorating the performance of these operations. This proposal further
 
 RATIONALE:
-### Benchmarking This proposal does not yet have finalized numbers. To achieve this, we require stateful benchmarks, which are currently in development. Once we collect that data, we will set the final numbers. <!-- TODO --> ### Special case for `EXTCODESIZE` and `EXTCODECOPY` Differently from other account read operations,
+### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The parameters selected for repricing in this EIP were chosen based on the estimated million gas per second (Mgas/s) performance of their respective operations. For this EIP, a performance target of **100 million gas per second** is
 
 
 === EIP-170 ===
@@ -9162,16 +9162,16 @@ TITLE: State Creation Gas Cost Increase
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-01
-REQUIRES: 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 8
+REQUIRES: 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 8
 
 SUMMARY:
-This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It introduces a new variable,`CPSB` (cost per state byte), and sets this unit of gas costs per new state byte by targeting an average state growth of 100 GiB per
+This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It introduces a new variable, `CPSB` (cost per state byte), and sets this unit of gas costs per new state byte by targeting an average state growth of 120 GiB
 
 SPECIFICATION:
-### New parameters | **Parameter** | **Value** | |:---:|:---:| | `CPSB` | 1174 | | `STATE_BYTES_PER_STORAGE_SET` | 32 | | `STATE_BYTES_PER_NEW_ACCOUNT` | 112 | | `STATE_BYTES_PER_AUTH_BASE` | 23 | | `SYSTEM_MAX_SSTORES_PER_CALL` | 16 | ### Parameter changes Upon activation of this EIP, the following parameters of the gas model
+### New parameters | **Parameter** | **Value** | |:---:|:---:| | `CPSB` | 1530 | | `STATE_BYTES_PER_STORAGE_SET` | 64 | | `STATE_BYTES_PER_NEW_ACCOUNT` | 120 | | `STATE_BYTES_PER_AUTH_BASE` | 23 | | `SYSTEM_MAX_SSTORES_PER_CALL` | 16 | ### Parameter changes Upon activation of this EIP, the following parameters of the gas model
 
 MOTIVATION:
-State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance, while contract deployment only costs 202 gas units per new byte created, new storage slots cost 625 gas units per new byte created. Also, deploying
+State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance, while contract deployment only costs ~200 gas units per new byte created, new storage slots cost ~313 gas units per new byte created. Also, deploying
 
 RATIONALE:
 ### Deriving the cost per state byte (CPSB) `CPSB` is a fixed parameter derived from a reference block gas limit. The derivation pins the cost so that, at the reference block gas limit and under expected average utilization, total state growth stays at the target rate. If a future

@@ -4629,19 +4629,19 @@ TITLE: Cross Chain Intents
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2024-04-11
-REQUIRES: 
+REQUIRES: 7930
 
 SUMMARY:
-The following standard allows for the implementation of a standard API for cross-chain value-transfer systems. This standard provides generic order structs, as well as a standard set of settlement smart contract interfaces.
+This ERC defines a solver-facing interface for intent protocols. A protocol exposes orders as opaque payloads and provides a *resolver* contract that translates those payloads into a common order representation. Resolvers are used by solvers, offchain via `eth_call`, to obtain the information needed to evaluate and fulfill an order. This enables *programmable intent solvers* to add support for intent protocols by vetting their resolvers instead of implementing protocol-specific execution logic.
 
 SPECIFICATION:
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ### Glossary of Terms - **Destination Chain**: the chain where the intent is executed and the user receives funds. Note: intents can involve multiple destination chains. - **Filler**: a participant who fulfils a user intent on the destination chain(s) and receives payment as a reward. - **Leg**: a portion of the user intent that can be executed independently from others. All legs must be executed for an intent to
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ### Key Terms - **Order**: An offer of payment in exchange for the fulfillment of a set of requirements. - **Solver**: An actor that fulfills order requirements. - **Payload**: An encoding of an order as a bytestring. - **Resolver**: A payload decoder and order validator and guarantor. - **Interoperable address**: An address encoded according to [ERC-7930](./eip-7930.md). ### Orders An order's requirements are expressed as a list of **steps** and
 
 MOTIVATION:
-Intent-based systems have become the preeminent solution for end-user cross-chain interaction by abstracting away the complexity and time constraints of traditional bridges. One of the key difficulties for cross-chain intents systems is accessing sufficient liquidity and a network of active fillers across chains. This challenge may be exacerbated as the number of distinct chains increases over time. The end result of this is a poor experience for users including higher costs, longer wait times and higher failure rates than necessary. By implementing a standard, cross-chain intents systems can interoperate and share infrastructure such as order dissemination services and
+An order is an offer of payment in exchange for the fulfillment of a set of requirements. Intent protocols allow users to express desired outcomes as orders, while specialized actors called solvers, also known as fillers, execute the required actions and receive payment. This model is especially useful for cross-chain activity, where execution may require coordinating transactions, liquidity, and settlement across multiple chains, but the same design applies more generally to intent protocols. In a typical order lifecycle, a user expresses an intent to an application, the application creates an order for a specific protocol, the order is
 
 RATIONALE:
-### Generic OrderData A key consideration is to ensure that a broad range of cross-chain intent designs can work within the same standard. To enable this, the specification is designed around a cross-chain intents _flow_, with two variations: gasless and onchain. #### Gasless cross-chain intents flow Origin Chain: 1. The user signs an off-chain message defining the parameters of their order 2. The order is disseminated to fillers 3. The filler calls resolve to unpack the order's requirements 4. The filler opens the order on the origin chain Destination Chain(s): - The filler fills each leg of the
+### Resolver-Centric Standardization A key consideration is to ensure that a broad range of intent designs can work within the same standard. To enable this, the specification is designed around resolving a protocol-specific payload into a common solver-facing representation. Resolution enables solvers to validate and assess orders without specific knowledge of the protocol-specific payload at hand. Within this model, implementers of the standard have design flexibility to customize behavior such as: - Price resolution, e.g. dutch auctions or oracle-based pricing - Fulfillment constraints - Settlement procedures - Ordering of the steps, e.g. a fill could happen before an
 
 
 === ERC-3440 ===

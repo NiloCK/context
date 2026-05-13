@@ -4629,19 +4629,19 @@ TITLE: Cross Chain Intents
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2024-04-11
-REQUIRES: 
+REQUIRES: 7930
 
 SUMMARY:
-The following standard allows for the implementation of a standard API for cross-chain value-transfer systems. This standard provides generic order structs, as well as a standard set of settlement smart contract interfaces.
+This ERC defines a solver-facing interface for intent protocols. A protocol exposes orders as opaque payloads and provides a *resolver* contract that translates those payloads into a common order representation. Resolvers are used by solvers, offchain via `eth_call`, to obtain the information needed to evaluate and fulfill an order.
 
 SPECIFICATION:
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ### Glossary of Terms - **Destination Chain**: the chain where the intent is executed and the user receives funds. Note:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119. ### Key Terms - **Order**: An offer of payment in exchange for the fulfillment of a set of requirements. -
 
 MOTIVATION:
-Intent-based systems have become the preeminent solution for end-user cross-chain interaction by abstracting away the complexity and time constraints of traditional bridges. One of the key difficulties for cross-chain intents systems is accessing sufficient liquidity and a network of active fillers across chains. This challenge may be exacerbated as
+An order is an offer of payment in exchange for the fulfillment of a set of requirements. Intent protocols allow users to express desired outcomes as orders, while specialized actors called solvers, also known as fillers, execute the required actions and receive payment. This model is especially useful for
 
 RATIONALE:
-### Generic OrderData A key consideration is to ensure that a broad range of cross-chain intent designs can work within the same standard. To enable this, the specification is designed around a cross-chain intents _flow_, with two variations: gasless and onchain. #### Gasless cross-chain intents flow Origin Chain: 1.
+### Resolver-Centric Standardization A key consideration is to ensure that a broad range of intent designs can work within the same standard. To enable this, the specification is designed around resolving a protocol-specific payload into a common solver-facing representation. Resolution enables solvers to validate and assess orders without specific
 
 
 === ERC-3440 ===
