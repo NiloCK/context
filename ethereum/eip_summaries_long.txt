@@ -3606,14 +3606,14 @@ RATIONALE:
 
 
 === EIP-7708 ===
-TITLE: ETH transfers and burns emit a log
+TITLE: ETH transfers emit a log
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-05-17
-REQUIRES: 1, 5, 5, 9, ,,  , 4, 7, 8, 8, ,,  , 6, 7, 8, 0
+REQUIRES: 1, 5, 5, 9, ,,  , 4, 7, 8, 8, ,,  , 6, 7, 8, 0, ,,  , 8, 2, 4, 6
 
 SUMMARY:
-All ETH transfers and burns emit a log.
+All ETH transfers emit a log.
 
 SPECIFICATION:
 ### ETH transfer logs A log, identical to a LOG3, is issued for: - Any nonzero-value-transferring transaction to a different account, before any other logs created by EVM execution - Any nonzero-value-transferring `CALL` to a different account, at the time that the value transfer executes - Any nonzero-value-transferring `SELFDESTRUCT` to a different account, at the time that the value transfer executes - Any nonzero-value-transferring `CREATE` or `CREATE2` to the created account, at the time that the value transfer executes | Field | Value | | - | - | | `address` emitting log | `0xfffffffffffffffffffffffffffffffffffffffe` ([`SYSTEM_ADDRESS`](./eip-4788.md)) | |
@@ -3704,7 +3704,7 @@ MOTIVATION:
 The EVM currently lacks explicit call and return instructions. Instead, calls and returns must be synthesized using the dynamic `JUMP` instruction, which takes its destination from the stack. This creates two fundamental problems: * **Inefficiency**: Synthesizing calls and returns with jumps wastes bytecode space and gas. * **Complexity**: Even more important, dynamic jumps can cause quadratic "path explosions" during control-flow analysis, creating a denial-of-service vulnerability for things like runrime compilation to machine code. They can also trigger exponential "state space explosions" during formal analysis and ZK circuit construction. For detailed historical context, technical foundations of static control flow,
 
 RATIONALE:
-### Why these three opcodes? This proposal aims to be the smallest possible change to the EVM. We introduce only industry-standard instructions — `CALLSUB`, `ENTERSUB`, and `RETURNSUB` — sufficient to eliminate the need for dynamic jumps in synthesizing calls and returns. ### Why no immediate arguments or code sections? Primarily **backwards compatability**. Other reasons include: * _Immediate arguments_ for jump destinations would improve performance but increase complexity. See [EIP-8013: Static relative jumps and calls for the EVM](./eip-8013) for a complementary proposal using immediate arguments. * _Code sections_ or other structural constraints, would impose syntactic restrictions that inhibit optimization.
+### Why these three opcodes? This proposal aims to be the smallest possible change to the EVM. We introduce only industry-standard instructions — `CALLSUB`, `ENTERSUB`, and `RETURNSUB` — sufficient to eliminate the need for dynamic jumps in synthesizing calls and returns. ### Why the optional validation? Contracts using these new opcodes are not required to be `valid` unless they are marked with the `MAGIG` prefix. The mark tells tools that marked contracts meet the constraints on `valid` code above, and can be analysed and transformed on that basis; EIP-8173 explains the advantages of `valid` code for JIT compilers,
 
 
 === EIP-3300 ===

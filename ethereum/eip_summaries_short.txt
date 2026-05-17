@@ -3606,14 +3606,14 @@ RATIONALE:
 
 
 === EIP-7708 ===
-TITLE: ETH transfers and burns emit a log
+TITLE: ETH transfers emit a log
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-05-17
-REQUIRES: 1, 5, 5, 9, ,,  , 4, 7, 8, 8, ,,  , 6, 7, 8, 0
+REQUIRES: 1, 5, 5, 9, ,,  , 4, 7, 8, 8, ,,  , 6, 7, 8, 0, ,,  , 8, 2, 4, 6
 
 SUMMARY:
-All ETH transfers and burns emit a log.
+All ETH transfers emit a log.
 
 SPECIFICATION:
 ### ETH transfer logs A log, identical to a LOG3, is issued for: - Any nonzero-value-transferring transaction to a different account, before any other
