@@ -3993,6 +3993,26 @@ RATIONALE:
 An argument "just don't make such contracts upgadeable at all" fails when it comes to complex systems which do or do not heavily rely on human factor, which might manifest itself in unprecedented ways. It might be impossible to model some systems right on first try. Using decentralized governance for upgrade management coupled with EIP-1967 proxy might become a serious bottleneck for certain protocols before they mature and data is at hand. A proxy without a time delay before an actual upgrade is obviously abusable. A time delay is probably unavoidable, even if it means that inexperienced developers
 
 
+=== ERC-8180 ===
+TITLE: Blob Authenticated Messaging
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-21
+REQUIRES: 4, 8, 4, 4, ,,  , 8, 1, 7, 9
+
+SUMMARY:
+This ERC defines interfaces for decentralized authenticated messaging over [EIP-4844](./eip-4844.md) blobs. The core registration interface extends [ERC-8179](./eip-8179.md) (Blob Space Segments) with a decoder pointer and a signature registry pointer: the decoder is an untrusted on-chain contract that extracts messages from payloads; the signature registry is a trusted contract that verifies signatures. Separating decoding from verification ensures that a buggy or malicious decoder cannot cause impersonation — it can only produce wrong messages that fail signature verification against the trusted registry. Three interfaces: 1. **`IERC_BAM_Core`** (extends `IERC_BSS`): register message batches from blobs or calldata with segment coordinates, decoder address,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Architecture Overview ``` [Blob/calldata] → registerBlobBatch/registerCalldataBatch (Core) ↓ emits BlobBatchRegistered(decoder, registry) [Indexer sees event] → decoder.decode(payload) → messages + signatureData ↓ [Client computes] → messageHash per message (standardized formula) ↓ [Client verifies] → registry.verify(pubKey, signedHash, sig) → true/false ↓ (optional, for on-chain reactions) [Anyone calls] → exposer.expose(params) → emits MessageExposed ``` The protocol has four components. The **core** contract is the single on-chain
+
+MOTIVATION:
+EIP-4844 blobs provide 128 KiB of data availability per blob at a fraction of calldata cost. With dictionary-based compression, a single blob holds thousands of messages. Empirical analysis shows capacity exceeding 498 million messages per day. Beyond social messaging, this ERC demonstrates that EIP-4844 blob data is a viable low-cost transport for any signed off-chain message batch. No standard exists for blob-based messaging. Existing approaches are either minimal and blob-unaware ([ERC-3722](./eip-3722.md) Poster, stagnant), NFT-based ([ERC-7847](./eip-7847.md), no blob awareness), or L2-specific (Farcaster on Optimism, Lens on zkSync). None standardize the on-chain interfaces for blob-based messaging. Without a standard, each
+
+RATIONALE:
+### BAM extends BSS The original design defined `registerBlobBatch(blobIndex)` with no segment coordinates. When sharing blobs with other protocols, callers needed a separate [ERC-8179](./eip-8179.md) call to declare their segment. Two calls to two contracts created a correlation problem: a shared blob with N segments produces N `BlobSegmentDeclared` events and one `BlobBatchRegistered` event, all referencing the same versioned hash. No on-chain link connected the BAM batch to its specific BSS segment. Inheriting `IERC_BSS` eliminates the ambiguity. `registerBlobBatch` declares the segment and registers the batch atomically: one call, two events, unambiguous correlation. BAM contracts do not require a singleton deployment.
+
+
 === ERC-7861 ===
 TITLE: ERC-721 Verifiable Credential Extension
 TYPE: Standards Track ERC
@@ -6879,6 +6899,26 @@ The current state of the flash loan ecosystem is fragmented and lacks standardiz
 
 RATIONALE:
 The interfaces described in this ERC have been chosen as to cover the known flash lending use cases, while allowing for safe and gas efficient implementations. `maxFlashLoan` and `flashFee` return numerical values on impossible loans to allow sorting lenders without having to deal with reverts. `maxFlashLoan` returns a value that is consistent with an impossible loan when the `lender` is not able to serve the loan. `flashFee` returns a value that is consistent with an impossible loan when the `lender` is not able to serve the loan. `flash` has been chosen as a function name as a verb
+
+
+=== ERC-8179 ===
+TITLE: Blob Space Segments
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-08
+REQUIRES: 4844
+
+SUMMARY:
+This ERC defines a minimal interface for on-chain declaration of field element sub-ranges ("segments") within [EIP-4844](./eip-4844.md) blobs. A single function, `declareBlobSegment`, emits an event binding a `[startFE, endFE)` half-open range to the blob's versioned hash, allowing unambiguous sub-blob coordination across protocols. Zero storage (event-only) makes declarations ~7x cheaper than stateful alternatives.
+
+SPECIFICATION:
+This ERC builds upon [EIP-4844](./eip-4844.md) and relies on the `BLOBHASH` opcode defined therein. The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions | Term | Definition | | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | | **Field element (FE)** | One of 4,096 elements in an EIP-4844 blob. Each FE is 32 bytes and must be less than the BLS12-381 scalar field modulus. The standard encoding convention places data in the low 31 bytes
+
+MOTIVATION:
+EIP-4844 blobs are 128 KiB (4,096 field elements), but most L2 rollups do not fill them. Empirical analysis of 26 rollups over six months (arXiv:2410.04111[^1]) shows a bimodal distribution: large rollups near full utilization, small rollups below 5%. The study reports 80-99% DA cost savings achievable through sharing. The cited study reflects pre-PeerDAS economics (target 3 blobs/block); PeerDAS and subsequent scaling upgrades will increase blob throughput and may reduce per-blob cost pressure, but lower per-blob costs reduce the barrier to sharing; they do not eliminate the waste. No standard exists for sub-blob coordination. Projects that share blob space
+
+RATIONALE:
+### Event-only architecture (zero storage) The core interface uses no `SSTORE` operations. A segment declaration costs approximately 3,500 gas (calldata + event emission) versus ~25,600 gas for a stateful implementation, a ~7x reduction that matters because declarations happen alongside blob transactions already costing 21,000+ gas base. Gas breakdown for `declareBlobSegment`: | Component | Gas | | --------------------------------- | ---------- | | `BLOBHASH` opcode | 3 | | Validation comparisons | ~6 | | `LOG4` (base + 4 topics) | ~1,875 | | Event data (64 bytes ABI-encoded) | ~512 | | Calldata (132 bytes ABI-encoded) | ~1,100 |
 
 
 === ERC-7969 ===

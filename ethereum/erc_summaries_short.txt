@@ -3993,6 +3993,26 @@ RATIONALE:
 An argument "just don't make such contracts upgadeable at all" fails when it comes to complex systems which do or do not heavily rely
 
 
+=== ERC-8180 ===
+TITLE: Blob Authenticated Messaging
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-21
+REQUIRES: 4, 8, 4, 4, ,,  , 8, 1, 7, 9
+
+SUMMARY:
+This ERC defines interfaces for decentralized authenticated messaging over [EIP-4844](./eip-4844.md) blobs. The core registration interface extends [ERC-8179](./eip-8179.md) (Blob Space Segments) with a decoder pointer
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+EIP-4844 blobs provide 128 KiB of data availability per blob at a fraction of calldata cost. With dictionary-based compression, a single blob holds thousands
+
+RATIONALE:
+### BAM extends BSS The original design defined `registerBlobBatch(blobIndex)` with no segment coordinates. When sharing blobs with other protocols, callers needed a separate [ERC-8179](./eip-8179.md)
+
+
 === ERC-7861 ===
 TITLE: ERC-721 Verifiable Credential Extension
 TYPE: Standards Track ERC
@@ -6879,6 +6899,26 @@ The current state of the flash loan ecosystem is fragmented and lacks standardiz
 
 RATIONALE:
 The interfaces described in this ERC have been chosen as to cover the known flash lending use cases, while allowing for safe and gas
+
+
+=== ERC-8179 ===
+TITLE: Blob Space Segments
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-08
+REQUIRES: 4844
+
+SUMMARY:
+This ERC defines a minimal interface for on-chain declaration of field element sub-ranges ("segments") within [EIP-4844](./eip-4844.md) blobs. A single function, `declareBlobSegment`, emits an event
+
+SPECIFICATION:
+This ERC builds upon [EIP-4844](./eip-4844.md) and relies on the `BLOBHASH` opcode defined therein. The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+
+MOTIVATION:
+EIP-4844 blobs are 128 KiB (4,096 field elements), but most L2 rollups do not fill them. Empirical analysis of 26 rollups over six months
+
+RATIONALE:
+### Event-only architecture (zero storage) The core interface uses no `SSTORE` operations. A segment declaration costs approximately 3,500 gas (calldata + event emission) versus
 
 
 === ERC-7969 ===
