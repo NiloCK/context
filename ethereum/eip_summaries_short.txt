@@ -10525,6 +10525,26 @@ RATIONALE:
 ### `2^63-1` vs `2^64-1` `2^63-1` is chosen because it allows representing the gas value as a signed integer, and so the out of gas
 
 
+=== EIP-8253 ===
+TITLE: Upgrade pre-Spurious-Dragon accounts
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-05
+REQUIRES: 1, 6, 1, ,,  , 6, 8, 4
+
+SUMMARY:
+At the start of the designated fork block, set the nonce to `1` for a fixed list of accounts that have empty code, zero
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119). ### Mainnet account list The targeted
+
+MOTIVATION:
+[EIP-684](./eip-684.md) requires zero nonce and zero code length at a `CREATE` destination. Pre-[EIP-161](./eip-161.md), `CREATE` did not increment the nonce before init code ran, so
+
+RATIONALE:
+**Irregular state transition vs. runtime check.** EIP-7610 leaves the offending state in place and pays a per-creation cost forever to guard a closed address
+
+
 === EIP-1571 ===
 TITLE: EthereumStratum/2.0.0
 TYPE: Standards Track Interface

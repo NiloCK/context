@@ -10525,6 +10525,26 @@ RATIONALE:
 ### `2^63-1` vs `2^64-1` `2^63-1` is chosen because it allows representing the gas value as a signed integer, and so the out of gas check can be done as a simple "less than zero" check after subtraction. ### Consider `2^31-1` An alternative is considering a lower limit, because this
 
 
+=== EIP-8253 ===
+TITLE: Upgrade pre-Spurious-Dragon accounts
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-05
+REQUIRES: 1, 6, 1, ,,  , 6, 8, 4
+
+SUMMARY:
+At the start of the designated fork block, set the nonce to `1` for a fixed list of accounts that have empty code, zero nonce, and non-empty storage. Bumping the nonce makes these accounts fail the [EIP-684](./eip-684.md) precondition for contract creation (`nonce == 0`), so a future `CREATE`/`CREATE2` cannot
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119). ### Mainnet account list The targeted Mainnet accounts are published as [`targeted-accounts.json`](../assets/eip-8253/targeted-accounts.json) (28 entries). Each entry contains the 20-byte address and its `keccak256` hash. The published file additionally records each account's
+
+MOTIVATION:
+[EIP-684](./eip-684.md) requires zero nonce and zero code length at a `CREATE` destination. Pre-[EIP-161](./eip-161.md), `CREATE` did not increment the nonce before init code ran, so a constructor that wrote storage and returned no code left an account with zero nonce and non-empty storage. EIP-7610 fixes the resulting collision risk by
+
+RATIONALE:
+**Irregular state transition vs. runtime check.** EIP-7610 leaves the offending state in place and pays a per-creation cost forever to guard a closed address set. This EIP pays a one-time consensus mutation instead, which is the same pattern Ethereum has used for prior cleanups (e.g. EIP-7523). **Nonce bump vs.
+
+
 === EIP-1571 ===
 TITLE: EthereumStratum/2.0.0
 TYPE: Standards Track Interface
