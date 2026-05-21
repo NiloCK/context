@@ -4293,6 +4293,26 @@ RATIONALE:
 The design decisions in this EIP prioritize the effectiveness and efficiency of the indexing method. To achieve this, Decentralized Content Identifiers (CIDs) are utilized to uniquely identify digital media content across all systems. This approach offers accurate and precise searching of media, along with the following benefits: 1. Strengthened
 
 
+=== ERC-8257 ===
+TITLE: Agent Tool Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-04-17
+REQUIRES: 1, 5, 0, ,,  , 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 9, 6, 7
+
+SUMMARY:
+This ERC specifies a permissionless onchain registry for AI agent tools. Each registration commits a metadata URI and a content hash; invocation access is gated by an optional external predicate contract. Registrations are anchored to a canonical offchain manifest through origin-binding (the manifest is served at a well-known path
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). This ERC targets EVM chains. The registry interface uses EVM-native types (`address`, `bytes32`, `uint256`), and
+
+MOTIVATION:
+**Discovery is fragmented.** AI agent tools are scattered across proprietary catalogs with no uniform onchain source of truth. Agents need a permissionless, chain-native directory to find and verify tools. **Access control needs to be extensible.** A single predicate pointer delegates gating to an external contract, following the same "pluggable
+
+RATIONALE:
+### Why a Predicate Pointer Instead of an Access Mode Enum A registry could enumerate known access modes (e.g., open, NFT-gated, subscription) and implement each one natively. This approach is simple but fundamentally closed: every new gating pattern (DAO vote, reputation score, cross-chain proof, time-locked access, composable AND/OR gates)
+
+
 === ERC-927 ===
 TITLE: Generalised authorisations
 TYPE: Standards Track ERC
