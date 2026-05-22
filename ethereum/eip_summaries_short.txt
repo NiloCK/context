@@ -7741,7 +7741,7 @@ SUMMARY:
 Adds a new transaction whose validity and gas payment can be defined abstractly. This is achieved by decomposing the transaction into a sequence of
 
 SPECIFICATION:
-### Constants | Name | Value | |---------------------------|-----------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `FRAME_TX_PER_FRAME_COST` | `475` | |
+### Constants | Name | Value | |----------------------------|-------------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `FRAME_TX_PER_FRAME_COST` | `475` | |
 
 MOTIVATION:
 The frame transaction type offers UX and security benefits across many areas: - it provides a native off-ramp from the elliptic curve based cryptographic
