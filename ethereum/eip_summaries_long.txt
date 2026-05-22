@@ -6514,7 +6514,7 @@ The design for that proposal was chosen for its simplicity and security. A previ
 === EIP-8246 ===
 TITLE: Remove SELFDESTRUCT Burn
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-05-01
 REQUIRES: 1, 6, 1, ,,  , 6, 7, 8, 0
 
