@@ -4185,6 +4185,26 @@ RATIONALE:
 ### Extended max inclusion slot As discussed in the Motivation, extending this max inclusion slot to the end of the next epoch is critical for LMD-GHOST security proofs and confirmation rule. ### Removal of `inclusion_delay` consideration for target reward Previously, `get_attestation_participation_flag_indices` would only set the `TIMELY_TARGET_FLAG` (and thus reward
 
 
+=== EIP-8254 ===
+TITLE: Cap Deposit Requests Per Block
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-06
+REQUIRES: 6110
+
+SUMMARY:
+Introduces a per-block hard cap on the number of [EIP-6110](./eip-6110.md) deposit requests an Execution Layer block may produce. A block is invalid if the number of deposit requests derived from its receipts exceeds `MAX_DEPOSIT_REQUESTS_PER_BLOCK = 8192`. Execution Layer clients MUST enforce the cap during both block construction and block
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants | Name | Value | Comment | | - | - | -
+
+MOTIVATION:
+[EIP-6110](./eip-6110.md) places no Execution Layer limit on the number of deposit requests per block; the only existing bound is the Consensus Layer SSZ list cap `MAX_DEPOSIT_REQUESTS_PER_PAYLOAD = 8192`, expressed in `execution_requests.deposits` of the beacon block body. This is a latent liveness failure as gas limits rise. Empirically, at a
+
+RATIONALE:
+### Why fix this at the Execution Layer rather than raising the SSZ bound Raising `MAX_DEPOSIT_REQUESTS_PER_PAYLOAD` on the Consensus Layer was considered as an alternative. It is not preferred because: * The processing cost on the CL is dominated by deposit signature verification (~one BLS verification per deposit), and
+
+
 === EIP-4399 ===
 TITLE: Supplant DIFFICULTY opcode with PREVRANDAO
 TYPE: Standards Track Core
@@ -6931,6 +6951,26 @@ RATIONALE:
 The addition of a single parameter instead of introducing a whole new endpoint was the simplest change that would be easiest to get integrated. For backward compatibility we decided to not include the base fee in the response for pre-1559 blocks.
 
 
+=== EIP-8266 ===
+TITLE: Expiring Nonces for Frame Transactions
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-15
+REQUIRES: 8141
+
+SUMMARY:
+Adds an "expiring nonce" mode to [EIP-8141](./eip-8141.md) frame transactions in which replay protection is bounded by a short transaction deadline rather than the sender's account nonce. Once a deadline passes, the slot used to track that transaction is freed and reused, so unlike account or keyed nonces the scheme
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. This specification is a delta against [EIP-8141](./eip-8141.md). ### Constants | Name | Value | |---|---|
+
+MOTIVATION:
+EIP-8141 enforces per-sender serialization through a linear account nonce. For transactions intended to be short-lived (atomic intents, time-boxed sponsorships) this is unnecessarily restrictive: such transactions either succeed within seconds or become irrelevant, so the only replay risk worth defending against is rebroadcast inside that window. A linear nonce forces
+
+RATIONALE:
+### Sentinel rather than envelope flag The sentinel reuses an existing field whose range (`< 2**64`) already covers `EXPIRING_NONCE_SENTINEL`. No payload schema change is required, the canonical signature hash continues to commit to the mode marker through the existing `nonce` field, and the design composes cleanly with [EIP-8250](./eip-8250.md) (see
+
+
 === EIP-8059 ===
 TITLE: Gas Units Rebase for High-precision Metering
 TYPE: Standards Track Core
@@ -8030,6 +8070,26 @@ RATIONALE:
 ### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The operations selected for repricing in this EIP were chosen based on their estimated million gas per second (Mgas/s) performance. For this EIP, a performance target of **60 million gas per second** is chosen. With this performance
 
 
+=== EIP-8261 ===
+TITLE: Gas Limit Schedule
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-11
+REQUIRES: 1, 5, 5, 9, ,,  , 7, 8, 4, 0, ,,  , 7, 8, 9, 2
+
+SUMMARY:
+This EIP removes the block gas limit from the set of values that node operators, validators, builders, and proposers can choose freely. Instead, the gas limit becomes a hard-fork-scheduled parameter, configured through a `gasLimitSchedule` on the execution layer and a `GAS_LIMIT_SCHEDULE` on the consensus layer. Each fork (including BPO-style
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Activation Let `FORK_TIMESTAMP` denote the activation timestamp of the fork that includes this EIP.
+
+MOTIVATION:
+Today the block gas limit is effectively a free parameter set by each block proposer, plumbed through: 1. Execution layer client flags (e.g., `--miner.gaslimit`, `--gas-ceil`, `--target-gas-limit`). 2. The consensus layer validator client's "preferred gas limit", forwarded to the execution layer via `engine_forkchoiceUpdatedV*` payload attributes. 3. Builder bids in the
+
+RATIONALE:
+### Why a schedule rather than a runtime parameter? A schedule (rather than, say, an on-chain vote or a moving average) keeps the change minimal, mirrors the established BPO mechanism from [EIP-7892](./eip-7892.md), and matches how the community already coordinates gas-limit changes in practice: socially, with months of lead time,
+
+
 === EIP-7685 ===
 TITLE: General purpose execution layer requests
 TYPE: Standards Track Core
@@ -8634,6 +8694,26 @@ TYPE: Informational
 STATUS: Stagnant
 CREATED: 2024-10-18
 REQUIRES: 7783
+
+
+=== EIP-8268 ===
+TITLE: Storage Roots in Block Access Lists
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-21
+REQUIRES: 7928
+
+SUMMARY:
+This EIP extends [EIP-7928](./eip-7928.md) by attaching the post-block storage trie root to every Block Access List (BAL) entry that records state modifications. Partially stateful nodes can then verify the post-block state root without holding the full storage tries of modified accounts.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Modified `AccountChanges` Each `AccountChanges` entry whose state-change lists (`storage_changes`, `balance_changes`, `nonce_changes`, or `code_changes`) are not all empty MUST carry an additional trailing field `storage_root`:
+
+MOTIVATION:
+A BAL exposes per-slot post-values but not the post-block storage trie root of each modified account. A node that holds only a partition of the state therefore cannot derive the storage root for a modified account it does not store, and so cannot reconstruct the state-trie leaf needed to
+
+RATIONALE:
+The storage root is the single piece of post-block state that cannot be reconstructed from BAL contents alone, since it depends on the entire storage trie of the account rather than only the modified slots. Balance, nonce, and code are already recoverable from the BAL diffs, so committing to
 
 
 === EIP-8178 ===

@@ -4185,6 +4185,26 @@ RATIONALE:
 ### Extended max inclusion slot As discussed in the Motivation, extending this max inclusion slot to the end of the next epoch is critical
 
 
+=== EIP-8254 ===
+TITLE: Cap Deposit Requests Per Block
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-06
+REQUIRES: 6110
+
+SUMMARY:
+Introduces a per-block hard cap on the number of [EIP-6110](./eip-6110.md) deposit requests an Execution Layer block may produce. A block is invalid if the
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[EIP-6110](./eip-6110.md) places no Execution Layer limit on the number of deposit requests per block; the only existing bound is the Consensus Layer SSZ list
+
+RATIONALE:
+### Why fix this at the Execution Layer rather than raising the SSZ bound Raising `MAX_DEPOSIT_REQUESTS_PER_PAYLOAD` on the Consensus Layer was considered as an
+
+
 === EIP-4399 ===
 TITLE: Supplant DIFFICULTY opcode with PREVRANDAO
 TYPE: Standards Track Core
@@ -6931,6 +6951,26 @@ RATIONALE:
 The addition of a single parameter instead of introducing a whole new endpoint was the simplest change that would be easiest to get integrated.
 
 
+=== EIP-8266 ===
+TITLE: Expiring Nonces for Frame Transactions
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-15
+REQUIRES: 8141
+
+SUMMARY:
+Adds an "expiring nonce" mode to [EIP-8141](./eip-8141.md) frame transactions in which replay protection is bounded by a short transaction deadline rather than the sender's
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+EIP-8141 enforces per-sender serialization through a linear account nonce. For transactions intended to be short-lived (atomic intents, time-boxed sponsorships) this is unnecessarily restrictive: such
+
+RATIONALE:
+### Sentinel rather than envelope flag The sentinel reuses an existing field whose range (`< 2**64`) already covers `EXPIRING_NONCE_SENTINEL`. No payload schema change is
+
+
 === EIP-8059 ===
 TITLE: Gas Units Rebase for High-precision Metering
 TYPE: Standards Track Core
@@ -8030,6 +8070,26 @@ RATIONALE:
 ### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The operations selected for repricing in this EIP were chosen based on
 
 
+=== EIP-8261 ===
+TITLE: Gas Limit Schedule
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-11
+REQUIRES: 1, 5, 5, 9, ,,  , 7, 8, 4, 0, ,,  , 7, 8, 9, 2
+
+SUMMARY:
+This EIP removes the block gas limit from the set of values that node operators, validators, builders, and proposers can choose freely. Instead, the
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Today the block gas limit is effectively a free parameter set by each block proposer, plumbed through: 1. Execution layer client flags (e.g., `--miner.gaslimit`,
+
+RATIONALE:
+### Why a schedule rather than a runtime parameter? A schedule (rather than, say, an on-chain vote or a moving average) keeps the change
+
+
 === EIP-7685 ===
 TITLE: General purpose execution layer requests
 TYPE: Standards Track Core
@@ -8634,6 +8694,26 @@ TYPE: Informational
 STATUS: Stagnant
 CREATED: 2024-10-18
 REQUIRES: 7783
+
+
+=== EIP-8268 ===
+TITLE: Storage Roots in Block Access Lists
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-21
+REQUIRES: 7928
+
+SUMMARY:
+This EIP extends [EIP-7928](./eip-7928.md) by attaching the post-block storage trie root to every Block Access List (BAL) entry that records state modifications. Partially stateful
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174).
+
+MOTIVATION:
+A BAL exposes per-slot post-values but not the post-block storage trie root of each modified account. A node that holds only a partition of
+
+RATIONALE:
+The storage root is the single piece of post-block state that cannot be reconstructed from BAL contents alone, since it depends on the entire
 
 
 === EIP-8178 ===
