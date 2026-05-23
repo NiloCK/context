@@ -7132,13 +7132,13 @@ SUMMARY:
 This EIP proposes a standard interface for non-transferable, multi-owner Soulbound tokens. Previous account-bound token standards face the issue of users losing their account keys
 
 SPECIFICATION:
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
 This EIP was inspired by the main characteristics of the [ERC-1155](./eip-1155.md) token standard and by articles in which benefits and potential use cases of
 
 RATIONALE:
-### [ERC-5516](./eip-5516.md) as certificates The original idea for this proposal aroused from a neccesity of emitting on-chain certificates to multiple people. We thought that
+### [ERC-5516](./eip-5516.md) as certificates The original idea for this proposal arose from a necessity of emitting on-chain certificates to multiple people. We thought that
 
 
 === ERC-7518 ===
