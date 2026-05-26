@@ -945,6 +945,26 @@ RATIONALE:
 This standards offers a way for any type of address (externally owned and contracts) to implement an interface and potentially delegate the implementation of the interface to a proxy contract. This delegation to a proxy contract is necessary for externally owned accounts and useful to avoid redeploying existing contracts such as multisigs and DAOs. The registry can also act as a [ERC-165] cache in order to save gas when looking up if a contract implements a specific [ERC-165] interface. This cache is intentionally kept simple, without automatic cache update or invalidation. Anyone can easily and safely update the
 
 
+=== ERC-7574 ===
+TITLE: Authentication SBT using Credential
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2023-11-02
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 5, 1, 9, 2
+
+SUMMARY:
+This specification defines a mechanism for issuing a non-transferable Soul Bound Token (SBT) as proof of successful authentication based on a [Decentralized Identity (DID)](https://www.w3.org/TR/2022/REC-did-core-20220719/). The proposed approach enables on-chain verification of credential possession using zero-knowledge proofs, allowing a smart contract to validate authentication without revealing personal information. Upon successful verification, an SBT is issued to the user’s address and can be used by relying services as an authentication and access control primitive.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### MetaData Interface NFT metadata structured according to the [ERC-721](./eip-721.md) metadata standard is as follows. ```jsx { "description":"University bachelor KYC", "external_url":"https://api.kor.credential/metadata/1/1", "home_url":"https://app.kor.credential/token/1", "image_url":"https://www.poap.xyz/events/badges/example.png", "name":" KOREA KYC", "attributes" : { ... }, } ``` In addition to the existing NFT metadata standards, a new standard for identity verification supplements the metadata with the "Issuer" and "credentialNumber" sections. When issuing SBTs, the Issuer and the credential
+
+MOTIVATION:
+Many blockchain-based applications rely on wallet addresses as the sole representation of user identity. While this model provides strong pseudonymity, it also introduces significant limitations for applications that require accountability, trust, or credential-based access control. As a result, decentralized finance platforms, metaverse environments, and on-chain governance systems often struggle with issues such as Sybil attacks, duplicate participation, and the inability to distinguish verified users from anonymous actors. Decentralized Identity (DID) credentials provide a standardized way to represent verifiable claims about a user, such as affiliation, qualification, or eligibility. However, directly presenting or storing credentials on-chain raises privacy, usability,
+
+RATIONALE:
+This specification represents successful credential verification using a non-transferable SBT rather than exposing or storing the credential on-chain. A token-based signal allows relying contracts to integrate authentication using familiar ERC interfaces, while avoiding the privacy and linkability risks of publishing credential contents. The standard intentionally does not mandate a specific credential-proof mechanism (e.g., a particular zero-knowledge proving system). Different ecosystems may prefer different proof systems or verification approaches, and requiring a single tool would prevent independent interoperable implementations. Instead, the ERC standardizes the outcome: successful verification results in issuance of a non-transferable token to the user. Metadata is
+
+
 === ERC-55 ===
 TITLE: Mixed-case checksum address encoding
 TYPE: Standards Track ERC

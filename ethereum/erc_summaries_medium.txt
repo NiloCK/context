@@ -945,6 +945,26 @@ RATIONALE:
 This standards offers a way for any type of address (externally owned and contracts) to implement an interface and potentially delegate the implementation of the interface to a proxy contract. This delegation to a proxy contract is necessary for externally owned accounts and useful to avoid redeploying existing contracts
 
 
+=== ERC-7574 ===
+TITLE: Authentication SBT using Credential
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2023-11-02
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 5, 1, 9, 2
+
+SUMMARY:
+This specification defines a mechanism for issuing a non-transferable Soul Bound Token (SBT) as proof of successful authentication based on a [Decentralized Identity (DID)](https://www.w3.org/TR/2022/REC-did-core-20220719/). The proposed approach enables on-chain verification of credential possession using zero-knowledge proofs, allowing a smart contract to validate authentication without revealing personal information. Upon successful
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### MetaData Interface NFT metadata structured according to the [ERC-721](./eip-721.md) metadata standard is as follows.
+
+MOTIVATION:
+Many blockchain-based applications rely on wallet addresses as the sole representation of user identity. While this model provides strong pseudonymity, it also introduces significant limitations for applications that require accountability, trust, or credential-based access control. As a result, decentralized finance platforms, metaverse environments, and on-chain governance systems often struggle
+
+RATIONALE:
+This specification represents successful credential verification using a non-transferable SBT rather than exposing or storing the credential on-chain. A token-based signal allows relying contracts to integrate authentication using familiar ERC interfaces, while avoiding the privacy and linkability risks of publishing credential contents. The standard intentionally does not mandate a
+
+
 === ERC-55 ===
 TITLE: Mixed-case checksum address encoding
 TYPE: Standards Track ERC

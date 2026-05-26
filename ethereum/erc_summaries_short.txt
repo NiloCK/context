@@ -945,6 +945,26 @@ RATIONALE:
 This standards offers a way for any type of address (externally owned and contracts) to implement an interface and potentially delegate the implementation of
 
 
+=== ERC-7574 ===
+TITLE: Authentication SBT using Credential
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2023-11-02
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 5, 1, 9, 2
+
+SUMMARY:
+This specification defines a mechanism for issuing a non-transferable Soul Bound Token (SBT) as proof of successful authentication based on a [Decentralized Identity (DID)](https://www.w3.org/TR/2022/REC-did-core-20220719/).
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Many blockchain-based applications rely on wallet addresses as the sole representation of user identity. While this model provides strong pseudonymity, it also introduces significant
+
+RATIONALE:
+This specification represents successful credential verification using a non-transferable SBT rather than exposing or storing the credential on-chain. A token-based signal allows relying contracts
+
+
 === ERC-55 ===
 TITLE: Mixed-case checksum address encoding
 TYPE: Standards Track ERC
