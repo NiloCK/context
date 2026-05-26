@@ -4938,6 +4938,26 @@ RATIONALE:
 ### Choosing to Extend Off-Chain Metadata JSON Schema over On-Chain Interface Both the [ERC-721](./eip-721.md) and [ERC-1155](./eip-1155.md) provide natural extension points in the metadata JSON
 
 
+=== ERC-8084 ===
+TITLE: Zero-knowledge proof metadata
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-11-10
+REQUIRES: 
+
+SUMMARY:
+This standard formalizes ZKMeta, a minimal interface for contracts that verify or depend on zero-knowledge proofs. It defines how to expose a proof-system identifier,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Zero-knowledge applications currently lack a standard way to publish the "shape" of their proofs. Projects using Groth16, Plonk, Halo2, or zkVMs each deploy custom
+
+RATIONALE:
+- **Hash + URI for schemas/keys** enables automatic discovery while preserving integrity. - **Event-based updates** let tooling react to changes without polling. - **Compact
+
+
 === ERC-7517 ===
 TITLE: Content Consent for AI/ML Data Mining
 TYPE: Standards Track ERC

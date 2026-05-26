@@ -4938,6 +4938,26 @@ RATIONALE:
 ### Choosing to Extend Off-Chain Metadata JSON Schema over On-Chain Interface Both the [ERC-721](./eip-721.md) and [ERC-1155](./eip-1155.md) provide natural extension points in the metadata JSON file associated with NFTs to supply enriched datasets about the underlying assets. Providing enriched datasets through off-chain metadata JSON files allows existing NFT contracts to adopt the new metadata structure proposed in this EIP without upgrading or migrating. The off-chain design enables flexible and progressive enhancement of any NFT collections to adopt this standard gradually. This approach allows NFT collections to be deployed using already-audited and battle-tested smart contract code without creating or adapting
 
 
+=== ERC-8084 ===
+TITLE: Zero-knowledge proof metadata
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-11-10
+REQUIRES: 
+
+SUMMARY:
+This standard formalizes ZKMeta, a minimal interface for contracts that verify or depend on zero-knowledge proofs. It defines how to expose a proof-system identifier, circuit identifier, circuit version, public-input schema (hash and URI), and verification-key URI. The goal is to enable interoperable wallet, relayer, explorer, rollup, and dApp tooling without prescribing any specific proof format.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Interface ```solidity /// @title ZKMeta Interface interface IZKMetadata { /// Emitted when the stored circuit metadata is modified. event CircuitMetadataUpdated(bytes32 indexed circuitId, uint64 circuitVersion, bytes4 proofSystem); /// Content-addressed identifier of the circuit definition artifact. function circuitId() external view returns (bytes32); /// Monotonically increasing semver-style version (major.minor -> uint32.uint32 packed into uint64). function circuitVersion() external view returns (uint64); /// Hash of the canonical public-input
+
+MOTIVATION:
+Zero-knowledge applications currently lack a standard way to publish the "shape" of their proofs. Projects using Groth16, Plonk, Halo2, or zkVMs each deploy custom artifacts, leaving integrators unable to reliably determine how to interact with a system without bespoke adapters. Unlike previous attempts that aimed to standardize verification logic (e.g., [ERC-1923](./eip-1923.md)), ZKMeta focuses solely on metadata discovery. By standardizing how to locate the *verification key*, *public input schema*, and *circuit identity*, this standard creates a "ZK ABI" that unlocks capabilities previously impossible in a fragmented ecosystem: - **Universal ZK Explorers:** Block explorers can automatically fetch input schemas to
+
+RATIONALE:
+- **Hash + URI for schemas/keys** enables automatic discovery while preserving integrity. - **Event-based updates** let tooling react to changes without polling. - **Compact `bytes4` proof-system code** minimizes calldata while remaining extensible. - **Proof-system neutrality** avoids locking the ecosystem to any single proving stack.
+
+
 === ERC-7517 ===
 TITLE: Content Consent for AI/ML Data Mining
 TYPE: Standards Track ERC
