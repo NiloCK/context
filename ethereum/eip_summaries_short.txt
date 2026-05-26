@@ -3695,10 +3695,10 @@ CREATED: 2025-12-17
 REQUIRES: 3541
 
 SUMMARY:
-This is the smallest possible change to the EVM interpreter to support calls and returns. This proposal introduces three new control-flow instructions to the
+This is the smallest possible change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM:
 
 SPECIFICATION:
-> _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174._ ###
+> _The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174. _
 
 MOTIVATION:
 The EVM currently lacks explicit call and return instructions. Instead, calls and returns must be synthesized using the dynamic `JUMP` instruction, which takes its
