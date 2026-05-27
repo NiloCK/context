@@ -7238,7 +7238,7 @@ MOTIVATION:
 Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for crosschain operations such as: - **Crosschain intents**: Users wanting to trade assets across multiple chains atomically - **Multi-chain DAO governance**: Voting on proposals that affect protocol instances across different networks - **Unified
 
 RATIONALE:
-### Standard EIP-712 Compatibility This ERC uses only standard [EIP-712] encoding without any extensions or special constructs. All fields in the `EIP712Domain` are optional per the standard, so omitting `chainId` is perfectly valid. This means any wallet that supports EIP-712 can sign these messages and any application that supports
+### Standard EIP-712 Compatibility This ERC uses only standard [EIP-712] encoding without any extensions or special constructs. Omitting `chainId` from the top-level domain is permitted by [EIP-712]'s domain separator rules, and the per-chain `chainId` is moved into the operations array so it remains visible to the signer in the
 
 
 === ERC-6372 ===

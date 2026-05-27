@@ -7238,7 +7238,7 @@ MOTIVATION:
 Current account abstraction solutions require separate signatures for each blockchain network. This creates poor user experience for crosschain operations such as: - **Crosschain intents**:
 
 RATIONALE:
-### Standard EIP-712 Compatibility This ERC uses only standard [EIP-712] encoding without any extensions or special constructs. All fields in the `EIP712Domain` are optional
+### Standard EIP-712 Compatibility This ERC uses only standard [EIP-712] encoding without any extensions or special constructs. Omitting `chainId` from the top-level domain is
 
 
 === ERC-6372 ===

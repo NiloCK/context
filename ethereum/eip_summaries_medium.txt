@@ -7604,7 +7604,7 @@ CREATED: 2026-02-03
 REQUIRES: 7, 7, 3, 2, ,,  , 7, 9, 2, 8
 
 SUMMARY:
-This EIP removes the block access list (BAL) from the `ExecutionPayloadEnvelope` and propagates it as an independent sidecar on a dedicated gossip topic. Builders commit to the BAL root in their `ExecutionPayloadBid`. Sidecar verification uses this commitment; no separate signature is required. The Payload Timeliness Committee (PTC) enforces BAL
+This EIP removes the block access list (BAL) from the `ExecutionPayloadEnvelope` and propagates it as an independent sidecar on a dedicated gossip topic. Builders commit to the BAL exactly once, by including `keccak256(rlp(BAL))` (the same 32-byte value already defined as `block_access_list_hash` in the EL block header by [EIP-7928](./eip-7928.md)) in
 
 SPECIFICATION:
 ### Consensus Layer #### Presets | Name | Value | | - | - | | `MAX_BLOCK_ACCESS_LIST_SIZE` | `uint64(2**23)` (= 8 MiB) | #### Types The `BlockAccessList` type from [EIP-7928](./eip-7928.md): | Name | SSZ equivalent | Description | | - | - | - | | `BlockAccessList` | `ByteList[MAX_BLOCK_ACCESS_LIST_SIZE]`
@@ -7613,7 +7613,7 @@ MOTIVATION:
 [EIP-7928](./eip-7928.md) adds block access lists to the `ExecutionPayload`. Under [EIP-7732](./eip-7732.md), the execution payload travels inside a `SignedExecutionPayloadEnvelope` that the builder broadcasts after the beacon block. Including the BAL (~70 KiB average, up to 1 MiB) in the envelope increases its size and propagation latency on the critical path. Separating
 
 RATIONALE:
-### No Separate Signature The BAL sidecar requires no BLS signature. The builder commits to `block_access_list_root` in the signed `ExecutionPayloadBid`; verification is `hash_tree_root(sidecar.block_access_list) == bid.block_access_list_root`. This mirrors `DataColumnSidecar` verification via KZG proofs against commitments in the bid. ### Separate PTC Field BAL availability is tracked as a dedicated `block_access_list_present`
+### Single Commitment, Shared Across Layers [EIP-7928](./eip-7928.md) already commits the BAL into the EL header as `block_access_list_hash = keccak256(rlp(BAL))`. Carrying the same 32 bytes in the bid gives the CL everything it needs to authenticate a sidecar without introducing a second hashing scheme. The CL holds the BAL only
 
 
 === EIP-2937 ===

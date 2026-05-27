@@ -7613,7 +7613,7 @@ MOTIVATION:
 [EIP-7928](./eip-7928.md) adds block access lists to the `ExecutionPayload`. Under [EIP-7732](./eip-7732.md), the execution payload travels inside a `SignedExecutionPayloadEnvelope` that the builder broadcasts after the beacon
 
 RATIONALE:
-### No Separate Signature The BAL sidecar requires no BLS signature. The builder commits to `block_access_list_root` in the signed `ExecutionPayloadBid`; verification is `hash_tree_root(sidecar.block_access_list) ==
+### Single Commitment, Shared Across Layers [EIP-7928](./eip-7928.md) already commits the BAL into the EL header as `block_access_list_hash = keccak256(rlp(BAL))`. Carrying the same 32 bytes
 
 
 === EIP-2937 ===
