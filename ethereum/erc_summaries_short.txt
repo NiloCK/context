@@ -1873,6 +1873,26 @@ RATIONALE:
 There have been some attempts to achieve rentals or mortgages with ERC721. However, as I noted before, it has been challenging to achieve. I
 
 
+=== ERC-8085 ===
+TITLE: Dual-Mode Fungible Tokens
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-11-15
+REQUIRES: 2, 0, ,,  , 8, 0, 8, 6
+
+SUMMARY:
+This EIP defines a **permissionless** interface for fungible tokens that operate in two modes: transparent mode (fully compatible with [ERC-20](./eip-20)) and privacy mode (using
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+### The Privacy Dilemma for New Token Projects When launching a new token, projects face a fundamental choice: 1. **[ERC-20](./eip-20)**: Full DeFi composability but
+
+RATIONALE:
+### `BURN_ADDRESS` Requirement for `toPublic` **Problem**: When converting privacy-to-transparent, the ZK circuit enforces value conservation: input_amount = output_amount But we need to "convert" value
+
+
 === ERC-7598 ===
 TITLE: Use contract signature for signed transfer
 TYPE: Standards Track ERC
@@ -9581,6 +9601,26 @@ RATIONALE:
 `StorageRoutedToSolana()` works in a similar fashion to `StorageRoutedToL2()` in CCIP-Store in the sense that the client needs to be pointed to a certain contract
 
 
+=== ERC-8086 ===
+TITLE: Privacy Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-11-19
+REQUIRES: 
+
+SUMMARY:
+This standard defines `IZRC20`, a minimal interface for privacy-preserving fungible tokens on Ethereum. It uses zero-knowledge proofs to enable confidential transfers where transaction amounts,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+### Privacy Infrastructure Needs Standardization While building privacy solutions for Ethereum, we identified recurring patterns: **Wrapper Protocols** ([ERC-20](./eip-20) → Privacy → ERC-20): DAI (transparent)
+
+RATIONALE:
+### Why Include Metadata Functions? **Ecosystem Benefits**: - **Wallet Integration**: Existing wallets can display privacy tokens without special handling - **Explorer Compatibility**: Block explorers
+
+
 === ERC-6538 ===
 TITLE: Stealth Meta-Address Registry
 TYPE: Standards Track ERC
@@ -10954,6 +10994,23 @@ MOTIVATION:
 
 RATIONALE:
 From the beginning, the Diamond Standard (ERC-2535) was designed around the relationship between **function selectors** and **storage positions**, not around facets themselves. Facets are
+
+
+=== ERC-8040 ===
+TITLE: ESG Tokenization Protocol
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-09-06
+REQUIRES: 2, 0, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
+
+SUMMARY:
+This ERC defines an overlay interface and metadata schema for representing Environmental, Social, and Governance (ESG) assets with existing token standards. Compliant contracts expose
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+RATIONALE:
+- **Deterministic flows**: Lifecycle follows strict state transitions (`issued` to `audited` to `retired`). - **Immutable metadata**: SHA3-512 digests bind metadata and evidence documents to
 
 
 === ERC-6786 ===

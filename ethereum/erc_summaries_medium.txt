@@ -1873,6 +1873,26 @@ RATIONALE:
 There have been some attempts to achieve rentals or mortgages with ERC721. However, as I noted before, it has been challenging to achieve. I will explain the reasons and advantages of this standard below. ### No security lockup for rentals To achieve trustless rental of NFTs with ERC721, it
 
 
+=== ERC-8085 ===
+TITLE: Dual-Mode Fungible Tokens
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-11-15
+REQUIRES: 2, 0, ,,  , 8, 0, 8, 6
+
+SUMMARY:
+This EIP defines a **permissionless** interface for fungible tokens that operate in two modes: transparent mode (fully compatible with [ERC-20](./eip-20)) and privacy mode (using [ERC-8086](./eip-8086) privacy primitives). Token holders can convert balances between modes. The transparent mode uses account-based balances, while the privacy mode uses the standardized `IZRC20` interface
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions - **Transparent Mode**: Token balance stored using standard [ERC-20](./eip-20) accounting, publicly visible and
+
+MOTIVATION:
+### The Privacy Dilemma for New Token Projects When launching a new token, projects face a fundamental choice: 1. **[ERC-20](./eip-20)**: Full DeFi composability but zero privacy 2. **Pure privacy protocols**: Strong privacy but limited ecosystem integration This creates real-world problems: - **DAOs** need public treasury transparency but want anonymous
+
+RATIONALE:
+### `BURN_ADDRESS` Requirement for `toPublic` **Problem**: When converting privacy-to-transparent, the ZK circuit enforces value conservation: input_amount = output_amount But we need to "convert" value from privacy mode to public mode. The circuit doesn't know that the contract will create public balance, so we must ensure the converted value doesn't
+
+
 === ERC-7598 ===
 TITLE: Use contract signature for signed transfer
 TYPE: Standards Track ERC
@@ -9581,6 +9601,26 @@ RATIONALE:
 `StorageRoutedToSolana()` works in a similar fashion to `StorageRoutedToL2()` in CCIP-Store in the sense that the client needs to be pointed to a certain contract on another chain by the revert event. Other than that, the only technical difference is casting between EVM and SVM data types. ![Fig.2 Solana Call
 
 
+=== ERC-8086 ===
+TITLE: Privacy Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-11-19
+REQUIRES: 
+
+SUMMARY:
+This standard defines `IZRC20`, a minimal interface for privacy-preserving fungible tokens on Ethereum. It uses zero-knowledge proofs to enable confidential transfers where transaction amounts, sender, and recipient identities remain hidden. The core mechanism relies on cryptographic commitments stored in a Merkle tree, with nullifiers preventing double-spending. This interface serves
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions - **Native Privacy Asset**: A token with privacy as an inherent property from
+
+MOTIVATION:
+### Privacy Infrastructure Needs Standardization While building privacy solutions for Ethereum, we identified recurring patterns: **Wrapper Protocols** ([ERC-20](./eip-20) → Privacy → ERC-20): DAI (transparent) → zDAI (private) → DAI (transparent) - Each protocol implements custom privacy token logic - No interoperability between different privacy implementations - Duplicated effort, increased
+
+RATIONALE:
+### Why Include Metadata Functions? **Ecosystem Benefits**: - **Wallet Integration**: Existing wallets can display privacy tokens without special handling - **Explorer Compatibility**: Block explorers show meaningful token information - **Developer Familiarity**: Matches [ERC-20](./eip-20) conventions, reducing learning curve - **Interoperability**: Higher-level protocols can query token metadata consistently ### Why Optional
+
+
 === ERC-6538 ===
 TITLE: Stealth Meta-Address Registry
 TYPE: Standards Track ERC
@@ -10954,6 +10994,23 @@ MOTIVATION:
 
 RATIONALE:
 From the beginning, the Diamond Standard (ERC-2535) was designed around the relationship between **function selectors** and **storage positions**, not around facets themselves. Facets are replaceable units of logic — the `diamondCut` operation only replaces, removes or adds code — but the **storage layout persists** and defines the actual state
+
+
+=== ERC-8040 ===
+TITLE: ESG Tokenization Protocol
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-09-06
+REQUIRES: 2, 0, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5
+
+SUMMARY:
+This ERC defines an overlay interface and metadata schema for representing Environmental, Social, and Governance (ESG) assets with existing token standards. Compliant contracts expose ESG metadata through a token-specific URI and an optional on-chain metadata view, record attestations as cryptographic digests, and emit events when assets are minted, audited,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). This ERC is an overlay for tokenized ESG assets. Implementations maintain normal token ownership and
+
+RATIONALE:
+- **Deterministic flows**: Lifecycle follows strict state transitions (`issued` to `audited` to `retired`). - **Immutable metadata**: SHA3-512 digests bind metadata and evidence documents to the token record. - **Machine-verifiable audit trails**: Attestation digests and events allow off-chain systems to verify audit records deterministically. - **Post-quantum readiness**: SHA3-512 hash functions
 
 
 === ERC-6786 ===
