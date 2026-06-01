@@ -5452,6 +5452,26 @@ RATIONALE:
 Employing strings for numerical representation offers enhanced precision when needed. The use of a multiplier instead of decimals facilitates increments other than powers of 10, and ensures seamless handling of inflation or deflation. Utilizing ERC-1046 promotes gas efficiency in the majority of cases.
 
 
+=== ERC-8054 ===
+TITLE: Forkable ERC-20 Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-10
+REQUIRES: 20
+
+SUMMARY:
+This standard extends [ERC-20](./eip-20.md) to enable efficient token forking through checkpoint-based balance tracking. A forkable ERC-20 token records balance snapshots at each state change. A forked ERC-20 token inherits all balances from a specific checkpoint in the source token, allowing instant, gas-free distribution to holders without airdrops or claiming
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Forkable ERC-20 tokens (Source Token) Forkable ERC-20 tokens are ERC-20 compliant tokens that have
+
+MOTIVATION:
+Current methods for distributing new tokens based on existing ERC-20 token balances are inefficient: 1. **Manual airdrops**: Taking snapshots and transferring tokens to each holder individually is expensive and gas-intensive. 2. **Merkle-based claims**: While cheaper for deployers, this approach requires users to pay gas fees to claim tokens and
+
+RATIONALE:
+### Why Checkpoints? Checkpoints enable efficient point-in-time queries. By recording only when changes happens, the system maintains a compact, queryable history. Checkpoints are also trustless and verifiable, albeit at higher gas cost for state updates. ### Why Not Use Merkle Trees? Merkle trees introduce complexity and off-chain dependencies. They
+
+
 === ERC-8063 ===
 TITLE: Groups - Membership Tokens
 TYPE: Standards Track ERC

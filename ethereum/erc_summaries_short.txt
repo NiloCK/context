@@ -5452,6 +5452,26 @@ RATIONALE:
 Employing strings for numerical representation offers enhanced precision when needed. The use of a multiplier instead of decimals facilitates increments other than powers of
 
 
+=== ERC-8054 ===
+TITLE: Forkable ERC-20 Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-10
+REQUIRES: 20
+
+SUMMARY:
+This standard extends [ERC-20](./eip-20.md) to enable efficient token forking through checkpoint-based balance tracking. A forkable ERC-20 token records balance snapshots at each state change.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Current methods for distributing new tokens based on existing ERC-20 token balances are inefficient: 1. **Manual airdrops**: Taking snapshots and transferring tokens to each
+
+RATIONALE:
+### Why Checkpoints? Checkpoints enable efficient point-in-time queries. By recording only when changes happens, the system maintains a compact, queryable history. Checkpoints are also
+
+
 === ERC-8063 ===
 TITLE: Groups - Membership Tokens
 TYPE: Standards Track ERC
