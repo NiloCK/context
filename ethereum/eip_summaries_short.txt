@@ -6878,16 +6878,16 @@ TITLE: Custom sweep threshold for validators
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-02-05
-REQUIRES: 7, 2, 5, 1, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+REQUIRES: 7, 2, 5, 1, ,,  , 7, 6, 8, 5
 
 SUMMARY:
-This EIP proposes an optional mechanism to set custom balance thresholds for sweep withdrawals for compounding withdrawal credentials (`0x02, 0x03`) validators. This mechanism allows
+This EIP proposes an optional mechanism to set custom balance thresholds for sweep withdrawals for compounding withdrawal credentials (`0x02`) validators. This mechanism allows validators
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-The current default sweep threshold (2,048 ETH) for validators using compounding withdrawal credentials (`0x02, 0x03`) may not meet the needs of all validators. Some
+The current default sweep threshold (2,048 ETH) for validators using compounding withdrawal credentials (`0x02`) may not meet the needs of all validators. Some validators
 
 RATIONALE:
 ### Overview Most of the considerations regarding the messaging format, queue, and rate-limiting are similar to those discussed in [EIP-7002](./eip-7002.md) for withdrawal requests, and

@@ -6878,19 +6878,19 @@ TITLE: Custom sweep threshold for validators
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-02-05
-REQUIRES: 7, 2, 5, 1, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+REQUIRES: 7, 2, 5, 1, ,,  , 7, 6, 8, 5
 
 SUMMARY:
-This EIP proposes an optional mechanism to set custom balance thresholds for sweep withdrawals for compounding withdrawal credentials (`0x02, 0x03`) validators. This mechanism allows validators to specify above which balance they want their rewards to be swept to their withdrawal address, providing greater flexibility and control over their staking rewards.
+This EIP proposes an optional mechanism to set custom balance thresholds for sweep withdrawals for compounding withdrawal credentials (`0x02`) validators. This mechanism allows validators to specify above which balance they want their rewards to be swept to their withdrawal address, providing greater flexibility and control over their staking rewards.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants #### Execution layer | Name | Value | Comment | | ----------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------ | | `SET_SWEEP_THRESHOLD_REQUEST_TYPE` | `0x03` | The [EIP-7685](./eip-7685.md) type prefix for set sweep threshold request | | `SET_SWEEP_THRESHOLD_REQUEST_PREDEPLOY_ADDRESS` | `TBD` | Where to call and store relevant details about set sweep threshold request mechanism | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | Address used to invoke system operation
 
 MOTIVATION:
-The current default sweep threshold (2,048 ETH) for validators using compounding withdrawal credentials (`0x02, 0x03`) may not meet the needs of all validators. Some validators may prefer to accumulate rewards on the validator balance, while others may want to sweep before reaching the current threshold of 2,048 ETH. By allowing optional custom sweep thresholds, validators can optimize their reward management according to their individual strategies and preferences. Since the introduction of the `0x02` compounding withdrawal credentials type, we have observed a very low rate of validators transitioning to `0x02`. One reason is that many validators do not want
+The current default sweep threshold (2,048 ETH) for validators using compounding withdrawal credentials (`0x02`) may not meet the needs of all validators. Some validators may prefer to accumulate rewards on the validator balance, while others may want to sweep before reaching the current threshold of 2,048 ETH. By allowing optional custom sweep thresholds, validators can optimize their reward management according to their individual strategies and preferences. Since the introduction of the `0x02` compounding withdrawal credentials type, we have observed a very low rate of validators transitioning to `0x02`. One reason is that many validators do not want to
 
 RATIONALE:
-### Overview Most of the considerations regarding the messaging format, queue, and rate-limiting are similar to those discussed in [EIP-7002](./eip-7002.md) for withdrawal requests, and so we refer the reader to that EIP for more details. ### Custom Sweep Thresholds The primary motivation for this EIP is to allow validators to set custom sweep thresholds for their withdrawals when using compounding withdrawal credentials (`0x02, 0x03`). This feature provides greater flexibility and control over how and when validators can access their staking rewards. ### `validator_sweep_thresholds` mapping in `BeaconState` To store the custom sweep thresholds for each validator, we introduce a
+### Overview Most of the considerations regarding the messaging format, queue, and rate-limiting are similar to those discussed in [EIP-7002](./eip-7002.md) for withdrawal requests, and so we refer the reader to that EIP for more details. ### Custom Sweep Thresholds The primary motivation for this EIP is to allow validators to set custom sweep thresholds for their withdrawals when using compounding withdrawal credentials (`0x02`). This feature provides greater flexibility and control over how and when validators can access their staking rewards. ### `validator_sweep_thresholds` mapping in `BeaconState` To store the custom sweep thresholds for each validator, we introduce a new
 
 
 === EIP-7973 ===
