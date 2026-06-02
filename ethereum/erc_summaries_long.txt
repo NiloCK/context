@@ -3297,7 +3297,7 @@ RATIONALE:
 === ERC-8126 ===
 TITLE: AI Agent Verification
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-01-15
 REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 3, 0, 0, 9, ,,  , 8, 0, 0, 4
 
@@ -3497,7 +3497,7 @@ This EIP uses some existing UR types like `crypto-keypath` and `crypto-hdkey` an
 === ERC-7796 ===
 TITLE: Conditional send transaction RPC
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-04-16
 REQUIRES: 
 
@@ -4698,7 +4698,7 @@ The core mechanism for this proposal is to provide a shared tracking interface f
 === ERC-8161 ===
 TITLE: Transferable Tokenized Vault Requests
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-02-12
 REQUIRES: 1, 6, 5, ,,  , 7, 5, 4, 0
 
@@ -4778,7 +4778,7 @@ Merchants who accept credit-cards do so by storing a token that is retrieved fro
 === ERC-7813 ===
 TITLE: Store, Table-Based Introspectable Storage
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-11-08
 REQUIRES: 
 
@@ -6863,7 +6863,7 @@ This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduc
 === ERC-4337 ===
 TITLE: Account Abstraction Using Alt Mempool
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2021-09-29
 REQUIRES: 7, 1, 2, ,,  , 7, 7, 0, 2
 
@@ -9941,6 +9941,26 @@ RATIONALE:
 ### Alternatives #### Advanced Balance Fetching An alternative we considered is defining a way for apps to fetch available auxiliary balances. This could be done, for example, by providing a URL as part of the `auxiliaryFunds` capability that apps could use to fetch auxiliary balance information. However, we ultimately decided that a boolean was enough to indicate to apps that they should not block user actions on the basis of balance checks, and it is minimally burdensome for apps to implement. The shape of this capability allows for a more advanced extension if apps feel more functionality is
 
 
+=== ERC-8217 ===
+TITLE: Agent NFT Identity Bindings
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-04-05
+REQUIRES: 8004
+
+SUMMARY:
+This ERC defines a standard onchain metadata record and verification interface for expressing that an [ERC-8004](./eip-8004.md) agent identity is bound to an external NFT or tokenized asset contract. The metadata record stores only the binding contract address (20 bytes) under a reserved metadata key. The binding contract is expected to be deployed as a canonical per-chain singleton. Token standard, token contract, and token id are read from that contract via `bindingOf(agentId)` and are not duplicated in metadata.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Simplified Interface Per-chain singleton binding contracts compliant with this ERC MUST expose a minimal interface that allows clients to: - retrieve the stored binding for an agent id - index newly written bindings The required interface is: ```solidity pragma solidity ^0.8.24; interface IERCAgentBindings { enum TokenStandard { ERC721, ERC1155, ERC6909 } struct Binding { TokenStandard standard; address tokenContract; uint256 tokenId; } event AgentBound(
+
+MOTIVATION:
+[ERC-8004](./eip-8004.md) registrations are themselves NFTs. For an existing NFT to own an ERC-8004 registration, the two NFTs must be bound together. The owning NFT, called the master NFT, might be a project, character, or collection NFT. This ERC defines that binding. A canonical per-chain singleton binding contract records the link between an ERC-8004 agent id and its master NFT. The owner of the master NFT controls the bound ERC-8004 registration. When the master NFT is transferred, control follows automatically. The ERC-8004 record itself never changes. Without a standard metadata format: - clients cannot reliably discover that an agent
+
+RATIONALE:
+### Why store the binding contract? The token contract and token id alone are not sufficient. The same token may be interpreted differently by different authorization rules. Including the binding contract makes the control system explicitly discoverable and lets clients inspect or query the canonical per-chain singleton that actually defines the authorization rules. ### Why not store token standard, token contract, and token id in metadata? Duplicating those fields in the registry would add unnecessary bytes to the metadata record. The binding contract is the single source of truth; metadata only points clients to which contract to query.
+
+
 === ERC-7517 ===
 TITLE: Content Consent for AI/ML Data Mining
 TYPE: Standards Track ERC
@@ -10204,6 +10224,26 @@ The permit structures outlined in both [ERC-4494](./eip-4494) and [ERC-2612](./e
 
 RATIONALE:
 The `permit` function is sufficient for enabling a `safeTransferFrom` transaction to be made without the need for an additional transaction. The format avoids any calls to unknown code. The `nonces` mapping is given for replay protection. A common use case of permit has a relayer submit a Permit on behalf of the owner. In this scenario, the relaying party is essentially given a free option to submit or withhold the Permit. If this is a cause of concern, the owner can limit the time a Permit is valid for by setting deadline to a value in the near
+
+
+=== ERC-8100 ===
+TITLE: Representable Contract State
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-01
+REQUIRES: 155
+
+SUMMARY:
+This ERC introduces `IXMLRepresentableState`, a standard interface and XML binding schema that allows an EVM smart contract to define a static XML template with machine-readable bindings to its state and view functions. Off-chain renderers use this template to build a canonical XML representation of the contract's state at a specific block, without incurring any on-chain gas cost. In this ERC, "canonical" refers to the semantic content defined by the rendering rules; byte-for-byte identical XML output across renderers is not required. This ERC defines the notion of an *XML-complete* contract (see Specification). Informally, an XML-complete contract exposes, via bindings
+
+SPECIFICATION:
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Terminology - **XML template**: A well-formed XML document, returned as a UTF-8 string by the contract, that contains placeholder bindings in the `evmstate` namespace. - **Binding**: An `evmstate:*` attribute on an XML element that instructs a renderer to fetch a value from the contract (or from chain context) and insert it into the document. - **XML representation**: The final XML document obtained by evaluating all bindings
+
+MOTIVATION:
+Smart contracts can efficiently orchestrate and process the life-cycle of a financial (derivative) product to an extent that they finally represent *the* financial product itself. At the same time, many applications require a human-readable, machine-parseable representation of that product and its state: valuation oracles need inputs for settlements, smart bonds and other tokenized instruments need legal terms, term sheets or regulatory reports, and on-chain registries, governance modules or vaults benefit from a stable "document view" of their state. In the traditional off-chain world, such needs are addressed by standards like FpML, the ISDA Common Domain Model, or the
+
+RATIONALE:
+- **Why XML, not JSON?** XML remains widely used in financial and regulatory infrastructures, with mature schema tooling (XSD), XSLT, and document transformation pipelines. Many smart financial instruments already use XML representations internally. This draft standardizes the XML binding profile first. An analogous JSON binding profile, compatible with the XML binding rules, may be specified either as a future revision of this draft prior to finalization or as a separate future ERC. The Solidity reference interfaces include JSON template function signatures to reserve them ahead of the definition of the JSON binding. - **Why templates on-chain rather than
 
 
 === ERC-1616 ===
