@@ -5475,13 +5475,13 @@ TITLE: Account Abstraction by Account Configuration
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-14
-REQUIRES: 2718
+REQUIRES: 1, 7, 0, ,,  , 2, 7, 1, 8
 
 SUMMARY:
 This proposal introduces a new [EIP-2718](./eip-2718.md) transaction type and an onchain Account Configuration system that together provide account abstraction — custom authentication, call batching,
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | TBD <!-- TODO --> | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE`
+### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | `0x7B` | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE` | `0x7C` |
 
 MOTIVATION:
 Account abstraction proposals that delegate validation to wallet code force nodes to simulate arbitrary EVM before accepting a transaction. This requires full state access,
