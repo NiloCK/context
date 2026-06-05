@@ -5481,7 +5481,7 @@ SUMMARY:
 This proposal introduces a new [EIP-2718](./eip-2718.md) transaction type and an onchain Account Configuration system that together provide account abstraction — custom authentication, call batching,
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | `0x7B` | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE` | `0x7C` |
+### Overview An account authorizes one or more **actors** which are credentials permitted to act on its behalf. Each actor is bound to a
 
 MOTIVATION:
 Account abstraction proposals that delegate validation to wallet code force nodes to simulate arbitrary EVM before accepting a transaction. This requires full state access,
