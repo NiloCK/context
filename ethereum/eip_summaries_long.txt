@@ -1825,13 +1825,13 @@ SUMMARY:
 This EIP extends [EIP-7928](./eip-7928.md) by attaching the post-block storage trie root to every Block Access List (BAL) entry that records state modifications. Partially stateful nodes can then verify the post-block state root without holding the full storage tries of modified accounts.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "SHOULD", and "MAY" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Modified `AccountChanges` Each `AccountChanges` entry whose state-change lists (`storage_changes`, `balance_changes`, `nonce_changes`, or `code_changes`) are not all empty MUST carry an additional trailing field `storage_root`: ``` StorageRoot = bytes32 AccountChanges = [ Address, List[SlotChanges], # storage_changes List[StorageKey], # storage_reads List[BalanceChange], # balance_changes List[NonceChange], # nonce_changes List[CodeChange], # code_changes StorageRoot, # post-block storage trie root (new) ] ``` `storage_root` is the root of the account's storage trie evaluated against the post-block state. For accounts whose
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Modified `AccountChanges` Each `AccountChanges` entry whose state-change lists (`storage_changes`, `balance_changes`, `nonce_changes`, or `code_changes`) are not all empty MUST carry an additional trailing field `storage_root`: ``` StorageRoot = bytes32 # 32-byte trie root, or the empty byte string when the trie is empty AccountChanges = [ Address, List[SlotChanges], # storage_changes List[StorageKey], # storage_reads List[BalanceChange], # balance_changes List[NonceChange], # nonce_changes List[CodeChange], # code_changes StorageRoot, # post-block storage trie root (new) ] ``` `storage_root` is the
 
 MOTIVATION:
 A BAL exposes per-slot post-values but not the post-block storage trie root of each modified account. A node that holds only a partition of the state therefore cannot derive the storage root for a modified account it does not store, and so cannot reconstruct the state-trie leaf needed to verify the post-block state root. Including the post-block storage root for every modified account closes this gap. Combined with the balance, nonce, and code information already present in the BAL, any node can assemble the full state-trie leaf for every modified account regardless of which portion of state it
 
 RATIONALE:
-The storage root is the single piece of post-block state that cannot be reconstructed from BAL contents alone, since it depends on the entire storage trie of the account rather than only the modified slots. Balance, nonce, and code are already recoverable from the BAL diffs, so committing to the storage root is sufficient to derive the full state-trie leaf. Restricting the field to accounts with state changes keeps the overhead at 32 bytes per modified account; touched-only entries add nothing.
+The storage root is the single piece of post-block state that cannot be reconstructed from BAL contents alone, since it depends on the entire storage trie of the account rather than only the modified slots. Balance, nonce, and code are already recoverable from the BAL diffs, so committing to the storage root is sufficient to derive the full state-trie leaf. Restricting the field to accounts with state changes keeps the overhead at 32 bytes per modified account; touched-only entries add nothing. Most accounts mutated in a block are externally owned accounts that change only balance or nonce and
 
 
 === EIP-2029 ===
@@ -3383,6 +3383,26 @@ Currently there is a lack of incentives for anyone to run a full node, while joi
 
 RATIONALE:
 ### A rough qualitative analysis of fees As of May 4 2018, there are [16428 nodes](https://web.archive.org/web/20180504051128/https://ethernodes.org/network/1). Assume that an annual cost for an average client developer organisation is $1 million per annum. Projecting forward (and noting that the number of nodes should increase substantially if this EIP was implemented, thus aiding Ethereum's goal of decentralizing everything) assume that there are 10 clients. Thus let us assume that the number of nodes doubles to 30000 nodes within 5 years (this assumption is probably conservative, even if it is forward looking). Assume for simplicity that the costs of a client
+
+
+=== EIP-8272 ===
+TITLE: Recent Roots for Frame Transactions
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-15
+REQUIRES: 7, 8, 4, 3, ,,  , 8, 1, 4, 1
+
+SUMMARY:
+EIP-8141 frame transactions can reference recent roots without reading mutable storage during validation. A root source writes roots to a system contract, with each root keyed by `(source_id, slot)`, where `source_id` derives from the writer address and a salt. A frame transaction may declare recent root references of the form: ```text (source_id, slot, root) ``` Before frame execution, clients check each reference against the transaction pre-state. The check succeeds only if the named root is stored for the named source and slot, and the slot is still recent. Validation code can then read the verified reference through transaction
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. This specification is a delta against EIP-8141. Terms not defined here, including `FrameTx`, `FRAME_TX_TYPE`, `VERIFY`, `EXPIRY_VERIFIER`, frame modes, and `TXPARAM`, have the meanings defined in EIP-8141. ### Constants | Name | Value | | ------------------------------------ | -------------------------------------------------------------------------------: | | `FORK_TIMESTAMP` | `TBD` | | `RECENT_ROOT_ADDRESS` | `TBD` | | `RECENT_ROOT_CODE` | `TBD` | | `RECENT_ROOT_LENGTH` | `8192` | | `RECENT_ROOT_USABLE_WINDOW` | `8191` | |
+
+MOTIVATION:
+EIP-8141 validation must not read arbitrary storage controlled by another account or application in the public mempool. Some validation rules still need to depend on recent application state, such as privacy tree roots, wallet authorization roots, or account validation roots. Recent root references let a transaction explicitly name recent roots in its signed transaction envelope. Each reference maps to one system-contract storage key and can be checked before validation code runs. Privacy applications, for example, keep a tree of commitments and prove spends against a recent tree root. With this EIP, the application writes roots by slot, and
+
+RATIONALE:
+EIP-8141 validation needs inputs that are known before validation starts. General reads from storage controlled by another account or application are unsafe for the public mempool because one mutable cell can invalidate many pending transactions. Recent root references provide a narrow exception. The root is declared in the signed transaction envelope, checked by clients before validation code runs, and exposed to validation code only through introspection. Recent root references are intentionally narrow: each reference names one recent `bytes32` root and one system-contract storage key. ### Entry binding Each stored entry commits to the root source, slot, and root.
 
 
 === EIP-2539 ===

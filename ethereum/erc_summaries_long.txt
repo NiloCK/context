@@ -7539,7 +7539,7 @@ RATIONALE:
 === ERC-7766 ===
 TITLE: Signature Aggregation for ERC-4337
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Withdrawn
 CREATED: 2024-09-01
 REQUIRES: 4, 3, 3, 7, ,,  , 7, 5, 6, 2
 
