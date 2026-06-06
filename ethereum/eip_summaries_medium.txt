@@ -7812,19 +7812,19 @@ TITLE: SSZ execution blocks
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-10-28
-REQUIRES: 6, 4, 0, 4, ,,  , 6, 4, 6, 5, ,,  , 6, 4, 6, 6, ,,  , 7, 4, 9, 5, ,,  , 7, 7, 9, 9
+REQUIRES: 7, 4, 9, 5, ,,  , 7, 7, 7, 3, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP defines a migration process of execution blocks to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/simple-serialize.md).
+This EIP migrates the execution block to [Simple Serialize (SSZ)](https://github.com/ethereum/consensus-specs/blob/4f1df00ff567ea1855fb7f37ec23bd324a96703b/ssz/simple-serialize.md), including the block hash, request hash, and the per-block tries. Notably, individual transaction, receipt, and withdrawal list elements as well as the state trie are not affected by this EIP.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Gas amounts The different kinds of gas amounts are combined into a single structure,
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Existing definitions Definitions from existing specifications that are used throughout this document are replicated
 
 MOTIVATION:
-With [EIP-6404](./eip-6404.md) SSZ transactions, [EIP-6466](./eip-6466.md) SSZ receipts, and [EIP-6465](./eip-6465.md) SSZ withdrawals, all Merkle-Patricia Tries (MPT) besides the state trie are converted to SSZ. This enables the surrounding data structure, the execution block itself, to also convert to SSZ, achieving a unified block representation across both Consensus Layer and Execution
+The execution block and its per-block tries use Merkle-Patricia and RLP encoding, separate from the SSZ representation used by the Consensus Layer. Migrating the block to SSZ unifies the block representation across both layers and enables: 1. **Normalized block hash:** The Consensus Layer can autonomously check the execution block
 
 RATIONALE:
-This completes the transition to SSZ for everything except the execution state trie. ### Future - With SSZ `Log`, the withdrawals mechanism and validator requests could be redefined to be based on logs (similar to deposits, originally, but without the delay), possibly removing the need for `withdrawals_root` and `requests_hash`.
+### Forward compatibility `ExecutionPayload` uses [`ProgressiveContainer`](./eip-7495.md) and [`ProgressiveList`](./eip-7916.md): generalized indices remain stable as the block definition evolves, and the lists can grow without a hardcoded limit. ### Logs bloom Using an all `1` bits value forces consumers to fall back to inspecting every receipt; all `0` bits would signal
 
 
 === EIP-7942 ===
