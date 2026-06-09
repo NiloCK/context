@@ -9960,10 +9960,10 @@ CREATED: 2025-02-21
 REQUIRES: 
 
 SUMMARY:
-This proposal introduces a new opcode that allows contracts to inspect the transaction outcomes on-chain. This opcode will allow contract deveolopres to define assertions
+This proposal introduces a new opcode that allows contracts to inspect the transaction outcomes on-chain. This opcode will allow contract developers to define assertions
 
 SPECIFICATION:
-### Constants | Name | Value | |-----------------|-------| | TXTRACE_GAS_COST| TBD | | EVENTDATACOPY_GAS_COST | TBD | ### Transaction Trace Opcode We introduce a
+### Constants | Name | Value | |------------------------|-------| | TXTRACE_GAS_COST | TBD | | EVENTDATACOPY_GAS_COST | TBD | ### Transaction Trace Opcode We introduce
 
 MOTIVATION:
 The total value of crypto assets that have been stolen to date exceeds the yearly GDP of a medium-sized nation. This level of loss
