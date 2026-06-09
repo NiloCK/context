@@ -5507,7 +5507,7 @@ MOTIVATION:
 Account abstraction proposals that delegate validation to wallet code force nodes to simulate arbitrary EVM before accepting a transaction. This requires full state access,
 
 RATIONALE:
-### Why Verifier Contracts? Enables signature-algorithm extension through verifier contracts. The verifier returns the `actorId` rather than accepting it as input, so the protocol
+### Why Authenticator Contracts? Enables signature-algorithm extension through authenticator contracts. The authenticator returns the `actorId` rather than accepting it as input, so the protocol
 
 
 === EIP-5749 ===

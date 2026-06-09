@@ -5498,16 +5498,16 @@ CREATED: 2025-10-14
 REQUIRES: 1, 7, 0, ,,  , 2, 7, 1, 8
 
 SUMMARY:
-This proposal introduces a new [EIP-2718](./eip-2718.md) transaction type and an onchain Account Configuration system that together provide account abstraction — custom authentication, call batching, and gas sponsorship. Accounts register actors with onchain verifier contracts. Transactions declare which verifier to use, enabling nodes to filter transactions without executing arbitrary wallet
+This proposal introduces a new [EIP-2718](./eip-2718.md) transaction type and an onchain Account Configuration system that together provide account abstraction — custom authentication, call batching, and gas sponsorship. Accounts register actors with onchain authenticator contracts. Transactions declare which authenticator to use, enabling nodes to filter transactions without executing arbitrary wallet
 
 SPECIFICATION:
-### Overview An account authorizes one or more **actors** which are credentials permitted to act on its behalf. Each actor is bound to a **verifier**, an onchain contract that checks a signature and returns the actor's identity (`actorId`). An account's actors, their verifiers, and their permissions are held in
+### Overview An account authorizes one or more **actors** which are credentials permitted to act on its behalf. Each actor is bound to a **authenticator**, an onchain contract that checks a signature and returns the actor's identity (`actorId`). An account's actors, their authenticators, and their permissions are held in
 
 MOTIVATION:
-Account abstraction proposals that delegate validation to wallet code force nodes to simulate arbitrary EVM before accepting a transaction. This requires full state access, tracing infrastructure, and reputation systems to bound the cost of invalid submissions. This proposal separates verification from account logic. Each transaction explicitly declares its verifier,
+Account abstraction proposals that delegate validation to wallet code force nodes to simulate arbitrary EVM before accepting a transaction. This requires full state access, tracing infrastructure, and reputation systems to bound the cost of invalid submissions. This proposal separates authentication from account logic. Each transaction explicitly declares its authenticator,
 
 RATIONALE:
-### Why Verifier Contracts? Enables signature-algorithm extension through verifier contracts. The verifier returns the `actorId` rather than accepting it as input, so the protocol never needs algorithm-specific logic. All verifiers share a single `verify(hash, data)` interface with no type-based dispatch. Actor scope and policy provide protocol-enforced role separation without
+### Why Authenticator Contracts? Enables signature-algorithm extension through authenticator contracts. The authenticator returns the `actorId` rather than accepting it as input, so the protocol never needs algorithm-specific logic. All authenticators share a single `authenticate(hash, data)` interface with no type-based dispatch. Actor scope and policy provide protocol-enforced role separation without
 
 
 === EIP-5749 ===

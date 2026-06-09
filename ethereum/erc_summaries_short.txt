@@ -4244,7 +4244,7 @@ TODO
 === ERC-2770 ===
 TITLE: Meta-Transactions Forwarder Contract
 TYPE: Standards Track ERC
-STATUS: Stagnant
+STATUS: Withdrawn
 CREATED: 2020-07-01
 REQUIRES: 7, 1, 2, ,,  , 2, 7, 7, 1
 
@@ -5033,6 +5033,26 @@ In some use cases, it is valuable to know the duration for which a NFT has been 
 
 RATIONALE:
 The addition of the `getHoldingInfo` function to an extension of the ERC-721 standard enables developers to implement NFT-based applications that require holding time information.
+
+
+=== ERC-8290 ===
+TITLE: Shielded Note Teleportation
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-06-05
+REQUIRES: 
+
+SUMMARY:
+This standard defines a method for exporting a shielded note from one UTXO-based privacy protocol and importing it into another without publicly withdrawing and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+UTXO-based privacy protocols are usually isolated privacy sets. Moving between them requires a public withdrawal from one pool followed by a public deposit into
+
+RATIONALE:
+The burn address includes the destination chain ID, destination pool address and receiver to prevent replay on multiple destination pools and/or chains. Binding the
 
 
 === ERC-7529 ===
