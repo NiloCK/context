@@ -7944,6 +7944,26 @@ RATIONALE:
 This standard was designed to maximize compatibility with ERC-4626 while minimizing additional opinionated details on the interface. Examples of this decision rationale are described below: * maintaining the redundant `assets` input to the `deposit` function while making its usage optional * not enforcing a relationship between `msg.value` and `assets`
 
 
+=== ERC-8047 ===
+TITLE: Forensic Token (Forest)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-15
+REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 5, ,,  , 5, 6, 1, 5
+
+SUMMARY:
+Forensic Token (Forest) is a directed acyclic graph (DAG) inspired token model designed to enhance traceability and regulatory compliance in digital currency or e-Money systems. By introducing hierarchical token tracking, it enables efficient enforcement on any token linked to suspicious activity with level/root. Enforcement actions, such as freezing specific
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Compatible implementations MUST implement the `IERC8047` interface and MUST inherit from [ERC-1155](./eip-1155.md) and [ERC-5615](./eip-5615.md) interfaces.
+
+MOTIVATION:
+The Central Bank Digital Currency and Private Money concept aim to utilize the advantages of Blockchain or Distributed Ledger Technology that provide immutability, transparency, and security, and it adopts smart contracts, which play a key role in creating programmable money. However, technology itself gives an advantage and eliminates the
+
+RATIONALE:
+### Contract-side ID Generation The token ID is generated dynamically by the contract-side upon execution, rather than supplied by the caller. Because employs a Unspent Transaction Output (UTXO)-like mechanism where each transfer effectively spends an existing token and mints a new one to continue the DAG lineage, allowing caller-supplied
+
+
 === ERC-927 ===
 TITLE: Generalised authorisations
 TYPE: Standards Track ERC

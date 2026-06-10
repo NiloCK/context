@@ -7944,6 +7944,26 @@ RATIONALE:
 This standard was designed to maximize compatibility with ERC-4626 while minimizing additional opinionated details on the interface. Examples of this decision rationale are described
 
 
+=== ERC-8047 ===
+TITLE: Forensic Token (Forest)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-15
+REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 5, ,,  , 5, 6, 1, 5
+
+SUMMARY:
+Forensic Token (Forest) is a directed acyclic graph (DAG) inspired token model designed to enhance traceability and regulatory compliance in digital currency or e-Money
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to
+
+MOTIVATION:
+The Central Bank Digital Currency and Private Money concept aim to utilize the advantages of Blockchain or Distributed Ledger Technology that provide immutability, transparency,
+
+RATIONALE:
+### Contract-side ID Generation The token ID is generated dynamically by the contract-side upon execution, rather than supplied by the caller. Because employs a
+
+
 === ERC-927 ===
 TITLE: Generalised authorisations
 TYPE: Standards Track ERC

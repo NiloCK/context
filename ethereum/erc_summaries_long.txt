@@ -7944,6 +7944,26 @@ RATIONALE:
 This standard was designed to maximize compatibility with ERC-4626 while minimizing additional opinionated details on the interface. Examples of this decision rationale are described below: * maintaining the redundant `assets` input to the `deposit` function while making its usage optional * not enforcing a relationship between `msg.value` and `assets` in a `mint` call * not enforcing any behaviors or lack thereof for `fallback`/`__default__` methods, payability on additional vault functions, or handling ETH forcibly sent to the contract All breaking implementation level changes with ERC-4626 are purely to accomodate for the usage of Ether or any native asset instead
 
 
+=== ERC-8047 ===
+TITLE: Forensic Token (Forest)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-10-15
+REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 5, ,,  , 5, 6, 1, 5
+
+SUMMARY:
+Forensic Token (Forest) is a directed acyclic graph (DAG) inspired token model designed to enhance traceability and regulatory compliance in digital currency or e-Money systems. By introducing hierarchical token tracking, it enables efficient enforcement on any token linked to suspicious activity with level/root. Enforcement actions, such as freezing specific tokens or partitioning all tokens with relational links, are optimized to operate at $O(1)$ complexity.
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Compatible implementations MUST implement the `IERC8047` interface and MUST inherit from [ERC-1155](./eip-1155.md) and [ERC-5615](./eip-5615.md) interfaces. All functions defined in the interface MUST be present and all function behavior MUST meet the behavior specification requirements below. ```solidity // SPDX-License-Identifier: CC0-1.0 pragma solidity >=0.8.0 <0.9.0; /** * @title ERC-8047 interface */ // import "./IERC1155.sol"; // import "./IERC5615.sol"; // The EIP-165 identifier of this interface is `0x8aae36fc`.
+
+MOTIVATION:
+The Central Bank Digital Currency and Private Money concept aim to utilize the advantages of Blockchain or Distributed Ledger Technology that provide immutability, transparency, and security, and it adopts smart contracts, which play a key role in creating programmable money. However, technology itself gives an advantage and eliminates the ideal problem of compliance with the regulator and the Anti-Money Laundering and Countering the Financing of Terrorism (AML/CFT) standard, but it does not seem practical to be done in the real world and is not efficiently responsible for the financial crime or incidents that occur in the open network
+
+RATIONALE:
+### Contract-side ID Generation The token ID is generated dynamically by the contract-side upon execution, rather than supplied by the caller. Because employs a Unspent Transaction Output (UTXO)-like mechanism where each transfer effectively spends an existing token and mints a new one to continue the DAG lineage, allowing caller-supplied IDs for these newly spawned tokens introduces critical attack vectors. Such vulnerabilities include ID collisions, unauthorized overwriting of lineage records, or root impersonation. Enforcing deterministic, contract-side ID generation at the time of the call guarantees global uniqueness and preserves the structural integrity of the lineage. ### Transaction Flow Consistency
+
+
 === ERC-927 ===
 TITLE: Generalised authorisations
 TYPE: Standards Track ERC
