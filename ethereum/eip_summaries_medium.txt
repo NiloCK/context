@@ -7928,23 +7928,23 @@ RATIONALE:
 
 
 === EIP-7997 ===
-TITLE: Deterministic Factory Predeploy
+TITLE: Deterministic Factory Contract
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-08-03
-REQUIRES: 2, 1, 1, ,,  , 1, 0, 1, 4
+REQUIRES: 1014
 
 SUMMARY:
-A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains. This benefits developer experience, user experience, and security, in particular for multi-chain and cross-chain applications, including account abstraction.
+The availability of a well-known `CREATE2` factory at `0x4e59b44847b379578588920cA78FbF26c0B4956C` is made a formal requirement to enable deterministic deployments at identical addresses across EVM chains. This benefits developer experience, user experience, and security, in particular for multi-chain and cross-chain applications, including account abstraction.
 
 SPECIFICATION:
-### Parameters * `FACTORY_ADDRESS` = `0x12` ### Factory Contract Upon activation of this EIP, the account at `FACTORY_ADDRESS` becomes a contract that, when called, invokes the `CREATE2` instruction ([EIP-1014](./eip-1014.md)) with a salt equal to the first 32 bytes of the call's input data, init code equal to the remaining
+* `FACTORY_ADDRESS` = `0x4e59b44847b379578588920cA78FbF26c0B4956C` The chain's state MUST include `FACTORY_ADDRESS` with nonce 1 and this runtime code: ``` 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3 ``` A chain may satisfy this requirement by any means that results in the account above: deploying the factory with an ordinary transaction (for example, its keyless creation transaction) where
 
 MOTIVATION:
 There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect this number to continue to grow in line with Ethereum's rollup-centric roadmap and the general adoption of programmable blockchains. Most applications support multiple chains and
 
 RATIONALE:
-### Precompile-range system contract Unlike previous system contracts, this factory cannot be deployed using a normal transaction because, as explained in the Motivation section, that transaction could not be guaranteed to be valid on other chains. Since the purpose of this factory is to be available in all EVM
+### Choice of factory The factory at `0x4e59b44847b379578588920cA78FbF26c0B4956C` has been used close to 25000 times on Ethereum Mainnet, deployed to hundreds of chains using its keyless transaction, included in multiple L2s by default, and used as the default factory for deterministic deployments in developer tools. The bytecode is compatible
 
 
 === EIP-7938 ===

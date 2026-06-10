@@ -7928,23 +7928,23 @@ RATIONALE:
 
 
 === EIP-7997 ===
-TITLE: Deterministic Factory Predeploy
+TITLE: Deterministic Factory Contract
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-08-03
-REQUIRES: 2, 1, 1, ,,  , 1, 0, 1, 4
+REQUIRES: 1014
 
 SUMMARY:
-A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains. This benefits developer experience, user experience, and security, in particular for multi-chain and cross-chain applications, including account abstraction.
+The availability of a well-known `CREATE2` factory at `0x4e59b44847b379578588920cA78FbF26c0B4956C` is made a formal requirement to enable deterministic deployments at identical addresses across EVM chains. This benefits developer experience, user experience, and security, in particular for multi-chain and cross-chain applications, including account abstraction.
 
 SPECIFICATION:
-### Parameters * `FACTORY_ADDRESS` = `0x12` ### Factory Contract Upon activation of this EIP, the account at `FACTORY_ADDRESS` becomes a contract that, when called, invokes the `CREATE2` instruction ([EIP-1014](./eip-1014.md)) with a salt equal to the first 32 bytes of the call's input data, init code equal to the remaining data, and value equal to the call's value. If input data is smaller than 32 bytes, the call reverts with empty return data. If creation fails (`CREATE2` outputs `0`), the call reverts with return data equal to that of the creation frame. Specifically, the code of `FACTORY_ADDRESS` is set
+* `FACTORY_ADDRESS` = `0x4e59b44847b379578588920cA78FbF26c0B4956C` The chain's state MUST include `FACTORY_ADDRESS` with nonce 1 and this runtime code: ``` 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3 ``` A chain may satisfy this requirement by any means that results in the account above: deploying the factory with an ordinary transaction (for example, its keyless creation transaction) where the chain's gas parameters permit it, including the account in the genesis state, or inserting it via an irregular state transition. Regardless of the method used, the resulting `FACTORY_ADDRESS` account MUST have the nonce and runtime code specified above. This is a contract that invokes the `CREATE2` instruction ([EIP-1014](./eip-1014.md))
 
 MOTIVATION:
-There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect this number to continue to grow in line with Ethereum's rollup-centric roadmap and the general adoption of programmable blockchains. Most applications support multiple chains and aspire to support as many as possible, and their developers widely prefer to deploy contracts at identical addresses across all chains, a setup which we will call *multi-chain deterministic deployment*. This kind of deployment reduces the number of addresses that must be distributed to use the application, so that
+There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect this number to continue to grow in line with Ethereum's rollup-centric roadmap and the general adoption of programmable blockchains. Most applications support multiple chains and aspire to support as many as possible, and their developers widely prefer to deploy contracts at identical addresses across all chains as a *multi-chain deterministic deployment*. This kind of deployment reduces the number of addresses that must be distributed to use the application, so that it no longer scales
 
 RATIONALE:
-### Precompile-range system contract Unlike previous system contracts, this factory cannot be deployed using a normal transaction because, as explained in the Motivation section, that transaction could not be guaranteed to be valid on other chains. Since the purpose of this factory is to be available in all EVM chains that a contract could be deployed to, an irregular insertion of the code into a special address seems necessary. The address `0x12` (`0x0000000000000000000000000000000000000012`) is chosen as the next lowest address after currently accepted precompiles, on the assumption that other EVM chains would have reserved this range for future
+### Choice of factory The factory at `0x4e59b44847b379578588920cA78FbF26c0B4956C` has been used close to 25000 times on Ethereum Mainnet, deployed to hundreds of chains using its keyless transaction, included in multiple L2s by default, and used as the default factory for deterministic deployments in developer tools. The bytecode is compatible with any EVM chain that has activated EIP-1014, which Ethereum included in Constantinople. In particular, it does not depend on the more recent `PUSH0` ([EIP-3855](./eip-3855.md)). Two known downsides of this factory were considered. First, the address of the created account is returned with no padding, and may need to
 
 
 === EIP-7938 ===

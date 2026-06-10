@@ -7928,23 +7928,23 @@ RATIONALE:
 
 
 === EIP-7997 ===
-TITLE: Deterministic Factory Predeploy
+TITLE: Deterministic Factory Contract
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-08-03
-REQUIRES: 2, 1, 1, ,,  , 1, 0, 1, 4
+REQUIRES: 1014
 
 SUMMARY:
-A minimal `CREATE2` factory is inserted as a system contract in the precompile range, to enable deterministic deployments at identical addresses across EVM chains.
+The availability of a well-known `CREATE2` factory at `0x4e59b44847b379578588920cA78FbF26c0B4956C` is made a formal requirement to enable deterministic deployments at identical addresses across EVM chains.
 
 SPECIFICATION:
-### Parameters * `FACTORY_ADDRESS` = `0x12` ### Factory Contract Upon activation of this EIP, the account at `FACTORY_ADDRESS` becomes a contract that, when called,
+* `FACTORY_ADDRESS` = `0x4e59b44847b379578588920cA78FbF26c0B4956C` The chain's state MUST include `FACTORY_ADDRESS` with nonce 1 and this runtime code: ``` 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3 ``` A chain may satisfy
 
 MOTIVATION:
 There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect
 
 RATIONALE:
-### Precompile-range system contract Unlike previous system contracts, this factory cannot be deployed using a normal transaction because, as explained in the Motivation section,
+### Choice of factory The factory at `0x4e59b44847b379578588920cA78FbF26c0B4956C` has been used close to 25000 times on Ethereum Mainnet, deployed to hundreds of chains using
 
 
 === EIP-7938 ===
