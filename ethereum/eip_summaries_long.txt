@@ -7787,6 +7787,26 @@ RATIONALE:
 ### Additional 1000 gas penalty The gas penalty discourages people from attempting to migrate off current secp256k1 accounts, and also covers the additional overhead (in regards to hashing) that the ed25519 curve applies. ### Why Ed25519? Ed25519 has significant tooling backing it, this makes it a good candidate for using as a "dummy" algorithm. This allows it to be an algorithm for client teams to easily test [EIP-7932](./eip-7932.md). It may also be useful for signing in Hardware security modules in server environments designed for serving as [ERC-4337](./eip-4337.md) bundlers. It may also improve interoperability with other components such as
 
 
+=== EIP-8256 ===
+TITLE: Blob Streaming
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-06
+REQUIRES: 2, 9, 3, 5, ,,  , 4, 7, 8, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 0, 0, 2, ,,  , 7, 5, 9, 4, ,,  , 7, 7, 3, 2, ,,  , 7, 9, 1, 8
+
+SUMMARY:
+This EIP enshrines two types of blobs into the protocol, namely Ahead-Of-Time (AOT) and Just-In-Time (JIT) blobs. In practice these exist today already. However, enshrining them in the way we do, has major benefits vis-a-vis performance and security guarantees. As the name suggests, AOT blobs are propagated *ahead of time* (pre-propagated) using a ticket-based propagation mechanism while current Just-In-Time (JIT) blobs are propagated *on the critical path* as today's blobs. Blob data for either blob type is propagated through the CL subnets.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Parameters | Constant | Value | Description | | - | - | - | | `TICKET_CONTRACT_ADDRESS` | `TBD` | System contract address for blob ticket operations | | `ZERO_ADDRESS` | `0x0000000000000000000000000000000000000000` | Zero address used to "burn" ticket payments | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | Address used for system calls | | `MAX_JIT_BLOBS_PER_BLOCK` | `TBD` | Maximum JIT blobs per block (B1)
+
+MOTIVATION:
+Ethereum's current blob data availability design, introduced in [EIP-4844](./eip-4844.md) and extended with PeerDAS ([EIP-7594](./eip-7594.md)), hinges on blob data propagation on the critical path. While pre-propagation of blob data through the EL blobpool is possible, it comes with no upper bounds on the load being handled and as such can lead to inconsistent local node views - which in turn translates to vulnerability to DOS attacks especially if pre-propagation is coupled with data-availability sampling (DAS). Ticket based, ahead-of-time propagation provides a way to overcome a number of issues associated with pre-propagation through the blobpool. Thus, it provides a reliable
+
+RATIONALE:
+### Unified fee mechanism A single blob base fee for both JIT and AOT channels ensures that total demand is accurately reflected in pricing. If JIT and AOT had separate fees, demand could shift between channels to exploit price differences, creating an inefficient two-tier market. By combining `jit_blob_gas_used` and `aot_blob_gas_sold` as inputs to the same excess accumulator, the fee mechanism treats all blob demand symmetrically. ### Fee state in a system contract Moving the blob base fee from header fields (`excess_blob_gas`, `blob_gas_used`) into a system contract simplifies the fee update logic. The ticket contract naturally needs to compute
+
+
 === EIP-2565 ===
 TITLE: ModExp Gas Cost
 TYPE: Standards Track Core

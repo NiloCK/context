@@ -7787,6 +7787,26 @@ RATIONALE:
 ### Additional 1000 gas penalty The gas penalty discourages people from attempting to migrate off current secp256k1 accounts, and also covers the additional overhead
 
 
+=== EIP-8256 ===
+TITLE: Blob Streaming
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-06
+REQUIRES: 2, 9, 3, 5, ,,  , 4, 7, 8, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 0, 0, 2, ,,  , 7, 5, 9, 4, ,,  , 7, 7, 3, 2, ,,  , 7, 9, 1, 8
+
+SUMMARY:
+This EIP enshrines two types of blobs into the protocol, namely Ahead-Of-Time (AOT) and Just-In-Time (JIT) blobs. In practice these exist today already. However,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Ethereum's current blob data availability design, introduced in [EIP-4844](./eip-4844.md) and extended with PeerDAS ([EIP-7594](./eip-7594.md)), hinges on blob data propagation on the critical path. While
+
+RATIONALE:
+### Unified fee mechanism A single blob base fee for both JIT and AOT channels ensures that total demand is accurately reflected in pricing.
+
+
 === EIP-2565 ===
 TITLE: ModExp Gas Cost
 TYPE: Standards Track Core
