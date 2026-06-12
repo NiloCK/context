@@ -971,6 +971,26 @@ RATIONALE:
 1. Using the dynamically-sized `bytes` type allows for maximum flexibility by enabling payloads of arbitrary types. 2. Having the bytes specified as the last parameter makes this EIP compatible with the calldata layout of solidity.
 
 
+=== ERC-8273 ===
+TITLE: Attestation-Gated Agentic Actions
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-26
+REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 3
+
+SUMMARY:
+This ERC defines a standard interface for an **on-chain Agent Attestation Registry**. The registry manages attestations issued by Attestors. Each attestation has a complete lifecycle, issuance and transaction-scoped consumption, and is described by an `AttestationRecord` containing: - **subjectId / subjectType**: identifies the attested subject, for example `subjectId = agentId`
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "SHOULD", "SHOULD NOT", and "MAY" in this document are to be interpreted as described in RFC 2119 / RFC 8174. ### Interfaces This ERC splits functionality into four interfaces. The MUST / OPTIONAL relationship for implementations is as follows: | Interface | Purpose |
+
+MOTIVATION:
+### Problem Space Directly assigning identity to Agents leaves several fundamental problems unresolved. For example, we cannot reliably guarantee that the same Agent always remains behind an [ERC-8004](./eip-8004.md) account. Identity can be assigned, but it is difficult to ensure that it remains bound to the same Agent over time.
+
+RATIONALE:
+### Design Decisions - **Generic `SubjectRef` instead of address**: Attestation needs are broader than any single identity scheme. A generic subject reference lets this ERC adapt to future identity systems without rewriting the standard. `SubjectRef` is used as an input parameter, and its fields are persisted in `AttestationRecord`, so
+
+
 === ERC-7722 ===
 TITLE: Opaque Token
 TYPE: Standards Track ERC

@@ -2437,23 +2437,23 @@ RATIONALE:
 
 
 === EIP-7904 ===
-TITLE: Compute Gas Cost Increase
-TYPE: Standards Track Core
+TITLE: Compute Gas Cost Analysis
+TYPE: Informational 
 STATUS: Draft
 CREATED: 2025-02-05
-REQUIRES: 7883
+REQUIRES: 
 
 SUMMARY:
-This proposal raises the gas costs of 13 compute operations and precompiles performing worse than 60 million gas per second (Mgas/s). By removing these operations as bottlenecks, we can further increase the block gas limit, thus allowing for a higher throughput on the remaining operations.
+This document reports an empirical analysis of the runtime of EVM compute operations and precompiles across the major execution clients. Measurements were taken on clients that include the parallel-execution optimizations enabled by [EIP-7928](./eip-7928.md) (Block-Level Access Lists). Using a target throughput of **100 million gas per second (Mgas/s)**, the analysis
 
 SPECIFICATION:
-Upon activation of this EIP, the following gas costs will be updated. ### Opcodes |Operation|Parameter|Current Gas|New Gas (Rounded)|Change| | :---: | :---: | :---: | :---: | :---: | |ADDMOD|constant|8|8|0.0| |DIV|constant|5|15|2.0| |KECCAK256|constant|30|45|0.5| |KECCAK256|msg_size|6|6|0.0| |MOD|constant|5|12|1.4| |MULMOD|constant|8|11|0.38| |SDIV|constant|5|20|3.0| |SMOD|constant|5|5|0| ### Precompiles |Operation|Parameter|Current Gas|New Gas (Rounded)|Change| | :---: | :---: | :---:
+This EIP specifies **no changes** to the Ethereum gas schedule. No opcode or precompile gas cost is modified. The analysis examined the 18 gas parameters listed below — the opcodes and precompiles that earlier revisions had flagged as candidates for repricing. For each parameter, the table reports the current
 
 MOTIVATION:
-Recent empirical measurements have shown that EVM operations don't have a price consistent with their computational complexity. Some operations are significantly underpriced, leading to potential bottlenecks in transaction processing. These bottlenecks limit the overall throughput of the Ethereum network, as they consume a disproportionate amount of computational resources relative
+Earlier revisions of this proposal were Standards Track and aimed to *raise* the gas cost of a set of compute operations and precompiles that empirical measurement had shown performing below the target throughput. The intent was to remove these operations as bottlenecks so that the block gas limit could
 
 RATIONALE:
-### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The operations selected for repricing in this EIP were chosen based on their estimated million gas per second (Mgas/s) performance. For this EIP, a performance target of **60 million gas per second** is chosen. With this performance
+### Empirical Estimation of Gas Costs #### Target Throughput A performance target of **100 million gas per second** is used as the anchor for the analysis. This target reflects the throughput that the optimized clients are expected to sustain, a substantial increase over the historical baseline. An operation is
 
 
 === EIP-8007 ===

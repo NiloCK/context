@@ -971,6 +971,26 @@ RATIONALE:
 1. Using the dynamically-sized `bytes` type allows for maximum flexibility by enabling payloads of arbitrary types. 2. Having the bytes specified as the last parameter makes this EIP compatible with the calldata layout of solidity.
 
 
+=== ERC-8273 ===
+TITLE: Attestation-Gated Agentic Actions
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-26
+REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 3
+
+SUMMARY:
+This ERC defines a standard interface for an **on-chain Agent Attestation Registry**. The registry manages attestations issued by Attestors. Each attestation has a complete lifecycle, issuance and transaction-scoped consumption, and is described by an `AttestationRecord` containing: - **subjectId / subjectType**: identifies the attested subject, for example `subjectId = agentId` + `subjectType = keccak256("ERC8004_AGENT")`, independently of any specific identity system; - **capability** + **actionDigest**: two independent axes that identify the authorization scope. `capability` is a coarse-grained capability identifier, such as `keccak256("DEFI_ACCESS_V1")`, and expresses "which class of authorization this is." `actionDigest` is a fine-grained action fingerprint and expresses "which concrete
+
+SPECIFICATION:
+The keywords "MUST", "MUST NOT", "SHOULD", "SHOULD NOT", and "MAY" in this document are to be interpreted as described in RFC 2119 / RFC 8174. ### Interfaces This ERC splits functionality into four interfaces. The MUST / OPTIONAL relationship for implementations is as follows: | Interface | Purpose | Implementation Requirement | | --- | --- | --- | | `IERC8273` (core) | Type definitions, `Attested` event, and read-only lookup functions by ID / tuple | **MUST**: all standard implementations must support it | | `IERC8273AtomicAttestation` | The only external issuance entry point, `attestAndCall` | **MUST**: this is
+
+MOTIVATION:
+### Problem Space Directly assigning identity to Agents leaves several fundamental problems unresolved. For example, we cannot reliably guarantee that the same Agent always remains behind an [ERC-8004](./eip-8004.md) account. Identity can be assigned, but it is difficult to ensure that it remains bound to the same Agent over time. The core motivation is not to prove "which Agent this is," but to prove "whether the Agent executing this on-chain operation has the required qualification." This is a subtle but important distinction, and it is the focus of this proposal. This is particularly important for AI agent systems. When
+
+RATIONALE:
+### Design Decisions - **Generic `SubjectRef` instead of address**: Attestation needs are broader than any single identity scheme. A generic subject reference lets this ERC adapt to future identity systems without rewriting the standard. `SubjectRef` is used as an input parameter, and its fields are persisted in `AttestationRecord`, so callers do not need to manage two separate return values. - **`bytes32 evidenceHash` instead of embedded metadata**: Evidence may be large, private, or mutable. A hash commitment keeps the interface compact and supports many off-chain storage systems. - **`capability` + `actionDigest` axes instead of derived `scopeId`**: Earlier versions derived
+
+
 === ERC-7722 ===
 TITLE: Opaque Token
 TYPE: Standards Track ERC

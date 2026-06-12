@@ -2437,23 +2437,23 @@ RATIONALE:
 
 
 === EIP-7904 ===
-TITLE: Compute Gas Cost Increase
-TYPE: Standards Track Core
+TITLE: Compute Gas Cost Analysis
+TYPE: Informational 
 STATUS: Draft
 CREATED: 2025-02-05
-REQUIRES: 7883
+REQUIRES: 
 
 SUMMARY:
-This proposal raises the gas costs of 13 compute operations and precompiles performing worse than 60 million gas per second (Mgas/s). By removing these
+This document reports an empirical analysis of the runtime of EVM compute operations and precompiles across the major execution clients. Measurements were taken on
 
 SPECIFICATION:
-Upon activation of this EIP, the following gas costs will be updated. ### Opcodes |Operation|Parameter|Current Gas|New Gas (Rounded)|Change| | :---: | :---: | :---:
+This EIP specifies **no changes** to the Ethereum gas schedule. No opcode or precompile gas cost is modified. The analysis examined the 18 gas
 
 MOTIVATION:
-Recent empirical measurements have shown that EVM operations don't have a price consistent with their computational complexity. Some operations are significantly underpriced, leading to
+Earlier revisions of this proposal were Standards Track and aimed to *raise* the gas cost of a set of compute operations and precompiles that
 
 RATIONALE:
-### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The operations selected for repricing in this EIP were chosen based on
+### Empirical Estimation of Gas Costs #### Target Throughput A performance target of **100 million gas per second** is used as the anchor for
 
 
 === EIP-8007 ===
