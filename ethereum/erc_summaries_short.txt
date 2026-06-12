@@ -1212,23 +1212,23 @@ There have been numerous interesting uses of [EIP-721](./eip-721.md) and [EIP-11
 
 
 === ERC-1450 ===
-TITLE: ERC-1450 A compatible security token for issuing and trading SEC-compliant securities
+TITLE: RTA-Controlled Security Token
 TYPE: Standards Track ERC
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2018-09-25
-REQUIRES: 
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 6, 0, 9, 3
 
 SUMMARY:
-`ERC-1450` facilitates the recording of ownership and transfer of securities sold in compliance with the [Securities Act Regulations CF, D and A](https://www.sec.gov/smallbusiness/exemptofferings). The issuance
+[ERC-1450](./eip-1450.md) facilitates the recording of ownership and transfer of securities sold in compliance with Securities Act Regulations CF, D, and A. This standard is
 
 SPECIFICATION:
-`ERC-1450` extends `ERC-20`. ### `ERC-1450` `ERC-1450` requires that only the Issuer can create a token representing the security that only the RTA manages. Instantiating
+ERC-1450 extends [ERC-20](./eip-20.md). ### Optional Dependencies The following standards MAY be implemented for enhanced functionality but are NOT required for compliance: - **[EIP-3668 (CCIP-Read)](./eip-3668.md)**:
 
 MOTIVATION:
-With the advent of the [JOBS Act](https://www.sec.gov/spotlight/jobs-act.shtml) in 2012 and the launch of Regulation Crowdfunding and the amendments to Regulation A and Regulation D
+With the advent of the JOBS Act in 2012 and subsequent regulations (Regulation Crowdfunding in 2016, amended Reg A and Reg D), there has
 
 RATIONALE:
-The are currently no token standards that facilitate compliance with SEC regulations. The closest token is [ERC-884 (Delaware General Corporations Law (DGCL) compatible share
+### Why On-Chain If the RTA Gates Everything? A critical question: If holders cannot initiate transfers and the RTA controls all operations, why use
 
 
 === ERC-7774 ===
