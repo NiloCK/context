@@ -1214,7 +1214,7 @@ There have been numerous interesting uses of [EIP-721](./eip-721.md) and [EIP-11
 === ERC-1450 ===
 TITLE: RTA-Controlled Security Token
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2018-09-25
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 6, 0, 9, 3
 
@@ -1222,7 +1222,7 @@ SUMMARY:
 [ERC-1450](./eip-1450.md) facilitates the recording of ownership and transfer of securities sold in compliance with Securities Act Regulations CF, D, and A. This standard is informed by practical operational experience from SEC-registered transfer agents, broker-dealers, and alternative trading systems that have collectively managed billions in compliant securities offerings. The design addresses the full lifecycle of digital securities from issuance through secondary trading. The standard introduces a unique RTA-controlled model where the Registered Transfer Agent maintains exclusive authority over all token operations. Unlike permissionless tokens, ERC-1450 enforces strict compliance by requiring the RTA to execute all mints, burns, and transfers,
 
 SPECIFICATION:
-ERC-1450 extends [ERC-20](./eip-20.md). ### Optional Dependencies The following standards MAY be implemented for enhanced functionality but are NOT required for compliance: - **[EIP-3668 (CCIP-Read)](./eip-3668.md)**: MAY be used for off-chain compliance pre-checks. Implementations choosing to support this MUST implement the `preCheckCompliance` and `preCheckComplianceCallback` functions as specified. - **[ERC-1820 (Registry)](./eip-1820.md)**: MAY be used for interface registration. Implementations can optionally register their interfaces in the ERC-1820 registry for improved discoverability. ### ERC-1450 ERC-1450 is an interface standard that defines a security token where only the Registered Transfer Agent (RTA) has authority to execute transfers, mints, and burns. The token represents securities
+ERC-1450 extends [ERC-20](./eip-20.md). ### Optional Dependencies The following standards MAY be implemented for enhanced functionality but are NOT required for compliance: - **[EIP-3668 (CCIP-Read)](./eip-3668.md)**: MAY be used for off-chain compliance pre-checks. Implementations choosing to support this MUST implement the `preCheckCompliance` and `preCheckComplianceCallback` functions as specified. - **[ERC-1820 (Registry)](./eip-1820.md)**: MAY be used for interface registration. Implementations can optionally register their interfaces in the ERC-1820 registry for improved discoverability. In addition to the optional standards above, the following interface components defined in this specification are OPTIONAL extensions. Implementations MAY omit them; implementations that provide them MUST follow the behavior specified
 
 MOTIVATION:
 With the advent of the JOBS Act in 2012 and subsequent regulations (Regulation Crowdfunding in 2016, amended Reg A and Reg D), there has been significant expansion in exemptions for securities offerings. The regulated securities market has grown substantially, with billions in offerings across thousands of companies. Experience from operating SEC-registered transfer agents has revealed critical gaps in existing token standards for securities. While standards like [ERC-3643](./eip-3643.md) provide on-chain compliance mechanisms, they don't address the unique regulatory requirements of U.S. securities law, particularly the role of Registered Transfer Agents. Current challenges that ERC-1450 addresses: - **Transfer Controller Authority**:
