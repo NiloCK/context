@@ -4180,7 +4180,7 @@ RATIONALE:
 === ERC-8196 ===
 TITLE: AI Agent Authenticated Wallet
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-03-14
 REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 4, 3, 3, 7, ,,  , 8, 0, 0, 4, ,,  , 8, 1, 2, 6
 
