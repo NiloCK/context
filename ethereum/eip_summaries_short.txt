@@ -10417,23 +10417,23 @@ Picking starting and ending block reward values that are equidistant from the cu
 
 
 === EIP-8131 ===
-TITLE: Add Auth Data to EIP-7623 Floor
+TITLE: Unified Transaction Content Floor
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-01-21
-REQUIRES: 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 7, 6
+REQUIRES: 2, 0, 2, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1
 
 SUMMARY:
-This EIP includes [EIP-7702](./eip-7702.md) authorization data in the [EIP-7623](./eip-7623.md) floor calculation, preventing circumvention of floor pricing through authorization lists. This effectively reduces the worst-case
+Charge every user-controlled byte in a transaction (calldata, access-list entries, [EIP-7702](./eip-7702.md) auths, [EIP-4844](./eip-4844.md) blob hashes) at a flat 64 gas at the floor. One
 
 SPECIFICATION:
-| Parameter | Value | Source | |-----------|-------|--------| | `TOTAL_COST_FLOOR_PER_TOKEN` | `16` | [EIP-7976](./eip-7976.md) | | `FLOOR_COST_PER_AUTH` | `6464` | 101 bytes × 4
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-[EIP-7702](./eip-7702.md) authorization tuples are priced for execution (`PER_EMPTY_ACCOUNT_COST = 25,000` gas per authorization) but do not contribute to the [EIP-7623](./eip-7623.md) floor calculation. Under [EIP-7976](./eip-7976.md)
+[EIP-7623](./eip-7623.md) introduced a floor cost on calldata bytes to cap worst-case block size. [EIP-7976](./eip-7976.md) raised that floor to a uniform 64 gas per calldata
 
 RATIONALE:
-### Flat Cost Per Authorization Each authorization is charged a flat `FLOOR_COST_PER_AUTH = 6464` gas toward the floor, derived from: - 101 bytes per
+### One per-byte rate Pricing every content byte at the same `FLOOR_GAS_PER_BYTE` already used by [EIP-7976](./eip-7976.md) for calldata and by [EIP-7981](./eip-7981.md) for access-list bytes
 
 
 === EIP-7921 ===

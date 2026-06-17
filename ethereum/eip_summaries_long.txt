@@ -10417,23 +10417,23 @@ Picking starting and ending block reward values that are equidistant from the cu
 
 
 === EIP-8131 ===
-TITLE: Add Auth Data to EIP-7623 Floor
+TITLE: Unified Transaction Content Floor
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-01-21
-REQUIRES: 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 7, 6
+REQUIRES: 2, 0, 2, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1
 
 SUMMARY:
-This EIP includes [EIP-7702](./eip-7702.md) authorization data in the [EIP-7623](./eip-7623.md) floor calculation, preventing circumvention of floor pricing through authorization lists. This effectively reduces the worst-case block size by ~16% with minimal user impact (~0.001% of mainnet transactions affected).
+Charge every user-controlled byte in a transaction (calldata, access-list entries, [EIP-7702](./eip-7702.md) auths, [EIP-4844](./eip-4844.md) blob hashes) at a flat 64 gas at the floor. One rule replaces [EIP-7623](./eip-7623.md)/[EIP-7976](./eip-7976.md) and [EIP-7981](./eip-7981.md) and closes the auth and blob hash floor gaps. Worst-case user-controlled tx content per block is bounded by `block_gas_limit / 64 ≈ 0.89 MB`. Fewer than 4% of mainnet transactions hit the new floor.
 
 SPECIFICATION:
-| Parameter | Value | Source | |-----------|-------|--------| | `TOTAL_COST_FLOOR_PER_TOKEN` | `16` | [EIP-7976](./eip-7976.md) | | `FLOOR_COST_PER_AUTH` | `6464` | 101 bytes × 4 tokens × 16 gas | | `PER_EMPTY_ACCOUNT_COST` | `25000` | [EIP-7702](./eip-7702.md) | The [EIP-7623](./eip-7623.md) floor calculation is modified to include authorization data: ```python tokens_in_calldata = zero_bytes_in_calldata + nonzero_bytes_in_calldata * 4 floor_gas = ( TX_BASE_COST + TOTAL_COST_FLOOR_PER_TOKEN * tokens_in_calldata + FLOOR_COST_PER_AUTH * num_authorizations ) ``` The gas used calculation becomes: ```python tx.gasUsed = ( 21000 + max( STANDARD_TOKEN_COST * tokens_in_calldata + execution_gas_used + isContractCreation * (32000 + INITCODE_WORD_COST * words(calldata)) + access_list_cost + PER_EMPTY_ACCOUNT_COST *
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Constants ``` TX_BASE = 21000 FLOOR_GAS_PER_BYTE = 64 # per-byte floor rate established by EIP-7976 (calldata) and EIP-7981 (access lists) ACCESS_LIST_ADDRESS_BYTES = 20 ACCESS_LIST_STORAGE_KEY_BYTES = 32 AUTH_TUPLE_BYTES = 108 # EIP-7702 authorization tuple worst-case RLP BLOB_VERSIONED_HASH_BYTES = 32 ``` ### Transaction floor ``` tx_floor = TX_BASE + FLOOR_GAS_PER_BYTE * ( len(tx.data) + ACCESS_LIST_ADDRESS_BYTES * num_access_list_addresses + ACCESS_LIST_STORAGE_KEY_BYTES * num_access_list_storage_keys + AUTH_TUPLE_BYTES * num_authorizations
 
 MOTIVATION:
-[EIP-7702](./eip-7702.md) authorization tuples are priced for execution (`PER_EMPTY_ACCOUNT_COST = 25,000` gas per authorization) but do not contribute to the [EIP-7623](./eip-7623.md) floor calculation. Under [EIP-7976](./eip-7976.md) floor pricing, this enables circumventing the floor by combining all-non-zero calldata with authorization data at a 25%/75% (calldata/auths) gas split.
+[EIP-7623](./eip-7623.md) introduced a floor cost on calldata bytes to cap worst-case block size. [EIP-7976](./eip-7976.md) raised that floor to a uniform 64 gas per calldata byte, zero and non-zero alike (by treating every byte as 4 floor tokens at 16 gas each). [EIP-7981](./eip-7981.md) extended the same 64 gas/B rate to access-list bytes via a flat data-cost surcharge of 1,280 gas per address and 2,048 gas per storage key. The principle is consistent across both: every user-controlled content byte priced at 64 gas at the floor. [EIP-7702](./eip-7702.md) authorization tuples (up to 108 B each) and [EIP-4844](./eip-4844.md) blob versioned hashes (32
 
 RATIONALE:
-### Flat Cost Per Authorization Each authorization is charged a flat `FLOOR_COST_PER_AUTH = 6464` gas toward the floor, derived from: - 101 bytes per authorization tuple (as specified in [EIP-7702](./eip-7702.md)) - 4 tokens per byte (treating all bytes as non-zero) - 16 gas per token (`TOTAL_COST_FLOOR_PER_TOKEN`) This conservative approach avoids byte-level zero/non-zero accounting while ensuring authorization data is properly reflected in the floor calculation. ### Worst-Case Reduction At the floor under EIP-7976 every byte costs 64 gas regardless of value, so the optimal attacker uses all-non-zero calldata (incompressible under snappy) at the standard rate of 16 gas/byte and
+### One per-byte rate Pricing every content byte at the same `FLOOR_GAS_PER_BYTE` already used by [EIP-7976](./eip-7976.md) for calldata and by [EIP-7981](./eip-7981.md) for access-list bytes makes the worst case invariant to the attacker's choice of field or byte value: calldata, access-list entries, authorization tuples, and blob versioned hashes all yield `1/64` bytes per gas at the floor. The optimum collapses to `B = block_gas_limit / 64`. The bound holds independent of the network compressor, attacker strategy, or content composition. ### Content-only, not full RLP Charging every encoded byte (envelope and signature included) would make legacy transactions strictly cheaper than
 
 
 === EIP-7921 ===
