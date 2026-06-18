@@ -562,6 +562,26 @@ RATIONALE:
 This change removes burn behavior at its source instead of adding dedicated handling for it elsewhere. The chosen design preserves the state-clearing effect of
 
 
+=== EIP-8279 ===
+TITLE: Block Access List Byte Floor
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-23
+REQUIRES: 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 1, 3, 1
+
+SUMMARY:
+Extend the transaction's floor accumulator by 64 gas for each byte an opcode adds to the [EIP-7928](./eip-7928.md) Block Access List, checked at runtime before
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[EIP-7623](./eip-7623.md) caps worst-case block size by charging at least 64 gas per non-zero calldata byte. [EIP-7981](./eip-7981.md) extended that to access-list entries, and [EIP-8131](./eip-8131.md) generalises
+
+RATIONALE:
+### Floor side, not intrinsic side Raising opcode intrinsic costs would penalise every user, including ones who never bypass. Charging on the floor only
+
+
 === EIP-7971 ===
 TITLE: Hard Limits for Transient Storage
 TYPE: Standards Track Core

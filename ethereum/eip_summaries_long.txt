@@ -562,6 +562,26 @@ RATIONALE:
 This change removes burn behavior at its source instead of adding dedicated handling for it elsewhere. The chosen design preserves the state-clearing effect of `SELFDESTRUCT` for contracts created in the same transaction. The account may still survive in the state, but only as a balance-only account. This removes the special case where ETH disappears from the state while keeping the account non-executable after transaction finalization. Resetting the nonce to 0 ensures that a future `CREATE2` at the same address is not blocked by a preserved balance-only account. An alternative would be to preserve the whole account, including nonce,
 
 
+=== EIP-8279 ===
+TITLE: Block Access List Byte Floor
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-23
+REQUIRES: 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 1, 3, 1
+
+SUMMARY:
+Extend the transaction's floor accumulator by 64 gas for each byte an opcode adds to the [EIP-7928](./eip-7928.md) Block Access List, checked at runtime before the BAL grows. Today an attacker can pack ~1.55 MB into a 60M-gas block: 75% of gas on cold `SLOAD`s (32 BAL bytes per 2,100 gas) + 25% on calldata at 16 gas/byte. On top of [EIP-8131](./eip-8131.md)'s tx-content floor (same rate), block content is capped at `block_gas_limit / 64 ≈ 0.89 MB` (~42% reduction). Neither EIP alone closes the bypass: 8131 does not price BAL bytes; 8279 reuses 8131's floor. Typical transactions are unaffected:
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants ``` FLOOR_GAS_PER_BYTE = 64 # per-byte floor rate (EIP-7976) BAL_BYTES_PER_ADDRESS = 20 BAL_BYTES_PER_STORAGE_KEY = 32 BAL_BYTES_PER_STORAGE_VALUE = 32 BAL_BYTES_PER_BALANCE = 32 BAL_BYTES_PER_NONCE = 8 DELEGATION_CODE_BYTES = 23 # EIP-7702 delegation marker length ``` ### Floor accumulator Clients keep an internal, per-transaction `floor_gas_used` counter on the execution environment for the duration of the transaction. It is not part of the signed transaction, RLP-encoded,
+
+MOTIVATION:
+[EIP-7623](./eip-7623.md) caps worst-case block size by charging at least 64 gas per non-zero calldata byte. [EIP-7981](./eip-7981.md) extended that to access-list entries, and [EIP-8131](./eip-8131.md) generalises the floor to a uniform per-byte rule over all tx-content fields, including [EIP-7702](./eip-7702.md) authorization tuples and [EIP-4844](./eip-4844.md) blob versioned hashes. [EIP-7928](./eip-7928.md) introduces a new source of block bytes, the BAL, populated by runtime opcodes. None of those static floors cover it. The cheapest BAL contributor is a cold `SLOAD`: 32 bytes for 2,100 gas. Combined with all-non-zero calldata, an attacker pushes intrinsic gas above the calldata floor, pays intrinsic, and gets calldata at 16
+
+RATIONALE:
+### Floor side, not intrinsic side Raising opcode intrinsic costs would penalise every user, including ones who never bypass. Charging on the floor only bites when execution is too cheap to cover the floor, which is exactly the bypass case. A pure intrinsic surcharge also fails to cap the block at `gas_limit / 64`: for any added per-`SLOAD` cost `X`, the optimum bypass still yields `B = gas_limit / 64 + 24 · gas_limit / (2100 + X)` bytes, with the residual only vanishing as `X` grows large. Floor-side charging gives a closed bound directly. ### Runtime extensions
+
+
 === EIP-7971 ===
 TITLE: Hard Limits for Transient Storage
 TYPE: Standards Track Core
