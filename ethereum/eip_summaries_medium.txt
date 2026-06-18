@@ -1145,23 +1145,23 @@ RATIONALE:
 
 
 === EIP-2780 ===
-TITLE: Reduce intrinsic transaction gas
+TITLE: Resource-based intrinsic transaction gas
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2020-07-11
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 7, 7, 0, 8
+REQUIRES: 1, 6, 1, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
-Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `4,500` and define a consistent gas accounting model based on actual state operations. This more granular approach makes a simple ETH transfer `7,756` due to additional costs related to the `to` account and the [EIP-7708](./eip-7708.md) transfer log. If a non-create transaction
+This EIP decomposes the flat `21,000` intrinsic transaction cost into explicit primitives, each priced to match the resources a transaction actually consumes: - `TX_BASE_COST = 12,000` — ECDSA recovery plus the sender account's access and write. - `COLD_ACCOUNT_ACCESS = 3,000` — the recipient account touch, per [EIP-8038](./eip-8038.md). - `TX_VALUE_COST
 
 SPECIFICATION:
-After `FORK_BLOCK`, set the following parameters and rules: ### Parameters | Name | Value | Description | | -------------------------- | -----: | ----------------------------------------------------------------------- | | `TX_BASE_COST` | 4,500 | Base cost of any transaction | | `GAS_NEW_ACCOUNT` | 25,000 | Surcharge when a value-transferring transaction creates a new account
+### Parameters | Name | Value | Definition | | :----: | :----: | :---- | | `TX_BASE_COST` | 12,000 | Sender cost: ECDSA recovery, the sender's account access, and the sender's account write | | `TX_VALUE_COST` | 4,244 | Recipient balance write performed by a value transfer |
 
 MOTIVATION:
-**Monetary Context** Money has three basic functions: a unit of account, a medium of exchange, and a store of value. ETH already meets the last two by design. It carries value without an issuer and settles with finality. Where it falls short is in everyday exchange - the friction
+The flat `21,000` intrinsic cost charges every transaction the same amount regardless of what it does. A zero-value transaction to an existing account and a value transfer that creates a new account both pay `21,000`, even though the latter touches an extra account, writes an extra balance, emits a
 
 RATIONALE:
-Price only what every transaction always does: ECDSA recovery, warming `sender` and `to`, and one account-leaf write for the sender (nonce + balance change). That sums to `4,500` gas. Anything not universal should be metered separately. Calldata remains metered per byte. No calldata allowance is folded into the base.
+### Pricing only the work each transaction does The decomposition charges each primitive once, where the resource is consumed: signature recovery and the sender's access and write in `TX_BASE_COST`; the recipient touch in `COLD_ACCOUNT_ACCESS`; the recipient balance write in `TX_VALUE_COST`; the transfer log in `TRANSFER_LOG_COST`; and durable state creation
 
 
 === EIP-5749 ===

@@ -1145,23 +1145,23 @@ RATIONALE:
 
 
 === EIP-2780 ===
-TITLE: Reduce intrinsic transaction gas
+TITLE: Resource-based intrinsic transaction gas
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2020-07-11
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 7, 7, 0, 8
+REQUIRES: 1, 6, 1, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
-Reduce the intrinsic cost `TX_BASE_COST` from `21,000` to `4,500` and define a consistent gas accounting model based on actual state operations. This more granular
+This EIP decomposes the flat `21,000` intrinsic transaction cost into explicit primitives, each priced to match the resources a transaction actually consumes: - `TX_BASE_COST
 
 SPECIFICATION:
-After `FORK_BLOCK`, set the following parameters and rules: ### Parameters | Name | Value | Description | | -------------------------- | -----: | ----------------------------------------------------------------------- |
+### Parameters | Name | Value | Definition | | :----: | :----: | :---- | | `TX_BASE_COST` | 12,000 | Sender cost: ECDSA
 
 MOTIVATION:
-**Monetary Context** Money has three basic functions: a unit of account, a medium of exchange, and a store of value. ETH already meets the
+The flat `21,000` intrinsic cost charges every transaction the same amount regardless of what it does. A zero-value transaction to an existing account and
 
 RATIONALE:
-Price only what every transaction always does: ECDSA recovery, warming `sender` and `to`, and one account-leaf write for the sender (nonce + balance change).
+### Pricing only the work each transaction does The decomposition charges each primitive once, where the resource is consumed: signature recovery and the sender's
 
 
 === EIP-5749 ===
