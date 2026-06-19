@@ -2493,7 +2493,7 @@ MOTIVATION:
 The main objective of the Glamsterdam fork is to improve L1 scalability. A crucial aspect of this initiative is to create a better alignment between gas costs and actual resource usage. Currently, the gas model often misprices operations, resulting in inefficiencies and unintended incentives. For instance, within the pure
 
 RATIONALE:
-### Gas cost changes by operation The following tables summarize the preliminary gas cost changes. Numbers are not yet finalized and will be subject to change. #### Compute Opcodes — [EIP-7904](./eip-7904.md) (all increase) | Opcode | Name | Current | New | Direction | | --- | --- |
+### Gas cost changes by operation The following tables summarize the preliminary gas cost changes. Numbers are not yet finalized and will be subject to change. #### Compute Opcodes and Precompiles — [EIP-7904](./eip-7904.md) (no changes) [EIP-7904](./eip-7904.md) is now Informational and recommends no repricing. Earlier revisions proposed raising the cost
 
 
 === EIP-7980 ===
