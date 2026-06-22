@@ -2310,7 +2310,7 @@ TITLE: Onchain Metadata for Token Registries
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-09-30
-REQUIRES: 165
+REQUIRES: 1, 6, 5, ,,  , 7, 9, 3, 0, ,,  , 8, 1, 1, 9
 
 SUMMARY:
 This ERC defines an onchain metadata standard for multi-token and NFT registries including [ERC-721](./eip-721.md), [ERC-1155](./eip-1155.md), and [ERC-6909](./eip-6909.md). The standard provides a key-value store allowing for arbitrary bytes to be stored onchain.
