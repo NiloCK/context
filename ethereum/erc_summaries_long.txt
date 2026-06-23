@@ -2955,7 +2955,7 @@ RATIONALE:
 === ERC-5516 ===
 TITLE: Soulbound Multi-owner Tokens
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2022-08-19
 REQUIRES: 165
 

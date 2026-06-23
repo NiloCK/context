@@ -8160,6 +8160,26 @@ RATIONALE:
 ### Allowing `JUMPF` to section with less outputs An alternative rule for `JUMPF` stack validation could require the target section's outputs to be exactly equal to the current section's outputs. Under such rule, a particular target section (a shared "helper" piece of code) would only "match" sections (requiring some shared "helper" code to execute before returning) *with the same number of outputs*. Instead, we allow a given `JUMPF` target section to be called from sections with more outputs, as long as these sections provide these extra stack elements (the "delta") themselves. This will reduce duplicated code as it
 
 
+=== EIP-8222 ===
+TITLE: Lean Staking
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-04-09
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 2, 5, 1
+
+SUMMARY:
+"Lean Staking" is an L1 native, two-phase staking process providing validator unlinkability. It decouples execution layer (EL) deposit addresses from consensus layer (CL) validator keys by routing deposits through a pending deposit tree. Depositors first submit a pending deposit along with a cryptographic commitment to the staking contract. A separate party then claims the deposit by providing a zero-knowledge proof of commitment ownership, at which point the deposit is added to the validator entry queue. We first describe a simple version of the protocol that requires only EL changes to the staking contract. Then, in section "Two-phase Withdrawals",
+
+SPECIFICATION:
+Lean Staking introduces a two-phase staking process: 1. **Pending deposit phase**: The depositor sends ETH along with a cryptographic commitment to the staking contract. The commitment is inserted into an append-only pending deposit tree. This transaction is public but reveals nothing about the future validator identity. 2. **Claim phase**: A separate party (i.e. relayer or account abstraction (AA) bundler) submits a zero-knowledge proof of knowledge of an unclaimed commitment in the pending deposit tree. Upon successful verification, the deposit is added to the validator entry queue with the provided CL credentials. The commitment is nullified to prevent double-claiming.
+
+MOTIVATION:
+Privacy is a pressing requirement for Ethereum. L1 staking is Ethereum's economic and security powerhouse. At the time of this EIP, the staking contract locks more than 38 million ETH ($81B). However, the current staking flow is public, linking deposit addresses to validator keys. This lack of privacy compromises solo and institutional stakers alike, sometimes putting their funds and even physical safety at risk. Note that the validator needs to have both deposit privacy (not leaking information about their on-chain identity) and network anonymity (not leaking information about their IP); the later is a well-studied problem with mature
+
+RATIONALE:
+### Root Expiry The contract stores only the last N roots (e.g., 1024) in a circular buffer. A user's claim whose proof references an evicted root must recompute their proof against a current root. The buffer size should be chosen to give users sufficient time to generate and submit proofs under normal network conditions. Very old roots also correspond to smaller anonymity sets, so expiring them has the secondary benefit of encouraging claims against roots with larger anonymity sets. ### Nullifier Set Growth The staking contract maintains a set of spent nullifiers and rejects any claim with a
+
+
 === EIP-2200 ===
 TITLE: Structured Definitions for Net Gas Metering
 TYPE: Standards Track Core
