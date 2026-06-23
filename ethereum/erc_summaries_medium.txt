@@ -7161,7 +7161,7 @@ SUMMARY:
 This ERC defines interfaces for decentralized authenticated messaging over [EIP-4844](./eip-4844.md) blobs. The core registration interface extends [ERC-8179](./eip-8179.md) (Blob Space Segments) with a decoder pointer and a signature registry pointer: the decoder is an untrusted on-chain contract that extracts messages from payloads; the signature registry is a trusted contract that
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Architecture Overview ``` [Blob/calldata] → registerBlobBatch/registerCalldataBatch (Core) ↓ emits BlobBatchRegistered(contentTag, decoder, registry) or ↓
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Architecture Overview ``` [Blob/calldata] → registerBlobBatch / registerBlobBatches / registerCalldataBatch (Core) ↓ emits BlobBatchRegistered(contentTag,
 
 MOTIVATION:
 EIP-4844 blobs provide 128 KiB of data availability per blob at a fraction of calldata cost. With dictionary-based compression, a single blob holds thousands of messages. Empirical analysis shows capacity exceeding 498 million messages per day. Beyond social messaging, this ERC demonstrates that EIP-4844 blob data is a viable
