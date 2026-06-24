@@ -1440,16 +1440,16 @@ CREATED: 2025-01-20
 REQUIRES: 
 
 SUMMARY:
-Introduce a new binary state tree, intended to replace the hexary patricia trees. Account and storage tries are merged into a single tree with 32-byte keys, which also contains contracts code. Account data is broken into independent leaves which are grouped by 256 in order to provide some locality. Note: The hash function used in the current draft is not final. The current implementation uses BLAKE3 to reduce friction for EL clients experimenting with this EIP, but the final decision remains TBD. Other potential candidates include Keccak and Poseidon2. For Poseidon2, there's an ongoing Ethereum Foundation cryptography initiative
+Introduce a new binary state tree, intended to replace the hexary patricia trees. Account headers, contract code and storage are stored in a single logical tree. Account data is broken into independent leaves which are grouped by 256 in order to provide some locality. The tree is also grouped by storage type (headers vs code vs storage), to enable separate syncing and distinct treatment of different types of storage that in the future will have different properties. Note: The hash function used in the current draft is not final. The current implementation uses BLAKE3 to reduce friction for
 
 SPECIFICATION:
-The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Notable changes from the hexary structure - The account and storage tries are merged into a single trie. - RLP is no longer used. - The account's code is chunked and included in the tree. - Account data (e.g., balance, nonce, first storage slots, first code-chunks) is co-located in the tree to reduce branch openings. ### Tree structure The proposed Binary Tree stores key-value
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Notable changes from the hexary structure - The account and storage tries are merged into a single trie. - RLP is no longer used. - The account's code is chunked and included in the tree. - Account data (e.g., balance, nonce, first storage slots, first code-chunks) is co-located in the tree to reduce branch openings. - All state of the same type (eg. headers,
 
 MOTIVATION:
 Ethereum's long-term goal is to allow blocks to be proved with validity proof so that chain verification is as simple and fast as possible. One of the most challenging parts of achieving that goal is proving the state of the tree, which is required for EVM execution. The current Merkle-Patricia Trie (MPT) design isn't friendly to validity proofs for many reasons, such as using RLP for node encoding, Keccak as a hashing function, being a "tree of trees", and not including accounts code as part of the state. Apart from requiring a state tree design that is friendly
 
 RATIONALE:
-This EIP defines a new Binary Tree that starts empty. Only new state changes are stored in the tree. The MPT continues to exist but is frozen. This sets the stage for a future hard fork that migrates the MPT data to this Binary Tree ([EIP-7748](./eip-7748.md)). ### Single tree design The proposal uses a single-layer tree structure with 32-byte keys and values for several reasons: - **Simplicity**: working with the abstraction of a key/value store makes it easier to write code dealing with the tree (e.g. database reading/writing, caching, syncing, proof creation, and verification) and upgrade it to
+This EIP defines a new Binary Tree that starts empty. Only new state changes are stored in the tree. The MPT continues to exist but is frozen. This sets the stage for a future hard fork that migrates the MPT data to this Binary Tree ([EIP-7748](./eip-7748.md)). ### Single tree design The proposal uses a single-layer tree structure with bytes as keys and 32 byte values for several reasons: - **Simplicity**: working with the abstraction of a key/value store makes it easier to write code dealing with the tree (e.g. database reading/writing, caching, syncing, proof creation, and verification) and
 
 
 === EIP-7886 ===
@@ -3751,19 +3751,19 @@ TITLE: Transaction Assertions via State Diff Opcode
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-02-21
-REQUIRES: 
+REQUIRES: 8141
 
 SUMMARY:
 This proposal introduces a new opcode that allows contracts to inspect the transaction outcomes on-chain. This opcode will allow contract developers to define assertions for state changes that can be enforced on-chain. These can protect Ethereum users by restricting the behavior of the smart contracts they are interacting with.
 
 SPECIFICATION:
-### Constants | Name | Value | |------------------------|-------| | TXTRACE_GAS_COST | TBD | | EVENTDATACOPY_GAS_COST | TBD | ### Transaction Trace Opcode We introduce a new `TXTRACE` opcode. It can be used to retrieve the full state diff of the current transaction up to this point. It accepts a `(param, index)` inputs similar to the `FRAMEPARAM` opcode from [EIP-8141](./eip-8141.md). The available parameters are listed in the table below. | `param` | `in2` | Return value | |---------|-------------------------------|-------------------------------------------------------------------------------| | 0x00 | must be 0 | `balances_changed` - the total number of changed balances | | 0x01 | must be
+### Constants | Name | Value | |------------------------|-------| | TXDIFF_GAS_COST | TBD | | TXTRACE_GAS_COST | TBD | | EVENTDATACOPY_GAS_COST | TBD | | `POST_TX` | `3` | ### The `POST_TX` Frame Mode This EIP requires [EIP-8141](./eip-8141.md) and amends its frame transaction specification by adding a new frame `mode` value, `POST_TX`, alongside the `DEFAULT`, `VERIFY`, and `SENDER` modes already defined there. The following rules apply to EIP-8141 frame transactions wherever this EIP is active: - The static constraint `assert frame.mode < 3` on each frame is replaced by `assert frame.mode < 4`, admitting `POST_TX` as a valid mode
 
 MOTIVATION:
 The total value of crypto assets that have been stolen to date exceeds the yearly GDP of a medium-sized nation. This level of loss and waste is indefensible and has a long list of negative consequences for everyone around the world. The ability of an average user or a Wallet application to find, collect, review, and analyze the EVM code the transaction will execute is very limited. This leaves the users with no mechanism to enforce any restrictions on what the transaction actually does once it is signed. This leads users to perform de-facto blind signing every time
 
 RATIONALE:
-### Selection Parameter Design The `TXTRACE` opcode follows the same `(param, index)` two-argument pattern used by `FRAMEPARAM` in [EIP-8141](./eip-8141.md). This keeps the interface consistent and avoids introducing a separate opcode for every piece of trace information. ### Enumeration instead of lookup The `TXTRACE` opcode exposes transaction outcomes through index-based access over the full set of observable state changes, but it does not provide a mechanism to look up a balance or storage change for a specific address or slot key. Doing so would require introducing a separate "state diff lookup opcode", which would spare contracts from performing a
+### Selection Parameter Design The `TXTRACE` opcode follows the same `(param, index)` two-argument pattern used by `FRAMEPARAM` in [EIP-8141](./eip-8141.md). This keeps the interface consistent and avoids introducing a separate opcode for every piece of trace information. ### Enumeration and Lookup The `TXTRACE` opcode exposes transaction outcomes through index-based access over the full set of observable state changes. The `TXDIFF` opcode complements it with direct, keyed access to one specific balance, codehash, or storage slot. Typical transaction assertion costs are negligible compared to the gas cost of the storage modification itself. Events are in emission order and require a
 
 
 === EIP-7768 ===

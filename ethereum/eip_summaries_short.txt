@@ -1440,7 +1440,7 @@ CREATED: 2025-01-20
 REQUIRES: 
 
 SUMMARY:
-Introduce a new binary state tree, intended to replace the hexary patricia trees. Account and storage tries are merged into a single tree with
+Introduce a new binary state tree, intended to replace the hexary patricia trees. Account headers, contract code and storage are stored in a single
 
 SPECIFICATION:
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
@@ -3751,13 +3751,13 @@ TITLE: Transaction Assertions via State Diff Opcode
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-02-21
-REQUIRES: 
+REQUIRES: 8141
 
 SUMMARY:
 This proposal introduces a new opcode that allows contracts to inspect the transaction outcomes on-chain. This opcode will allow contract developers to define assertions
 
 SPECIFICATION:
-### Constants | Name | Value | |------------------------|-------| | TXTRACE_GAS_COST | TBD | | EVENTDATACOPY_GAS_COST | TBD | ### Transaction Trace Opcode We introduce
+### Constants | Name | Value | |------------------------|-------| | TXDIFF_GAS_COST | TBD | | TXTRACE_GAS_COST | TBD | | EVENTDATACOPY_GAS_COST | TBD | |
 
 MOTIVATION:
 The total value of crypto assets that have been stolen to date exceeds the yearly GDP of a medium-sized nation. This level of loss
