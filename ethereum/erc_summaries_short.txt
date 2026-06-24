@@ -1234,7 +1234,7 @@ There have been numerous interesting uses of [EIP-721](./eip-721.md) and [EIP-11
 === ERC-1450 ===
 TITLE: RTA-Controlled Security Token
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2018-09-25
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 6, 0, 9, 3
 
