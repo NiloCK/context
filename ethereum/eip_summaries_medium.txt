@@ -570,7 +570,7 @@ CREATED: 2026-05-23
 REQUIRES: 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 1, 3, 1
 
 SUMMARY:
-Extend the transaction's floor accumulator by 64 gas for each byte an opcode adds to the [EIP-7928](./eip-7928.md) Block Access List, checked at runtime before the BAL grows. Today an attacker can pack ~1.55 MB into a 60M-gas block: 75% of gas on cold `SLOAD`s (32 BAL bytes per 2,100
+Meter the bytes each opcode adds to the [EIP-7928](./eip-7928.md) Block Access List in an explicit per-transaction counter, and fold that count, at 64 gas/byte, into the transaction's floor accumulator — checked at runtime before the BAL grows. Today an attacker can pack ~1.55 MB into a 60M-gas block: 75%
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants ``` FLOOR_GAS_PER_BYTE = 64 # per-byte floor rate (EIP-7976) BAL_BYTES_PER_ADDRESS = 20 BAL_BYTES_PER_STORAGE_KEY
@@ -1149,7 +1149,7 @@ TITLE: Resource-based intrinsic transaction gas
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2020-07-11
-REQUIRES: 1, 6, 1, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 5, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP decomposes the flat `21,000` intrinsic transaction cost into explicit primitives, each priced to match the resources a transaction actually consumes: - `TX_BASE_COST = 12,000` — ECDSA recovery plus the sender account's access and write. - `COLD_ACCOUNT_ACCESS = 3,000` — the recipient account touch, per [EIP-8038](./eip-8038.md). - `TX_VALUE_COST
