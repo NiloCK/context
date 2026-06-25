@@ -1149,7 +1149,7 @@ TITLE: Resource-based intrinsic transaction gas
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2020-07-11
-REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 5, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 5, 2, 3, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP decomposes the flat `21,000` intrinsic transaction cost into explicit primitives, each priced to match the resources a transaction actually consumes: - `TX_BASE_COST = 12,000` — ECDSA recovery plus the sender account's access and write. - `COLD_ACCOUNT_ACCESS = 3,000` — the recipient account touch, per [EIP-8038](./eip-8038.md). - `TX_VALUE_COST = 4,244` — the recipient balance write performed by a value transfer. - `TRANSFER_LOG_COST = 1,756` — the [EIP-7708](./eip-7708.md) transfer log. A plain ETH transfer to an existing account still costs `12,000 + 3,000 + 4,244 + 1,756 = 21,000` gas. The headline number is unchanged, but it is
