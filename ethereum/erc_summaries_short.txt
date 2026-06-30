@@ -6000,7 +6000,7 @@ TITLE: Regulated Agent Mandate
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2026-04-12
-REQUIRES: 165
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1
 
 SUMMARY:
 This standard defines a compliance delegation layer for AI agents operating on tokenized regulated assets. It specifies how a verified principal can delegate scoped,
@@ -6009,10 +6009,10 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHOULD", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC
 
 MOTIVATION:
-The market for tokenized real-world assets is entering a phase of institutional adoption. Platforms operating under regulatory frameworks are beginning to support programmable, agent-driven
+The market for tokenized real-world assets is entering a phase of institutional adoption. Platforms operating under regulatory frameworks are starting to support programmable, agent-driven
 
 RATIONALE:
-RAMS is defined as a separate ERC rather than an extension of any specific agent identity or token compliance standard because mandate delegation is
+RAMS is a separate ERC rather than an extension of any agent identity or token compliance standard because mandate delegation is a distinct concern.
 
 
 === ERC-725 ===
