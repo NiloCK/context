@@ -1289,7 +1289,7 @@ MOTIVATION:
 **Validation via re-execution** Today, validators verify execution payloads by: 1) Downloading the execution payload 2) Executing the payload locally 3) Checking the resulting state root and other fields against the fields in the header Implicitly this guarantees execution payload availability because the payload cannot be verified unless the node downloads it. **Validation with zkEVMs** With zkEVMs, validators instead: 1) Download a proof attesting to the correctness of the execution payload 2) Download the execution payload header 3) Verify the proof with respects to the payload header (and other commitments) In this model, validators no longer require access to
 
 RATIONALE:
-### What is included in execution-payload data? Execution-payload data includes `bals` (Block Access Lists from EIP-7928) and `transactions`. **Why transactions?** Transaction data is the only component of the execution payload that cannot be derived from other components and is not provided by the consensus layer. **Why BALs?** While BALs are technically the output of executing transactions and could be recomputed, once zkEVM proofs become mandatory for consensus, validators no longer execute payloads. A malicious builder could publish a valid proof and withhold both the execution payload data and the BALs. This would prevent other builders from constructing subsequent
+### What is included in execution-payload data? Execution-payload data includes `blockAccessList` (from EIP-7928) and `transactions`. **Why transactions?** Transaction data is the only component of the execution payload that cannot be derived from other components and is not provided by the consensus layer. **Why BALs?** While BALs are technically the output of executing transactions and could be recomputed, once zkEVM proofs become mandatory for consensus, validators no longer execute payloads. A malicious builder could publish a valid proof and withhold both the execution payload data and the BALs. This would prevent other builders from constructing subsequent blocks and prevent
 
 
 === EIP-8136 ===
@@ -2792,6 +2792,26 @@ Currently, non-Ethereum-L1 EVM chains cannot innovate on the EVM by introducing 
 
 RATIONALE:
 ### No effect on `JUMPDEST` analysis An alternative considered was to have `EXTENSION`: - invalidate `0x5b` byte following it as a jump destination and - skip over `PUSHx` instructions following it however that would require this EIP to prescribe the size of the immediate arguments. It would also run into conflict with any opcodes with immediate arguments introduced in the EVM via other EIPs. Lastly, it could cause different jump destination validity for same bytecode when analyzed on and outside Ethereum L1 EVM, causing code to not be portable between chains. It is therefore presumed that a `0xae5b`
+
+
+=== EIP-8219 ===
+TITLE: Checked Arithmetic Opcodes
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-04-08
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces four new opcodes — `SAFEADD` (`0x0c`), `SAFESUB` (`0x0d`), `SAFEMUL` (`0x0e`), and `SAFEDIV` (`0x0f`) — that perform unsigned 256-bit arithmetic with built-in overflow, underflow, and division-by-zero checking. On error, these opcodes revert the current call frame with empty returndata, equivalent to `REVERT(0, 0)`. A single `SAFEADD` instruction replaces the 11-instruction compiler-generated overflow check pattern, reducing checked addition cost from ~79 gas to 5 gas and from 22 bytes to 1 byte of bytecode.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Parameters | Constant | Value | |---|---| | `FORK_BLOCK` | TBD | ### Overview Four new opcodes are introduced in the range `0x0c`–`0x0f`, immediately following the existing arithmetic opcode group (`ADD` through `SIGNEXTEND`, `0x01`–`0x0b`). These slots are currently unassigned. | Opcode | Mnemonic | Gas | Description | |---|---|---|---| | `0x0c` | `SAFEADD` | 5 | Checked unsigned addition; reverts on overflow |
+
+MOTIVATION:
+### The Checked Arithmetic Overhead High-level EVM languages emit overflow checks by default: Solidity since v0.8.0, Vyper since inception. These checks are essential for correctness, but the EVM provides no native support for them, forcing compilers to synthesize multi-instruction check patterns around every arithmetic operation. A typical checked addition compiles to something like: 1. (Jump to safe add) 2. Duplicate operand 3. Perform Addition 4. Check for overflow 5. (Jump back) This contains at least one conditional jump and potentially multiple more jumps. Benchmarks conducted with Solidity 0.8.33 (optimizer enabled, 200 runs) and Vyper 0.4.3 on equivalent ERC-20
+
+RATIONALE:
+### Why Direct-Revert Over Flags Both [EIP-1051](./eip-1051.md) and [EIP-6888](./eip-6888.md) proposed flag-based approaches where existing arithmetic opcodes set implicit flags that must be checked by separate opcodes. This design has several drawbacks: 1. **Multi-instruction overhead.** Checking a flag still requires at least two additional instructions (read flag + conditional jump), reducing but not eliminating the checked arithmetic overhead. 2. **Implicit state.** Flags introduce hidden state that persists between instructions. This complicates static analysis, formal verification, and optimization passes in compilers. 3. **Silent flag loss.** If multiple arithmetic operations execute between flag checks, earlier overflow conditions are silently overwritten. This
 
 
 === EIP-2045 ===
@@ -7359,7 +7379,7 @@ RATIONALE:
 === EIP-2542 ===
 TITLE: New opcodes TXGASLIMIT and CALLGASLIMIT
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Withdrawn
 CREATED: 2020-02-29
 REQUIRES: 
 
@@ -7367,7 +7387,7 @@ SUMMARY:
 Currently, there is an existing opcode `0x45 GASLIMIT` that provides access to the block gas limit. While this information may be useful in some cases, it is probably not a value that smart contract developers may be concerned about. The opcode `0x5a GAS` provides the remaining gas, not the initial one. Also, it is worth noting how existing `0x32 ORIGIN`, `0x33 CALLER`, `0x34 CALLVALUE` and `0x3a GASPRICE` opcodes set a pattern of having access to both the transaction and current execution frame state. TBD: as 0x30 opcode range is exhausted, the proposed opcodes can be added to 0x50
 
 SPECIFICATION:
-If block.number >= TBD, add three new opcodes: TXGASLIMIT: 0x5c Pushes the gas limit of the entire transaction onto the stack. This is a value of the 'startgas' parameter signed by the externally owned account. Gas costs: 2 (same as `GASLIMIT`) CALLGASLIMIT: 0x5d Pushes the gas limit of the current execution frame onto the stack. This is the 'callGas' value that was obtained after the application of the EIP-150 “all but one 64th” rule. Gas costs: 2 (same as `GASLIMIT`) Also, consider renaming `0x45 GASLIMIT` to `BLOCKGASLIMIT` to avoid confusion.
+If block.number >= TBD, add three new opcodes: TXGASLIMIT: 0x5c Pushes the gas limit of the entire transaction onto the stack. This is a value of the 'startgas' parameter signed by the externally owned account. Gas costs: 2 (same as `GASLIMIT`) CALLGASLIMIT: 0x5d Pushes the gas limit of the current execution frame onto the stack. This is the 'callGas' value that was obtained after the application of the EIP-150 "all but one 64th" rule. Gas costs: 2 (same as `GASLIMIT`) Also, consider renaming `0x45 GASLIMIT` to `BLOCKGASLIMIT` to avoid confusion.
 
 MOTIVATION:
 As concepts of relaying, meta-transactions, gas fees, and account abstraction gain popularity, it becomes critical for some contracts to be able to track gas expenditure with absolute precision. Without access to this data on an EVM level, such contracts resort to approximation, mimicking EVM logic on-chain, and some use-cases even become infeasible.

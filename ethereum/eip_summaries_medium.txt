@@ -1289,7 +1289,7 @@ MOTIVATION:
 **Validation via re-execution** Today, validators verify execution payloads by: 1) Downloading the execution payload 2) Executing the payload locally 3) Checking the resulting state root and other fields against the fields in the header Implicitly this guarantees execution payload availability because the payload cannot be verified unless the node
 
 RATIONALE:
-### What is included in execution-payload data? Execution-payload data includes `bals` (Block Access Lists from EIP-7928) and `transactions`. **Why transactions?** Transaction data is the only component of the execution payload that cannot be derived from other components and is not provided by the consensus layer. **Why BALs?** While BALs
+### What is included in execution-payload data? Execution-payload data includes `blockAccessList` (from EIP-7928) and `transactions`. **Why transactions?** Transaction data is the only component of the execution payload that cannot be derived from other components and is not provided by the consensus layer. **Why BALs?** While BALs are technically the
 
 
 === EIP-8136 ===
@@ -2792,6 +2792,26 @@ Currently, non-Ethereum-L1 EVM chains cannot innovate on the EVM by introducing 
 
 RATIONALE:
 ### No effect on `JUMPDEST` analysis An alternative considered was to have `EXTENSION`: - invalidate `0x5b` byte following it as a jump destination and - skip over `PUSHx` instructions following it however that would require this EIP to prescribe the size of the immediate arguments. It would also run
+
+
+=== EIP-8219 ===
+TITLE: Checked Arithmetic Opcodes
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-04-08
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces four new opcodes — `SAFEADD` (`0x0c`), `SAFESUB` (`0x0d`), `SAFEMUL` (`0x0e`), and `SAFEDIV` (`0x0f`) — that perform unsigned 256-bit arithmetic with built-in overflow, underflow, and division-by-zero checking. On error, these opcodes revert the current call frame with empty returndata, equivalent to `REVERT(0, 0)`. A single `SAFEADD` instruction
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Parameters | Constant | Value | |---|---| | `FORK_BLOCK` | TBD | ### Overview
+
+MOTIVATION:
+### The Checked Arithmetic Overhead High-level EVM languages emit overflow checks by default: Solidity since v0.8.0, Vyper since inception. These checks are essential for correctness, but the EVM provides no native support for them, forcing compilers to synthesize multi-instruction check patterns around every arithmetic operation. A typical checked addition
+
+RATIONALE:
+### Why Direct-Revert Over Flags Both [EIP-1051](./eip-1051.md) and [EIP-6888](./eip-6888.md) proposed flag-based approaches where existing arithmetic opcodes set implicit flags that must be checked by separate opcodes. This design has several drawbacks: 1. **Multi-instruction overhead.** Checking a flag still requires at least two additional instructions (read flag + conditional jump),
 
 
 === EIP-2045 ===
@@ -7359,7 +7379,7 @@ RATIONALE:
 === EIP-2542 ===
 TITLE: New opcodes TXGASLIMIT and CALLGASLIMIT
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Withdrawn
 CREATED: 2020-02-29
 REQUIRES: 
 

@@ -4180,21 +4180,21 @@ RATIONALE:
 === ERC-8196 ===
 TITLE: AI Agent Authenticated Wallet
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-03-14
-REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 4, 3, 3, 7, ,,  , 8, 0, 0, 4, ,,  , 8, 1, 2, 6
+REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 4, 3, 3, 7, ,,  , 8, 1, 2, 6
 
 SUMMARY:
 This ERC defines a standard interface for AI agent-authenticated wallets. These wallets execute transactions only when accompanied by verifiable cryptographic proof that the action complies with a specific policy defined by the asset owner. It serves as **Layer 3 (Execute)** in a modular trust stack designed for secure autonomous AI agents: - **Layer 1 (Register)**: [ERC-8004](./eip-8004.md) - on-chain identity and registration - **Layer 2 (Verify)**: [ERC-8126](./eip-8126.md) - verification/risk scoring - **Layer 3 (Execute)**: This standard - policy-bound execution with immutable audit trail The design enables secure credential delegation without exposing private keys, prevents host manipulation of agent behavior,
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Trust Stack Integration This ERC defines an on-chain smart contract interface (`IAIAgentAuthenticatedWallet`). Implementations are expected to be smart contracts (such as [ERC-4337](./eip-4337.md) account abstraction wallets or dedicated policy enforcement modules) that implement this interface. - Registration Check (ERC-8004): Implementations MUST verify that the agent is properly registered via ERC-8004 before registering or using any policy. - Verification Check (ERC-8126): Implementations MUST perform a verification check
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Trust Stack Integration This ERC defines an on-chain smart contract interface (`IAIAgentAuthenticatedWallet`). Implementations are expected to be smart contracts (such as [ERC-4337](./eip-4337.md) account abstraction wallets or dedicated policy enforcement modules) that implement this interface. - Verification Check (ERC-8126): Implementations MUST perform a verification check using ERC-8126 before executing any agent action. The policy’s `minVerificationScore` field MUST be enforced. Actions MUST be rejected if the agent’s
 
 MOTIVATION:
 Autonomous AI agents introduce critical security challenges when performing on-chain actions: 1. **Hosting Trust Trap** - Hosts can steal private keys if agents hold funds directly 2. **Blind Delegation** - Credential delegation to agents lacks enforceable limits or auditable compliance 3. **Host Manipulation** - Malicious hosts can suppress outputs, delay requests, replay probabilistic queries, or influence agent behavior through repeated sampling 4. **Malicious Historical Activity** - Agents with prior sanctions, mixer usage, bot-like patterns, rapid forwarding, or clustering with tainted addresses pose ongoing risk 5. **Replay & Timing Vulnerabilities** - Valid proofs from the past can be reused,
 
 RATIONALE:
-- Separation of concerns: identity (ERC-8004) and verification (ERC-8126) decoupled from execution, with verification enforced via policy - `policyHash` in ERC-712 signatures binds actions immutably - Hash-chain audit provides tamper detection without full on-chain cost - Verification gating allows flexibility while encouraging trust standards like ERC-8126 This specification explores novel combinations of policy-bound signing, hash-chained auditing, and entropy commitments to enable verifiable agent autonomy under potentially hostile hosts, with open questions regarding gas-efficient audit roots, threshold-based containment mechanisms, and the enforcement of CROPS properties in high-value agent scenarios.
+- Separation of concerns: identity (ERC-8004) and verification (ERC-8126) decoupled from execution, with verification enforced via policy - `policyHash` in ERC-712 signatures binds actions immutably - Hash-chain audit provides tamper detection without full on-chain cost - Verification gating allows flexibility while encouraging trust standards like ERC-8126 This specification explores novel combinations of policy-bound signing, hash-chained auditing, and entropy commitments to enable verifiable agent autonomy under potentially hostile hosts, with open questions regarding gas-efficient audit roots, threshold-based containment mechanisms, and the enforcement of Censorship Resistant, Open Source, Private, and Secure (CROPS) properties in high-value agent scenarios.
 
 
 === ERC-2525 ===

@@ -4180,9 +4180,9 @@ RATIONALE:
 === ERC-8196 ===
 TITLE: AI Agent Authenticated Wallet
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-03-14
-REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 4, 3, 3, 7, ,,  , 8, 0, 0, 4, ,,  , 8, 1, 2, 6
+REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 4, 3, 3, 7, ,,  , 8, 1, 2, 6
 
 SUMMARY:
 This ERC defines a standard interface for AI agent-authenticated wallets. These wallets execute transactions only when accompanied by verifiable cryptographic proof that the action

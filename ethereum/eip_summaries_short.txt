@@ -1289,7 +1289,7 @@ MOTIVATION:
 **Validation via re-execution** Today, validators verify execution payloads by: 1) Downloading the execution payload 2) Executing the payload locally 3) Checking the resulting state
 
 RATIONALE:
-### What is included in execution-payload data? Execution-payload data includes `bals` (Block Access Lists from EIP-7928) and `transactions`. **Why transactions?** Transaction data is the
+### What is included in execution-payload data? Execution-payload data includes `blockAccessList` (from EIP-7928) and `transactions`. **Why transactions?** Transaction data is the only component of
 
 
 === EIP-8136 ===
@@ -2792,6 +2792,26 @@ Currently, non-Ethereum-L1 EVM chains cannot innovate on the EVM by introducing 
 
 RATIONALE:
 ### No effect on `JUMPDEST` analysis An alternative considered was to have `EXTENSION`: - invalidate `0x5b` byte following it as a jump destination and
+
+
+=== EIP-8219 ===
+TITLE: Checked Arithmetic Opcodes
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-04-08
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces four new opcodes — `SAFEADD` (`0x0c`), `SAFESUB` (`0x0d`), `SAFEMUL` (`0x0e`), and `SAFEDIV` (`0x0f`) — that perform unsigned 256-bit arithmetic with built-in
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+### The Checked Arithmetic Overhead High-level EVM languages emit overflow checks by default: Solidity since v0.8.0, Vyper since inception. These checks are essential for
+
+RATIONALE:
+### Why Direct-Revert Over Flags Both [EIP-1051](./eip-1051.md) and [EIP-6888](./eip-6888.md) proposed flag-based approaches where existing arithmetic opcodes set implicit flags that must be checked by
 
 
 === EIP-2045 ===
@@ -7359,7 +7379,7 @@ RATIONALE:
 === EIP-2542 ===
 TITLE: New opcodes TXGASLIMIT and CALLGASLIMIT
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Withdrawn
 CREATED: 2020-02-29
 REQUIRES: 
 
