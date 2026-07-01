@@ -2043,7 +2043,7 @@ This specification balances creativity with guardrails to prevent mascot drift (
 === EIP-8182 ===
 TITLE: Private ETH and ERC-20 Transfers
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-03-03
 REQUIRES: 20
 
@@ -9227,6 +9227,26 @@ RATIONALE:
 After benchmarking the ModExp precompile, we discovered that it is ‘overpriced’ relative to other precompiles. We also discovered that the current gas pricing formula
 
 
+=== EIP-8295 ===
+TITLE: State Tiering by Periods
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-10
+REQUIRES: 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8, ,,  , 8, 1, 8, 8
+
+SUMMARY:
+This proposal introduces _renewal-age pricing_ for Ethereum state writes. It builds on the `last_written_block` write-age metadata defined in [EIP-8188](./eip-8188.md), deriving a coarse `period` from
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+State access costs are not uniform in practice, yet the gas schedule prices all writes the same regardless of how recently the target was
+
+RATIONALE:
+### Why tier-based pricing? A tier-based model with fixed gas constants per tier is used instead of a multiplier-based model. Discrete tiers reflect the
+
+
 === EIP-1588 ===
 TITLE: Hardfork Meta: Ethereum ProgPoW
 TYPE: Meta 
@@ -10711,6 +10731,26 @@ The Ethereum state is growing, and VKTs offer a good mitigation strategy to stem
 
 RATIONALE:
 This approach doesn't convert the state, which is left to a subsequent EIP. This is meant as a stopgap in case we decide to
+
+
+=== EIP-8296 ===
+TITLE: Fixed-Cutoff State Tiering
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-10
+REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8, ,,  , 8, 1, 8, 8
+
+SUMMARY:
+This proposal surcharges writes to long-unmutated state. It defines a `CUTOFF_BLOCK`. Any account or storage slot whose [EIP-8188](./eip-8188.md) `last_written_block` is below the cutoff is
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+State keeps growing, and most of it is cold: written once and never touched again. That cold state still sits in the working set
+
+RATIONALE:
+### Why a single cutoff instead of rolling periods? A companion proposal buckets write-age into rolling periods so that state ages into the Inactive
 
 
 === EIP-7807 ===
