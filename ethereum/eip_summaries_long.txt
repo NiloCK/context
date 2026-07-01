@@ -2876,6 +2876,26 @@ CREATED: 2024-10-06
 REQUIRES: 
 
 
+=== EIP-8298 ===
+TITLE: SETCODEFROM Code Reuse Instruction
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-11
+REQUIRES: 2, 2, 0, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This EIP introduces `SETCODEFROM`, a runtime-only EVM instruction that sets the current account's code hash to the code hash of a source account with existing deployed code. The new code is visible to later code execution.
+
+SPECIFICATION:
+### Parameters The opcode and gas parameters are defined as follows: | Parameter | Value | | ----------------------------- | ------------------------------------------------------- | | `SETCODEFROM_OPCODE` | `TBD` | | `SETCODEFROM_BASE_GAS` | `3000` | | `SOURCE_ACCOUNT_ACCESS_COST` | warm/cold account access cost | | `SETCODEFROM_GAS` | `SETCODEFROM_BASE_GAS + SOURCE_ACCOUNT_ACCESS_COST` | ### `SETCODEFROM` `SETCODEFROM(source)` takes one stack item. The low 160 bits of the stack item are interpreted as `source`. Before execution: ```text [..., source] ``` After execution: ```text [..., success] ``` `success` is `1` if the code update succeeds, and `0` if no code update is made. The instruction is address-based: its
+
+MOTIVATION:
+This EIP has two primary use cases. First, it improves code reuse and deployment economics. Deploying many contracts with identical runtime code is expensive, especially when contract deployment is repriced more closely to state growth, for example under [EIP-8037](./eip-8037.md). A factory can deploy a minimal initializer runtime, call it to initialize per-instance storage, then have it adopt shared deployed code without paying code-deposit gas for identical runtime code. Existing contracts can also adopt a new shared implementation through their own upgrade logic. Second, it provides an account migration path for disabling ECDSA-based EOA transaction authority. Migration code can
+
+RATIONALE:
+Using an address rather than a raw code hash avoids depending on client-local code database contents, which may differ across nodes. A newly synced node may have a smaller local code database than a long-running node because it may not keep historical or unreferenced bytecode entries. For this reason, this EIP makes `SETCODEFROM` copy the code hash from a live source account, so the adopted code hash is confirmed by current consensus state. The instruction is self-only during deployed-code execution to keep authority local to the account whose code is executing. It does not allow the executing code
+
+
 === EIP-4345 ===
 TITLE: Difficulty Bomb Delay to June 2022
 TYPE: Standards Track Core
@@ -5282,6 +5302,26 @@ MOTIVATION:
 
 RATIONALE:
 ### One Monolithic EIP This EIP could be split up into multiple EIPs, one for each of the subtypes and one for the meta-type. Alternatively, each of the subtypes could be a unique TransactionType. The reason we chose to go with a single EIP with subtypes is because these 4 transactions all have a *lot* in common and each separate EIP would be almost identical to the previous. We felt that in this case, splitting into multiple EIPs wasn't worth the duplication of EIP content. ### ChainID not encoded with `v` While we could save one byte in
+
+
+=== EIP-8310 ===
+TITLE: Post-Quantum Keystore for Stateful Keys
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2026-06-19
+REQUIRES: 2, 3, 3, 5, ,,  , 3, 0, 7, 6
+
+SUMMARY:
+This standard defines a keystore format for **stateful hash-based signing keys**, specifically eXtended Merkle Signature Scheme (XMSS) as used by the Lean Ethereum consensus layer (hereafter `leanxmss`). It extends [ERC-2335](./eip-2335.md) so that the encrypted secret may be an XMSS seed and adds the machinery a *consumable* key requires: an explicit scheme-parameter block, a non-authoritative capacity snapshot, normative rules for where the authoritative signing state lives, a commit-before-sign durability requirement, reserved leaf ranges for concurrent signers, and import/export semantics that forbid silently resetting a key's signing position. The encryption upgrades (Advanced Encryption Standard with 256-bit keys (AES-256) and Authenticated
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT", and "MAY" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. Terminology - **Consumable key**: a signing key whose security depends on never reusing an index (e.g. XMSS, Leighton-Micali Signatures (LMS)). Contrast with *reusable* keys (ECDSA, BLS). - **Leaf index**: the position of the one-time key consumed by a signature. - **High-water mark**: the highest leaf index that has been (or is reserved as) consumed. Signing is permitted only strictly above it. - **Authoritative state**: the single source of truth
+
+MOTIVATION:
+[ERC-2335](./eip-2335.md) stores a 32-byte BLS scalar. Lean Ethereum replaces BLS validator keys with XMSS for post-quantum security. An XMSS secret can also be reduced to a small seed, so the *container* needs only modest change. The danger is elsewhere. Each XMSS signature consumes a one-time Winternitz One-Time Signature Plus (WOTS+) leaf identified by an index that must not ever be reused. Reuse of a leaf across two distinct messages enables forgery and is therefore key-destroying. This single property breaks three behaviors that are safe today and that operators, wallets, and clients currently take for granted: 1. **Immutability.** A
+
+RATIONALE:
+**Why extend 2335 rather than define a new format.** The encryption envelope, KDF abstraction, and modular design of 2335 are sound and widely implemented; only the cipher strength and the assumption of a fixed-size reusable secret needed changing. Reusing the envelope preserves tooling and review surface. **Why couple to 3076 instead of a bespoke state mechanism.** In synchronized mode the slashing-protection invariant and the leaf-uniqueness invariant are identical. Defining a second, parallel state mechanism would create two sources of truth that can disagree, the worst outcome for a consumable key. Making the slashing DB authoritative gives the key
 
 
 === EIP-2539 ===
@@ -10831,3 +10871,23 @@ The ORIGIN opcode in Ethereum returns the address of the account that started th
 
 RATIONALE:
 The rationale behind aliasing ORIGIN to SENDER is to: Facilitate Account Abstraction: Elegantly nullify a universal barrier to account abstraction, enabling more flexible and powerful account models in Ethereum. Enhance Security: Eliminate the security vulnerabilities associated with differentiating between the original transaction initiator and the immediate caller. Clean up tech debt and simplify the EVM Model: Reduce the complexity of the EVM's transaction and execution model by removing an outdated and deprecated feature, making future changes easier and safer.
+
+
+=== EIP-8311 ===
+TITLE: Increase Calldata Floor Cost to 96
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-20
+REQUIRES: 3, 8, 6, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 9, 7, 6
+
+SUMMARY:
+This EIP proposes an adjustment to calldata pricing by raising the floor cost from 64/64 to 96/96 gas per calldata byte. This brings the worst-case byte density of a pure-calldata block down to the byte density of an ETH-transfer-full block, so that no priced calldata composition is denser, per gas, than this anchor.
+
+SPECIFICATION:
+Upon activation, the floor cost for calldata is increased to 96/96 gas per byte. The new parameters are: | Parameter | Value | | ---------------------------- | ----- | | `STANDARD_TOKEN_COST` | `4` | | `TOTAL_COST_FLOOR_PER_TOKEN` | `24` | Recall that `floor_tokens_in_calldata = (zero_bytes_in_calldata + nonzero_bytes_in_calldata) * 4`. The floor cost is `96` gas per calldata byte (both zero and non-zero), since `TOTAL_COST_FLOOR_PER_TOKEN * 4 = 96`. The token abstraction is retained only for consistency with [EIP-7623](./eip-7623.md) and [EIP-7976](./eip-7976.md). Only `TOTAL_COST_FLOOR_PER_TOKEN` changes, from 16 to 24; the EIP-7976 `gasUsed` formula and transaction-validity rule are otherwise unchanged.
+
+MOTIVATION:
+The 21,000-gas ETH transfer anchors both dimensions of a block. On the execution side, [EIP-8007](./eip-8007.md) has pushed worst-case execution as far as the current ETH transfer cost permits. On the bandwidth side, a block full of transfers is itself a data payload. Its envelopes, signatures, and per-transfer access-list records cannot be priced below 21,000 gas per transfer. A transfer-full block therefore sets an irreducible byte density. This is the most bytes per gas the protocol can be forced to carry and cannot price away. Today a pure-calldata block is denser than this anchor. That makes calldata the binding
+
+RATIONALE:
+### Deriving the anchor density A transfer-full block cannot be repriced without charging more than 21,000 gas per transfer, so the goal for any data-pricing change is to make it the worst case *by construction*: every composition the protocol prices should carry at most as many bytes per gas as it does. Accounting for a worst-case transfer envelope (~130 bytes) plus its worst-case marginal block-access-list contribution (~91 bytes), a single transfer adds ~221 bytes for 21,000 gas, or a byte density of approximately `0.0105` bytes/gas. ### Choosing the floor value [EIP-7976](./eip-7976.md) set the calldata floor at 64 gas

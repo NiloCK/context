@@ -2876,6 +2876,26 @@ CREATED: 2024-10-06
 REQUIRES: 
 
 
+=== EIP-8298 ===
+TITLE: SETCODEFROM Code Reuse Instruction
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-11
+REQUIRES: 2, 2, 0, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This EIP introduces `SETCODEFROM`, a runtime-only EVM instruction that sets the current account's code hash to the code hash of a source account with
+
+SPECIFICATION:
+### Parameters The opcode and gas parameters are defined as follows: | Parameter | Value | | ----------------------------- | ------------------------------------------------------- | | `SETCODEFROM_OPCODE` |
+
+MOTIVATION:
+This EIP has two primary use cases. First, it improves code reuse and deployment economics. Deploying many contracts with identical runtime code is expensive,
+
+RATIONALE:
+Using an address rather than a raw code hash avoids depending on client-local code database contents, which may differ across nodes. A newly synced
+
+
 === EIP-4345 ===
 TITLE: Difficulty Bomb Delay to June 2022
 TYPE: Standards Track Core
@@ -5282,6 +5302,26 @@ MOTIVATION:
 
 RATIONALE:
 ### One Monolithic EIP This EIP could be split up into multiple EIPs, one for each of the subtypes and one for the meta-type.
+
+
+=== EIP-8310 ===
+TITLE: Post-Quantum Keystore for Stateful Keys
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2026-06-19
+REQUIRES: 2, 3, 3, 5, ,,  , 3, 0, 7, 6
+
+SUMMARY:
+This standard defines a keystore format for **stateful hash-based signing keys**, specifically eXtended Merkle Signature Scheme (XMSS) as used by the Lean Ethereum consensus
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT", and "MAY" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119)
+
+MOTIVATION:
+[ERC-2335](./eip-2335.md) stores a 32-byte BLS scalar. Lean Ethereum replaces BLS validator keys with XMSS for post-quantum security. An XMSS secret can also be reduced
+
+RATIONALE:
+**Why extend 2335 rather than define a new format.** The encryption envelope, KDF abstraction, and modular design of 2335 are sound and widely implemented;
 
 
 === EIP-2539 ===
@@ -10831,3 +10871,23 @@ The ORIGIN opcode in Ethereum returns the address of the account that started th
 
 RATIONALE:
 The rationale behind aliasing ORIGIN to SENDER is to: Facilitate Account Abstraction: Elegantly nullify a universal barrier to account abstraction, enabling more flexible and
+
+
+=== EIP-8311 ===
+TITLE: Increase Calldata Floor Cost to 96
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-20
+REQUIRES: 3, 8, 6, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 9, 7, 6
+
+SUMMARY:
+This EIP proposes an adjustment to calldata pricing by raising the floor cost from 64/64 to 96/96 gas per calldata byte. This brings the
+
+SPECIFICATION:
+Upon activation, the floor cost for calldata is increased to 96/96 gas per byte. The new parameters are: | Parameter | Value | |
+
+MOTIVATION:
+The 21,000-gas ETH transfer anchors both dimensions of a block. On the execution side, [EIP-8007](./eip-8007.md) has pushed worst-case execution as far as the current
+
+RATIONALE:
+### Deriving the anchor density A transfer-full block cannot be repriced without charging more than 21,000 gas per transfer, so the goal for any
