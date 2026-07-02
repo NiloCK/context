@@ -4648,6 +4648,26 @@ RATIONALE:
 When a smart contract uses the 64-bit mode, it's expected that once entered, it will want to stay in 64-bit mode, and only exit to non-64-bit mode when the computationally intensive function is finished. This EIP is designed particularly with this fact in mind. All 64-bit opcodes only operates
 
 
+=== EIP-8297 ===
+TITLE: Partitioned Binary Tree
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-11
+REQUIRES: 7612
+
+SUMMARY:
+Introduce a new binary state tree to replace the hexary Patricia tries. Account and storage tries are merged into a single tree with 32-byte keys that also holds contract code. Account data is broken into independent leaves grouped by 256 to provide locality. The tree is partitioned into zones.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Notable changes from the hexary structure - The account and storage tries are merged
+
+MOTIVATION:
+Ethereum's long-term goal is to let blocks be proved with validity proofs so chain verification is as simple and fast as possible. Part of this work consists of proving the state read during EVM execution. The Merkle Patricia Trie (MPT) is unfriendly to validity proofs: it uses RLP for
+
+RATIONALE:
+This EIP defines a binary tree that starts empty. Only new state changes are stored in it. The MPT continues to exist but is frozen, setting up a later hard fork that migrates MPT data into the binary tree ([EIP-7748](./eip-7748.md)). ### Single tree with zones A single key/value tree
+
+
 === EIP-2027 ===
 TITLE: State Rent C - Net contract size accounting
 TYPE: Standards Track Core

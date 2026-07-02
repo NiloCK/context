@@ -4648,6 +4648,26 @@ RATIONALE:
 When a smart contract uses the 64-bit mode, it's expected that once entered, it will want to stay in 64-bit mode, and only exit
 
 
+=== EIP-8297 ===
+TITLE: Partitioned Binary Tree
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-11
+REQUIRES: 7612
+
+SUMMARY:
+Introduce a new binary state tree to replace the hexary Patricia tries. Account and storage tries are merged into a single tree with 32-byte
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Ethereum's long-term goal is to let blocks be proved with validity proofs so chain verification is as simple and fast as possible. Part of
+
+RATIONALE:
+This EIP defines a binary tree that starts empty. Only new state changes are stored in it. The MPT continues to exist but is
+
+
 === EIP-2027 ===
 TITLE: State Rent C - Net contract size accounting
 TYPE: Standards Track Core
