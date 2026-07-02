@@ -3338,7 +3338,7 @@ MOTIVATION:
 The EVM currently lacks explicit call and return instructions. Instead, calls and returns must be synthesized using the dynamic `JUMP` instruction, which takes its destination from the stack. This creates two fundamental problems: * **Inefficiency**: Synthesizing calls and returns with jumps wastes bytecode space and gas. * **Complexity**: Even
 
 RATIONALE:
-### Why validation? By marking _MAGIC_ contracts as `valid` we are promising that their control-flow is static, and the many tools that traverse the control flow will not see their efficiency degraded by dynamic jumps, including AOT and JIT compilers for clients themselves. The intention is to mitigate the
+### Why validation? By marking _MAGIC_ contracts as `valid` we are promising that their control-flow is static, and the many tools that traverse the control flow can know this without inspecting the code for themselves. The intention is to mitigate the chicken-and-egg cycle of our tools working around the
 
 
 === EIP-609 ===
