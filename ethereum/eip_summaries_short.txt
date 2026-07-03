@@ -6482,6 +6482,26 @@ RATIONALE:
 ### Immutability Once a field in a `ProgressiveContainer` has been published, its name can no longer be used to represent a different type in
 
 
+=== EIP-8243 ===
+TITLE: Batching Attestations at Source
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-01
+REQUIRES: 
+
+SUMMARY:
+Introduce the ability to batch attestations at source, allowing operators running multiple validators scheduled in the same slot committee to publish a single pre-aggregated
+
+SPECIFICATION:
+These changes are applied to the consensus-specs. ### New constants | Name | Value | Description | | ----------------------- | -------------------------- | -------------------------------- |
+
+MOTIVATION:
+Ethereum has ~1M active validators today. With 100% participation, every slot triggers N x 1/32 attestations (around 31k), distributed over 64 subnets handling ~485
+
+RATIONALE:
+### Why a per-validator seal? Consent should be cryptographic, not implicit. Every validator in a batch signs an authorization binding them to the specific
+
+
 === EIP-868 ===
 TITLE: Node Discovery v4 ENR Extension
 TYPE: Standards Track Networking

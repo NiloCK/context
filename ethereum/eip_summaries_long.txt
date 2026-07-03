@@ -6482,6 +6482,26 @@ RATIONALE:
 ### Immutability Once a field in a `ProgressiveContainer` has been published, its name can no longer be used to represent a different type in the future. This is in line with historical management of certain cases: - Phase0: `BeaconState` contained `previous_epoch_attestations` / `current_epoch_attestations` - Altair: `BeaconState` replaced these fields with `previous_epoch_participation` / `current_epoch_participation` Furthermore, new fields have to be appended at the end of `ProgressiveContainer`. This is in line with historical management of other cases: - Capella appended `historical_summaries` to `BeaconState` instead of squeezing the new field next to `historical_roots` - Electra appended `deposit_requests_start_index` to `BeaconState` rather than
 
 
+=== EIP-8243 ===
+TITLE: Batching Attestations at Source
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-01
+REQUIRES: 
+
+SUMMARY:
+Introduce the ability to batch attestations at source, allowing operators running multiple validators scheduled in the same slot committee to publish a single pre-aggregated attestation in place of N individual ones. We extend the existing attestation gossip topic via SSZ union type `WireAttestation` to carry either a `SingleAttestation` or `BatchAttestation`. Each batched validator pre-signs a `batch_seal` cryptographically authorizing a designated batcher to aggregate them; the batcher signs the resulting composition (`batcher_signature`) to close over it. The standard attestation signature is unchanged and on-chain compatible: aggregators discard the seal and the batcher signature after gossip validation and feed the
+
+SPECIFICATION:
+These changes are applied to the consensus-specs. ### New constants | Name | Value | Description | | ----------------------- | -------------------------- | -------------------------------- | | `DOMAIN_BATCH_ATTESTER` | `DomainType('0x0B000000')` | Domain for batch seal signatures | | `DOMAIN_BATCHER` | `DomainType('0x0B0000FF')` | Domain for batcher signatures | ### New containers `SingleAttestation` remains unchanged: ```python class SingleAttestation(Container): committee_index: CommitteeIndex attester_index: ValidatorIndex data: AttestationData signature: BLSSignature ``` The seal preimage. Bound to `(slot, committee_index, batcher)` only, not to `aggregation_bits`, so seals can be pre-signed at epoch start and the process can tolerate arbitrary validator client failures: ```python class BatchSealPreimage(Container): slot: Slot committee_index:
+
+MOTIVATION:
+Ethereum has ~1M active validators today. With 100% participation, every slot triggers N x 1/32 attestations (around 31k), distributed over 64 subnets handling ~485 attestations each. Large operators run many validators, all typically sharing the same consensus view, and therefore typically voting in unison for head. Today, the protocol supports only individual attestation messages per validator. This rule protects the network from being spammed by malicious actors sending overlapping aggregates: without it, an attacker could harvest attestations and rebundle them into `O(2^k)` valid subset permutations. But as we push towards shorter slots and faster finality, we need to
+
+RATIONALE:
+### Why a per-validator seal? Consent should be cryptographic, not implicit. Every validator in a batch signs an authorization binding them to the specific batcher for a specific slot. - **Non-consensual inclusion.** A malicious operator cannot construct a batch claiming validators outside their control. BLS forgery is infeasible. - **Signature theft.** An attacker observing V's `SingleAttestation` cannot replay V's signature into a batch. The seal is over a different domain (`DOMAIN_BATCH_ATTESTER`) and a different message (`BatchSealPreimage`), neither of which V signs when producing a single attestation. ### Why bind the seal to `(slot, committee_index, batcher)` only, and not
+
+
 === EIP-868 ===
 TITLE: Node Discovery v4 ENR Extension
 TYPE: Standards Track Networking

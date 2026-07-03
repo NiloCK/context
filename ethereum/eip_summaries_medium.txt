@@ -6482,6 +6482,26 @@ RATIONALE:
 ### Immutability Once a field in a `ProgressiveContainer` has been published, its name can no longer be used to represent a different type in the future. This is in line with historical management of certain cases: - Phase0: `BeaconState` contained `previous_epoch_attestations` / `current_epoch_attestations` - Altair: `BeaconState` replaced these fields
 
 
+=== EIP-8243 ===
+TITLE: Batching Attestations at Source
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-01
+REQUIRES: 
+
+SUMMARY:
+Introduce the ability to batch attestations at source, allowing operators running multiple validators scheduled in the same slot committee to publish a single pre-aggregated attestation in place of N individual ones. We extend the existing attestation gossip topic via SSZ union type `WireAttestation` to carry either a `SingleAttestation` or
+
+SPECIFICATION:
+These changes are applied to the consensus-specs. ### New constants | Name | Value | Description | | ----------------------- | -------------------------- | -------------------------------- | | `DOMAIN_BATCH_ATTESTER` | `DomainType('0x0B000000')` | Domain for batch seal signatures | | `DOMAIN_BATCHER` | `DomainType('0x0B0000FF')` | Domain for batcher signatures | ### New containers `SingleAttestation`
+
+MOTIVATION:
+Ethereum has ~1M active validators today. With 100% participation, every slot triggers N x 1/32 attestations (around 31k), distributed over 64 subnets handling ~485 attestations each. Large operators run many validators, all typically sharing the same consensus view, and therefore typically voting in unison for head. Today, the protocol
+
+RATIONALE:
+### Why a per-validator seal? Consent should be cryptographic, not implicit. Every validator in a batch signs an authorization binding them to the specific batcher for a specific slot. - **Non-consensual inclusion.** A malicious operator cannot construct a batch claiming validators outside their control. BLS forgery is infeasible. -
+
+
 === EIP-868 ===
 TITLE: Node Discovery v4 ENR Extension
 TYPE: Standards Track Networking
