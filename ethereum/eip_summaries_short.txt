@@ -6835,6 +6835,26 @@ RATIONALE:
 If $f$ and $g$ are two polynomials of $R$, then $f\times g= \text{NTT\_INV}(\text{NTT\_VECMULMOD}( \text{NTT\_FW}(a), \text{NTT\_FW}(b)))$ is equal to the product of $f$ and $g$
 
 
+=== EIP-8289 ===
+TITLE: Multi-block Access List Warming
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-03
+REQUIRES: 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 2, 9, 3, 5, ,,  , 3, 6, 5, 1, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 2, 8
+
+SUMMARY:
+About **17 %** of an Ethereum mainnet block's gas pays the [EIP-2929](./eip-2929.md) cold-access surcharge: the extra ~2100 gas for the first touch of a
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174).
+
+MOTIVATION:
+[EIP-2929](./eip-2929.md) charges a cold-access surcharge of ~2100 gas per storage slot and ~2600 per account address the first time each transaction touches a given
+
+RATIONALE:
+### Why a refcounted multiset Multi-block warming is a sliding-window union of BAL items. Three representations: | Representation | Membership test | Per-block update
+
+
 === EIP-8120 ===
 TITLE: MLOAD8 and CALLDATALOAD8 Opcodes
 TYPE: Standards Track Core
@@ -7454,6 +7474,26 @@ As concepts of relaying, meta-transactions, gas fees, and account abstraction ga
 
 RATIONALE:
 Consider a solidity smart contract that wants to know how much gas the entire transaction or a part of it had consumed. It is
+
+
+=== EIP-8282 ===
+TITLE: Builder Execution Requests
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-22
+REQUIRES: 1, 5, 5, 9, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+Predeploy two [EIP-7685](./eip-7685.md) request contracts for [EIP-7732](./eip-7732.md) builders, modelled on the request bus that [EIP-7002](./eip-7002.md) (withdrawals) and [EIP-7251](./eip-7251.md) (consolidations) use: - a builder **deposit**
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[EIP-7732](./eip-7732.md) introduces builders as a separate, staked consensus-layer class. A builder is created by a deposit, can have stake added, and must be able
+
+RATIONALE:
+- **Two predeploys, two request types.** Mirroring withdrawals (`0x01`) and consolidations (`0x02`) — each a single-type request predeploy — builder deposits (`0x03`) and exits
 
 
 === EIP-1010 ===

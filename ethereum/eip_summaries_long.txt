@@ -6835,6 +6835,26 @@ RATIONALE:
 If $f$ and $g$ are two polynomials of $R$, then $f\times g= \text{NTT\_INV}(\text{NTT\_VECMULMOD}( \text{NTT\_FW}(a), \text{NTT\_FW}(b)))$ is equal to the product of $f$ and $g$ in $R$. The algorithm has a complexity of $n \log_2n$ rather than $n^2$ with the classical schoolbook multiplication algorithm. ### Gas Cost Analysis The gas cost model for EIP-7885 precompiles is designed to target approximately 50-55 mgas/s performance, consistent with existing precompiled contracts like ECRECOVER. Two implementations with different gas costs are available: #### NTT Precompiles (0x12, 0x13) - Scheme-Specific Cost Model **Gas Costs by Implementation**: | Scheme | Ring Degree | nocgo NTT_FW
 
 
+=== EIP-8289 ===
+TITLE: Multi-block Access List Warming
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-03
+REQUIRES: 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 2, 9, 3, 5, ,,  , 3, 6, 5, 1, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 2, 8
+
+SUMMARY:
+About **17 %** of an Ethereum mainnet block's gas pays the [EIP-2929](./eip-2929.md) cold-access surcharge: the extra ~2100 gas for the first touch of a storage slot and ~2600 for the first touch of an account address in a transaction. About **79 %** of those first-touch items were also touched in the previous 256 blocks, so the surcharge is recoverable: a 256-block warming horizon saves **~14 %** of total block gas at the median. This EIP defines a chain-state **warm-access multiset (WAM)** that records every item (an account address or `(address, storage_key)` pair) present in the Block Access Lists
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants ``` WARMING_WINDOW = 256 # blocks (~51 min at 12 s/slot) ``` ### Item type An item is one of: - `Account(addr)`: a 20-byte Ethereum address; - `Slot(addr, key)`: a 20-byte address paired with a 32-byte storage key. `items(BAL(N))` is the deduplicated set of every address and `(address, slot)` pair in `BAL(N)` ([EIP-7928](./eip-7928.md)). ### State: the warm-access multiset Add one piece of chain-derived state: ``` WAM : Item -> u32 ``` Items
+
+MOTIVATION:
+[EIP-2929](./eip-2929.md) charges a cold-access surcharge of ~2100 gas per storage slot and ~2600 per account address the first time each transaction touches a given item, then resets the list at every new transaction. On Ethereum mainnet this surcharge accounts for a median of **17 % of every block's gas**: gas paid only to mark state as known to the EVM. Across blocks, the same items are touched repeatedly. Empirical measurement on 5 731 mainnet blocks shows that **79 % of cold-charged items in a typical block were also touched in the previous 256 blocks** (~51 minutes). Treating those
+
+RATIONALE:
+### Why a refcounted multiset Multi-block warming is a sliding-window union of BAL items. Three representations: | Representation | Membership test | Per-block update | Recompute on reorg | |---|---|---|---| | Store 256 raw BALs, recompute union per query | O(256) lookups | O(1), shift the ring | O(1) | | Store 256 raw BALs, materialize union as a set | O(1) | O(union recompute), expensive | O(union recompute) | | **Refcounted multiset (this EIP)** | **O(1)** | **O(\|BAL_in\| + \|BAL_out\|)** | **O(WARMING_WINDOW · avg \|BAL\|)** | The refcounted multiset is preferable on both the membership-test path (consulted
+
+
 === EIP-8120 ===
 TITLE: MLOAD8 and CALLDATALOAD8 Opcodes
 TYPE: Standards Track Core
@@ -7454,6 +7474,26 @@ As concepts of relaying, meta-transactions, gas fees, and account abstraction ga
 
 RATIONALE:
 Consider a solidity smart contract that wants to know how much gas the entire transaction or a part of it had consumed. It is not entirely possible with the current EVM. With proposed changes, using a pseudo-Solidity syntax, this information would be easily available: ``` function keepTrackOfGas(string memory message, uint256 number) public { ... uint gasUsed = msg.gasLimit - gasleft(); } ``` This is an extremely common use case, and multiple implementations suffer from not taking the non-accessible expenses into consideration. The state-of-the-art solution for the `gasUsed` problem is to access 'gasleft()' as the first line of your
+
+
+=== EIP-8282 ===
+TITLE: Builder Execution Requests
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-22
+REQUIRES: 1, 5, 5, 9, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+Predeploy two [EIP-7685](./eip-7685.md) request contracts for [EIP-7732](./eip-7732.md) builders, modelled on the request bus that [EIP-7002](./eip-7002.md) (withdrawals) and [EIP-7251](./eip-7251.md) (consolidations) use: - a builder **deposit** contract that takes a raw 184-byte request — `pubkey ++ withdrawal_credentials ++ amount ++ signature` — and appends it to its queue. It serves both first deposits and top-ups: the consensus layer registers a builder on a `pubkey`'s first appearance and credits additional stake on later deposits. The signature is carried in the record and verified by the consensus layer on dequeue. - a builder **exit** contract that takes a raw 48-byte `pubkey` and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants The `0x03`/`0x04` request types MUST be unique across **all** active [EIP-7685](./eip-7685.md) request types, including in-flight proposals ([EIP-7804](./eip-7804.md), a Draft, also claims `0x03`); final allocation is coordinated in consensus-specs. | Name | Value | Comment | | --- | --- | --- | | `BUILDER_DEPOSIT_CONTRACT_ADDRESS` | `0x0000000000000000000000000000000000007732` <!-- placeholder --> | Predeploy address of the builder deposit contract | | `BUILDER_EXIT_CONTRACT_ADDRESS` | `0x0000000000000000000000000000000000007733`
+
+MOTIVATION:
+[EIP-7732](./eip-7732.md) introduces builders as a separate, staked consensus-layer class. A builder is created by a deposit, can have stake added, and must be able to exit. Today EIP-7732 sources this lifecycle from the *validator* flows: a builder is registered by an ordinary validator deposit request whose withdrawal credential carries the `0x03` `BUILDER_WITHDRAWAL_PREFIX`, and a builder exits through a builder branch of the consensus-layer voluntary-exit operation. This EIP instead gives builders their own dedicated [EIP-7685](./eip-7685.md) request contracts. **Dedicated request types remove cross-actor coupling.** Routing builders through the validator contracts forces the consensus layer to decide, on every request, whether
+
+RATIONALE:
+- **Two predeploys, two request types.** Mirroring withdrawals (`0x01`) and consolidations (`0x02`) — each a single-type request predeploy — builder deposits (`0x03`) and exits (`0x04`) are separate predeploys sharing a common queue implementation. An empty-calldata `SYSTEM_ADDRESS` call returns a flat `request_data`, so the execution layer needs no new read semantics, and the consensus layer routes by request type rather than by inspecting credentials. - **One request for deposits and top-ups.** A single deposit request serves both: a deposit to a new `pubkey` registers a builder (the consensus layer verifies the proof-of-possession), and a deposit to an existing builder
 
 
 === EIP-1010 ===
