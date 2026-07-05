@@ -3338,7 +3338,7 @@ MOTIVATION:
 The EVM currently lacks explicit call and return instructions. Instead, calls and returns must be synthesized using the dynamic `JUMP` instruction, which takes its
 
 RATIONALE:
-### Why validation? By marking _MAGIC_ contracts as `valid` we are promising that their control-flow is static, and the many tools that traverse the
+### Why no immediate arguments or code sections? Primarily **backwards compatibility**. Other reasons include: * _Immediate arguments_ for jump destinations would improve performance but
 
 
 === EIP-609 ===
