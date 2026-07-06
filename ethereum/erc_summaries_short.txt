@@ -7943,6 +7943,26 @@ RATIONALE:
 ### `BURN_ADDRESS` Requirement for `toPublic` **Problem**: When converting privacy-to-transparent, the ZK circuit enforces value conservation: input_amount = output_amount But we need to "convert" value
 
 
+=== ERC-8143 ===
+TITLE: Smart Credential Resolution Interface
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-12-15
+REQUIRES: 1, 6, 5, ,,  , 3, 6, 6, 8
+
+SUMMARY:
+This ERC defines Smart Credentials, blockchain-based credentials resolved onchain or offchain with onchain verification. It specifies a uniform interface for resolving credentials for onchain
+
+SPECIFICATION:
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
+
+MOTIVATION:
+Smart contracts, when using [ERC-3668](./eip-3668.md), already provide a broad set of capabilities for credential issuers to issue credentials to be resolved via blockchains. However,
+
+RATIONALE:
+As compared to W3C Verifiable Credentials, Smart Credentials are unique in that they can support ZKPs using onchain ZKP verifiers. Smart credentials meet a
+
+
 === ERC-8161 ===
 TITLE: Transferable Tokenized Vault Requests
 TYPE: Standards Track ERC
