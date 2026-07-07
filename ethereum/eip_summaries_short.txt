@@ -1161,7 +1161,7 @@ MOTIVATION:
 The flat `21,000` intrinsic cost charges every transaction the same amount regardless of what it does. A zero-value transaction to an existing account and
 
 RATIONALE:
-### Pricing only the work each transaction does The decomposition charges each primitive once, where the resource is consumed: signature recovery and the sender's
+### Intrinsic versus runtime gas The split follows a single line: can the charge be computed without reading state? Signature recovery, the sender's access
 
 
 === EIP-5749 ===
@@ -3187,7 +3187,7 @@ RATIONALE:
 === EIP-7997 ===
 TITLE: Deterministic Factory Contract
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-08-03
 REQUIRES: 1014
 
@@ -5980,7 +5980,7 @@ This behavior is already possible by deploying a new contract that does `SELFDES
 === EIP-7976 ===
 TITLE: Increase Calldata Floor Cost
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-06-18
 REQUIRES: 7623
 
@@ -6020,7 +6020,7 @@ RATIONALE:
 === EIP-7928 ===
 TITLE: Block-Level Access Lists
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-03-31
 REQUIRES: 
 
@@ -7781,7 +7781,7 @@ RATIONALE:
 === EIP-7954 ===
 TITLE: Increase Maximum Contract Size
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-06-09
 REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
 
@@ -8006,7 +8006,7 @@ Even if `IMPERSONATECALL` requires hashing 3 words, implying an additional cost 
 === EIP-7981 ===
 TITLE: Increase Access List Cost
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-12-27
 REQUIRES: 2, 9, 3, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 9, 7, 6
 

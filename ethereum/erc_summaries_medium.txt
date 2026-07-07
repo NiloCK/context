@@ -2966,7 +2966,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). **Smart contracts implementing this ERC MUST implement all of the functions in the [ERC-5516](./eip-5516.md) interface.**
 
 MOTIVATION:
-This EIP was inspired by the main characteristics of the [ERC-1155](./eip-1155.md) token standard and by articles in which benefits and potential use cases of Soulbound/Accountbound Tokens (SBTs) were presented. This design also allows for batch token transfers, saving on transaction costs. Trading of multiple tokens can be built on
+This EIP was inspired by the main characteristics of the [ERC-1155](./eip-1155.md) token standard and by articles in which benefits and potential use cases of Soulbound/Accountbound Tokens (SBTs) were presented. This design allows a credential to be issued to many recipients in a single transaction, saving on transaction costs compared
 
 RATIONALE:
 ### [ERC-5516](./eip-5516.md) as certificates The original idea for this proposal arose from a necessity of emitting on-chain certificates to multiple people. We thought that having to emit one token per account was redundant, and we originally developed a [ERC-1155](./eip-1155.md) partial-compatible implementation. After revisiting our proposal, we thought that it
