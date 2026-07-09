@@ -2459,7 +2459,7 @@ RATIONALE:
 === EIP-7904 ===
 TITLE: Compute Gas Cost Analysis
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-02-05
 REQUIRES: 
 
