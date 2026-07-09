@@ -1149,10 +1149,10 @@ TITLE: Resource-based intrinsic transaction gas
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2020-07-11
-REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 5, 2, 3, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 5, 2, 3, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
-This EIP decomposes the flat `21,000` intrinsic transaction cost into explicit primitives, each priced to match the resources a transaction actually consumes: - `TX_BASE_COST = 12,000` — ECDSA recovery, the sender account's access and write, and the inclusion of the transaction in the block (which is transient and expires
+This EIP decomposes the flat `21,000` intrinsic transaction cost into explicit primitives, each priced to match the resources a transaction actually consumes. The costs of plain ETH transfers and contract creation transactions remain equal, while ETH transfers to new accounts and [7702](./eip-7702.md)-related transactions In addition, the new primitives are
 
 SPECIFICATION:
 ### Parameters | Name | Value | Definition | | :----: | :----: | :---- | | `TX_BASE_COST` | 12,000 | Sender cost: ECDSA recovery, the sender's account access, the sender's account write and inclusion in block | | `TX_VALUE_COST` | 4,244 | Recipient balance write performed by a
