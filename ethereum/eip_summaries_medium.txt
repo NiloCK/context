@@ -4922,7 +4922,7 @@ RATIONALE:
 === EIP-7778 ===
 TITLE: Block Gas Accounting without Refunds
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-10-01
 REQUIRES: 
 
