@@ -9814,7 +9814,7 @@ TITLE: Token-Controlled Token Circulation
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2023-07-09
-REQUIRES: 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 5, 6, 7, 9
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 5, 6, 7, 9
 
 SUMMARY:
 This ERC introduces an access control scheme termed Token-Controlled Token Circulation (TCTC). By representing the privileges associated with a role as an [ERC-721](./eip-721.md) or [ERC-1155](./eip-1155.md) token (referred to as a `control token`), the processes of granting or revoking a role can be facilitated through the minting or burning of
