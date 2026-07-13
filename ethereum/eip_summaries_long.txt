@@ -3806,6 +3806,26 @@ RATIONALE:
 ### Selection Parameter Design The `TXTRACE` opcode follows the same `(param, index)` two-argument pattern used by `FRAMEPARAM` in [EIP-8141](./eip-8141.md). This keeps the interface consistent and avoids introducing a separate opcode for every piece of trace information. ### Enumeration and Lookup The `TXTRACE` opcode exposes transaction outcomes through index-based access over the full set of observable state changes. The `TXDIFF` opcode complements it with direct, keyed access to one specific balance, codehash, or storage slot. Typical transaction assertion costs are negligible compared to the gas cost of the storage modification itself. Events are in emission order and require a
 
 
+=== EIP-8292 ===
+TITLE: Post-Quantum Attestation Aggregators
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-07
+REQUIRES: 
+
+SUMMARY:
+Post-Quantum (PQ) Ethereum replaces the beacon chain's BLS signatures with post-quantum, hash-based signatures, which are individually larger than BLS signatures and, unlike BLS, cannot be cheaply combined by adding the signatures themselves. PQ consensus therefore performs attestation aggregation by generating a succinct cryptographic proof that the post-quantum signatures attached to many validator attestations are valid, using a specialized minimal virtual machine. Producing such proofs is far more computationally expensive than the elliptic-curve addition used to aggregate BLS signatures, so post-quantum consensus separates aggregation from block production and assigns it to an opt-in, higher-specification participant: the *aggregator*. Any node
+
+SPECIFICATION:
+This EIP introduces aggregators as beacon-chain consensus participants; the hard fork that activates them is assigned by the relevant meta EIP. The execution layer is unchanged by this EIP. The authoritative definitions — the signature scheme and its parameters, the proof system, the SSZ containers and wire formats, the gossip topics, the aggregation algorithm, and the consensus and fork-choice rules are given by the PQ consensus specification (leanSpec). This section specifies the aggregator-role behavior inline; everything else is deferred to leanSpec. The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL"
+
+MOTIVATION:
+### Hash-based signatures do not aggregate like BLS Ethereum's beacon chain authenticates validator votes with BLS signatures over the BLS12-381 curve. A BLS signature is 96 bytes and a public key is 48 bytes, and crucially an *aggregate* of many BLS signatures over a common message is still only 96 bytes, because aggregation is the addition of curve points and an entire set can be checked with a single pairing equation. This property is what lets a beacon block carry the votes of a whole committee in constant space. Hash-based signatures have no such structure. Their security rests
+
+RATIONALE:
+### Why a separate role rather than a duty for every validator BLS aggregation is cheap enough that the beacon chain can select ordinary validators as committee aggregators each slot. Proving the validity of hash-based signatures is not cheap, so the same approach would push heavy proving onto home-staking hardware on the critical path. Separating proving into an opt-in, higher-specification role keeps the expensive work where the hardware is, while signature *verification* stays inexpensive for everyone else — preserving the ability of ordinary validators and proposers to participate on modest machines. This mirrors the asymmetry that motivates other
+
+
 === EIP-7768 ===
 TITLE: No-Ether transactions with free-for-all tips
 TYPE: Meta 
@@ -5931,7 +5951,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Glamsterdam network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7708](./eip-7708.md): ETH transfers emit a log * [EIP-7732](./eip-7732.md): Enshrined Proposer-Builder Separation * [EIP-7778](./eip-7778.md): Block Gas Accounting without Refunds * [EIP-7843](./eip-7843.md): SLOTNUM opcode * [EIP-7928](./eip-7928.md): Block-Level Access Lists * [EIP-7954](./eip-7954.md): Increase Maximum Contract Size * [EIP-7976](./eip-7976.md): Increase Calldata Floor Cost * [EIP-7981](./eip-7981.md): Increase Access List Cost * [EIP-8024](./eip-8024.md): Backward compatible SWAPN, DUPN, EXCHANGE * [EIP-8037](./eip-8037.md): State Creation Gas Cost Increase * [EIP-2780](./eip-2780.md): Reduce intrinsic transaction gas * [EIP-7610](./eip-7610.md): Revert creation in case of
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7708](./eip-7708.md): ETH transfers emit a log * [EIP-7732](./eip-7732.md): Enshrined Proposer-Builder Separation * [EIP-7778](./eip-7778.md): Block Gas Accounting without Refunds * [EIP-7843](./eip-7843.md): SLOTNUM opcode * [EIP-7928](./eip-7928.md): Block-Level Access Lists * [EIP-7954](./eip-7954.md): Increase Maximum Contract Size * [EIP-7976](./eip-7976.md): Increase Calldata Floor Cost * [EIP-7981](./eip-7981.md): Increase Access List Cost * [EIP-8024](./eip-8024.md): Backward compatible SWAPN, DUPN, EXCHANGE * [EIP-8037](./eip-8037.md): State Creation Gas Cost Increase ### Considered for Inclusion * [EIP-2780](./eip-2780.md): Reduce intrinsic transaction gas * [EIP-7610](./eip-7610.md): Revert
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the Glamsterdam network upgrade, as well as links to full specification.

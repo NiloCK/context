@@ -3806,6 +3806,26 @@ RATIONALE:
 ### Selection Parameter Design The `TXTRACE` opcode follows the same `(param, index)` two-argument pattern used by `FRAMEPARAM` in [EIP-8141](./eip-8141.md). This keeps the interface consistent and avoids introducing a separate opcode for every piece of trace information. ### Enumeration and Lookup The `TXTRACE` opcode exposes transaction outcomes through index-based access
 
 
+=== EIP-8292 ===
+TITLE: Post-Quantum Attestation Aggregators
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-07
+REQUIRES: 
+
+SUMMARY:
+Post-Quantum (PQ) Ethereum replaces the beacon chain's BLS signatures with post-quantum, hash-based signatures, which are individually larger than BLS signatures and, unlike BLS, cannot be cheaply combined by adding the signatures themselves. PQ consensus therefore performs attestation aggregation by generating a succinct cryptographic proof that the post-quantum signatures attached
+
+SPECIFICATION:
+This EIP introduces aggregators as beacon-chain consensus participants; the hard fork that activates them is assigned by the relevant meta EIP. The execution layer is unchanged by this EIP. The authoritative definitions — the signature scheme and its parameters, the proof system, the SSZ containers and wire formats, the
+
+MOTIVATION:
+### Hash-based signatures do not aggregate like BLS Ethereum's beacon chain authenticates validator votes with BLS signatures over the BLS12-381 curve. A BLS signature is 96 bytes and a public key is 48 bytes, and crucially an *aggregate* of many BLS signatures over a common message is still only
+
+RATIONALE:
+### Why a separate role rather than a duty for every validator BLS aggregation is cheap enough that the beacon chain can select ordinary validators as committee aggregators each slot. Proving the validity of hash-based signatures is not cheap, so the same approach would push heavy proving onto home-staking
+
+
 === EIP-7768 ===
 TITLE: No-Ether transactions with free-for-all tips
 TYPE: Meta 
