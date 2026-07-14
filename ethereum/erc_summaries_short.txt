@@ -3466,6 +3466,26 @@ RATIONALE:
 The decision to encode **Data Points** as `bytes32` data pointers is primarily driven by flexibility and future-proofing. The use `bytes32` allows for a wide
 
 
+=== ERC-8326 ===
+TITLE: Canonical Document Bundle Anchor
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines a deterministic manifest and anchoring interface for commitments to bundles of off-chain documents. Each document is represented by a fixed-width entry
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Contracts and applications frequently commit to multiple off-chain documents, including agreements, certifications, evidence, amendments, and supporting records. Without a common manifest, implementations differ in
+
+RATIONALE:
+### Why Separate Manifesting from Normalization? Combining universal document normalization with bundle hashing would overstate what one ERC can guarantee. The manifest gives normalized
+
+
 === ERC-5791 ===
 TITLE: Physical Backed Tokens
 TYPE: Standards Track ERC
@@ -3844,6 +3864,26 @@ With NFTs being a widespread form of tokens in the Ethereum ecosystem and being 
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. **Should we propose another (Non-)Transferable NFT proposal given the existence of existing ones, some even
+
+
+=== ERC-8325 ===
+TITLE: Asset Anchor Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-04
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines interfaces for registries that bind token contracts or token IDs to anchor records representing claims about off-chain assets. Each anchor contains
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+A token can claim in metadata that it represents an off-chain asset, but that claim does not provide a common interface for another contract
+
+RATIONALE:
+### Why Use a Registry? A separate registry allows the same binding interface to compose with fungible, non-fungible, multi-token, permissioned, and future token standards.
 
 
 === ERC-7246 ===

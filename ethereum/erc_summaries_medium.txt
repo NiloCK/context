@@ -3466,6 +3466,26 @@ RATIONALE:
 The decision to encode **Data Points** as `bytes32` data pointers is primarily driven by flexibility and future-proofing. The use `bytes32` allows for a wide range of data encodings. This provides the developer with many options to accommodate diverse use cases. Furthermore, as Ethereum and its standards continue to evolve,
 
 
+=== ERC-8326 ===
+TITLE: Canonical Document Bundle Anchor
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines a deterministic manifest and anchoring interface for commitments to bundles of off-chain documents. Each document is represented by a fixed-width entry containing a content hash, document role, media-type hash, filename hash, and normalization-profile identifier. Entries are placed in a total order and hashed under a schema-version
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **document entry** is a fixed-width record describing one normalized document commitment. A
+
+MOTIVATION:
+Contracts and applications frequently commit to multiple off-chain documents, including agreements, certifications, evidence, amendments, and supporting records. Without a common manifest, implementations differ in entry encoding, ordering, version separation, and supersession behavior. Two systems can hold the same canonical document representations but derive incompatible bundle commitments. Document commitment has
+
+RATIONALE:
+### Why Separate Manifesting from Normalization? Combining universal document normalization with bundle hashing would overstate what one ERC can guarantee. The manifest gives normalized document commitments a common structure. Profiles define how a particular input format produces the committed bytes and can evolve independently. ### Why a Total Order
+
+
 === ERC-5791 ===
 TITLE: Physical Backed Tokens
 TYPE: Standards Track ERC
@@ -3844,6 +3864,26 @@ With NFTs being a widespread form of tokens in the Ethereum ecosystem and being 
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. **Should we propose another (Non-)Transferable NFT proposal given the existence of existing ones, some even final, and how does this proposal compare to them?**\ This proposal aims to provide the minimum necessary specification for the implementation of non-transferable NFTs, we
+
+
+=== ERC-8325 ===
+TITLE: Asset Anchor Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-04
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines interfaces for registries that bind token contracts or token IDs to anchor records representing claims about off-chain assets. Each anchor contains separate commitments to a claimed legal basis and supporting evidence. Bindings distinguish whole-contract scope from token-ID scope, enforce registry-scoped exclusivity, and preserve immutable binding history.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions An **anchor** is a registry record containing commitments and metadata for an off-chain
+
+MOTIVATION:
+A token can claim in metadata that it represents an off-chain asset, but that claim does not provide a common interface for another contract to determine: - which registry record the token claims; - whether the registry records the same token-to-anchor relationship; - whether the binding is exclusive within
+
+RATIONALE:
+### Why Use a Registry? A separate registry allows the same binding interface to compose with fungible, non-fungible, multi-token, permissioned, and future token standards. It also provides one inspection surface for applications that do not control the token implementation. The registry does not create global truth. Consumers select which
 
 
 === ERC-7246 ===

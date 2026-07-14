@@ -5920,6 +5920,26 @@ RATIONALE:
 Packet codes 0x00 and 0x01 are already used in all Whisper versions. Packet code 0x02 will be necessary for the future development of Whisper. It will provide possibility to adjust the PoW requirement in real time. It is better to allow the network to govern itself, rather than hardcode
 
 
+=== EIP-8304 ===
+TITLE: Trustless log and transaction index
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-17
+REQUIRES: 4788
+
+SUMMARY:
+Store the root hashes of fixed-depth binary tree structures called "index tables" in the storage of a system contract as part of the block processing logic. A new table is generated for each block, then merged into bigger tables indexing multiple blocks. The proposed design prioritizes minimalization of index
+
+SPECIFICATION:
+| Parameter | Value | | - | - | | `TABLE_SIZES` | `[1, 4, 16, 64, 256]` | | `TABLES_PER_LEVEL` | `1024` | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | | `INDEX_CONTRACT_ADDRESS` | `<TBD>` | The EIP defines `len(TABLE_SIZES)` levels of index tables referenced in the system index contract. On
+
+MOTIVATION:
+While adding logs has a significantly lower gas cost and is accordingly less resource consuming than writing to the state, currently the protocol defined data structures do not offer even a remotely efficient way of performing content lookups. The original per-block bloom filters were moderately efficient in the beginning
+
+RATIONALE:
+The proposed design creates tables up to a limited size (256 blocks) as part of the main protocol while assuming that bigger tables (up to millions of blocks in size) will be created and proven by infrastructure maintainers. Creating big history tables in protocol would both place a significant
+
+
 === EIP-7917 ===
 TITLE: Deterministic proposer lookahead
 TYPE: Standards Track Core

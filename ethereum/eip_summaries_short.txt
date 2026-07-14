@@ -5920,6 +5920,26 @@ RATIONALE:
 Packet codes 0x00 and 0x01 are already used in all Whisper versions. Packet code 0x02 will be necessary for the future development of Whisper.
 
 
+=== EIP-8304 ===
+TITLE: Trustless log and transaction index
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-17
+REQUIRES: 4788
+
+SUMMARY:
+Store the root hashes of fixed-depth binary tree structures called "index tables" in the storage of a system contract as part of the block
+
+SPECIFICATION:
+| Parameter | Value | | - | - | | `TABLE_SIZES` | `[1, 4, 16, 64, 256]` | | `TABLES_PER_LEVEL` | `1024` |
+
+MOTIVATION:
+While adding logs has a significantly lower gas cost and is accordingly less resource consuming than writing to the state, currently the protocol defined
+
+RATIONALE:
+The proposed design creates tables up to a limited size (256 blocks) as part of the main protocol while assuming that bigger tables (up
+
+
 === EIP-7917 ===
 TITLE: Deterministic proposer lookahead
 TYPE: Standards Track Core

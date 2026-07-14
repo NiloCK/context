@@ -3466,6 +3466,26 @@ RATIONALE:
 The decision to encode **Data Points** as `bytes32` data pointers is primarily driven by flexibility and future-proofing. The use `bytes32` allows for a wide range of data encodings. This provides the developer with many options to accommodate diverse use cases. Furthermore, as Ethereum and its standards continue to evolve, encoding as `bytes32` ensures that the Standard Adapters built with the current ERC can reference future data types or structures without requiring significant changes to the adapter itself. The **Data Point** encoding should have a prefix so that the **Data Object** can efficiently identify compatibility issues when accessing the
 
 
+=== ERC-8326 ===
+TITLE: Canonical Document Bundle Anchor
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines a deterministic manifest and anchoring interface for commitments to bundles of off-chain documents. Each document is represented by a fixed-width entry containing a content hash, document role, media-type hash, filename hash, and normalization-profile identifier. Entries are placed in a total order and hashed under a schema-version prefix to produce one `bytes32` bundle commitment. The on-chain interface anchors a bundle hash in a `(subjectId, role)` namespace, records declarative metadata, and preserves an append-only supersession history. An optional recovery interface permits administrative reassignment of authority over a contested namespace without rewriting anchored records. This ERC standardizes manifest
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **document entry** is a fixed-width record describing one normalized document commitment. A **normalization profile** defines how raw document input is converted to the bytes committed by `contentHash`. A **bundle** is a non-empty multiset of document entries. Duplicate entries are retained and affect the resulting bundle hash. A **bundle hash** is the schema-versioned commitment derived from the canonically ordered entries. A **slot**
+
+MOTIVATION:
+Contracts and applications frequently commit to multiple off-chain documents, including agreements, certifications, evidence, amendments, and supporting records. Without a common manifest, implementations differ in entry encoding, ordering, version separation, and supersession behavior. Two systems can hold the same canonical document representations but derive incompatible bundle commitments. Document commitment has two distinct layers. Normalization transforms a raw format into canonical bytes. Manifesting describes and orders the resulting document commitments before deriving a bundle hash. Normalization is format-specific and evolves independently; manifesting and on-chain anchoring can remain stable. This ERC provides a common manifest and anchoring surface while making that
+
+RATIONALE:
+### Why Separate Manifesting from Normalization? Combining universal document normalization with bundle hashing would overstate what one ERC can guarantee. The manifest gives normalized document commitments a common structure. Profiles define how a particular input format produces the committed bytes and can evolve independently. ### Why a Total Order Over All Five Fields? Ordering by only role, filename, and content leaves insertion order as a hidden tie-breaker when entries differ only by media type or normalization profile. Including all five fields gives every distinct entry a deterministic position. ### Why Include a Schema Identifier? The schema identifier separates
+
+
 === ERC-5791 ===
 TITLE: Physical Backed Tokens
 TYPE: Standards Track ERC
@@ -3844,6 +3864,26 @@ With NFTs being a widespread form of tokens in the Ethereum ecosystem and being 
 
 RATIONALE:
 Designing the proposal, we considered the following questions: 1. **Should we propose another (Non-)Transferable NFT proposal given the existence of existing ones, some even final, and how does this proposal compare to them?**\ This proposal aims to provide the minimum necessary specification for the implementation of non-transferable NFTs, we feel none of the existing proposals have presented the minimal required interface. Unlike other proposals that address the same issue, this proposal requires fewer methods in its specification, providing a more streamlined solution. 2. **Why is there no event marking the token as Non-Transferable in this interface?**\ The token
+
+
+=== ERC-8325 ===
+TITLE: Asset Anchor Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-04
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines interfaces for registries that bind token contracts or token IDs to anchor records representing claims about off-chain assets. Each anchor contains separate commitments to a claimed legal basis and supporting evidence. Bindings distinguish whole-contract scope from token-ID scope, enforce registry-scoped exclusivity, and preserve immutable binding history. Token-side interfaces allow contracts to declare the same registry and anchor, enabling consumers to verify both sides of a binding. A lifecycle interface defines structured metadata, expiry, re-attestation, and permanent deactivation. An optional recovery interface permits disputed bindings to be invalidated without deleting their historical records. The resulting records
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions An **anchor** is a registry record containing commitments and metadata for an off-chain asset claim. A **contract binding** binds an anchor to an entire token contract. This is appropriate when one contract represents one claimed asset or instrument. A **token-ID binding** binds an anchor to one token ID within a token contract. A **binding tuple** is `(token, bindingScope, tokenId)`. A **valid binding**
+
+MOTIVATION:
+A token can claim in metadata that it represents an off-chain asset, but that claim does not provide a common interface for another contract to determine: - which registry record the token claims; - whether the registry records the same token-to-anchor relationship; - whether the binding is exclusive within that registry; - whether the binding applies to an entire token contract or one token ID; or - whether the anchor is active, expired, deactivated, or invalidated. Deployments subject to institutional or regulatory oversight often need a durable answer to which token tuple was recorded against an asset claim,
+
+RATIONALE:
+### Why Use a Registry? A separate registry allows the same binding interface to compose with fungible, non-fungible, multi-token, permissioned, and future token standards. It also provides one inspection surface for applications that do not control the token implementation. The registry does not create global truth. Consumers select which registry operators and authorization policies they trust. ### Why Two Hashes? Off-chain asset structures often distinguish the instrument or legal basis from evidence about the referenced asset. Separate commitments preserve that distinction without assigning universal semantics to either document set. Deployments that do not need the distinction can commit
 
 
 === ERC-7246 ===
