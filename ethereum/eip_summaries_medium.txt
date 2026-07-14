@@ -46,10 +46,10 @@ SUMMARY:
 This Informational EIP provides foundational context for understanding control flow in the EVM. It covers the historical development of control flow mechanisms in computing, the technical foundations of control flow analysis, and the impact of static control flow on Ethereum's scaling roadmap. This document serves as background material for
 
 SPECIFICATION:
-Four EIPs currently specify new EVM opcodes and semantics for static control flow: [EIP-615: Subroutines and Static Jumps for the EVM](./eip-615.md), [EIP-4750: EOF - Functions](./eip-4750.md), [EIP-7979: Call and Return Opcodes for the EVM](./eip-7979.md), and [EIP-8013: Static relative jumps and calls for the EVM](./eip-8013.md). They are all implemented with the
+Several EIPs, past and current, specify new EVM opcodes and semantics for static control flow: subroutines and static jumps, container-format functions, call and return opcodes, and static relative jumps and calls. They are all implemented with the standard Turing return stack architecture, and are for the most part compatible
 
 MOTIVATION:
-### Historical Context #### Babbage 1833: Jumps and Conditional Jumps In 1833 Charles Babbage began the design of the Analytical Engine: a steam-powered, mechanical, Turing-complete computer. Programs were to be encoded on punched cards which controlled a system of rods, gears and other machinery to implement arithmetic, storage (for
+### Historical Context #### Babbage 1833: Jumps and Conditional Jumps In 1833 Charles Babbage began the design of the Analytical Engine: a steam-powered, mechanical, Turing-complete computer. Programs were to be encoded on punched cards that controlled a system of rods, gears, and other machinery to implement arithmetic, storage (for
 
 RATIONALE:
 Static control flow has been a cornerstone of efficient computation since Babbage and Turing. The EVM's reliance on dynamic jumps is an anomaly among virtual machines and a significant barrier to analysis, compilation, and scaling. Proposals to introduce explicit call/return opcodes and enforce static control flow bring the EVM
@@ -3326,19 +3326,19 @@ TITLE: Call and Return Opcodes for the EVM
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-12-17
-REQUIRES: 3541
+REQUIRES: 
 
 SUMMARY:
-This is a minimal change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB` transfers control to the *destination* on the *data stack*. * `ENTERSUB` marks a subroutine entry: the destination of a `CALLSUB`, or of a `JUMP`
+This is a minimal change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB` transfers control to the *destination* on the *data stack*. * `CALLDEST` marks a subroutine entry: the destination of a `CALLSUB`, or of a `JUMP`
 
 SPECIFICATION:
-> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* *Conventions: backticks mark literal code — opcodes, bytecode, and identifiers from the reference implementation. Italics mark technical terms defined in this Specification, most of them under
+> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* The EVM's machine state includes a *data stack* of 256-bit words, at most 1024 deep, and the program counter, *PC*, whose value is a position in
 
 MOTIVATION:
-The EVM currently lacks explicit call and return instructions. Instead, calls and returns must be synthesized using the dynamic `JUMP` instruction, which takes its destination from the stack. This creates two fundamental problems: * **Inefficiency**: Synthesizing calls and returns with jumps wastes bytecode space and gas. * **Complexity**: Even
+The EVM currently lacks explicit call and return instructions. Instead, calls and returns must be synthesized using the dynamic `JUMP` instruction, which takes its destination from the stack. This creates two fundamental problems: * **Inefficiency**: Synthesizing calls and returns with jumps wastes bytecode space and gas. * **Complexity**: More
 
 RATIONALE:
-### Why no immediate arguments or code sections? Primarily **backwards compatibility**. Other reasons include: * *Immediate arguments* for jump destinations would improve performance but increase the complexity of instruction encoding. * *Code sections* or other structural constraints would impose syntactic restrictions that inhibit optimization. See [EIP-3540: EOF - EVM
+### Why no immediate arguments or code sections? Primarily **backwards compatibility**. Other reasons include: * *Immediate arguments* for jump destinations would improve performance but increase the complexity of instruction encoding. * *Code sections* or other structural constraints would impose syntactic restrictions that inhibit optimization. The EVM Object Format took
 
 
 === EIP-609 ===
