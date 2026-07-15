@@ -7093,6 +7093,26 @@ RATIONALE:
 ### Attestations Attestations are onchain assertions made about a module. These assertions could pertain to the security of a module (similar to a regular smart contract audit), whether a module adheres to a certain standard or any other kinds of statements about these modules. While some of these assertions can feasibly be verified onchain, the majority of them cannot be. One example of this would be determining what storage slots a specific module can write to, which might be useful if a smart account uses DELEGATECALL to invoke the module. This assertion is practically infeasible to verify onchain,
 
 
+=== ERC-8330 ===
+TITLE: Subject-Linked NAV Snapshot Oracle
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines an interface for publishing and querying subject-linked Net Asset Value (NAV) snapshots. Each stream is keyed by `(subjectId, currency)` and has one configured NAV basis. Snapshots include signed NAV, decimal precision, valuation and publication timestamps, provider attribution, methodology references, and correction provenance. The core interface supports raw and staleness-aware latest-value queries, provider-specific history, correction-chain resolution, and administrative invalidation that preserves records while excluding invalid snapshots from current-value queries. An optional aggregation interface defines deterministic lower-median aggregation across provider submissions sharing a valuation timestamp. This ERC standardizes publication and query semantics. It does not calculate NAV,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **stream** is the namespace identified by `(subjectId, currency)`. A **NAV basis** states whether NAV represents one underlying unit, one share or token, or the total value of the subject. A **provider** is the address recorded as publishing a snapshot. A **valuation timestamp** is the asserted as-of time of the valuation. A **publication timestamp** is the block timestamp at which the snapshot
+
+MOTIVATION:
+Periodic valuations for funds, private credit, real estate, infrastructure, commodities, and other illiquid or administratively priced assets differ from continuous exchange prices. Consumers need to know what the value represents, when the underlying valuation was measured, when it was published, who supplied it, and whether it is too old for the intended use. Existing price and quote interfaces do not necessarily preserve valuation history, provider identity, methodology references, restatement provenance, or separate publication-age and valuation-age checks. Bespoke NAV contracts also use incompatible stream keys and latest-value semantics. This ERC provides: - independent `(subjectId, currency)` NAV streams; - stream-level
+
+RATIONALE:
+### Why Key Streams by Subject and Currency? A subject can be valued in multiple denominations. Treating each pair as an independent stream removes ambiguity and permits separate history, staleness, and aggregation configuration. ### Why Configure NAV Basis at Stream Level? Per-unit, per-share, and total NAV differ materially. If providers can choose basis independently, one mismatched submission can make a quorum set incomparable or unavailable. Immutable stream-level basis configuration rejects the mismatch before it enters the stream. ### Why Separate Valuation and Publication Timestamps? A value can be published recently while describing an old valuation. Consumers need both
+
+
 === ERC-5521 ===
 TITLE: Referable NFT
 TYPE: Standards Track ERC
@@ -8577,6 +8597,26 @@ RATIONALE:
 * Originally, this interface was part of [ERC-1202](./eip-1202.md). However, the proposal itself can potentially have many use cases outside of voting. It is possible that voting may not need to be upon a proposal in any particular format. Hence, we decided to *decouple the voting interface and proposal interface*. * Arrays were used for `target`s, `value`s, `calldata`s instead of single variables, allowing a proposal to carry arbitrarily many function calls. * `registeredProposalId` is returned in `createProposal` so the standard can support implementation to decide their own format of proposal id.
 
 
+=== ERC-8329 ===
+TITLE: Subject-Linked Impact Snapshot Log
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines an append-only interface for reporting quantitative impact indicator snapshots against application-defined subjects. Each snapshot records a signed value, decimal precision, unit, completed measurement period, methodology commitment and location, reporter, recording time, and correction provenance. The core interface supports per-subject storage, per-indicator indexing, exact period lookup, and fork-free correction chains. Optional interfaces support append-only endorsement or dispute attestations and future methodology supersession with active and pending methodology discovery. This ERC standardizes representation and lifecycle behavior. It does not define which indicators or methodologies are valid, verify reported measurements, credential reporters or attestors, prevent overlapping claims, or
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **subject** is an application-defined entity identified by `subjectId`. An **indicator** is an application-defined measured quantity identified by `indicatorId`. A **snapshot** is one reported value for an indicator, subject, and measurement period. A **measurement period** is the half-open interval `[periodStart, periodEnd)`. An **original snapshot** is the first snapshot occupying an exact subject, indicator, and period slot. A **correction chain** is a linear
+
+MOTIVATION:
+Impact measurements such as emissions, carbon offsets, renewable energy, water treatment, employment, beneficiaries, biodiversity area, and diverted waste are commonly distributed through reports and application-specific data formats. On-chain systems lack a common interface for associating these values with a subject, measurement period, unit, and methodology while preserving later corrections. A single mutable value cannot distinguish a new reporting period from a restatement of an earlier measurement. It also erases the prior assertion when updated. Generic attestations can represent individual claims but do not by themselves define per-indicator time-series indexing, exact-period uniqueness, correction chains, or methodology transitions. This ERC
+
+RATIONALE:
+### Why Append-Only Snapshots? Impact data changes through new periods, corrected measurements, and revised methodologies. Append-only storage preserves each assertion and makes revisions visible instead of replacing history. ### Why One Original Per Exact Period? Allowing multiple unrelated originals for the same indicator and exact period would create competing current values. Requiring later revisions to use correction provenance provides one resolvable chain. ### Why Permit Overlapping Periods? Monthly, quarterly, annual, project-phase, and rolling measurements can legitimately overlap. The interface cannot determine whether an overlap is valid. Consumers aggregating values must apply methodology-specific rules to avoid double counting. ###
+
+
 === ERC-7943 ===
 TITLE: uRWA - Universal Real World Asset Interface
 TYPE: Standards Track ERC
@@ -9322,6 +9362,26 @@ RATIONALE:
 ### Unique Random Nonce, Instead of Sequential Nonce One might say transaction ordering is one reason why sequential nonces are preferred. However, sequential nonces do not actually help achieve transaction ordering for meta transactions in practice: - For native Ethereum transactions, when a transaction with a nonce value that is too-high is submitted to the network, it will stay pending until the transactions consuming the lower unused nonces are confirmed. - However, for meta-transactions, when a transaction containing a sequential nonce value that is too high is submitted, instead of staying pending, it will revert and fail immediately,
 
 
+=== ERC-8327 ===
+TITLE: Directional Transfer Domain Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines a token-agnostic registry interface for querying directional transfer-route permission between opaque domains by asset class. For an ordered triple of `sourceDomain`, `destinationDomain`, and `assetClass`, the registry reports whether that route is currently permitted and exposes the evidence commitments and effective timestamp associated with its latest state. The core interface supports immediate route permission and revocation, state retrieval, and batch queries. An optional extension supports delayed revocation with explicit initiation, cancellation, lazy effectiveness, and finalization semantics. This ERC does not assign addresses to domains, derive asset classes, validate evidence, or enforce token transfers. A token or
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **domain** is an opaque, nonzero `bytes32` identifier for an application-defined logical boundary. An **asset class** is an opaque, nonzero `bytes32` identifier for a category of assets to which one route policy applies. A **route** is the ordered triple `(sourceDomain, destinationDomain, assetClass)`. A **registrar** is an address authorized by the implementation to modify route state. An **evidence hash** is a nonzero `bytes32`
+
+MOTIVATION:
+Transfer restrictions are commonly expressed in token-local or address-level logic. That model is appropriate when eligibility depends on a particular holder, balance, token, or transaction amount. It does not provide a common lookup surface for policies that apply to transfers between logical domains across multiple tokens sharing an asset classification. A domain can represent a jurisdiction, regulated venue, enterprise network, game economy, DAO treasury boundary, or another application-defined context. Transfer compatibility between such domains is often directional: permission from domain A to domain B does not imply permission from B to A. The same route can also differ
+
+RATIONALE:
+### Why Directional Routes? Compatibility can be asymmetric. A domain may allow outbound transfers to another domain without accepting inbound transfers from it. Encoding each direction separately avoids an unsafe assumption of reciprocity. ### Why Opaque Domains? Standardizing one universal domain taxonomy would couple the interface to a particular legal, organizational, or application model. Opaque identifiers let independent systems use the same route interface while defining their own meaning and resolution mechanism. ### Why Scope Routes by Asset Class? The same pair of domains can permit one category of assets and prohibit another. Asset-class scoping allows multiple assets
+
+
 === ERC-7847 ===
 TITLE: Social Media NFTs
 TYPE: Standards Track ERC
@@ -9542,6 +9602,26 @@ SPECIFICATION:
 
 RATIONALE:
 Storing ABIs onchain avoids the need to introduce additional dependencies for applications wishing to fetch them, such as swarm or HTTP access. Given the typical compactness of ABIs, we believe this is a worthwhile tradeoff in many cases. The two-step resolution process permits different names to provide different ABIs for the same contract, such as in the case where it's useful to provide a minimal ABI to some callers, as well as specifying ABIs for contracts that did not specify one of their own. The fallback to looking up an ABI on the reverse record permits contracts to
+
+
+=== ERC-8328 ===
+TITLE: Subject-Linked Compliance Event Log
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines an append-only interface for subject-linked compliance event records. Each record includes a subject, event type, outcome, technical actor, claimed authority, involved parties, evidence commitment, optional evidence location, versioned payload profile, operation reference, occurrence time, and recording time. Events are indexed per subject and by event type. Corrections are recorded as new events linked to earlier records. A forward pointer on the corrected record prevents correction forks and allows consumers to resolve the terminal event in a correction chain. This ERC is a reporting interface. It does not define compliance policy, identity verification, transfer restrictions, legal
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **subject** is an application-defined entity identified by `subjectId` and, optionally, contextualized by `subjectType`. A **compliance event** is a stored assertion about a compliance-relevant action or state transition concerning a subject. An **actor** is `msg.sender` at the time `recordEvent` is called. It identifies the technical recorder, not necessarily the human decision-maker or legal authority. An **authority** is the recorder's claimed legal, regulatory,
+
+MOTIVATION:
+Compliance-relevant lifecycle actions are currently represented through application-specific events, token-local state changes, generic attestations, and off-chain databases. This fragmentation makes it difficult for contracts, indexers, auditors, and reporting systems to query comparable records across implementations. Existing token and compliance standards primarily define token behavior, holder eligibility, transfer validation, or entity classification. Those capabilities do not provide a common stored record for subject-level lifecycle actions such as issuance, redemption, freezing, know-your-customer (KYC) status changes, regulatory holds, policy changes, and forced transfers. A shared event-log interface provides: - one query surface for records attached to an application-defined subject; - explicit
+
+RATIONALE:
+### Why Subject-Linked Records? An address-only or token-only key would exclude projects, assets, cases, policies, and application-defined entities. An opaque subject identifier allows one query model while leaving identity and namespace semantics to the application. ### Why Separate Actor and Authority? The technical account recording an event and the claimed basis for the action are different facts. A module can execute several actions under different mandates, while multiple modules can act under the same mandate. ### Why Structured Parties? An untyped address list cannot distinguish a sender, receiver, target, beneficiary, or controller. Explicit roles improve machine interpretation while
 
 
 === ERC-5615 ===

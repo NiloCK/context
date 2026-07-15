@@ -7093,6 +7093,26 @@ RATIONALE:
 ### Attestations Attestations are onchain assertions made about a module. These assertions could pertain to the security of a module (similar to a regular
 
 
+=== ERC-8330 ===
+TITLE: Subject-Linked NAV Snapshot Oracle
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines an interface for publishing and querying subject-linked Net Asset Value (NAV) snapshots. Each stream is keyed by `(subjectId, currency)` and has
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Periodic valuations for funds, private credit, real estate, infrastructure, commodities, and other illiquid or administratively priced assets differ from continuous exchange prices. Consumers need
+
+RATIONALE:
+### Why Key Streams by Subject and Currency? A subject can be valued in multiple denominations. Treating each pair as an independent stream removes
+
+
 === ERC-5521 ===
 TITLE: Referable NFT
 TYPE: Standards Track ERC
@@ -8577,6 +8597,26 @@ RATIONALE:
 * Originally, this interface was part of [ERC-1202](./eip-1202.md). However, the proposal itself can potentially have many use cases outside of voting. It is possible
 
 
+=== ERC-8329 ===
+TITLE: Subject-Linked Impact Snapshot Log
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines an append-only interface for reporting quantitative impact indicator snapshots against application-defined subjects. Each snapshot records a signed value, decimal precision, unit,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Impact measurements such as emissions, carbon offsets, renewable energy, water treatment, employment, beneficiaries, biodiversity area, and diverted waste are commonly distributed through reports and
+
+RATIONALE:
+### Why Append-Only Snapshots? Impact data changes through new periods, corrected measurements, and revised methodologies. Append-only storage preserves each assertion and makes revisions visible
+
+
 === ERC-7943 ===
 TITLE: uRWA - Universal Real World Asset Interface
 TYPE: Standards Track ERC
@@ -9322,6 +9362,26 @@ RATIONALE:
 ### Unique Random Nonce, Instead of Sequential Nonce One might say transaction ordering is one reason why sequential nonces are preferred. However, sequential nonces
 
 
+=== ERC-8327 ===
+TITLE: Directional Transfer Domain Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines a token-agnostic registry interface for querying directional transfer-route permission between opaque domains by asset class. For an ordered triple of `sourceDomain`,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Transfer restrictions are commonly expressed in token-local or address-level logic. That model is appropriate when eligibility depends on a particular holder, balance, token, or
+
+RATIONALE:
+### Why Directional Routes? Compatibility can be asymmetric. A domain may allow outbound transfers to another domain without accepting inbound transfers from it. Encoding
+
+
 === ERC-7847 ===
 TITLE: Social Media NFTs
 TYPE: Standards Track ERC
@@ -9542,6 +9602,26 @@ SPECIFICATION:
 
 RATIONALE:
 Storing ABIs onchain avoids the need to introduce additional dependencies for applications wishing to fetch them, such as swarm or HTTP access. Given the
+
+
+=== ERC-8328 ===
+TITLE: Subject-Linked Compliance Event Log
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines an append-only interface for subject-linked compliance event records. Each record includes a subject, event type, outcome, technical actor, claimed authority, involved
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Compliance-relevant lifecycle actions are currently represented through application-specific events, token-local state changes, generic attestations, and off-chain databases. This fragmentation makes it difficult for contracts,
+
+RATIONALE:
+### Why Subject-Linked Records? An address-only or token-only key would exclude projects, assets, cases, policies, and application-defined entities. An opaque subject identifier allows one
 
 
 === ERC-5615 ===
