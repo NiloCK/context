@@ -6659,7 +6659,7 @@ Since the `utilityUri` could contain information that has to be restricted to so
 === ERC-1450 ===
 TITLE: RTA-Controlled Security Token
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2018-09-25
 REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 6, 0, 9, 3
 
