@@ -49,7 +49,7 @@ SUMMARY:
 The availability of a well-known `CREATE2` factory at `0x4e59b44847b379578588920cA78FbF26c0B4956C` is made a formal requirement to enable deterministic deployments at identical addresses across EVM chains. This benefits developer experience, user experience, and security, in particular for multi-chain and cross-chain applications, including account abstraction.
 
 SPECIFICATION:
-* `FACTORY_ADDRESS` = `0x4e59b44847b379578588920cA78FbF26c0B4956C` The chain's state MUST include `FACTORY_ADDRESS` with nonzero nonce and this runtime code: ``` 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3 ``` A chain may satisfy this requirement by any means that results in the account above: deploying the factory with an ordinary transaction (for example, its keyless creation transaction) where
+* `FACTORY_ADDRESS` = `0x4e59b44847b379578588920cA78FbF26c0B4956C` The chain's state MUST include `FACTORY_ADDRESS` with nonzero nonce and this runtime code: ``` 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe03601600081602082378035828234f58015156039578182fd5b8082525050506014600cf3 ``` A chain may satisfy this requirement by either of the following means that results in the account above: deploying the factory with an ordinary transaction (for example, its keyless
 
 MOTIVATION:
 There are now a large number of EVM chains where users want to transact and developers want to deploy applications, and we can expect this number to continue to grow in line with Ethereum's rollup-centric roadmap and the general adoption of programmable blockchains. Most applications support multiple chains and
