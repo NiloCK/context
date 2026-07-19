@@ -1855,7 +1855,7 @@ TITLE: Keyed Nonces for Frame Transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-04-16
-REQUIRES: 8141
+REQUIRES: 7, 6, 2, 3, ,,  , 8, 1, 4, 1
 
 SUMMARY:
 Replaces the single sender nonce of an [EIP-8141](./eip-8141.md) frame transaction with `(nonce_keys, nonce_seq)`: a bounded set of nonce keys sharing one sequence number. `nonce_keys

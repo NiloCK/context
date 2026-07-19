@@ -1855,13 +1855,13 @@ TITLE: Keyed Nonces for Frame Transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-04-16
-REQUIRES: 8141
+REQUIRES: 7, 6, 2, 3, ,,  , 8, 1, 4, 1
 
 SUMMARY:
 Replaces the single sender nonce of an [EIP-8141](./eip-8141.md) frame transaction with `(nonce_keys, nonce_seq)`: a bounded set of nonce keys sharing one sequence number. `nonce_keys == [0]` aliases the legacy account nonce; each non-zero key selects an independent protocol-managed nonce sequence stored in a `NONCE_MANAGER` system contract. Transactions whose non-zero key sets do not overlap are replay-independent.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. This specification is a delta against [EIP-8141](./eip-8141.md). ### Constants | Name | Value | |---|---| | `FORK_TIMESTAMP` | `TBD` | | `NONCE_MANAGER` | `0xTBD` | | `NONCE_MANAGER_CODE` | `0x60006000fd` | | `KEYED_NONCE_FIRST_USE_GAS` | `20000` | | `MAX_NONCE_SEQ` | `2**64 - 1` | | `MAX_NONCE_KEYS` | `16` | | `TXPARAM_NONCE_KEY_0` | `0x0B` | | `TXPARAM_LEGACY_NONCE` | `0x0C` | | `TXPARAM_NONCE_KEY_COUNT` | `0x0D` | | `TXPARAM_NONCE_KEYS_HASH`
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. This specification is a delta against [EIP-8141](./eip-8141.md). ### Constants | Name | Value | |---|---| | `FORK_TIMESTAMP` | `TBD` | | `NONCE_MANAGER` | `0xTBD` | | `NONCE_MANAGER_CODE` | `0x60006000fd` | | `KEYED_NONCE_FIRST_USE_GAS` | `20000` | | `MAX_NONCE_SEQ` | `2**64 - 1` | | `MAX_NONCE_KEYS` | `16` | | `TXPARAM_LEGACY_NONCE` | `0x0C` | | `TXPARAM_NONCE_KEY_COUNT` | `0x0D` | | `TXPARAM_NONCE_KEYS_HASH` | `0x0E` | | `TXPARAM_NONCE_KEY_0`
 
 MOTIVATION:
 A frame transaction currently consumes one linear sender nonce, so a delayed transaction blocks every later frame transaction from the same sender. This is too restrictive for designs that intentionally share one sender across many independent users or actions. The leading example is privacy protocols. To avoid binding onchain activity to a unique public sender, users transact through a single shared sender address. With one linear nonce, that shared sender becomes a throughput bottleneck: one user's inclusion invalidates every other user's pending withdrawal even when the spends are otherwise unrelated. Smart-wallet session keys and relayer-style senders face the
