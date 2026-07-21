@@ -2768,7 +2768,7 @@ RATIONALE:
 === ERC-8327 ===
 TITLE: Directional Transfer Domain Registry
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-07-05
 REQUIRES: 165
 
@@ -3516,7 +3516,7 @@ RATIONALE:
 === ERC-8161 ===
 TITLE: Transferable Tokenized Vault Requests
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-02-12
 REQUIRES: 1, 6, 5, ,,  , 7, 5, 4, 0
 
@@ -5646,7 +5646,7 @@ A notable application of EIP-712 signatures is found in EIP-2612 (permit), which
 === ERC-8325 ===
 TITLE: Asset Anchor Registry
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-07-04
 REQUIRES: 165
 
@@ -6163,7 +6163,7 @@ To enable the new authentication workflow we described above, dApp needs to know
 === ERC-8328 ===
 TITLE: Subject-Linked Compliance Event Log
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-07-05
 REQUIRES: 165
 
@@ -6534,7 +6534,7 @@ This interface standardizes a council flow for AI-driven oracles, balancing mini
 === ERC-8330 ===
 TITLE: Subject-Linked NAV Snapshot Oracle
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-07-05
 REQUIRES: 165
 
@@ -6756,9 +6756,9 @@ The Token Identifier format combines several design elements to balance usabilit
 === ERC-1613 ===
 TITLE: Gas stations network
 TYPE: Standards Track ERC
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2018-11-18
-REQUIRES: 1077
+REQUIRES: 
 
 SUMMARY:
 Communicating with dapps currently requires paying ETH for gas, which limits dapp adoption to ether users. Therefore, contract owners may wish to pay for
@@ -8363,7 +8363,7 @@ The interface defined in this standard is designed to be mostly compatible with 
 === ERC-8329 ===
 TITLE: Subject-Linked Impact Snapshot Log
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-07-05
 REQUIRES: 165
 
@@ -8745,7 +8745,7 @@ This EIP is meant to be minimal and straightforward. Adding EIP-165 to ERC-20 is
 === ERC-8196 ===
 TITLE: AI Agent Authenticated Wallet
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-03-14
 REQUIRES: 1, 5, 5, ,,  , 1, 9, 1, ,,  , 7, 1, 2, ,,  , 4, 3, 3, 7, ,,  , 8, 1, 2, 6
 
@@ -8759,7 +8759,7 @@ MOTIVATION:
 Autonomous AI agents introduce critical security challenges when performing on-chain actions: 1. **Hosting Trust Trap** - Hosts can steal private keys if agents hold
 
 RATIONALE:
-- Separation of concerns: identity (ERC-8004) and verification (ERC-8126) decoupled from execution, with verification enforced via policy - `policyHash` in ERC-712 signatures binds actions
+- Separation of concerns: identity and verification (ERC-8126) decoupled from execution, with verification enforced via policy - `policyHash` in EIP-712 signatures binds actions immutably
 
 
 === ERC-5625 ===
@@ -8990,7 +8990,7 @@ The current ERC deliberately does not define the `findings` of an audit. Such a 
 === ERC-5516 ===
 TITLE: Soulbound Multi-owner Tokens
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2022-08-19
 REQUIRES: 165
 
@@ -9960,7 +9960,7 @@ RATIONALE:
 === ERC-8326 ===
 TITLE: Canonical Document Bundle Anchor
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-07-05
 REQUIRES: 165
 
