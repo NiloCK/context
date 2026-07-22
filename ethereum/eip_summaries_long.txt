@@ -749,21 +749,21 @@ We have considered various alternative specifications such as using a random uni
 === EIP-8015 ===
 TITLE: Remove `deposit` and `eth1data` fields
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2025-08-22
-REQUIRES: 6, 1, 1, 0, ,,  , 7, 7, 3, 2
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 6, 8, 8, ,,  , 7, 7, 7, 3
 
 SUMMARY:
-This EIP removes the legacy `deposits` and `eth1_data` fields from the `BeaconBlockBody` structure after [EIP-6110](./eip-6110.md) has been fully finalized. These fields become obsolete once all validators have transitioned to the new in-protocol deposit processing mechanism introduced in EIP-6110.
+This EIP removes the legacy deposit and Eth1 data fields from the `BeaconBlockBody` and `BeaconState` structures after [EIP-6110](./eip-6110.md) has been fully finalized. These fields become obsolete once all validators have transitioned to the new in-protocol deposit processing mechanism introduced in EIP-6110.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Consensus Layer #### Activation Conditions This EIP SHALL only be activated when both of the following conditions are met: 1. EIP-6110 has been fully finalized: `state.eth1_deposit_index == state.deposit_requests_start_index` 2. EIP-7732 is in effect #### BeaconBlockBody Modifications The `BeaconBlockBody` container is modified to remove the following fields: **Removed fields:** - `deposits: List[Deposit, MAX_DEPOSITS]` - `eth1_data: Eth1Data` The updated `BeaconBlockBody` structure becomes: ```python class BeaconBlockBody(Container):
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Consensus Layer #### Activation Conditions This EIP SHALL only be activated when both of the following conditions are met: 1. EIP-6110 has been fully finalized: `state.eth1_deposit_index == state.deposit_requests_start_index` 2. Glamsterdam ([EIP-7773](./eip-7773.md)) is in effect #### BeaconBlockBody Modifications The `BeaconBlockBody` container is modified to remove the following fields: **Removed fields:** - `eth1_data: Eth1Data` - `deposits: ProgressiveList[Deposit]` The removal is expressed by setting the corresponding
 
 MOTIVATION:
-EIP-6110 introduced in-protocol deposit processing by moving validator deposits to the execution layer as part of the EIP-7685 request framework. This change eliminated the need for the consensus layer's proposer voting mechanism for deposits. However, during the transition period, both the legacy deposit mechanism (using `deposits` and `eth1_data` fields) and the new mechanism coexist to ensure smooth migration. Once EIP-6110 has been fully finalized and the transition period is complete (when `state.eth1_deposit_index == state.deposit_requests_start_index`), the legacy deposit fields become permanently unused and can be safely removed. This cleanup provides several benefits: - **Simplified validation**: Removes deprecated validation logic
+EIP-6110 introduced in-protocol deposit processing by moving validator deposits to the execution layer as part of the EIP-7685 request framework. This change eliminated the need for the consensus layer's proposer voting mechanism for deposits. However, during the transition period, both the legacy deposit mechanism (using `deposits` and `eth1_data` fields) and the new mechanism coexist to ensure smooth migration. Once EIP-6110 has been fully finalized and the transition period is complete (when `state.eth1_deposit_index == state.deposit_requests_start_index`), the legacy deposit fields become permanently unused and can be safely removed. The Fulu fork removed legacy deposit processing and requires `body.deposits` to be
 
 RATIONALE:
-### Timing of Removal The fields are removed after EIP-6110 finalization to ensure: - All pending deposits from the legacy system have been processed - No validator can be affected by the removal - The transition is complete and irreversible - State consistency is maintained across all honest nodes ### Dependency on EIP-7732 This EIP requires EIP-7732 because: - EIP-7732 already modified the `BeaconBlockBody` structure significantly - It provides the architectural foundation for simplified block bodies - The timing aligns with the broader consensus layer improvements
+### Timing of Removal The fields are removed after EIP-6110 finalization to ensure: - All pending deposits from the legacy system have been processed - No validator can be affected by the removal - The transition is complete and irreversible - State consistency is maintained across all honest nodes
 
 
 === EIP-8115 ===
@@ -5055,13 +5055,13 @@ TITLE: State Creation Gas Cost Increase
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-01
-REQUIRES: 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 8
+REQUIRES: 1, 6, 1, ,,  , 6, 8, 4, ,,  , 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 1, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It introduces a new variable, `CPSB` (cost per state byte), and sets this unit of gas costs per new state byte by targeting an average state growth of 120 GiB per year at a reference block gas limit of 150M gas units. It also introduces an independent metering for state creation costs, thus allowing for increased throughput and for larger contract deployments without being limited by the single transaction gas limit.
 
 SPECIFICATION:
-### New parameters | **Parameter** | **Value** | |:---:|:---:| | `CPSB` | 1530 | | `STATE_BYTES_PER_STORAGE_SET` | 64 | | `STATE_BYTES_PER_NEW_ACCOUNT` | 120 | | `STATE_BYTES_PER_AUTH_BASE` | 23 | | `SYSTEM_MAX_SSTORES_PER_CALL` | 16 | ### Parameter changes Upon activation of this EIP, the following parameters of the gas model are updated. The "New State Gas" column shows the state gas cost (charged to the state-gas dimension), while the "New Regular Gas" column shows additional regular gas costs that accompany the state gas charge. | **Parameter** | **Current** | **New State Gas** | **New Regular Gas** | **Operations affected**
+### New parameters | **Parameter** | **Value** | |:---:|:---:| | `CPSB` | 1530 | | `STATE_BYTES_PER_STORAGE_SET` | 64 | | `STATE_BYTES_PER_NEW_ACCOUNT` | 120 | | `STATE_BYTES_PER_AUTH_BASE` | 23 | | `SYSTEM_MAX_SSTORES_PER_CALL` | 16 | ### Parameter changes Upon activation of this EIP, the following parameters of the gas model are updated. The "New State Gas" column shows the state gas cost (charged to the state-gas dimension), while the "New Execution Gas" column shows additional execution gas costs that accompany the state gas charge. | **Parameter** | **Current** | **New State Gas** | **New Execution Gas** | **Operations affected**
 
 MOTIVATION:
 State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance, while contract deployment only costs ~200 gas units per new byte created, new storage slots cost ~313 gas units per new byte created. Also, deploying duplicated bytecode costs the same as deploying new bytecode, even though clients don't store duplicated code in the database. This proposal establishes a standard to harmonize all state creation operations. Additionally, state growth will become a bottleneck for scaling under higher block limits. As of January 2026, the current
@@ -7314,13 +7314,13 @@ TITLE: State-access gas cost update
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-03
-REQUIRES: 7, 9, 0, 4, ,,  , 8, 0, 3, 7
+REQUIRES: 8037
 
 SUMMARY:
 This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the base costs for `STORAGE_WRITE`, `COLD_STORAGE_ACCESS`, and `COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`.
 
 SPECIFICATION:
-### Parameters Upon activation of this EIP, the following parameters of the gas model are introduced/updated: | **Parameter** | **Description** | **Current value** | **New value** | **Increase** | **Operations affected** | | :---: | :---: | :---: | :---: | :---: | :---: | | `COLD_ACCOUNT_ACCESS` | Cold touch of an account | 2,600 | 3,000 | +15% | `*CALL` opcodes, `BALANCE`, `SELFDESTRUCT`, `EXT*` opcodes, EOA delegations, contract creation txs and ETH transfers | | `ACCOUNT_WRITE` | Surcharge for when writing to an account changes one account leaf value for the first time | 6,700¹ | 8,000
+### Parameters Upon activation of this EIP, the following parameters of the gas model are introduced/updated: | **Parameter** | **Description** | **Current value** | **New value** | **Increase** | **Operations affected** | | :---: | :---: | :---: | :---: | :---: | :---: | | `COLD_ACCOUNT_ACCESS` | Cold touch of an account. Renamed from `COLD_ACCOUNT_ACCESS_COST` ([EIP-2929](./eip-2929.md)) | 2,600 | 3,000 | +15% | `*CALL` opcodes, `BALANCE`, `SELFDESTRUCT`, `EXT*` opcodes, EOA delegations, contract creation txs and ETH transfers | | `ACCOUNT_WRITE` | Surcharge for when writing to an account changes one account leaf value for the first time.
 
 MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](./eip-2929.md) was included in the Berlin fork in March 2021 and raised the costs of state-accessing opcodes. Yet, since then, Ethereum's state has grown significantly, thus deteriorating the performance of these operations. This proposal further raises state access costs to better align them with the current performance of state access operations, in relation to other operations. Additionally, `EXTCODESIZE` and `EXTCODECOPY` have the same access cost as `BALANCE` and `EXTCODEHASH`. However, `EXTCODESIZE` and `EXTCODECOPY` require two database reads - first to load the account object
@@ -7462,13 +7462,13 @@ TITLE: Resource-based intrinsic transaction gas
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2020-07-11
-REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 5, 2, 3, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP decomposes the flat `21,000` intrinsic transaction cost into explicit primitives, each priced to match the resources a transaction actually consumes. The costs of plain ETH transfers and contract creation transactions remain equal, while ETH transfers to new accounts and [7702](./eip-7702.md)-related transactions In addition, the new primitives are split into intrinsic gas and runtime gas. **Intrinsic gas** is the state-independent cost of including the transaction in a block and is the sole input to the transaction-validity check. **Runtime gas** covers the state-dependent charges, such as new account creation and delegation resolution. Runtime gas is charged as the
 
 SPECIFICATION:
-### Parameters | Name | Value | Definition | | :----: | :----: | :---- | | `TX_BASE_COST` | 12,000 | Sender cost: ECDSA recovery, the sender's account access, the sender's account write and inclusion in block | | `TX_VALUE_COST` | 4,244 | Recipient balance write performed by a value transfer | | `TRANSFER_LOG_COST` | 1,756 | [EIP-7708](./eip-7708.md) transfer log: `GAS_LOG + 3 × GAS_LOG_TOPIC + 32 × GAS_LOG_DATA_PER_BYTE` | The remaining values are defined in other EIPs and referenced here: | Name | Value | Source | Definition | | :---- | :----: | :----: | :----
+### Parameters | Name | Value | Definition | | :----: | :----: | :---- | | `TX_BASE_COST` | 12,000 | Sender cost: ECDSA recovery, the sender's account access, the sender's account write and inclusion in block | | `TX_VALUE_COST` | 6,000 | Recipient balance write and [EIP-7708](./eip-7708.md) transfer log performed by a value transfer | The remaining values are defined in other EIPs and referenced here: | Name | Value | Source | Definition | | :---- | :----: | :----: | :---- | | `COLD_ACCOUNT_ACCESS` | 3,000 | [EIP-8038](./eip-8038.md) | Cold account touch | | `WARM_ACCESS`
 
 MOTIVATION:
 The flat `21,000` intrinsic cost charges every transaction the same amount regardless of what it does. A zero-value transaction to an existing account and a value transfer that creates a new account both pay `21,000`, even though the latter touches an extra account, writes an extra balance, emits a log, and permanently grows the state. The single constant both over-prices the simplest paths and under-prices the ones that consume real, lasting resources. This EIP replaces the constant with a decomposition into named primitives, each priced to the resource it represents. The goal is to make every transaction's cost
@@ -8828,19 +8828,19 @@ TITLE: Partitioned Binary Tree
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-06-11
-REQUIRES: 7612
+REQUIRES: 4, 7, 6, 2, ,,  , 7, 6, 1, 2
 
 SUMMARY:
-Introduce a new binary state tree to replace the hexary Patricia tries. Account and storage tries are merged into a single tree with 32-byte keys that also holds contract code. Account data is broken into independent leaves grouped by 256 to provide locality. The tree is partitioned into zones. The high 4 bits of every key are a zone identifier that labels the category of state the key holds: account headers, contract code, or storage. Storage takes the entire upper half of the zone space (any key with the high bit set), so it is rooted at depth
+Introduce a new binary state tree to replace the hexary Patricia tries. Account and storage tries are merged into a single tree with variable-length, prefix-free keys that also holds contract code. Account data is broken into independent leaves grouped under a shared key prefix to provide locality. The tree is partitioned into zones. The first byte of every key is a zone identifier that labels the category of state the key holds: account headers, contract code, or storage. Account headers and code take fixed low zones, storage takes a fixed high zone, and the remaining zones are reserved
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Notable changes from the hexary structure - The account and storage tries are merged into a single trie. - RLP is no longer used. - The account's code is chunked and included in the tree. - Account data (balance, nonce, first storage slots, first code chunks) is co-located to reduce branch openings. ### Notable changes from EIP-7864 [EIP-7864](./eip-7864.md) specifies a flat unified binary
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Notable changes from the hexary structure - The account and storage tries are merged into a single tree. - RLP is no longer used. - The account's code is chunked and included in the tree. - Account data (balance, nonce, first storage slots, first code chunks) is co-located to reduce branch openings. ### Notable changes from EIP-7864 [EIP-7864](./eip-7864.md) specifies a flat unified binary
 
 MOTIVATION:
-Ethereum's long-term goal is to let blocks be proved with validity proofs so chain verification is as simple and fast as possible. Part of this work consists of proving the state read during EVM execution. The Merkle Patricia Trie (MPT) is unfriendly to validity proofs: it uses RLP for node encoding, Keccak for hashing, is a "tree of trees", and does not allow for the efficient proving of segments of bytecode. It also produces large Merkle proofs. As an example, the account trie today reaches a maximum depth of about 12, so the expected size of a single
+Ethereum's long-term goal is to let blocks be proved with validity proofs so chain verification is as simple and fast as possible. Part of this work consists of proving the state read during EVM execution. The Merkle Patricia Trie (MPT) is unfriendly to validity proofs: it uses RLP for node encoding, Keccak for hashing, is a "tree of trees", and does not allow for the efficient proving of segments of bytecode. It also produces large Merkle proofs. As an example, the account trie today reaches a maximum depth of about 12, so a branch at that depth is
 
 RATIONALE:
-This EIP defines a binary tree that starts empty. Only new state changes are stored in it. The MPT continues to exist but is frozen, setting up a later hard fork that migrates MPT data into the binary tree ([EIP-7748](./eip-7748.md)). ### Single tree with zones A single key/value tree is simpler to work with than a tree of tries: database access, caching, syncing, and proof code all operate on one abstraction, and witness gas rules are clearer. State spreads uniformly, so one contract's millions of slots are not concentrated in one place, which helps state sync and blunts
+This EIP defines a binary tree that starts empty. Only new state changes are stored in it. The MPT continues to exist but is frozen, setting up a later hard fork that migrates MPT data into the binary tree ([EIP-7748](./eip-7748.md), adapted from the Verkle tree to this one). ### Single tree with zones A single key/value tree is simpler to work with than a tree of tries: database access, caching, syncing, and proof code all operate on one abstraction, and witness gas rules are clearer. Placement is hash-derived at every level: stems scatter uniformly within their zone, and
 
 
 === EIP-2929 ===

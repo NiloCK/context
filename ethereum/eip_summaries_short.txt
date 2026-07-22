@@ -749,12 +749,12 @@ We have considered various alternative specifications such as using a random uni
 === EIP-8015 ===
 TITLE: Remove `deposit` and `eth1data` fields
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2025-08-22
-REQUIRES: 6, 1, 1, 0, ,,  , 7, 7, 3, 2
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 6, 8, 8, ,,  , 7, 7, 7, 3
 
 SUMMARY:
-This EIP removes the legacy `deposits` and `eth1_data` fields from the `BeaconBlockBody` structure after [EIP-6110](./eip-6110.md) has been fully finalized. These fields become obsolete once
+This EIP removes the legacy deposit and Eth1 data fields from the `BeaconBlockBody` and `BeaconState` structures after [EIP-6110](./eip-6110.md) has been fully finalized. These fields
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -5055,7 +5055,7 @@ TITLE: State Creation Gas Cost Increase
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-01
-REQUIRES: 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 8
+REQUIRES: 1, 6, 1, ,,  , 6, 8, 4, ,,  , 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 1, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It introduces a new variable,
@@ -7314,7 +7314,7 @@ TITLE: State-access gas cost update
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-03
-REQUIRES: 7, 9, 0, 4, ,,  , 8, 0, 3, 7
+REQUIRES: 8037
 
 SUMMARY:
 This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the
@@ -7462,7 +7462,7 @@ TITLE: Resource-based intrinsic transaction gas
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2020-07-11
-REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 5, 2, 3, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP decomposes the flat `21,000` intrinsic transaction cost into explicit primitives, each priced to match the resources a transaction actually consumes. The costs
@@ -8828,10 +8828,10 @@ TITLE: Partitioned Binary Tree
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-06-11
-REQUIRES: 7612
+REQUIRES: 4, 7, 6, 2, ,,  , 7, 6, 1, 2
 
 SUMMARY:
-Introduce a new binary state tree to replace the hexary Patricia tries. Account and storage tries are merged into a single tree with 32-byte
+Introduce a new binary state tree to replace the hexary Patricia tries. Account and storage tries are merged into a single tree with variable-length,
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to

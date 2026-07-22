@@ -749,12 +749,12 @@ We have considered various alternative specifications such as using a random uni
 === EIP-8015 ===
 TITLE: Remove `deposit` and `eth1data` fields
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2025-08-22
-REQUIRES: 6, 1, 1, 0, ,,  , 7, 7, 3, 2
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 6, 8, 8, ,,  , 7, 7, 7, 3
 
 SUMMARY:
-This EIP removes the legacy `deposits` and `eth1_data` fields from the `BeaconBlockBody` structure after [EIP-6110](./eip-6110.md) has been fully finalized. These fields become obsolete once all validators have transitioned to the new in-protocol deposit processing mechanism introduced in EIP-6110.
+This EIP removes the legacy deposit and Eth1 data fields from the `BeaconBlockBody` and `BeaconState` structures after [EIP-6110](./eip-6110.md) has been fully finalized. These fields become obsolete once all validators have transitioned to the new in-protocol deposit processing mechanism introduced in EIP-6110.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Consensus Layer #### Activation Conditions This EIP SHALL only be activated when both of
@@ -5055,7 +5055,7 @@ TITLE: State Creation Gas Cost Increase
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-01
-REQUIRES: 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 0, 4, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 8
+REQUIRES: 1, 6, 1, ,,  , 6, 8, 4, ,,  , 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 1, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It introduces a new variable, `CPSB` (cost per state byte), and sets this unit of gas costs per new state byte by targeting an average state growth of 120 GiB
@@ -7314,7 +7314,7 @@ TITLE: State-access gas cost update
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-03
-REQUIRES: 7, 9, 0, 4, ,,  , 8, 0, 3, 7
+REQUIRES: 8037
 
 SUMMARY:
 This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the base costs for `STORAGE_WRITE`, `COLD_STORAGE_ACCESS`, and `COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`.
@@ -7462,13 +7462,13 @@ TITLE: Resource-based intrinsic transaction gas
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2020-07-11
-REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 5, 2, 3, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP decomposes the flat `21,000` intrinsic transaction cost into explicit primitives, each priced to match the resources a transaction actually consumes. The costs of plain ETH transfers and contract creation transactions remain equal, while ETH transfers to new accounts and [7702](./eip-7702.md)-related transactions In addition, the new primitives are
 
 SPECIFICATION:
-### Parameters | Name | Value | Definition | | :----: | :----: | :---- | | `TX_BASE_COST` | 12,000 | Sender cost: ECDSA recovery, the sender's account access, the sender's account write and inclusion in block | | `TX_VALUE_COST` | 4,244 | Recipient balance write performed by a
+### Parameters | Name | Value | Definition | | :----: | :----: | :---- | | `TX_BASE_COST` | 12,000 | Sender cost: ECDSA recovery, the sender's account access, the sender's account write and inclusion in block | | `TX_VALUE_COST` | 6,000 | Recipient balance write and [EIP-7708](./eip-7708.md) transfer
 
 MOTIVATION:
 The flat `21,000` intrinsic cost charges every transaction the same amount regardless of what it does. A zero-value transaction to an existing account and a value transfer that creates a new account both pay `21,000`, even though the latter touches an extra account, writes an extra balance, emits a
@@ -8828,10 +8828,10 @@ TITLE: Partitioned Binary Tree
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-06-11
-REQUIRES: 7612
+REQUIRES: 4, 7, 6, 2, ,,  , 7, 6, 1, 2
 
 SUMMARY:
-Introduce a new binary state tree to replace the hexary Patricia tries. Account and storage tries are merged into a single tree with 32-byte keys that also holds contract code. Account data is broken into independent leaves grouped by 256 to provide locality. The tree is partitioned into zones.
+Introduce a new binary state tree to replace the hexary Patricia tries. Account and storage tries are merged into a single tree with variable-length, prefix-free keys that also holds contract code. Account data is broken into independent leaves grouped under a shared key prefix to provide locality. The tree
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Notable changes from the hexary structure - The account and storage tries are merged
@@ -8840,7 +8840,7 @@ MOTIVATION:
 Ethereum's long-term goal is to let blocks be proved with validity proofs so chain verification is as simple and fast as possible. Part of this work consists of proving the state read during EVM execution. The Merkle Patricia Trie (MPT) is unfriendly to validity proofs: it uses RLP for
 
 RATIONALE:
-This EIP defines a binary tree that starts empty. Only new state changes are stored in it. The MPT continues to exist but is frozen, setting up a later hard fork that migrates MPT data into the binary tree ([EIP-7748](./eip-7748.md)). ### Single tree with zones A single key/value tree
+This EIP defines a binary tree that starts empty. Only new state changes are stored in it. The MPT continues to exist but is frozen, setting up a later hard fork that migrates MPT data into the binary tree ([EIP-7748](./eip-7748.md), adapted from the Verkle tree to this one). ###
 
 
 === EIP-2929 ===
