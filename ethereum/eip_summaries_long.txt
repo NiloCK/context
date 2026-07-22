@@ -6627,7 +6627,7 @@ CREATED: 2026-02-16
 REQUIRES: 
 
 SUMMARY:
-This Informational EIP provides foundational context for understanding control flow in the EVM. It covers the historical development of control flow mechanisms in computing, the technical foundations of control flow analysis, and the impact of static control flow on Ethereum's scaling roadmap. This document serves as background material for proposals for static control flow — past and current proposals for subroutines and static jumps, container-format functions, call and return opcodes, and static relative jumps and calls — for discussions around RISC-V migration and ZK verification infrastructure, and for discussions still to come.
+This Informational EIP provides background for understanding control flow in the EVM: the history of control flow in computing, the foundations of control flow analysis, and the impact of static control flow on Ethereum's scaling roadmap. This document serves as background material for proposals for static control flow — past and current proposals for subroutines and static jumps, container-format functions, call and return opcodes, and static relative jumps and calls — for discussions around RISC-V migration and ZK verification infrastructure, and for discussions still to come.
 
 SPECIFICATION:
 Several EIPs, past and current, specify new EVM opcodes and semantics for static control flow: subroutines and static jumps, container-format functions, call and return opcodes, and static relative jumps and calls. They are all implemented with the standard Turing return stack architecture, and are for the most part compatible with each other. In particular, the simplest of them — three call and return opcodes — can be used to implement all of the others.
@@ -8583,7 +8583,7 @@ CREATED: 2025-12-17
 REQUIRES: 
 
 SUMMARY:
-This is a minimal change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB` transfers control to the *destination* on the *data stack*. * `CALLDEST` marks a subroutine entry: the destination of a `CALLSUB`, or of a `JUMP` that eliminates a call. * `RETURNSUB` returns to the *PC* after the most recent `CALLSUB`. These changes are backwards compatible: the instructions behave identically wherever they appear. *Note: Significant assistance from AI is acknowledged, primarily for the reference implementation.*
+This is a minimal change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB` transfers control to the *destination* on the *data stack*. * `CALLDEST` marks a subroutine entry: the destination of a `CALLSUB`, or of a `JUMP` that eliminates a call. * `RETURNSUB` returns to the *PC* after the most recent `CALLSUB`. These changes are backwards compatible: the instructions behave identically wherever they appear. *Note: Significant assistance from AI is acknowledged, primarily for the reference implementation and its tests.*
 
 SPECIFICATION:
 > *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* The EVM's machine state includes a *data stack* of 256-bit words, at most 1024 deep, and the program counter, *PC*, whose value is a position in the code — the index of the next byte to execute. This EIP adds a *return stack* of return addresses, pushed only by `CALLSUB`, popped only by `RETURNSUB`, and not otherwise accessible to EVM code. ### `CALLSUB (0x..)` Transfers control to a subroutine. 1. Pop the *destination* from the

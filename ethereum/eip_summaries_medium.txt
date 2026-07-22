@@ -6627,7 +6627,7 @@ CREATED: 2026-02-16
 REQUIRES: 
 
 SUMMARY:
-This Informational EIP provides foundational context for understanding control flow in the EVM. It covers the historical development of control flow mechanisms in computing, the technical foundations of control flow analysis, and the impact of static control flow on Ethereum's scaling roadmap. This document serves as background material for
+This Informational EIP provides background for understanding control flow in the EVM: the history of control flow in computing, the foundations of control flow analysis, and the impact of static control flow on Ethereum's scaling roadmap. This document serves as background material for proposals for static control flow —
 
 SPECIFICATION:
 Several EIPs, past and current, specify new EVM opcodes and semantics for static control flow: subroutines and static jumps, container-format functions, call and return opcodes, and static relative jumps and calls. They are all implemented with the standard Turing return stack architecture, and are for the most part compatible
