@@ -8460,13 +8460,13 @@ TITLE: Frame Transaction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-01-29
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2
 
 SUMMARY:
 Adds a new transaction whose validity and gas payment can be defined abstractly. This is achieved by decomposing the transaction into a sequence of *frames* which are contract calls that validate the transaction, approve gas payment, and execute standard user operations.
 
 SPECIFICATION:
-### Constants | Name | Value | |----------------------------|-------------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `FRAME_TX_PER_FRAME_COST` | `475` | | `ENTRY_POINT` | `address(0xaa)` | | `EXPIRY_VERIFIER` | `address(0x8141)` | | `EXPIRY_DATA_LENGTH` | `8` | | `MAX_FRAMES` | `64` | | `SECP256K1N` | `0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141` | | `SECP256R1N` | `0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551` | ### Frame Transaction A new [EIP-2718](./eip-2718.md) transaction with type `FRAME_TX_TYPE` is introduced. Transactions of this type are referred to as **frame transactions**. #### Payload Encoding The payload is defined as the RLP serialization of the following: ``` [chain_id, nonce, sender, frames, signatures, max_priority_fee_per_gas, max_fee_per_gas, max_fee_per_blob_gas,
+### Constants | Name | Value | |----------------------------|-------------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `15000` | | `FRAME_TX_PER_FRAME_COST` | `475` | | `ENTRY_POINT` | `address(0xaa)` | | `EXPIRY_VERIFIER` | `address(0x8141)` | | `EXPIRY_DATA_LENGTH` | `8` | | `MAX_FRAMES` | `64` | | `SECP256K1N` | `0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141` | | `SECP256R1N` | `0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551` | | `VERSIONED_HASH_VERSION_KZG` | `Bytes1(0x01)` | ### Frame Transaction A new [EIP-2718](./eip-2718.md) transaction with type `FRAME_TX_TYPE` is introduced. Transactions of this type are referred to as **frame transactions**. #### Payload Encoding The payload is defined as the RLP serialization of the following: ``` [chain_id, nonce, sender,
 
 MOTIVATION:
 The frame transaction type offers UX and security benefits across many areas: - it provides a native off-ramp from the elliptic curve based cryptographic system used to authenticate transactions today, to post-quantum (PQ) secure systems. - accounts are unlinked from their ECDSA keys, allowing native key rotation - smart accounts become simpler and therefore safer by natively providing batch call processing - alternative fee payment schemes are supported without centralized, third party relayers - the default account gives the protocol an even stronger guarantee on the lowest common denominator of account functionality Ultimately, frame transactions realize the original
