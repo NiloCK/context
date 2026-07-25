@@ -8552,7 +8552,7 @@ MOTIVATION:
 The EVM currently lacks explicit call and return instructions. Instead, calls and returns must be synthesized using the dynamic `JUMP` instruction, which takes its destination from the stack. This creates two fundamental problems: * **Inefficiency**: Synthesizing calls and returns with jumps wastes bytecode space and gas. * **Complexity**: More
 
 RATIONALE:
-### Why no immediate arguments or code sections? Primarily **backwards compatibility**. Other reasons include: * *Immediate arguments* for jump destinations would improve performance but increase the complexity of instruction encoding. * *Code sections* or other structural constraints would impose syntactic restrictions that inhibit optimization. The EVM Object Format took
+### Why no immediate arguments or code sections? Primarily **backwards compatibility**. Other reasons include: * *Immediate arguments* — operand bytes following the opcode in the code itself, rather than taken from the stack — would improve performance but increase the complexity of instruction encoding. * *Code sections* or other
 
 
 === EIP-2937 ===
@@ -9534,6 +9534,26 @@ EIP-3155 defined a tracing standard for Legacy EVM operations. However, the EVM 
 
 RATIONALE:
 This EIP is an extension of the EIP-3155 tracing features that has been in use for years. Rather than dramatically re-boot the feature, the information was added to the existing traces. A "mini" trace was contemplated to allow for tracing to be included in tools such as `t8n` and
+
+
+=== EIP-8333 ===
+TITLE: Align Checkpoint with Epoch Boundary Block
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-06
+REQUIRES: 
+
+SUMMARY:
+Anchor the Casper Friendly Finality Gadget (FFG) checkpoint for epoch `N` to the epoch boundary block, the last block before epoch `N`, rather than the first block of epoch `N`. A new accessor `get_checkpoint_root` replaces `get_block_root` wherever targets and checkpoints are resolved. Checkpoint epochs are unchanged; only the block
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Functions, constants, and types used below without definition, such as `get_block_root` and `get_checkpoint_block`, are defined
+
+MOTIVATION:
+Every attestation carries an FFG target vote naming a checkpoint `(epoch, root)`. Today the root for epoch `N` is the block at the epoch's first slot, and every attestation in epoch `N` names this same target. Committees in later slots know the target by the time they vote, but
+
+RATIONALE:
+The boundary block, run through the state transition function, deterministically yields the chain state at the start of the epoch, since no blocks follow it before the epoch begins. It is also fixed before the epoch begins; any later choice would depend on the epoch's own block production. Keeping
 
 
 === EIP-1011 ===
