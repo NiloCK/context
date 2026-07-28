@@ -8435,6 +8435,26 @@ RATIONALE:
 This endpoint is similar to [EIP-695](./eip-695.md) but it provides the symbol instead of `chainId`. It provides functionality that is already there for [ERC-20](./eip-20.md) tokens, but not yet for the native coin of the network. Alternative naming of `eth_nativeCurrencySymbol` was considered, but the context and the fact that it just
 
 
+=== EIP-8337 ===
+TITLE: Validated EVM Code
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-09
+REQUIRES: 3, 5, 4, 1, ,,  , 7, 9, 7, 9
+
+SUMMARY:
+Code can be prefixed with `MAGIC` bytes. `MAGIC` code is validated at `CREATE` time to ensure that it cannot execute invalid instructions, jump to invalid locations, or underflow stack, that every return has a call to return from, and that within each subroutine the depth of the *data stack*
+
+SPECIFICATION:
+> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174).* ### `MAGIC (0xEF....)` After this EIP has been activated, code beginning with the `MAGIC` bytes MUST be a *valid* program. Execution begins immediately after the `MAGIC`
+
+MOTIVATION:
+Dynamic jumps obscure the flow of control. A destination is a runtime value, so analysis must assume that any jump can reach any `JUMPDEST`. The possible control transfers therefore grow as jumps times destinations: quadratic in the size of the code. For tools that run as code deploys or
+
+RATIONALE:
+### Why validation? By marking `MAGIC` contracts as *valid* we are promising that their control flow is static, and the many tools that traverse the control flow can know this without inspecting the code for themselves. The intention is to end a vicious cycle: tools work around the EVM's
+
+
 === EIP-1352 ===
 TITLE: Specify restricted address range for precompiles/system contracts
 TYPE: Standards Track Core
@@ -10140,7 +10160,7 @@ TITLE: Frame Transaction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-01-29
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2
 
 SUMMARY:
 Adds a new transaction whose validity and gas payment can be defined abstractly. This is achieved by decomposing the transaction into a sequence of *frames* which are contract calls that validate the transaction, approve gas payment, and execute standard user operations.

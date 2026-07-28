@@ -2921,6 +2921,23 @@ RATIONALE:
 This standard purposely extends ERC-20 Token Standard so that new MCTs following or existing ERC-20 tokens extending this standard are fully compatible with current wallets and exchanges. In addition, new methods and events are kept as closely to ERC-20 conventions as possible for ease of adoption. We have considered
 
 
+=== ERC-8286 ===
+TITLE: Modular Accounts for Frame Transactions
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-06-04
+REQUIRES: 7, 5, 7, 9, ,,  , 8, 1, 4, 1
+
+SUMMARY:
+[ERC-7579](./eip-7579.md) standardizes a core module system for modular smart accounts: module types, the module lifecycle, installation, and account configuration. This proposal extends that system to [EIP-8141](./eip-8141.md) native account abstraction by defining the validation flow for frame transactions. It reuses ERC-7579's module structure unchanged: a validator returns an *approval mode*,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Relationship to ERC-7579 This standard is an extension to [ERC-7579](./eip-7579.md) and does not redefine
+
+RATIONALE:
+### Extension to ERC-7579 rather than a standalone standard The value of a modular account standard is a portable module ecosystem: a validator, executor, or hook written once should work across accounts and wallets. Defining an independent module system for EIP-8141 would fork that ecosystem, forcing modules and tooling
+
+
 === ERC-6735 ===
 TITLE: L2 Aliasing of EVM-based Addresses
 TYPE: Standards Track ERC
@@ -3373,6 +3390,26 @@ Creators frequently use NFTs to create redeemable entitlements for digital and p
 
 RATIONALE:
 The "offer" and "consideration" structs from Seaport were used to create a similar language for redeemable campaigns. The "offer" is what is being offered, e.g. a new onchain token, and the "consideration" is what must be satisfied to complete the redemption. The "consideration" field has a "recipient", who the
+
+
+=== ERC-8262 ===
+TITLE: Zero-Knowledge Compliance Oracle
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-04-07
+REQUIRES: 165
+
+SUMMARY:
+A standard interface for on-chain verification of regulatory compliance (anti-money laundering, sanctions screening, anti-structuring) using zero-knowledge proofs. Users generate proofs client-side that attest to compliance with jurisdiction-specific thresholds without revealing transaction amounts, counterparty identities, or screening details. Verifiers confirm proof validity on-chain. No trusted third party or trusted execution
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119. ### Terminology - **providerSetHash**: A commitment to the specific set of screening providers and their weights used for a particular
+
+MOTIVATION:
+Public blockchains force a binary choice between transparency and privacy. Transparent execution exposes trades to billions in cumulative MEV extraction. Privacy tools have been sanctioned for lacking compliance mechanisms. Existing approaches to compliant privacy fall short: - **View keys** (various): Trade privately, then reveal raw transaction data to auditors
+
+RATIONALE:
+**Why client-side computation?** Server-side or TEE-based compliance creates a trusted party that can be coerced, compromised, or surveilled. Client-side ZK proof generation means the raw data never leaves the user's device. The verifier learns only the boolean result. **Why published weights?** "Black box" compliance algorithms invite regulatory skepticism and
 
 
 === ERC-1616 ===
@@ -8759,16 +8796,16 @@ CREATED: 2023-09-01
 REQUIRES: 
 
 SUMMARY:
-This document describes the rules Account Abstraction protocols should follow, during the validation phase of Account Abstraction transactions, such as [ERC-4337](./eip-4337) `UserOperation` or RIP-7560 (Native Account Abstraction), which are enforced off-chain by a block builder or a standalone bundler, and the rationale behind each one of them.
+This document describes the validation rules that [ERC-4337](./eip-4337) Account Abstraction protocol participants must follow for user transactions represented as `UserOperation` structs, alongside the rationale for each rule. Block builders and standalone bundlers enforce these rules off-chain.
 
 SPECIFICATION:
-### Validation Rules Types We define two types of validation rules: **network-wide rules** and **local rules**. A violation of any validation rule by a UserOperation results in the UserOperation being dropped from the mempool and excluded from a bundle. **Network-wide rule** is a rule, that its violation by a
+### Validation Rule Types We define two types of validation rules: **network-wide rules** and **local rules**. A violation of any validation rule by a UserOperation results in the UserOperation being dropped from the mempool and excluded from a bundle. A **network-wide rule** is a rule whose violation by a
 
 MOTIVATION:
-With Account-Abstraction, instead of hard-coded logic for processing a transaction (validation, gas-payment, and execution), this logic is executed by EVM code. The benefits for the account are countless - - abstracting the validation allows the contract to use different signature schemes, multisig configuration, custom recovery, and more. - abstracting
+With Account Abstraction, transaction validation, gas payment, and execution are handled by EVM code rather than hard-coded protocol rules. This provides several benefits: - Abstracting validation enables custom signature schemes, multisig configurations, and account recovery. - Abstracting gas payment facilitates onboarding via third-party payments, [ERC-20](./eip-20) token payments, and cross-chain
 
 RATIONALE:
-All transactions initiated by EOAs have an implicit validation phase where balance, nonce, and signature are checked to be valid for the current state of the Ethereum blockchain. Once the transaction is checked to be valid by a node, only another transaction by the same EOA can modify the
+All transactions initiated by EOAs have an implicit validation phase where balance, nonce, and signature are checked against the current state of the Ethereum blockchain. Once a node has validated the transaction, only another transaction by the same EOA can modify the Ethereum state in a way that invalidates
 
 
 === ERC-6372 ===
@@ -9656,6 +9693,26 @@ The NFT standard defined in ERC-721 allows token owners to "approve" arbitrary a
 
 RATIONALE:
 ### Draft notes to be expanded upon 1. Approvals granted via the newly introduced methods are called *explicit* as a means of easily distinguishing them from those granted via the standard `ERC721.approve()` and `ERC721.setApprovalForAll()` functions. However they follow the same intent: authorising operators to act on the owner's behalf.
+
+
+=== ERC-8320 ===
+TITLE: Regulated Asset Claim
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-03
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This standard defines a registry interface for signed, versioned claims about on-chain assets. A claim says what an asset is, what it is worth, what a fund will allocate to, who may hold it, or what backs it. Each claim is published by an authorized author, then validated and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). All implementations MUST support [ERC-165](./eip-165.md). ### Types ```solidity enum ClaimType { IDENTITY, VALUATION, MANDATE, TERMS,
+
+MOTIVATION:
+Markets cannot coordinate when assets and capital cannot find or evaluate one another. An asset's defining facts, and a fund's intent, live where a machine cannot read or verify them, so every match needs a human and every integration is built from scratch. Existing standards solved the mechanics, not
+
+RATIONALE:
+The claim carries only what the chain must guarantee: the anchor, the topic, the schema reference and hash, the version, the claim state, the signer, and the content hash. The payload itself lives off-chain. Three links form one chain: the signature binds the author to the claim, the hash
 
 
 === ERC-6809 ===

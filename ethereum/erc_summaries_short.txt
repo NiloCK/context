@@ -2921,6 +2921,23 @@ RATIONALE:
 This standard purposely extends ERC-20 Token Standard so that new MCTs following or existing ERC-20 tokens extending this standard are fully compatible with current
 
 
+=== ERC-8286 ===
+TITLE: Modular Accounts for Frame Transactions
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-06-04
+REQUIRES: 7, 5, 7, 9, ,,  , 8, 1, 4, 1
+
+SUMMARY:
+[ERC-7579](./eip-7579.md) standardizes a core module system for modular smart accounts: module types, the module lifecycle, installation, and account configuration. This proposal extends that system
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+RATIONALE:
+### Extension to ERC-7579 rather than a standalone standard The value of a modular account standard is a portable module ecosystem: a validator, executor,
+
+
 === ERC-6735 ===
 TITLE: L2 Aliasing of EVM-based Addresses
 TYPE: Standards Track ERC
@@ -3373,6 +3390,26 @@ Creators frequently use NFTs to create redeemable entitlements for digital and p
 
 RATIONALE:
 The "offer" and "consideration" structs from Seaport were used to create a similar language for redeemable campaigns. The "offer" is what is being offered,
+
+
+=== ERC-8262 ===
+TITLE: Zero-Knowledge Compliance Oracle
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-04-07
+REQUIRES: 165
+
+SUMMARY:
+A standard interface for on-chain verification of regulatory compliance (anti-money laundering, sanctions screening, anti-structuring) using zero-knowledge proofs. Users generate proofs client-side that attest to
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+
+MOTIVATION:
+Public blockchains force a binary choice between transparency and privacy. Transparent execution exposes trades to billions in cumulative MEV extraction. Privacy tools have been
+
+RATIONALE:
+**Why client-side computation?** Server-side or TEE-based compliance creates a trusted party that can be coerced, compromised, or surveilled. Client-side ZK proof generation means the
 
 
 === ERC-1616 ===
@@ -8759,16 +8796,16 @@ CREATED: 2023-09-01
 REQUIRES: 
 
 SUMMARY:
-This document describes the rules Account Abstraction protocols should follow, during the validation phase of Account Abstraction transactions, such as [ERC-4337](./eip-4337) `UserOperation` or RIP-7560
+This document describes the validation rules that [ERC-4337](./eip-4337) Account Abstraction protocol participants must follow for user transactions represented as `UserOperation` structs, alongside the rationale
 
 SPECIFICATION:
-### Validation Rules Types We define two types of validation rules: **network-wide rules** and **local rules**. A violation of any validation rule by a
+### Validation Rule Types We define two types of validation rules: **network-wide rules** and **local rules**. A violation of any validation rule by a
 
 MOTIVATION:
-With Account-Abstraction, instead of hard-coded logic for processing a transaction (validation, gas-payment, and execution), this logic is executed by EVM code. The benefits for
+With Account Abstraction, transaction validation, gas payment, and execution are handled by EVM code rather than hard-coded protocol rules. This provides several benefits: -
 
 RATIONALE:
-All transactions initiated by EOAs have an implicit validation phase where balance, nonce, and signature are checked to be valid for the current state
+All transactions initiated by EOAs have an implicit validation phase where balance, nonce, and signature are checked against the current state of the Ethereum
 
 
 === ERC-6372 ===
@@ -9656,6 +9693,26 @@ The NFT standard defined in ERC-721 allows token owners to "approve" arbitrary a
 
 RATIONALE:
 ### Draft notes to be expanded upon 1. Approvals granted via the newly introduced methods are called *explicit* as a means of easily distinguishing
+
+
+=== ERC-8320 ===
+TITLE: Regulated Asset Claim
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-03
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This standard defines a registry interface for signed, versioned claims about on-chain assets. A claim says what an asset is, what it is worth,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Markets cannot coordinate when assets and capital cannot find or evaluate one another. An asset's defining facts, and a fund's intent, live where a
+
+RATIONALE:
+The claim carries only what the chain must guarantee: the anchor, the topic, the schema reference and hash, the version, the claim state, the
 
 
 === ERC-6809 ===
