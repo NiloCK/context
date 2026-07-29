@@ -2044,10 +2044,10 @@ CREATED: 2025-10-03
 REQUIRES: 8037
 
 SUMMARY:
-This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the base costs for `STORAGE_WRITE`, `COLD_STORAGE_ACCESS`, and `COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`.
+This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It dissects the cost of state-touching operations into three components — access, write, and state creation: the cold access costs (`COLD_ACCOUNT_ACCESS`, `COLD_STORAGE_ACCESS`) are raised, explicit write surcharges (`ACCOUNT_WRITE`,
 
 SPECIFICATION:
-### Parameters Upon activation of this EIP, the following parameters of the gas model are introduced/updated: | **Parameter** | **Description** | **Current value** | **New value** | **Increase** | **Operations affected** | | :---: | :---: | :---: | :---: | :---: | :---: | | `COLD_ACCOUNT_ACCESS` | Cold
+### Cost components The gas cost of a state-touching operation is the sum of up to three independent components: 1. **Access** — the cost of loading an account or storage slot from the database: `COLD_ACCOUNT_ACCESS`, `COLD_STORAGE_ACCESS` and `WARM_ACCESS`, renamed by this EIP from the [EIP-2929](./eip-2929.md) parameters. This EIP raises
 
 MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](./eip-2929.md) was included in the Berlin fork in March 2021 and raised the costs of state-accessing opcodes. Yet, since then, Ethereum's state has grown significantly, thus deteriorating the performance of these operations. This proposal further
@@ -3585,7 +3585,7 @@ RATIONALE:
 === EIP-8045 ===
 TITLE: Exclude slashed validators from proposing
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-10-16
 REQUIRES: 7917
 

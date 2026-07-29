@@ -2044,10 +2044,10 @@ CREATED: 2025-10-03
 REQUIRES: 8037
 
 SUMMARY:
-This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the base costs for `STORAGE_WRITE`, `COLD_STORAGE_ACCESS`, and `COLD_ACCOUNT_ACCESS` and updates the access cost for `EXTCODESIZE` and `EXTCODECOPY`.
+This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It dissects the cost of state-touching operations into three components — access, write, and state creation: the cold access costs (`COLD_ACCOUNT_ACCESS`, `COLD_STORAGE_ACCESS`) are raised, explicit write surcharges (`ACCOUNT_WRITE`, `STORAGE_WRITE`) are introduced, state-creation costs are left to [EIP-8037](./eip-8037.md), and `EXTCODESIZE` and `EXTCODECOPY` are charged for their second database read.
 
 SPECIFICATION:
-### Parameters Upon activation of this EIP, the following parameters of the gas model are introduced/updated: | **Parameter** | **Description** | **Current value** | **New value** | **Increase** | **Operations affected** | | :---: | :---: | :---: | :---: | :---: | :---: | | `COLD_ACCOUNT_ACCESS` | Cold touch of an account. Renamed from `COLD_ACCOUNT_ACCESS_COST` ([EIP-2929](./eip-2929.md)) | 2,600 | 3,000 | +15% | `*CALL` opcodes, `BALANCE`, `SELFDESTRUCT`, `EXT*` opcodes, EOA delegations, contract creation txs and ETH transfers | | `ACCOUNT_WRITE` | Surcharge for when writing to an account changes one account leaf value for the first time.
+### Cost components The gas cost of a state-touching operation is the sum of up to three independent components: 1. **Access** — the cost of loading an account or storage slot from the database: `COLD_ACCOUNT_ACCESS`, `COLD_STORAGE_ACCESS` and `WARM_ACCESS`, renamed by this EIP from the [EIP-2929](./eip-2929.md) parameters. This EIP raises the two cold costs; the [EIP-2929](./eip-2929.md) rules that determine whether an access is cold or warm are unchanged. 2. **Write** — the cost of updating an object that already has a leaf in the state trie, when its value changes: `STORAGE_WRITE` for a storage slot and `ACCOUNT_WRITE` for an
 
 MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](./eip-2929.md) was included in the Berlin fork in March 2021 and raised the costs of state-accessing opcodes. Yet, since then, Ethereum's state has grown significantly, thus deteriorating the performance of these operations. This proposal further raises state access costs to better align them with the current performance of state access operations, in relation to other operations. Additionally, `EXTCODESIZE` and `EXTCODECOPY` have the same access cost as `BALANCE` and `EXTCODEHASH`. However, `EXTCODESIZE` and `EXTCODECOPY` require two database reads - first to load the account object
@@ -3585,7 +3585,7 @@ RATIONALE:
 === EIP-8045 ===
 TITLE: Exclude slashed validators from proposing
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-10-16
 REQUIRES: 7917
 

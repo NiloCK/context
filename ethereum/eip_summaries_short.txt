@@ -2044,10 +2044,10 @@ CREATED: 2025-10-03
 REQUIRES: 8037
 
 SUMMARY:
-This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It raises the
+This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It dissects the
 
 SPECIFICATION:
-### Parameters Upon activation of this EIP, the following parameters of the gas model are introduced/updated: | **Parameter** | **Description** | **Current value** |
+### Cost components The gas cost of a state-touching operation is the sum of up to three independent components: 1. **Access** — the cost
 
 MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](./eip-2929.md) was included in the Berlin fork in March 2021
@@ -3585,7 +3585,7 @@ RATIONALE:
 === EIP-8045 ===
 TITLE: Exclude slashed validators from proposing
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-10-16
 REQUIRES: 7917
 
