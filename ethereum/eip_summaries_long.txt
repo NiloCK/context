@@ -10140,7 +10140,7 @@ TITLE: Recent Roots for Frame Transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-05-15
-REQUIRES: 7, 8, 4, 3, ,,  , 8, 1, 4, 1
+REQUIRES: 7, 6, 2, 3, ,,  , 7, 8, 4, 3, ,,  , 8, 1, 4, 1
 
 SUMMARY:
 EIP-8141 frame transactions can reference recent roots without reading mutable storage during validation. A root source writes roots to a system contract, with each root keyed by `(source_id, slot)`, where `source_id` derives from the writer address and a salt. A frame transaction may declare recent root references of the form: ```text (source_id, slot, root) ``` Before frame execution, clients check each reference against the transaction pre-state. The check succeeds only if the named root is stored for the named source and slot, and the slot is still recent. Validation code can then read the verified reference through transaction

@@ -10140,7 +10140,7 @@ TITLE: Recent Roots for Frame Transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-05-15
-REQUIRES: 7, 8, 4, 3, ,,  , 8, 1, 4, 1
+REQUIRES: 7, 6, 2, 3, ,,  , 7, 8, 4, 3, ,,  , 8, 1, 4, 1
 
 SUMMARY:
 EIP-8141 frame transactions can reference recent roots without reading mutable storage during validation. A root source writes roots to a system contract, with each
