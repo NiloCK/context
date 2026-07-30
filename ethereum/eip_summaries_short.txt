@@ -2039,7 +2039,7 @@ REQUIRES:
 === EIP-8038 ===
 TITLE: State-access gas cost update
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-10-03
 REQUIRES: 8037
 
@@ -3032,9 +3032,9 @@ The defined metrics are independent of Ethereum client implementation but provid
 === EIP-8061 ===
 TITLE: Increase exit and consolidation churn
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-10-17
-REQUIRES: 7521
+REQUIRES: 7251
 
 SUMMARY:
 This EIP roughly doubles the consolidation churn, as well as quadrupling the exit churn and restoring its proportionality to total stake (though maintaining the
@@ -3152,7 +3152,7 @@ This EIP defines a binary tree that starts empty. Only new state changes are sto
 === EIP-8037 ===
 TITLE: State Creation Gas Cost Increase
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-10-01
 REQUIRES: 1, 6, 1, ,,  , 6, 8, 4, ,,  , 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 1, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 8, 0, 3, 8
 
@@ -5263,7 +5263,7 @@ CREATED: 2024-06-12
 REQUIRES: 
 
 SUMMARY:
-Define the stages that EIPs go through in the process of planning network upgrades: `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`, `Declined
+Defines the stages that EIPs go through in the process of planning network upgrades: `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled for Inclusion`, `Declined
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -10486,7 +10486,7 @@ RATIONALE:
 === EIP-2780 ===
 TITLE: Resource-based intrinsic transaction gas
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2020-07-11
 REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
