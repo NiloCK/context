@@ -1385,7 +1385,7 @@ The SSZ signature scheme reduces hashing overhead and ensures that `tx_hash` com
 === EIP-7732 ===
 TITLE: Enshrined Proposer-Builder Separation
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-06-28
 REQUIRES: 
 
@@ -7053,10 +7053,10 @@ TITLE: EVMification
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-03-21
-REQUIRES: 1, 5, 2, ,,  , 2, 5, 3, 7, ,,  , 7, 6, 6, 6, ,,  , 7, 8, 2, 3, ,,  , 7, 8, 8, 3
+REQUIRES: 1, 5, 2, ,,  , 7, 6, 6, 6, ,,  , 7, 8, 2, 3, ,,  , 7, 8, 8, 3
 
 SUMMARY:
-Replaces the RIPEMD-160 (`0x03`), MODEXP (`0x05`), BLAKE2f (`0x09`), BLS12_MAP_FP_TO_G1 (`0x10`), and BLS12_MAP_FP2_TO_G2 (`0x11`) precompiles. At the start of executing the block in which this change activates, deploy EVM bytecode at each precompile address that provides equivalent functionality. This follows the same approach as [EIP-7666](./eip-7666.md), which EVMifies the identity precompile
+Replaces the RIPEMD-160 (`0x03`), MODEXP (`0x05`), and BLAKE2f (`0x09`) precompiles. At the start of executing the block in which this change activates, deploy EVM bytecode at each precompile address that provides equivalent functionality. This follows the same approach as [EIP-7666](./eip-7666.md), which EVMifies the identity precompile (`0x04`).
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants | Parameter | Value | | - | - | | `RIPEMD160_ADDRESS` |
