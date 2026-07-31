@@ -3166,7 +3166,7 @@ MOTIVATION:
 State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance, while contract deployment only costs ~200 gas units per new byte created, new storage slots cost ~313 gas units per new byte created. Also, deploying
 
 RATIONALE:
-### Deriving the cost per state byte (CPSB) `CPSB` is a fixed parameter derived from a reference block gas limit. The derivation pins the cost so that, at the reference block gas limit and under expected average utilization, total state growth stays at the target rate. If a future
+### Deriving the cost per state byte (`CPSB`) `CPSB` is a fixed parameter derived from a reference block gas limit. The derivation pins the cost so that, at the reference block gas limit and under expected average utilization, total state growth stays at the target rate. If a future
 
 
 === EIP-7907 ===
@@ -8869,21 +8869,21 @@ Together with [EIP-7708](./eip-7708.md) this EIP provides the ability for wallet
 === EIP-8025 ===
 TITLE: Optional Execution Proofs
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2025-09-17
-REQUIRES: 
+REQUIRES: 4, 8, 4, 4, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 2, 8
 
 SUMMARY:
-Optional execution proofs allow beacon nodes to verify the validity of the execution payload within a beacon block without running an execution layer client. The execution proofs are sent over the consensus layer's peer-to-peer network.
+Execution proofs enable consensus layer (CL) nodes to perform stateless validation of execution payloads. Altruistic _proof-generating nodes_ generate execution proofs and broadcast them over the CL p2p network. _Proof-verifying nodes_ consume gossiped execution proofs and check payload validity by verifying those proofs. Verification is _stateless_ and constant time with
 
 SPECIFICATION:
-This is a consensus layer change only. Validators will now be able to enable two new modes: - zkEVM Proof generating - Stateless validation When a proof generating node receives a beacon block, they will create the necessary proofs for the execution payload in the block and re-propagate them
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Terminology This EIP uses the following proof-system terms: - **Proof system.** The cryptographic system
 
 MOTIVATION:
-Optional execution proofs reduce the hardware and bandwidth requirements that are needed for an attester to verify a beacon block. Moreover, the cost to verify to a block no longer grows with the gas limit. Since these are optional, protocol upgrades cannot be based on the improvements in this
+Today, verifying a beacon block requires re-execution of its execution payload against the execution layer (EL) state — the full set of account and storage trie data. The cost of re-execution scales linearly with the gas limit. This couples a node's resource requirements to the state size and the
 
 RATIONALE:
-<-- TODO -->
+### Path to low-resource validation This step moves the network measurably closer to low-resource validation. Stateless, constant-time payload verification breaks the coupling between a node's hardware requirements and the gas limit or state size, lowering the floor for who can meaningfully run a node and improving decentralisation. ### Build
 
 
 === EIP-1962 ===
@@ -8968,7 +8968,7 @@ SPECIFICATION:
 The following table lists all EIPs related to repricings that are being discussed in the scope of the Glamsterdam fork. There are three types of EIPs in this list: 1. **Broad harmonization**. These EIPs reprice a class of operations with the goal of harmonizing them and removing single bottlenecks.
 
 MOTIVATION:
-The main objective of the Glamsterdam fork is to improve L1 scalability. A crucial aspect of this initiative is to create a better alignment between gas costs and actual resource usage. Currently, the gas model often misprices operations, resulting in inefficiencies and unintended incentives. For instance, within the pure
+The main objective of the Glamsterdam fork is to improve L1 scalability. A crucial aspect of this initiative is to create a better alignment between gas costs and actual resource usage. Currently, the gas model often prices operations incorrectly, resulting in inefficiencies and unintended incentives. For instance, within the
 
 RATIONALE:
 ### Gas cost changes by operation The following tables summarize the preliminary gas cost changes. Numbers are not yet finalized and will be subject to change. #### Compute Opcodes and Precompiles — [EIP-7904](./eip-7904.md) (no changes) [EIP-7904](./eip-7904.md) is now Informational and recommends no repricing. Earlier revisions proposed raising the cost

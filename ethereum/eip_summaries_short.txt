@@ -3166,7 +3166,7 @@ MOTIVATION:
 State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance,
 
 RATIONALE:
-### Deriving the cost per state byte (CPSB) `CPSB` is a fixed parameter derived from a reference block gas limit. The derivation pins the
+### Deriving the cost per state byte (`CPSB`) `CPSB` is a fixed parameter derived from a reference block gas limit. The derivation pins the
 
 
 === EIP-7907 ===
@@ -8869,21 +8869,21 @@ Together with [EIP-7708](./eip-7708.md) this EIP provides the ability for wallet
 === EIP-8025 ===
 TITLE: Optional Execution Proofs
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2025-09-17
-REQUIRES: 
+REQUIRES: 4, 8, 4, 4, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 2, 8
 
 SUMMARY:
-Optional execution proofs allow beacon nodes to verify the validity of the execution payload within a beacon block without running an execution layer client.
+Execution proofs enable consensus layer (CL) nodes to perform stateless validation of execution payloads. Altruistic _proof-generating nodes_ generate execution proofs and broadcast them over
 
 SPECIFICATION:
-This is a consensus layer change only. Validators will now be able to enable two new modes: - zkEVM Proof generating - Stateless validation
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Optional execution proofs reduce the hardware and bandwidth requirements that are needed for an attester to verify a beacon block. Moreover, the cost to
+Today, verifying a beacon block requires re-execution of its execution payload against the execution layer (EL) state — the full set of account and
 
 RATIONALE:
-<-- TODO -->
+### Path to low-resource validation This step moves the network measurably closer to low-resource validation. Stateless, constant-time payload verification breaks the coupling between a
 
 
 === EIP-1962 ===
