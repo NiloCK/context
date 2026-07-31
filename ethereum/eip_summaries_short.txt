@@ -7142,6 +7142,26 @@ RATIONALE:
 There is another choice we could have made to go for `SignedExecutionPayload` instead of `ExecutionPayloadWithInclusionProof` and having a `SignedExecutionPayloadHeader` with builder signing these messages
 
 
+=== EIP-8347 ===
+TITLE: Offline State Migration to the PBT
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-23
+REQUIRES: 7, 9, 2, 8, ,,  , 8, 1, 5, 9, ,,  , 8, 2, 9, 7
+
+SUMMARY:
+This EIP specifies an **offline** migration of Ethereum's state from the hexary Merkle Patricia Trie (MPT) to the Partitioned Binary Tree (PBT) defined in
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Upgrading Ethereum's state trie, such as the move to the PBT in [EIP-8297](./eip-8297.md), means migrating live mainnet state to a new commitment without splitting
+
+RATIONALE:
+### Why offline conversion instead of the online overlay [EIP-7748](./eip-7748.md) and [EIP-7612](./eip-7612.md) convert the state inside consensus, behind a boundary that moves forward one
+
+
 === EIP-7742 ===
 TITLE: Uncouple blob count between CL and EL
 TYPE: Standards Track Core
