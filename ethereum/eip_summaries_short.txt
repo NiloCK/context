@@ -3134,7 +3134,7 @@ TITLE: Partitioned Binary Tree
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-06-11
-REQUIRES: 4, 7, 6, 2, ,,  , 7, 6, 1, 2
+REQUIRES: 
 
 SUMMARY:
 Introduce a new binary state tree to replace the hexary Patricia tries. Account and storage tries are merged into a single tree with variable-length,
@@ -3146,7 +3146,7 @@ MOTIVATION:
 Ethereum's long-term goal is to let blocks be proved with validity proofs so chain verification is as simple and fast as possible. Part of
 
 RATIONALE:
-This EIP defines a binary tree that starts empty. Only new state changes are stored in it. The MPT continues to exist but is
+This EIP defines the tree; it does not define how existing state is converted to it. Migration is specified in [EIP-8347](./eip-8347.md): the MPT state
 
 
 === EIP-8037 ===

@@ -2053,7 +2053,7 @@ MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](./eip-2929.md) was included in the Berlin fork in March 2021 and raised the costs of state-accessing opcodes. Yet, since then, Ethereum's state has grown significantly, thus deteriorating the performance of these operations. This proposal further raises state access costs to better align them with the current performance of state access operations, in relation to other operations. Additionally, `EXTCODESIZE` and `EXTCODECOPY` have the same access cost as `BALANCE` and `EXTCODEHASH`. However, `EXTCODESIZE` and `EXTCODECOPY` require two database reads - first to load the account object
 
 RATIONALE:
-### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The parameters selected for repricing in this EIP were chosen based on the estimated million gas per second (Mgas/s) performance of their respective operations. For this EIP, a performance target of **100 million gas per second** is chosen. With this performance target, we will be able to increase the base throughput of the chain by 5x from our current 20Mgas/s performance. #### Data Collection The gas costs proposed in this EIP are based on the actual time each execution client takes to run a specific set
+### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The parameters selected for repricing in this EIP were chosen based on the estimated million gas per second (Mgas/s) performance of their respective operations. For this EIP, a performance target of **100 million gas per second** is chosen. With this performance target, we will be able to increase the base throughput of the chain by a factor of 5 from our current 20 Mgas/s performance. #### Data Collection The gas costs proposed in this EIP are based on the actual time each execution client takes to
 
 
 === EIP-1559 ===
@@ -3134,7 +3134,7 @@ TITLE: Partitioned Binary Tree
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-06-11
-REQUIRES: 4, 7, 6, 2, ,,  , 7, 6, 1, 2
+REQUIRES: 
 
 SUMMARY:
 Introduce a new binary state tree to replace the hexary Patricia tries. Account and storage tries are merged into a single tree with variable-length, prefix-free keys that also holds contract code. Account data is broken into independent leaves grouped under a shared key prefix to provide locality. The tree is partitioned into zones. The first byte of every key is a zone identifier that labels the category of state the key holds: account headers, contract code, or storage. Account headers and code take fixed low zones, storage takes a fixed high zone, and the remaining zones are reserved
@@ -3146,7 +3146,7 @@ MOTIVATION:
 Ethereum's long-term goal is to let blocks be proved with validity proofs so chain verification is as simple and fast as possible. Part of this work consists of proving the state read during EVM execution. The Merkle Patricia Trie (MPT) is unfriendly to validity proofs: it uses RLP for node encoding, Keccak for hashing, is a "tree of trees", and does not allow for the efficient proving of segments of bytecode. It also produces large Merkle proofs. As an example, the account trie today reaches a maximum depth of about 12, so a branch at that depth is
 
 RATIONALE:
-This EIP defines a binary tree that starts empty. Only new state changes are stored in it. The MPT continues to exist but is frozen, setting up a later hard fork that migrates MPT data into the binary tree ([EIP-7748](./eip-7748.md), adapted from the Verkle tree to this one). ### Single tree with zones A single key/value tree is simpler to work with than a tree of tries: database access, caching, syncing, and proof code all operate on one abstraction, and witness gas rules are clearer. Placement is hash-derived at every level: stems scatter uniformly within their zone, and
+This EIP defines the tree; it does not define how existing state is converted to it. Migration is specified in [EIP-8347](./eip-8347.md): the MPT state is converted offline and the tree activates fully populated at the fork. ### Single tree with zones A single key/value tree is simpler to work with than a tree of tries: database access, caching, syncing, and proof code all operate on one abstraction, and witness gas rules are clearer. Placement is hash-derived at every level: stems scatter uniformly within their zone, and an account's storage groups scatter uniformly within its bucket, so the tree
 
 
 === EIP-8037 ===
