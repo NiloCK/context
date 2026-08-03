@@ -662,10 +662,10 @@ TITLE: Contract-Level Onchain Metadata
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-10-10
-REQUIRES: 165
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 9, 3, 0
 
 SUMMARY:
-This ERC defines a standard for storing contract-level metadata onchain. It extends [ERC-7572](./eip-7572.md)'s contract-level metadata concept by providing onchain storage. Contracts MAY optionally use
+This ERC lets a contract store metadata about itself onchain as key-value pairs, with arbitrary bytes as values. Every update emits an event, and
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to

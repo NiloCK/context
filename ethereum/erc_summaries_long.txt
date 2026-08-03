@@ -662,10 +662,10 @@ TITLE: Contract-Level Onchain Metadata
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2025-10-10
-REQUIRES: 165
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 9, 3, 0
 
 SUMMARY:
-This ERC defines a standard for storing contract-level metadata onchain. It extends [ERC-7572](./eip-7572.md)'s contract-level metadata concept by providing onchain storage. Contracts MAY optionally use [ERC-8042](./eip-8042.md)'s Diamond Storage pattern for predictable storage locations, enabling cross-chain compatibility and supporting upgradable contracts.
+This ERC lets a contract store metadata about itself onchain as key-value pairs, with arbitrary bytes as values. Every update emits an event, and clients read the records directly from the contract.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Required Metadata Function and Event Contracts implementing this ERC MUST implement the following interface: ```solidity interface IERC8049 { /// @notice Get contract metadata value for a key. function contractMetadata(string calldata key) external view returns (bytes memory); /// @notice Emitted when contract metadata is updated. event ContractMetadataUpdated(string indexed indexedKey, string key, bytes value); } ``` Contracts implementing this ERC MAY also expose a `setContractMetadata(string
