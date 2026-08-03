@@ -10163,16 +10163,16 @@ CREATED: 2026-05-15
 REQUIRES: 7, 6, 2, 3, ,,  , 7, 8, 4, 3, ,,  , 8, 1, 4, 1
 
 SUMMARY:
-EIP-8141 frame transactions can reference recent roots without reading mutable storage during validation. A root source writes roots to a system contract, with each root keyed by `(source_id, slot)`, where `source_id` derives from the writer address and a salt. A frame transaction may declare recent root references of the
+[EIP-8141](./eip-8141.md) frame transactions can reference recent roots without reading mutable storage during validation. A root source writes roots to a system contract, with each root keyed by `(source_id, slot)`, where `source_id` derives from the writer address and a salt. A frame transaction may declare recent root references of the
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. This specification is a delta against EIP-8141. Terms not defined here, including `FrameTx`, `FRAME_TX_TYPE`, `VERIFY`,
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. This specification is a delta against [EIP-8141](./eip-8141.md). Terms not defined here, including `FrameTx`, `FRAME_TX_TYPE`, `VERIFY`,
 
 MOTIVATION:
-EIP-8141 validation must not read arbitrary storage controlled by another account or application in the public mempool. Some validation rules still need to depend on recent application state, such as privacy tree roots, wallet authorization roots, or account validation roots. Recent root references let a transaction explicitly name recent
+[EIP-8141](./eip-8141.md) validation must not read arbitrary storage controlled by another account or application in the public mempool. Some validation rules still need to depend on recent application state, such as privacy tree roots, wallet authorization roots, or account validation roots. Recent root references let a transaction explicitly name recent
 
 RATIONALE:
-EIP-8141 validation needs inputs that are known before validation starts. General reads from storage controlled by another account or application are unsafe for the public mempool because one mutable cell can invalidate many pending transactions. Recent root references provide a narrow exception. The root is declared in the signed
+[EIP-8141](./eip-8141.md) validation needs inputs that are known before validation starts. General reads from storage controlled by another account or application are unsafe for the public mempool because one mutable cell can invalidate many pending transactions. Recent root references provide a narrow exception. The root is declared in the signed
 
 
 === EIP-8141 ===
