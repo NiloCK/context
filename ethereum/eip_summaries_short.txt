@@ -863,7 +863,7 @@ The current approach proposed by EIP-712 is to specify the chain ID at compile t
 === EIP-8189 ===
 TITLE: snap/2 - BAL-Based State Healing
 TYPE: Standards Track Networking
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-03-06
 REQUIRES: 7928
 
@@ -6740,7 +6740,7 @@ RATIONALE:
 === EIP-7975 ===
 TITLE: eth/70 - partial block receipt lists
 TYPE: Standards Track Networking
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-06-16
 REQUIRES: 7, 6, 4, 2, ,,  , 7, 8, 2, 5
 
@@ -6754,7 +6754,7 @@ MOTIVATION:
 As Ethereum moves toward a higher block gas limit on mainnet, the worst-case total size of a block receipts list also becomes larger, and
 
 RATIONALE:
-Since [EIP-7825] caps the gas limit of a single transaction to ~16.7M gas, a single transaction receipt will always be limited in size. Specifically,
+Since [EIP-7825](./eip-7825.md) caps the gas limit of a single transaction to ~16.7M gas, a single transaction receipt will always be limited in size. Specifically,
 
 
 === EIP-170 ===

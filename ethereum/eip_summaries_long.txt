@@ -863,7 +863,7 @@ The current approach proposed by EIP-712 is to specify the chain ID at compile t
 === EIP-8189 ===
 TITLE: snap/2 - BAL-Based State Healing
 TYPE: Standards Track Networking
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-03-06
 REQUIRES: 7928
 
@@ -6740,7 +6740,7 @@ RATIONALE:
 === EIP-7975 ===
 TITLE: eth/70 - partial block receipt lists
 TYPE: Standards Track Networking
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-06-16
 REQUIRES: 7, 6, 4, 2, ,,  , 7, 8, 2, 5
 
@@ -6754,7 +6754,7 @@ MOTIVATION:
 As Ethereum moves toward a higher block gas limit on mainnet, the worst-case total size of a block receipts list also becomes larger, and may eventually exceed the 10MiB message size limit commonly applied in clients. This can lead to sync failures.
 
 RATIONALE:
-Since [EIP-7825] caps the gas limit of a single transaction to ~16.7M gas, a single transaction receipt will always be limited in size. Specifically, a transaction can produce at most 16777216/8 = 2MiB of log data. However, a block can contain multiple transactions, and thus the entire block receipts list can be much larger. At a block gas limit of ~83M, the `Receipts` message could exceed 10MiB. Clients typically reject messages above this size because their validity can only be determined after fetching the complete message. For a `Receipts` message, each block receipts list is validated by checking
+Since [EIP-7825](./eip-7825.md) caps the gas limit of a single transaction to ~16.7M gas, a single transaction receipt will always be limited in size. Specifically, a transaction can produce at most 16777216/8 = 2MiB of log data. However, a block can contain multiple transactions, and thus the entire block receipts list can be much larger. At a block gas limit of ~83M, the `Receipts` message could exceed 10MiB. Clients typically reject messages above this size because their validity can only be determined after fetching the complete message. For a `Receipts` message, each block receipts list is validated by checking
 
 
 === EIP-170 ===
@@ -8763,7 +8763,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Hegotá network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Considered for Inclusion * [EIP-8141](./eip-8141.md): Frame Transaction ### Declined for Inclusion ### Proposed for Inclusion * [EIP-2488](./eip-2488.md): Deprecate the CALLCODE opcode * [EIP-4758](./eip-4758.md): Deactivate SELFDESTRUCT * [EIP-7645](./eip-7645.md): Alias ORIGIN to SENDER * [EIP-7668](./eip-7668.md): Remove bloom filters * [EIP-7709](./eip-7709.md): Read BLOCKHASH from storage and update cost * [EIP-7716](./eip-7716.md): Anti-correlation attestation penalties * [EIP-7807](./eip-7807.md): SSZ execution blocks * [EIP-7819](./eip-7819.md): SETDELEGATE instruction * [EIP-7851](./eip-7851.md): Code-Controlled EOA Delegation *
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) ### Considered for Inclusion * [EIP-8141](./eip-8141.md): Frame Transaction ### Declined for Inclusion ### Proposed for Inclusion * [EIP-2488](./eip-2488.md): Deprecate the CALLCODE opcode * [EIP-4758](./eip-4758.md): Deactivate SELFDESTRUCT * [EIP-7645](./eip-7645.md): Alias ORIGIN to SENDER * [EIP-7666](./eip-7666.md): EVM-ify the identity precompile * [EIP-7668](./eip-7668.md): Remove bloom filters * [EIP-7709](./eip-7709.md): Read BLOCKHASH from storage and update cost * [EIP-7716](./eip-7716.md): Anti-correlation attestation penalties * [EIP-7807](./eip-7807.md): SSZ execution blocks * [EIP-7819](./eip-7819.md): SETDELEGATE instruction
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the network upgrade, as well as links to full specification.
@@ -9593,7 +9593,7 @@ MOTIVATION:
 Every attestation carries an FFG target vote naming a checkpoint `(epoch, root)`. Today the root for epoch `N` is the block at the epoch's first slot, and every attestation in epoch `N` names this same target. Committees in later slots know the target by the time they vote, but the first slot's committee must vote by the attestation deadline after the target block itself is proposed. If the block arrives late, some of those attesters vote for it while others vote for the previous block. Only one of the two matches the checkpoint the chain settles on; the
 
 RATIONALE:
-The boundary block, run through the state transition function, deterministically yields the chain state at the start of the epoch, since no blocks follow it before the epoch begins. It is also fixed before the epoch begins; any later choice would depend on the epoch's own block production. Keeping the checkpoint epoch and moving only the root confines the change to a single question, which block anchors an epoch. Slashing conditions, justification bits, and finalization rules are untouched, and no containers change, so serialization, gossip formats, and slashing-protection databases are unaffected. `get_block_root(state, epoch)` already returns the boundary block
+The boundary block, run through the state transition function, deterministically yields the chain state at the start of the epoch, since no blocks follow it before the epoch begins. It is also fixed before the epoch begins; any later choice would depend on the epoch's own block production. Keeping the checkpoint epoch and moving only the root confines the change to a single question, which block anchors an epoch. Slashing conditions, justification bits, and finalization rules are untouched, and no containers change, so serialization, gossip formats, and slashing-protection databases are unaffected. When the first slot of epoch `N`
 
 
 === EIP-1011 ===
