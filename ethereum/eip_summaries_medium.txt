@@ -2044,7 +2044,7 @@ CREATED: 2025-10-03
 REQUIRES: 8037
 
 SUMMARY:
-This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It dissects the cost of state-touching operations into three components — access, write, and state creation: the cold access costs (`COLD_ACCOUNT_ACCESS`, `COLD_STORAGE_ACCESS`) are raised, explicit write surcharges (`ACCOUNT_WRITE`,
+This EIP updates the gas cost of state-access operations to reflect Ethereum's larger state and the consequent slowdown of these operations. It dissects the cost of state-touching operations into three components — access, write, and state creation: the cold account access cost (`COLD_ACCOUNT_ACCESS`) is raised, explicit write surcharges (`ACCOUNT_WRITE`,
 
 SPECIFICATION:
 ### Cost components The gas cost of a state-touching operation is the sum of up to three independent components: 1. **Access** — the cost of loading an account or storage slot from the database: `COLD_ACCOUNT_ACCESS`, `COLD_STORAGE_ACCESS` and `WARM_ACCESS`, renamed by this EIP from the [EIP-2929](./eip-2929.md) parameters. This EIP raises
