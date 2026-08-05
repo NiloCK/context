@@ -1838,7 +1838,7 @@ EIP150 has increased the cost of these instructions from 40 to 700 to more fairl
 === EIP-8282 ===
 TITLE: Builder Execution Requests
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-05-22
 REQUIRES: 1, 5, 5, 9, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
 
@@ -8261,7 +8261,7 @@ Capping a nonce allows for contracts with special properties to be created, with
 === EIP-7843 ===
 TITLE: SLOTNUM opcode
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-12-06
 REQUIRES: 
 

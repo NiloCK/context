@@ -1838,7 +1838,7 @@ EIP150 has increased the cost of these instructions from 40 to 700 to more fairl
 === EIP-8282 ===
 TITLE: Builder Execution Requests
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-05-22
 REQUIRES: 1, 5, 5, 9, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
 
@@ -1846,7 +1846,7 @@ SUMMARY:
 Predeploy two [EIP-7685](./eip-7685.md) request contracts for [EIP-7732](./eip-7732.md) builders, modelled on the request bus that [EIP-7002](./eip-7002.md) (withdrawals) and [EIP-7251](./eip-7251.md) (consolidations) use: - a builder **deposit** contract that takes a raw 184-byte request — `pubkey ++ withdrawal_credentials ++ amount ++ signature` — and appends it to its queue. It serves both
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants The `0x03`/`0x04` request types MUST be unique across **all** active [EIP-7685](./eip-7685.md) request types,
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants The `0x03`/`0x04` request types MUST be unique across **all** active [EIP-7685](./eip-7685.md) request types;
 
 MOTIVATION:
 [EIP-7732](./eip-7732.md) introduces builders as a separate, staked consensus-layer class. A builder is created by a deposit, can have stake added, and must be able to exit. Today EIP-7732 sources this lifecycle from the *validator* flows: a builder is registered by an ordinary validator deposit request whose withdrawal credential carries
@@ -8261,7 +8261,7 @@ Capping a nonce allows for contracts with special properties to be created, with
 === EIP-7843 ===
 TITLE: SLOTNUM opcode
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-12-06
 REQUIRES: 
 
