@@ -982,7 +982,7 @@ TITLE: Network Upgrade Naming
 TYPE: Informational 
 STATUS: Review
 CREATED: 2026-01-23
-REQUIRES: 1, 5, 0, ,,  , 6, 0, 6, ,,  , 6, 0, 7, ,,  , 6, 0, 8, ,,  , 6, 0, 9, ,,  , 7, 7, 9, ,,  , 1, 0, 1, 3, ,,  , 1, 2, 8, 3, ,,  , 1, 6, 7, 9, ,,  , 1, 7, 1, 6, ,,  , 2, 3, 8, 7, ,,  , 4, 3, 4, 5, ,,  , 5, 1, 3, 3, ,,  , 7, 5, 6, 9, ,,  , 7, 6, 0, 0, ,,  , 7, 6, 0, 7, ,,  , 7, 8, 9, 2
+REQUIRES: 1, 5, 0, ,,  , 6, 0, 6, ,,  , 6, 0, 7, ,,  , 6, 0, 8, ,,  , 6, 0, 9, ,,  , 7, 7, 9, ,,  , 1, 0, 1, 3, ,,  , 1, 2, 8, 3, ,,  , 1, 6, 7, 9, ,,  , 1, 7, 1, 6, ,,  , 2, 3, 8, 7, ,,  , 4, 3, 4, 5, ,,  , 5, 1, 3, 3, ,,  , 7, 5, 6, 9, ,,  , 7, 6, 0, 0, ,,  , 7, 6, 0, 7, ,,  , 7, 8, 9, 2, ,,  , 8, 1, 3, 4, ,,  , 8, 1, 3, 5
 
 SUMMARY:
 This EIP documents the naming conventions used for Ethereum network upgrades across the Execution Layer, Consensus Layer, post-Merge combined upgrades, and Blob-Parameter-Only upgrades. It
@@ -1251,7 +1251,7 @@ RATIONALE:
 === EIP-8070 ===
 TITLE: eth/72 - Sparse Blobpool
 TYPE: Standards Track Networking
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-10-29
 REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 7, 0, ,,  , 8, 1, 5, 9
 
@@ -5004,7 +5004,7 @@ Currently this is not possible. There are two practical ways to revert a transac
 === EIP-8159 ===
 TITLE: eth/71 - Block Access List Exchange
 TYPE: Standards Track Networking
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-02-12
 REQUIRES: 7, 9, 2, 8, ,,  , 7, 9, 7, 5
 
