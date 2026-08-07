@@ -1715,6 +1715,26 @@ RATIONALE:
 The previous proposal introduced mechanisms that relied on a single, mutable window object that could be overwritten by multiple parties. We opted for an event-based approach to avoid the race conditions, the namespace collisions, and the potential for "pollution" attacks on a shared mutable object; the event-based orchestration creates a bidirectional communication channel between wallet and dapp that can be re-orchestrated over time. To follow the Javascript event name conventions, the names are written in present tense and are prefixed with the number of this document (`EIP6963`). ### Interfaces Standardizing an interface for provider information (`EIP6963ProviderInfo`) allows a
 
 
+=== EIP-8372 ===
+TITLE: Normalized state gas limit
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-08-06
+REQUIRES: 8037
+
+SUMMARY:
+This EIP modifies [EIP-8037](./eip-8037.md) by assigning state gas a scaled raw limit and normalizing state-gas usage before computing block-level `gas_used`. At activation, cost per state byte (`CPSB`) and the limit scale are set so the state-byte price can reflect estimated demand while the selected state-growth target continues to correspond to 50% normalized state-gas utilization. No new transaction or block-header fields are introduced.
+
+SPECIFICATION:
+### Parameters The EIP-8037 parameter table is updated as follows: | Parameter | Value | |---|---:| | `CPSB` | `TBD` | | `STATE_GAS_LIMIT_SCALE` | `TBD` | | `STATE_GAS_LIMIT_SCALE_DENOMINATOR` | `100` | The `CPSB` and `STATE_GAS_LIMIT_SCALE` parameters must be positive integers. The `STATE_GAS_LIMIT_SCALE` parameter specifies the raw state-gas limit as a percentage of the block gas limit. ### Transaction validation The EIP-8037 definition of `state_gas_available` is updated to: ```python state_gas_limit = block_env.block_gas_limit * STATE_GAS_LIMIT_SCALE // STATE_GAS_LIMIT_SCALE_DENOMINATOR state_gas_available = state_gas_limit - block_output.block_state_gas_used ``` ### Block-level gas accounting The EIP-8037 block-level `gas_used` computation and validity condition are updated to: ```python state_gas_limit
+
+MOTIVATION:
+EIP-8037 gives execution gas and state gas the same block limit and uses the larger cumulative gas value as block-level `gas_used`. Its `CPSB` therefore determines how many state bytes correspond to the 50% state-gas target. Ethereum users are not guaranteed, in aggregate, to spend half of their gas budget on state creation. At the cost per state byte (`CPSB`) selected by EIP-8037, state demand may be lower or higher than the level that lets state gas and execution gas both approach their common 50% target. Figure 1 illustrates the resulting failure modes. Relatively low state demand produces less
+
+RATIONALE:
+### Calibration methodology EIP-8037 uses one common base fee for execution gas and state gas. A mismatch between the state-byte price and user demand therefore affects more than state growth: it determines which dimension reaches the common target first and can leave the other dimension underutilized. This EIP makes one fixed best-effort calibration at activation. The objective is to select a `CPSB` that is expected to induce the desired amount of state creation, and to set the raw state-gas limit so that this amount of state creation occupies approximately 50% of that limit. If the demand estimate is
+
+
 === EIP-7545 ===
 TITLE: Verkle proof verification precompile
 TYPE: Standards Track Core

@@ -1715,6 +1715,26 @@ RATIONALE:
 The previous proposal introduced mechanisms that relied on a single, mutable window object that could be overwritten by multiple parties. We opted for an
 
 
+=== EIP-8372 ===
+TITLE: Normalized state gas limit
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-08-06
+REQUIRES: 8037
+
+SUMMARY:
+This EIP modifies [EIP-8037](./eip-8037.md) by assigning state gas a scaled raw limit and normalizing state-gas usage before computing block-level `gas_used`. At activation, cost per
+
+SPECIFICATION:
+### Parameters The EIP-8037 parameter table is updated as follows: | Parameter | Value | |---|---:| | `CPSB` | `TBD` | | `STATE_GAS_LIMIT_SCALE` |
+
+MOTIVATION:
+EIP-8037 gives execution gas and state gas the same block limit and uses the larger cumulative gas value as block-level `gas_used`. Its `CPSB` therefore
+
+RATIONALE:
+### Calibration methodology EIP-8037 uses one common base fee for execution gas and state gas. A mismatch between the state-byte price and user demand
+
+
 === EIP-7545 ===
 TITLE: Verkle proof verification precompile
 TYPE: Standards Track Core
