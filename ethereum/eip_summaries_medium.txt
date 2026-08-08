@@ -10203,7 +10203,7 @@ CREATED: 2026-05-15
 REQUIRES: 7, 6, 2, 3, ,,  , 7, 8, 4, 3, ,,  , 8, 1, 4, 1
 
 SUMMARY:
-[EIP-8141](./eip-8141.md) frame transactions can reference recent roots without reading mutable storage during validation. A root source writes roots to a system contract, with each root keyed by `(source_id, slot)`, where `source_id` derives from the writer address and a salt. A frame transaction may declare recent root references of the
+[EIP-8141](./eip-8141.md) frame transactions can reference recent roots without reading mutable storage during validation. This helps privacy applications validate spends using proofs against recent commitment tree roots named in the signed transaction envelope. A root source writes roots to a system contract, with each root keyed by `(source_id, slot)`, where
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. This specification is a delta against [EIP-8141](./eip-8141.md). Terms not defined here, including `FrameTx`, `FRAME_TX_TYPE`, `VERIFY`,
