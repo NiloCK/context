@@ -1863,16 +1863,16 @@ CREATED: 2026-05-22
 REQUIRES: 1, 5, 5, 9, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
 
 SUMMARY:
-Predeploy two [EIP-7685](./eip-7685.md) request contracts for [EIP-7732](./eip-7732.md) builders, modelled on the request bus that [EIP-7002](./eip-7002.md) (withdrawals) and [EIP-7251](./eip-7251.md) (consolidations) use: - a builder **deposit**
+This EIP introduces two [EIP-7685](./eip-7685.md) request types and corresponding predeploy contracts for [EIP-7732](./eip-7732.md) builders. A builder deposit contract handles initial registration and stake top-ups.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-[EIP-7732](./eip-7732.md) introduces builders as a separate, staked consensus-layer class. A builder is created by a deposit, can have stake added, and must be able
+[EIP-7732](./eip-7732.md) introduces builders as a separate, staked consensus-layer actor, but reuses validator flows for their lifecycle. A builder is registered by a validator deposit
 
 RATIONALE:
-- **Two predeploys, two request types.** Mirroring withdrawals (`0x01`) and consolidations (`0x02`) — each a single-type request predeploy — builder deposits (`0x03`) and exits
+### Two predeploys, two request types This mirrors withdrawals (`0x01`) and consolidations (`0x02`). The execution layer needs no new read semantics, and the consensus
 
 
 === EIP-1459 ===

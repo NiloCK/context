@@ -1863,16 +1863,16 @@ CREATED: 2026-05-22
 REQUIRES: 1, 5, 5, 9, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
 
 SUMMARY:
-Predeploy two [EIP-7685](./eip-7685.md) request contracts for [EIP-7732](./eip-7732.md) builders, modelled on the request bus that [EIP-7002](./eip-7002.md) (withdrawals) and [EIP-7251](./eip-7251.md) (consolidations) use: - a builder **deposit** contract that takes a raw 184-byte request — `pubkey ++ withdrawal_credentials ++ amount ++ signature` — and appends it to its queue. It serves both
+This EIP introduces two [EIP-7685](./eip-7685.md) request types and corresponding predeploy contracts for [EIP-7732](./eip-7732.md) builders. A builder deposit contract handles initial registration and stake top-ups. A builder exit contract lets a builder's `execution_address` trigger a full exit. Both contracts follow the request-bus pattern of [EIP-7002](./eip-7002.md) and [EIP-7251](./eip-7251.md). Builders no longer
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants The `0x03`/`0x04` request types MUST be unique across **all** active [EIP-7685](./eip-7685.md) request types;
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants | Name | Value | Comment | | --- | --- | ---
 
 MOTIVATION:
-[EIP-7732](./eip-7732.md) introduces builders as a separate, staked consensus-layer class. A builder is created by a deposit, can have stake added, and must be able to exit. Today EIP-7732 sources this lifecycle from the *validator* flows: a builder is registered by an ordinary validator deposit request whose withdrawal credential carries
+[EIP-7732](./eip-7732.md) introduces builders as a separate, staked consensus-layer actor, but reuses validator flows for their lifecycle. A builder is registered by a validator deposit whose withdrawal credential carries the `0xB0` `BUILDER_WITHDRAWAL_PREFIX`, and it exits through a builder branch of the voluntary-exit operation. Dedicated builder request types improve on this
 
 RATIONALE:
-- **Two predeploys, two request types.** Mirroring withdrawals (`0x01`) and consolidations (`0x02`) — each a single-type request predeploy — builder deposits (`0x03`) and exits (`0x04`) are separate predeploys sharing a common queue implementation. An empty-calldata `SYSTEM_ADDRESS` call returns a flat `request_data`, so the execution layer needs no new read
+### Two predeploys, two request types This mirrors withdrawals (`0x01`) and consolidations (`0x02`). The execution layer needs no new read semantics, and the consensus layer routes by request type rather than by inspecting credentials. ### One request for deposits and top-ups This matches the validator deposit contract. The proof-of-possession
 
 
 === EIP-1459 ===
