@@ -2447,7 +2447,7 @@ In [EIP-2200](./eip-2200.md#specification), three cases for refunds were introdu
 === EIP-7666 ===
 TITLE: EVM-ify the identity precompile
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-03-31
 REQUIRES: 
 
@@ -7202,6 +7202,26 @@ RATIONALE:
 ### Why offline conversion instead of the online overlay [EIP-7748](./eip-7748.md) and [EIP-7612](./eip-7612.md) convert the state inside consensus, behind a boundary that moves forward one block at a time. Both that online overlay and this offline design can be made correct, so the choice is about which costs to pay. This EIP takes the offline path. It pays more disk and gives up on-chain observability of the conversion, and in return gets a smaller consensus change, whole-state proofs throughout, and no conversion inside any zkEVM proof. Each of the five points is worked through below. **A smaller consensus change.**
 
 
+=== EIP-8371 ===
+TITLE: RowDAS - Distributed Blob Reconstruction
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-08-05
+REQUIRES: 7, 5, 9, 4, ,,  , 8, 1, 3, 6
+
+SUMMARY:
+PeerDAS (Peer Data Availability Sampling, [EIP-7594](./eip-7594.md)) requires supernodes to provide reconstruction, and this puts a high burden on supernodes that scales linearly with blob count. RowDAS enables distributed blobspace reconstruction using partial-message-based row topics, allowing all nodes to contribute to reconstruction, while significantly reducing the load on supernodes, leading to a more efficient and more resilient DAS construct.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). The EIP introduces new Gossipsub topics, changes to the rules of reconstruction, and a few minor changes to how current column topics operate. In this document, a *supernode* is a node subscribed to all 128 column subnets, following the customary use of the term. A *row reconstructor* is any node subscribed to 64 or more of the 128 column subnets, and thus holding enough
+
+MOTIVATION:
+[EIP-7594](./eip-7594.md) PeerDAS was designed with a simple but powerful-enough erasure coding based reconstruction model where any node receiving at least half of the 128 columns should reconstruct the whole extended blob content belonging to a block. As the number of blobs grows, however, the reconstruction burden on every supernode also grows linearly with blob count. Moreover, supernodes execute largely redundant work: each one of them reconstructing all missing blobs, without the means to distribute this work efficiently in the network. This EIP introduces distributed blobspace reconstruction, where different nodes prioritize the reconstruction of different parts of the blobspace,
+
+RATIONALE:
+Row topics were part of the DAS discussion from the early days, well before PeerDAS was designed. FullDAS (described in the ethresear.ch post "FullDAS: towards massive scalability with 32MB blocks and beyond") introduced cell-level messaging over both column and row topics, with cross-seeding and in-network reconstruction. It also introduced bitmap representations of partial IHAVE messages, but without the exact protocol details. The Gossipsub Partial Message Extension introduced the mapping of bitmap-based partial message representations into Gossipsub, opening the way to use them on columns in [EIP-8136](./eip-8136.md), which builds on that extension and cites its specification. Until now, while
+
+
 === EIP-7742 ===
 TITLE: Uncouple blob count between CL and EL
 TYPE: Standards Track Core
@@ -9212,6 +9232,26 @@ MEV attacks, particularly sandwich attacks and front-running, represent a signif
 
 RATIONALE:
 ### Why Blind Sequencing? Blind sequencing eliminates the root cause of MEV attacks by preventing miners from seeing transaction content during the critical ordering phase. This approach is more efficient than encryption-based solutions and more decentralized than private mempool approaches. ### Why Two-Phase Blocks? Separating sequencing and execution allows for: - **Efficient Ordering**: Hash-based ordering is computationally lightweight - **Network Efficiency**: Small hash data reduces bandwidth requirements - **Commitment Mechanism**: Public ordering commitment prevents manipulation ### Why Random Block Production is Critical? Random block production is essential to prevent speculative MEV attacks. When block producers cannot predict when
+
+
+=== EIP-8321 ===
+TITLE: Hash-Chain RANDAO
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 7916
+
+SUMMARY:
+Replace the BLS-signature-based Random Decentralized Autonomous Organization (RANDAO) reveal with a hash-chain commit-reveal scheme. RANDAO's resistance to grinding currently relies on BLS signatures being *unique*, so that a proposer cannot bias its contribution. Since BLS relies on pre-quantum hardness assumptions, a quantum computer can recover a validator's key and predict its future reveals. A hash chain relies only on standard hash-function security: collision resistance to prevent grinding (the property that replaces BLS's uniqueness) and preimage resistance for unpredictability. Both are believed to hold against quantum attack, and this removes the dependency on the signature scheme entirely. Each validator
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). These changes are applied to the consensus specifications (`ethereum/consensus-specs`) at a fork to be scheduled; functions and constants not defined here retain their meaning from those specifications. ### Cryptographic Functions `blake3(data: bytes) -> Bytes32` is the BLAKE3 hash function (version 1) in its default unkeyed hash mode, with no derive-key context, restricted to its default 32-byte output. All hashing introduced by this EIP uses
+
+MOTIVATION:
+The primary driver is post-quantum readiness. Today's RANDAO contribution is a BLS signature over the epoch number. Its security rests on the *uniqueness* of BLS signatures: given the message and public key, exactly one valid signature exists, so a proposer cannot grind their own contribution to bias the randomness. BLS is not post-quantum safe, so a cryptographically relevant quantum computer (CRQC) can recover a validator's secret key from its public key. Uniqueness still holds, but the attacker can compute the validator's reveals itself, predicting the chain's future randomness, and thus the proposer schedule, far in advance. Prediction also
+
+RATIONALE:
+### Why a Hash Accumulator on the Hash-Chain Path The mixed-in contribution must be unpredictable before the reveal: the mix must never absorb a value derivable from pre-reveal public state. This rules out folding in `blake3(HASH_CHAIN_RANDAO_DST + reveal)`, which for a hash chain is by definition the validator's stored commitment, already public on-chain. The raw reveal is the opposite: it is the secret preimage, unknown to everyone until the proposer publishes it, so folding it in is safe. The complication is that hash-chain commitments carry no identity and are trivially copyable. A validator can register a value it
 
 
 === EIP-7609 ===

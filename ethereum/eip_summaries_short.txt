@@ -2447,7 +2447,7 @@ In [EIP-2200](./eip-2200.md#specification), three cases for refunds were introdu
 === EIP-7666 ===
 TITLE: EVM-ify the identity precompile
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-03-31
 REQUIRES: 
 
@@ -7202,6 +7202,26 @@ RATIONALE:
 ### Why offline conversion instead of the online overlay [EIP-7748](./eip-7748.md) and [EIP-7612](./eip-7612.md) convert the state inside consensus, behind a boundary that moves forward one
 
 
+=== EIP-8371 ===
+TITLE: RowDAS - Distributed Blob Reconstruction
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-08-05
+REQUIRES: 7, 5, 9, 4, ,,  , 8, 1, 3, 6
+
+SUMMARY:
+PeerDAS (Peer Data Availability Sampling, [EIP-7594](./eip-7594.md)) requires supernodes to provide reconstruction, and this puts a high burden on supernodes that scales linearly with blob
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[EIP-7594](./eip-7594.md) PeerDAS was designed with a simple but powerful-enough erasure coding based reconstruction model where any node receiving at least half of the 128
+
+RATIONALE:
+Row topics were part of the DAS discussion from the early days, well before PeerDAS was designed. FullDAS (described in the ethresear.ch post "FullDAS:
+
+
 === EIP-7742 ===
 TITLE: Uncouple blob count between CL and EL
 TYPE: Standards Track Core
@@ -9212,6 +9232,26 @@ MEV attacks, particularly sandwich attacks and front-running, represent a signif
 
 RATIONALE:
 ### Why Blind Sequencing? Blind sequencing eliminates the root cause of MEV attacks by preventing miners from seeing transaction content during the critical ordering
+
+
+=== EIP-8321 ===
+TITLE: Hash-Chain RANDAO
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-05
+REQUIRES: 7916
+
+SUMMARY:
+Replace the BLS-signature-based Random Decentralized Autonomous Organization (RANDAO) reveal with a hash-chain commit-reveal scheme. RANDAO's resistance to grinding currently relies on BLS signatures being
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+The primary driver is post-quantum readiness. Today's RANDAO contribution is a BLS signature over the epoch number. Its security rests on the *uniqueness* of
+
+RATIONALE:
+### Why a Hash Accumulator on the Hash-Chain Path The mixed-in contribution must be unpredictable before the reveal: the mix must never absorb a
 
 
 === EIP-7609 ===
