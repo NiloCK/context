@@ -1982,22 +1982,22 @@ This Meta EIP provides a global view of all changes included in the Fusaka netwo
 
 === EIP-8261 ===
 TITLE: Gas Limit Schedule
-TYPE: Standards Track Core
+TYPE: Informational 
 STATUS: Draft
 CREATED: 2026-05-11
-REQUIRES: 1, 5, 5, 9, ,,  , 7, 8, 4, 0, ,,  , 7, 8, 9, 2
+REQUIRES: 1, 5, 5, 9, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 3, 5
 
 SUMMARY:
-This EIP removes the block gas limit from the set of values that node operators, validators, builders, and proposers can choose freely. Instead, the gas limit becomes a hard-fork-scheduled parameter, configured through a `gasLimitSchedule` on the execution layer and a `GAS_LIMIT_SCHEDULE` on the consensus layer. Each fork (including BPO-style
+This EIP recommends that, starting with Gloas ([EIP-7732](./eip-7732.md)), consensus layer clients source their gas limit preference from an optional `GAS_LIMIT_SCHEDULE` field in the consensus layer `config.yaml` instead of hardcoded, release-scoped defaults. Each entry activates at the start of its specified epoch and provides a value that plays two roles:
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Activation Let `FORK_TIMESTAMP` denote the activation timestamp of the fork that includes this EIP.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). This EIP changes no consensus rules. The [EIP-1559](./eip-1559.md) gas limit validity rules (±1/1024 elasticity, 5000
 
 MOTIVATION:
-Today the block gas limit is effectively a free parameter set by each block proposer, plumbed through: 1. Execution layer client flags (e.g., `--miner.gaslimit`, `--gas-ceil`, `--target-gas-limit`). 2. The consensus layer validator client's "preferred gas limit", forwarded to the execution layer via `engine_forkchoiceUpdatedV*` payload attributes. 3. Builder bids in the
+Today the block gas limit is set by each block proposer, driven by validator client "preferred gas limit" settings, client default configurations, and builder bids, with the ±1/1024 elasticity rule from [EIP-1559](./eip-1559.md) moving the realized limit block by block. The pain point this EIP addresses is that gas limit
 
 RATIONALE:
-### Why a schedule rather than a runtime parameter? A schedule (rather than, say, an on-chain vote or a moving average) keeps the change minimal, mirrors the established BPO mechanism from [EIP-7892](./eip-7892.md), and matches how the community already coordinates gas-limit changes in practice: socially, with months of lead time,
+### Why epoch-based defaults instead of release-scoped defaults? Keying the default on the duty's epoch rather than the release version decouples *shipping* a new gas limit from *activating* it. This directly resolves the large-increase dilemma described in the Motivation: clients can ship the schedule entry for a big raise
 
 
 === EIP-7 ===
@@ -2449,7 +2449,7 @@ TITLE: EVM-ify the identity precompile
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-03-31
-REQUIRES: 
+REQUIRES: 3855
 
 SUMMARY:
 Remove the identity precompile at 0x04. At the start of executing the block in which this change activates, put into that contract a short piece of EVM code that has the same functionality.

@@ -1982,22 +1982,22 @@ This Meta EIP provides a global view of all changes included in the Fusaka netwo
 
 === EIP-8261 ===
 TITLE: Gas Limit Schedule
-TYPE: Standards Track Core
+TYPE: Informational 
 STATUS: Draft
 CREATED: 2026-05-11
-REQUIRES: 1, 5, 5, 9, ,,  , 7, 8, 4, 0, ,,  , 7, 8, 9, 2
+REQUIRES: 1, 5, 5, 9, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 3, 5
 
 SUMMARY:
-This EIP removes the block gas limit from the set of values that node operators, validators, builders, and proposers can choose freely. Instead, the
+This EIP recommends that, starting with Gloas ([EIP-7732](./eip-7732.md)), consensus layer clients source their gas limit preference from an optional `GAS_LIMIT_SCHEDULE` field in the consensus
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Today the block gas limit is effectively a free parameter set by each block proposer, plumbed through: 1. Execution layer client flags (e.g., `--miner.gaslimit`,
+Today the block gas limit is set by each block proposer, driven by validator client "preferred gas limit" settings, client default configurations, and builder
 
 RATIONALE:
-### Why a schedule rather than a runtime parameter? A schedule (rather than, say, an on-chain vote or a moving average) keeps the change
+### Why epoch-based defaults instead of release-scoped defaults? Keying the default on the duty's epoch rather than the release version decouples *shipping* a new
 
 
 === EIP-7 ===
@@ -2449,7 +2449,7 @@ TITLE: EVM-ify the identity precompile
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-03-31
-REQUIRES: 
+REQUIRES: 3855
 
 SUMMARY:
 Remove the identity precompile at 0x04. At the start of executing the block in which this change activates, put into that contract a short
