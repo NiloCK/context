@@ -6808,6 +6808,26 @@ RATIONALE:
 ### Why Include Metadata Functions? **Ecosystem Benefits**: - **Wallet Integration**: Existing wallets can display privacy tokens without special handling - **Explorer Compatibility**: Block explorers
 
 
+=== ERC-8187 ===
+TITLE: Token Puller
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-27
+REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 6, 1, 2, ,,  , 5, 2, 6, 7, ,,  , 6, 4, 9, 2
+
+SUMMARY:
+This ERC proposes a standardized interface for "Puller" contracts that enable approved spenders to initiate token transfers from an owner's account without requiring the
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Current token approval standards ([ERC-20](./eip-20.md) `approve`/`transferFrom`, [ERC-2612](./eip-2612.md) permits) require owners to hold liquid balances and often involve multiple transactions or direct balance pulls. This
+
+RATIONALE:
+Gasless approvals via signed permits and the ability to transfer allowances between spenders were added specifically to support credit-card-like experiences and delegated spending flows.
+
+
 === ERC-5375 ===
 TITLE: NFT Author Information and Consent
 TYPE: Standards Track ERC
