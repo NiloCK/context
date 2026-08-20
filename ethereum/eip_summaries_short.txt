@@ -1133,7 +1133,7 @@ REQUIRES:
 === EIP-5920 ===
 TITLE: PAY opcode
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2022-03-14
 REQUIRES: 2, 1, 4, ,,  , 2, 9, 2, 9, ,,  , 7, 5, 2, 3
 
@@ -5869,13 +5869,13 @@ TITLE: Withdrawal credentials preregistration
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-03-26
-REQUIRES: 4, 7, 8, 8, ,,  , 6, 1, 1, 0, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
 
 SUMMARY:
-This EIP introduces a preregistration mechanism that allows a validator key holder to commit to specific withdrawal credentials before any deposit is made, addressing
+This EIP introduces a preregistration mechanism that allows a validator key holder to commit to specific withdrawal credentials before any validator deposit is made,
 
 SPECIFICATION:
-### Configuration #### Execution layer | Name | Value | Comment | | ----------------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- | | `VALIDATOR_PREREGISTRATION_REQUEST_PREDEPLOY_ADDRESS` | `TBD` |
+### Configuration #### Execution layer | Name | Value | Comment | | ------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- | | `PREREGISTRATION_REQUEST_PREDEPLOY_ADDRESS` | `TBD` |
 
 MOTIVATION:
 In delegated staking, the entity funding a validator and the entity generating the BLS keypair are distinct parties. This separation is common across liquid
@@ -6501,20 +6501,23 @@ EIP-1052 In order to include the function of `BALANCE`, let the `EXTCODEHASH` of
 
 
 === EIP-3298 ===
-TITLE: Removal of refunds
+TITLE: Remove storage-clear refund and refund cap
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2021-02-26
-REQUIRES: 
+REQUIRES: 2, 7, 8, 0, ,,  , 3, 5, 2, 9, ,,  , 7, 7, 7, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+
+SUMMARY:
+This EIP removes the storage-clearing refund (`STORAGE_CLEAR_REFUND`, as defined by [EIP-8038](./eip-8038.md)) and the transaction refund cap ([EIP-3529](./eip-3529.md)). The [EIP-8038](./eip-8038.md)'s net-metered `STORAGE_WRITE` reversal remains.
 
 SPECIFICATION:
-### Parameters | Constant | Value | | - | - | | `FORK_BLOCK` | TBD | For blocks where `block.number >= FORK_BLOCK`, the
+This EIP is a delta against [EIP-8037](./eip-8037.md) and [EIP-8038](./eip-8038.md) and assumes both are active, together with [EIP-2780](./eip-2780.md) and [EIP-7778](./eip-7778.md). ### `SSTORE` refund rules `STORAGE_CLEAR_REFUND`
 
 MOTIVATION:
-Gas refunds for SSTORE and SELFDESTRUCT were originally introduced to motivate application developers to write applications that practice "good state hygiene", clearing storage slots
+Refunds were originally (the Frontier "fork", i.e. start of the chain) part of protocol to incentivize "good state hygiene": clearing storage that is no
 
 RATIONALE:
-A full removal of refunds is the simplest way to solve the issues with refunds; any gains from partial retention of the refund mechanism
+### Why the write reversal stays and the cap goes The `STORAGE_WRITE` reversal is not an incentive; it is the accounting rule that makes
 
 
 === EIP-2982 ===
@@ -6631,7 +6634,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Worst-case block size constrains scaling: the gas limit can only be raised as far as the largest possible block still propagates reliably. [EIP-7623](./eip-7623.md) caps
+Every node must be able to handle the largest block an attacker can build, not the average one. Lowering that worst case buys headroom,
 
 RATIONALE:
 ### Floor side, not intrinsic side Raising opcode intrinsic costs would penalise every user, including ones who never bypass. Charging on the floor only
@@ -6862,7 +6865,7 @@ TITLE: Optional Execution Proofs
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-09-17
-REQUIRES: 4, 8, 4, 4, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 2, 8
+REQUIRES: 4, 8, 4, 4, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 6, 8, 8, ,,  , 7, 7, 3, 2, ,,  , 7, 9, 2, 8, ,,  , 8, 2, 8, 2
 
 SUMMARY:
 Execution proofs enable consensus layer (CL) nodes to perform stateless validation of execution payloads. Altruistic _proof-generating nodes_ generate execution proofs and broadcast them over
@@ -7276,7 +7279,7 @@ SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Worst-case block size constrains scaling: the gas limit can only be raised as far as the largest block an attacker can build still propagates
+Every node must be able to handle the largest block an attacker can build, not the average one. Lowering that worst case buys headroom,
 
 RATIONALE:
 ### One per-byte rate Pricing every content byte at the same `FLOOR_GAS_PER_BYTE` already used by [EIP-7976](./eip-7976.md) for calldata and by [EIP-7981](./eip-7981.md) for access-list bytes

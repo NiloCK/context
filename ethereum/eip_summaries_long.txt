@@ -1133,7 +1133,7 @@ REQUIRES:
 === EIP-5920 ===
 TITLE: PAY opcode
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2022-03-14
 REQUIRES: 2, 1, 4, ,,  , 2, 9, 2, 9, ,,  , 7, 5, 2, 3
 
@@ -5869,19 +5869,19 @@ TITLE: Withdrawal credentials preregistration
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-03-26
-REQUIRES: 4, 7, 8, 8, ,,  , 6, 1, 1, 0, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
 
 SUMMARY:
-This EIP introduces a preregistration mechanism that allows a validator key holder to commit to specific withdrawal credentials before any deposit is made, addressing a known deposit front-running vulnerability in delegated staking. Preregistrations are submitted through a new [EIP-7685](./eip-7685.md) request type via a system contract on the execution layer, rate-limited by an [EIP-1559](./eip-1559.md)-style exponential fee mechanism. The consensus layer stores the preregistration in beacon state and enforces it at deposit processing time: matching deposits proceed and the preregistration is consumed; mismatched deposits are silently rejected. The mechanism is fully optional — deposits for public keys without a preregistration
+This EIP introduces a preregistration mechanism that allows a validator key holder to commit to specific withdrawal credentials before any validator deposit is made, addressing a known deposit front-running vulnerability in delegated staking. Preregistrations are submitted through a new [EIP-7685](./eip-7685.md) request contract on the execution layer, following the same queue, fee, and system-call pattern as [EIP-7002](./eip-7002.md) and [EIP-7251](./eip-7251.md). The consensus layer stores the expirable preregistration in beacon state and enforces it at deposit processing time: matching deposits proceed and the preregistration is consumed; mismatched deposits are silently rejected. The mechanism is fully optional — deposits for public keys
 
 SPECIFICATION:
-### Configuration #### Execution layer | Name | Value | Comment | | ----------------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- | | `VALIDATOR_PREREGISTRATION_REQUEST_PREDEPLOY_ADDRESS` | `TBD` | Where to call and store relevant details about preregistration mechanism | | `VALIDATOR_PREREGISTRATION_REQUEST_TYPE` | `TBD` | The [EIP-7685](./eip-7685.md) type prefix for preregistration request | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | Address used to invoke system operation on contract | | `EXCESS_VALIDATOR_PREREGISTRATION_REQUESTS_STORAGE_SLOT` | `0` | | | `VALIDATOR_PREREGISTRATION_REQUEST_COUNT_STORAGE_SLOT` | `1` | | | `VALIDATOR_PREREGISTRATION_REQUEST_QUEUE_HEAD_STORAGE_SLOT` | `2` | Pointer to head of the preregistration request message queue | | `VALIDATOR_PREREGISTRATION_REQUEST_QUEUE_TAIL_STORAGE_SLOT` | `3` | Pointer to the tail
+### Configuration #### Execution layer | Name | Value | Comment | | ------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- | | `PREREGISTRATION_REQUEST_PREDEPLOY_ADDRESS` | `TBD` | Where to call and store relevant details about preregistration mechanism | | `PREREGISTRATION_REQUEST_TYPE` | `TBD` | The [EIP-7685](./eip-7685.md) type prefix for preregistration request | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | Address used to invoke system operation on contract | | `EXCESS_PREREGISTRATION_REQUESTS_STORAGE_SLOT` | `0` | | | `PREREGISTRATION_REQUEST_COUNT_STORAGE_SLOT` | `1` | | | `PREREGISTRATION_REQUEST_QUEUE_HEAD_STORAGE_SLOT` | `2` | Pointer to head of the preregistration request message queue | | `PREREGISTRATION_REQUEST_QUEUE_TAIL_STORAGE_SLOT` | `3` | Pointer to the tail
 
 MOTIVATION:
 In delegated staking, the entity funding a validator and the entity generating the BLS keypair are distinct parties. This separation is common across liquid staking protocols, staking-as-a-service providers, and any arrangement where one party provides capital and another operates the validator. The BLS key is the validator's identity: the first deposit for a given pubkey establishes the withdrawal credentials permanently under first-deposit-wins semantics. The key holder can therefore submit a deposit with attacker-controlled withdrawal credentials before the funding party's deposit is processed. The funding party has no on-chain guarantee that the withdrawal credentials it intends will be honored.
 
 RATIONALE:
-### Enforcement at deposit ingestion Invalid deposits are already silently ignored by the consensus layer if the signature is invalid. This EIP adds one optional validation condition: if a preregistration exists for a pubkey, only deposits with matching withdrawal credentials and a valid BLS signature are accepted. Deposits with mismatched credentials or invalid signatures are treated as invalid and ignored. The check only applies to pubkeys that have been preregistered — all other deposits are processed as before. ### Deposit BLS verification at ingestion Without early BLS verification, an attacker could consume a preregistration by depositing with matching
+### Enforcement at deposit ingestion Invalid deposits are already silently ignored by the consensus layer if the signature is invalid. This EIP adds one optional validation condition: if an active preregistration exists for a pubkey, only deposits with matching withdrawal credentials and a valid BLS signature are accepted. Deposits with mismatched credentials or invalid signatures are treated as invalid and ignored. The check only applies to pubkeys with an active preregistration — all other deposits are processed as before. ### Permanent rejection of mismatched deposits When a deposit's withdrawal credentials do not match an active preregistration, the deposit
 
 
 === EIP-7775 ===
@@ -6501,20 +6501,23 @@ EIP-1052 In order to include the function of `BALANCE`, let the `EXTCODEHASH` of
 
 
 === EIP-3298 ===
-TITLE: Removal of refunds
+TITLE: Remove storage-clear refund and refund cap
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2021-02-26
-REQUIRES: 
+REQUIRES: 2, 7, 8, 0, ,,  , 3, 5, 2, 9, ,,  , 7, 7, 7, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+
+SUMMARY:
+This EIP removes the storage-clearing refund (`STORAGE_CLEAR_REFUND`, as defined by [EIP-8038](./eip-8038.md)) and the transaction refund cap ([EIP-3529](./eip-3529.md)). The [EIP-8038](./eip-8038.md)'s net-metered `STORAGE_WRITE` reversal remains.
 
 SPECIFICATION:
-### Parameters | Constant | Value | | - | - | | `FORK_BLOCK` | TBD | For blocks where `block.number >= FORK_BLOCK`, the following changes apply. Do not apply the `refund`. The description above is sufficient to describe the change, but for the sake of clarity we enumerate all places where gas refunds are currently used and which should/could be removed within a node implementation. 1. Remove all use of the "refund counter" in SSTORE gas accounting, as defined in [EIP 2200](https://eips.ethereum.org/EIPS/eip-2200). Particularly: * If a storage slot is changed and the _current value_ equals the _original
+This EIP is a delta against [EIP-8037](./eip-8037.md) and [EIP-8038](./eip-8038.md) and assumes both are active, together with [EIP-2780](./eip-2780.md) and [EIP-7778](./eip-7778.md). ### `SSTORE` refund rules `STORAGE_CLEAR_REFUND` (11,616; the successor of [EIP-3529](./eip-3529.md)'s `SSTORE_CLEARS_SCHEDULE`) is removed from the gas schedule, together with the two [EIP-8038](./eip-8038.md) refund rules that use it: the grant when a slot with a non-zero original value is cleared, and its reversal when such a cleared slot is restored. A single refund rule remains, unchanged from [EIP-8038](./eip-8038.md): `STORAGE_WRITE` is refunded if the new value equals the original value and differs from the current value — a change made earlier
 
 MOTIVATION:
-Gas refunds for SSTORE and SELFDESTRUCT were originally introduced to motivate application developers to write applications that practice "good state hygiene", clearing storage slots and contracts that are no longer needed. However, they are not widely used for this, and poor state hygiene continues to be the norm. It is now widely accepted that the only solution to state growth is some form of [statelessness or state expiry](https://hackmd.io/@HWeNw8hNRimMm2m2GH56Cw/state_size_management), and if such a solution is implemented, then disused storage slots and contracts would start to be ignored automatically. Gas refunds additionally have multiple harmful consequences: * Refunds give rise
+Refunds were originally (the Frontier "fork", i.e. start of the chain) part of protocol to incentivize "good state hygiene": clearing storage that is no longer needed. The incentive has not worked in practice, and state growth is now addressed by pricing state creation directly ([EIP-8037](./eip-8037.md)), not by cleanup rebates. What refunds still cost the protocol is settlement complexity: a refund counter that must be capped at 20% of gas used ([EIP-3529](./eip-3529.md)), a cap that interacts non-obviously with the calldata floor of [EIP-7623](./eip-7623.md) / [EIP-7976](./eip-7976.md) and with the two gas dimensions of [EIP-8037](./eip-8037.md). Most refunds since chainstart are already
 
 RATIONALE:
-A full removal of refunds is the simplest way to solve the issues with refunds; any gains from partial retention of the refund mechanism are not worth the complexity that that would leave remaining in the Ethereum protocol.
+### Why the write reversal stays and the cap goes The `STORAGE_WRITE` reversal is not an incentive; it is the accounting rule that makes `SSTORE` net-metered within a transaction. Without it, a round trip such as `x → y → x` would pay for a write that was undone, overcharging common patterns (pre-[EIP-1153](./eip-1153.md) re-entrancy locks, netting in settlement systems) while simplifying nothing: clients must track original values regardless, because the charging rules depend on them. It is also self-bounded: a slot can only be restored to its original value (earning the refund) after a write moved it away
 
 
 === EIP-2982 ===
@@ -6625,13 +6628,13 @@ CREATED: 2026-05-23
 REQUIRES: 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 1, 3, 1
 
 SUMMARY:
-Meter the bytes each opcode adds to the [EIP-7928](./eip-7928.md) Block Access List in an explicit per-transaction counter, and fold that count, at 64 gas/byte, into the transaction's floor accumulator — checked at runtime before the BAL grows. Today an attacker can pack ~1.55 MB into a 60M-gas block: 75% of gas on cold `SLOAD`s (32 BAL bytes per 2,100 gas) + 25% on calldata at 16 gas/byte. On top of [EIP-8131](./eip-8131.md)'s tx-content floor (same rate), block content is capped at `block_gas_limit / 64 ≈ 0.89 MB` (~42% reduction), restoring the worst-case block-size bound that safe gas limit increases
+Meter the bytes each opcode adds to the [EIP-7928](./eip-7928.md) Block Access List in an explicit per-transaction counter, and fold that count, at 64 gas/byte, into the transaction's floor accumulator — checked at runtime before the BAL grows. Today an attacker can pack ~1.55 MB into a 60M-gas block: 75% of gas on cold `SLOAD`s (32 BAL bytes per 2,100 gas) + 25% on calldata at 16 gas/byte. On top of [EIP-8131](./eip-8131.md)'s tx-content floor (same rate), block content is capped at `block_gas_limit / 64 ≈ 0.89 MB`, a ~42% cut in worst-case block size at an unchanged gas limit.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants ``` FLOOR_GAS_PER_BYTE = 64 # per-byte floor rate (EIP-7976) BAL_BYTES_PER_ADDRESS = 20 BAL_BYTES_PER_STORAGE_KEY = 32 BAL_BYTES_PER_STORAGE_VALUE = 32 BAL_BYTES_PER_BALANCE = 32 BAL_BYTES_PER_NONCE = 8 DELEGATION_CODE_BYTES = 23 # EIP-7702 delegation marker length ``` ### Data meter and floor accumulator Clients keep two internal, per-transaction counters on the execution environment for the duration of the transaction: - `bal_data_bytes` — an explicit count of
 
 MOTIVATION:
-Worst-case block size constrains scaling: the gas limit can only be raised as far as the largest possible block still propagates reliably. [EIP-7623](./eip-7623.md) caps worst-case block size by charging at least 64 gas per non-zero calldata byte. [EIP-7981](./eip-7981.md) extended that to access-list entries, and [EIP-8131](./eip-8131.md) generalises the floor to a uniform per-byte rule over all tx-content fields, including [EIP-7702](./eip-7702.md) authorization tuples and [EIP-4844](./eip-4844.md) blob versioned hashes. [EIP-7928](./eip-7928.md) introduces a new source of block bytes, the BAL, populated by runtime opcodes. None of those static floors cover it. The cheapest BAL contributor is a cold `SLOAD`: 32 bytes for
+Every node must be able to handle the largest block an attacker can build, not the average one. Lowering that worst case buys headroom, which can either be spent on throughput by raising the gas limit or kept as a buffer. Left unspent, it is a direct gain in robustness. [EIP-7623](./eip-7623.md) caps worst-case block size by charging at least 64 gas per non-zero calldata byte. [EIP-7981](./eip-7981.md) extended that to access-list entries, and [EIP-8131](./eip-8131.md) generalises the floor to a uniform per-byte rule over all tx-content fields, including [EIP-7702](./eip-7702.md) authorization tuples and [EIP-4844](./eip-4844.md) blob versioned hashes. [EIP-7928](./eip-7928.md) introduces a new
 
 RATIONALE:
 ### Floor side, not intrinsic side Raising opcode intrinsic costs would penalise every user, including ones who never bypass. Charging on the floor only bites when execution is too cheap to cover the floor, which is exactly the bypass case. A pure intrinsic surcharge also fails to cap the block at `gas_limit / 64`: for any added per-`SLOAD` cost `X`, the optimum bypass still yields `B = gas_limit / 64 + 24 · gas_limit / (2100 + X)` bytes, with the residual only vanishing as `X` grows large. Floor-side charging gives a closed bound directly. ### Runtime extensions
@@ -6862,7 +6865,7 @@ TITLE: Optional Execution Proofs
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-09-17
-REQUIRES: 4, 8, 4, 4, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 2, 8
+REQUIRES: 4, 8, 4, 4, ,,  , 6, 1, 1, 0, ,,  , 7, 0, 0, 2, ,,  , 7, 2, 5, 1, ,,  , 7, 6, 8, 8, ,,  , 7, 7, 3, 2, ,,  , 7, 9, 2, 8, ,,  , 8, 2, 8, 2
 
 SUMMARY:
 Execution proofs enable consensus layer (CL) nodes to perform stateless validation of execution payloads. Altruistic _proof-generating nodes_ generate execution proofs and broadcast them over the CL p2p network. _Proof-verifying nodes_ consume gossiped execution proofs and check payload validity by verifying those proofs. Verification is _stateless_ and constant time with respect to the payload's gas limit and EL state size, so a validator's payload-verification requirements are decoupled from the linear cost of re-execution. The mechanism is fully opt-in and does not change consensus validity rules, allowing the proving stack to mature in production; a separate, future EIP could subsequently
@@ -7270,13 +7273,13 @@ CREATED: 2025-01-21
 REQUIRES: 2, 0, 2, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1
 
 SUMMARY:
-Charge every user-controlled byte in a transaction (calldata, access-list entries, [EIP-7702](./eip-7702.md) auths, [EIP-4844](./eip-4844.md) blob hashes) at a flat 64 gas at the floor. One rule replaces [EIP-7623](./eip-7623.md)/[EIP-7976](./eip-7976.md) and [EIP-7981](./eip-7981.md) and closes the auth and blob hash floor gaps. Worst-case user-controlled tx content per block is bounded by `block_gas_limit / 64 ≈ 0.89 MB`, a hard cap that keeps worst-case blocks small enough to propagate safely as the gas limit rises. Fewer than 4% of mainnet transactions hit the new floor.
+Charge every user-controlled byte in a transaction (calldata, access-list entries, [EIP-7702](./eip-7702.md) auths, [EIP-4844](./eip-4844.md) blob hashes) at a flat 64 gas at the floor. One rule replaces [EIP-7623](./eip-7623.md)/[EIP-7976](./eip-7976.md) and [EIP-7981](./eip-7981.md) and closes the auth and blob hash floor gaps. Worst-case user-controlled tx content per block is bounded by `block_gas_limit / 64 ≈ 0.89 MB`, a hard cap that shrinks worst-case blocks at an unchanged gas limit. Fewer than 4% of mainnet transactions hit the new floor.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Constants ``` TX_BASE = 21000 FLOOR_GAS_PER_BYTE = 64 # per-byte floor rate established by EIP-7976 (calldata) and EIP-7981 (access lists) ACCESS_LIST_ADDRESS_BYTES = 20 ACCESS_LIST_STORAGE_KEY_BYTES = 32 AUTH_TUPLE_BYTES = 108 # EIP-7702 authorization tuple worst-case RLP BLOB_VERSIONED_HASH_BYTES = 32 ``` ### Transaction floor ``` tx_floor = TX_BASE + FLOOR_GAS_PER_BYTE * ( len(tx.data) + ACCESS_LIST_ADDRESS_BYTES * num_access_list_addresses + ACCESS_LIST_STORAGE_KEY_BYTES * num_access_list_storage_keys + AUTH_TUPLE_BYTES * num_authorizations
 
 MOTIVATION:
-Worst-case block size constrains scaling: the gas limit can only be raised as far as the largest block an attacker can build still propagates reliably. [EIP-7623](./eip-7623.md) introduced a floor cost on calldata bytes to cap worst-case block size. [EIP-7976](./eip-7976.md) raised that floor to a uniform 64 gas per calldata byte, zero and non-zero alike (by treating every byte as 4 floor tokens at 16 gas each). [EIP-7981](./eip-7981.md) extended the same 64 gas/B rate to access-list bytes via a flat data-cost surcharge of 1,280 gas per address and 2,048 gas per storage key. The principle is consistent across both:
+Every node must be able to handle the largest block an attacker can build, not the average one. Lowering that worst case buys headroom, which can either be spent on throughput by raising the gas limit or kept as a buffer. Left unspent, it is a direct gain in robustness. [EIP-7623](./eip-7623.md) introduced a floor cost on calldata bytes to cap worst-case block size. [EIP-7976](./eip-7976.md) raised that floor to a uniform 64 gas per calldata byte, zero and non-zero alike (by treating every byte as 4 floor tokens at 16 gas each). [EIP-7981](./eip-7981.md) extended the same 64 gas/B rate
 
 RATIONALE:
 ### One per-byte rate Pricing every content byte at the same `FLOOR_GAS_PER_BYTE` already used by [EIP-7976](./eip-7976.md) for calldata and by [EIP-7981](./eip-7981.md) for access-list bytes makes the worst case invariant to the attacker's choice of field or byte value: calldata, access-list entries, authorization tuples, and blob versioned hashes all yield `1/64` bytes per gas at the floor. The optimum collapses to `B = block_gas_limit / 64`. The bound holds independent of the network compressor, attacker strategy, or content composition. ### Content-only, not full RLP Charging every encoded byte (envelope and signature included) would make legacy transactions strictly cheaper than
