@@ -1479,7 +1479,7 @@ This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduc
 === ERC-8153 ===
 TITLE: Facet-Based Diamonds
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-02-07
 REQUIRES: 2535
 
@@ -1487,7 +1487,7 @@ SUMMARY:
 A diamond is a proxy contract that `delegatecall`s to multiple implementation contracts called facets. ![Diagram showing how a diamond contract works](../assets/eip-8153/basic-diamond-diagram.svg) Diamond contracts were originally standardized by [ERC-2535](./eip-2535). This ERC builds on that foundation by defining a facet-based architecture in which facets self-describe their function selectors through a standardized
 
 SPECIFICATION:
-### Terms 1. A **diamond** is a smart contract that routes external function calls to one or more implementation contracts, referred to as facets. A diamond is stateful: all persistent data is stored in the diamond’s contract storage. A diamond implements the requirements in the [Implementation Requirements](#implementation-requirements) section. 2.
+### Terms 1. A **diamond** is a smart contract that routes external function calls to one or more implementation contracts, referred to as facets. A diamond is stateful: all persistent data is stored in the diamond's contract storage. A diamond implements the requirements in the [Implementation Requirements](#implementation-requirements) section. 2.
 
 MOTIVATION:
 ### Motivation for Diamond Contracts <img alt="Obligatory diamond" src="../assets/eip-8153/diamond.svg" width="17%" align="right">Through a single contract address, a diamond provides functionality from multiple implementation contracts (facets). Each facet is independent, yet facets can share internal functions and storage. This architecture allows large smart-contract systems to be composed from separate facets and

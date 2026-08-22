@@ -1479,7 +1479,7 @@ This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduc
 === ERC-8153 ===
 TITLE: Facet-Based Diamonds
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-02-07
 REQUIRES: 2535
 
