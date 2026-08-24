@@ -3468,6 +3468,26 @@ MOTIVATION:
 Currently, a transaction must read at least 25 distinct storage slots in `tx.to` before it's more expensive to forego an access list. ``` ACCESS_LIST_ADDRESS_COST + (ACCESS_LIST_STORAGE_KEY_COST + WARM_STORAGE_READ_COST) * x = COLD_SLOAD_COST * x x = 24 ``` EIP-2930 requires the address under which the storage keys reside be
 
 
+=== EIP-8390 ===
+TITLE: Remove the Sync Committee
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-08-22
+REQUIRES: 
+
+SUMMARY:
+Remove the sync committee from the consensus layer, and with it the Altair light client protocol, which depends on it entirely. `SYNC_REWARD_WEIGHT` goes too, so consensus issuance falls by `2/64`. The sync committee exists because a light client could not verify the whole validator set. ZK proving has since
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Names used below without definition are defined in the `ethereum/consensus-specs` repository. `EIP8390_FORK_EPOCH` is the activation
+
+MOTIVATION:
+The sync committee is a sample of 512 validators, resampled every 256 epochs, about 27.3 hours. A light client believes a header when two thirds of that sample sign it. It exists because a light client in 2021 could not verify the whole validator set. Three properties make it
+
+RATIONALE:
+### Removal instead of repair [EIP-7657](./eip-7657.md) makes sync committee messages slashable. That improves the current state and it is not enough. Slashing raises the price of corrupting the committee to the stake of 512 validators. It does not make the committee a claim about the validator set. A light
+
+
 === EIP-7782 ===
 TITLE: Reduce Block Latency
 TYPE: Standards Track Core
@@ -9083,7 +9103,7 @@ TITLE: Frame Transaction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-01-29
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 7, 8, 0, ,,  , 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 8, 2, 5, ,,  , 8, 0, 3, 7
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 7, 8, 0, ,,  , 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 7, 7, 8, ,,  , 7, 8, 2, 5, ,,  , 8, 0, 3, 7
 
 SUMMARY:
 Adds a new transaction whose validity and gas payment can be defined abstractly. This is achieved by decomposing the transaction into a sequence of *frames* which are contract calls that validate the transaction, approve gas payment, and execute standard user operations.
