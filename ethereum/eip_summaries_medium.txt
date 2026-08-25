@@ -7891,7 +7891,7 @@ TITLE: Offline State Migration to the PBT
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-07-23
-REQUIRES: 7, 9, 2, 8, ,,  , 8, 1, 5, 9, ,,  , 8, 2, 9, 7
+REQUIRES: 7, 5, 2, 3, ,,  , 7, 9, 2, 8, ,,  , 8, 1, 5, 9, ,,  , 8, 2, 9, 7
 
 SUMMARY:
 This EIP specifies an **offline** migration of Ethereum's state from the hexary Merkle Patricia Trie (MPT) to the Partitioned Binary Tree (PBT) defined in [EIP-8297](./eip-8297.md). The full state at a finalized **anchor block `ANCHOR_BLOCK`** is converted off the consensus-critical path and distributed as a byte-canonical, verifiable **PBT snapshot**. That
