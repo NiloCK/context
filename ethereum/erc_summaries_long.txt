@@ -3300,6 +3300,26 @@ RATIONALE:
 **Why do you use an anchor<>tokenId mapping and not simply use tokenIds directly?** Especially for collectable use-cases, special or sequential tokenIds (for example low numbers), have value. Holders may be proud to have claimed tokenId=1 respectively the off-chain ASSET with tokenId=1 may increase in value, because it was the first ever claimed. Or an Issuer may want to address the first 100 owners who claimed their ASSET-BOUND NFT. While these use-cases technically can certainly be covered by observing the blockchain state-changes, we consider reflecting the order in the tokenIds to be the user-friendly way. Please refer [Security considerations](#security-considerations)
 
 
+=== ERC-8349 ===
+TITLE: Index-Based Multi-Facet Proxy
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-25
+REQUIRES: 165
+
+SUMMARY:
+This standard introduces Cento, an index-based multi-facet routing model for the Ethereum Virtual Machine. Unlike existing modular proxy standards, this specification establishes an explicit facet identity, realized as routing indices appended to calldata, while preserving conventional function selectors for compatibility with standardized Ethereum interfaces and external tooling. The introduction of an explicit facet identity enables facet-level routing granularity with significantly reduced routing metadata, eliminates selector management overhead, and avoids selector collision risks while maintaining full compatibility with existing Ethereum infrastructure, protocols, wallets, explorers, and development tools. The specification additionally defines how interoperable implementations of the Cento Proxy architecture
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Terminology The terminology defined below follows the conceptual hierarchy established by this specification, beginning with foundational concepts, followed by routing-model semantics, architectural organization, and Cento-specific terminology. #### Foundational Concepts **Proxy**: A software design pattern that intercepts and forwards interactions to another implementation while preserving a stable interface and storage context. **Routing Model**: A conceptual model defining how routing destinations are identified within a
+
+MOTIVATION:
+The Ethereum ecosystem has demonstrated strong demand for modular smart contract architectures. [ERC-2535](./eip-2535.md) introduced selector-centric modular routing (Diamond), enabling protocols to distribute logic across multiple facets while maintaining a single external address. This approach has proven valuable in production deployments and established modular proxies as a practical foundation for complex upgradeable protocols. Being an alternative design point for multi-facet protocols, the same motivations of ERC-2535 apply to this standard. In multi-facet routing models, routing ultimately resolves to selecting a target facet for execution based on routing information contained in calldata. Existing selector-centric routing models infer this facet identity
+
+RATIONALE:
+The architectural decisions of this specification follow directly from the separation between routing and behavioral concerns introduced in the [Motivation](#motivation). The remaining sections explain why the selected realization of the Cento routing model was chosen over alternative realizations. ### Why Explicit Facet Identity? **Scaling**: selector-centric systems scale routing metadata with function count. Facet-centric systems scale with facet count. Most protocols have far fewer facets than externally callable functions. **Atomicity**: Replacing a facet requires updating exactly one routing entry. Selector-centric systems require updating multiple entries (one per function). **Simplicity**: Protocol developers organize code around facets. Facet-centric routing reflects this
+
+
 === ERC-1191 ===
 TITLE: Add chain id to mixed-case checksum address encoding
 TYPE: Standards Track ERC
@@ -5681,6 +5701,26 @@ RATIONALE:
 The technical design choices within this ERC are driven by the following considerations: - The introduction of the `decreaseAllowanceBySpender` function empowers spenders by allowing them to autonomously revoke or decrease allowances. This design choice aligns with the goal of providing more direct control to spenders over their authorization levels. - The requirement for the `subtractedValue` to be lower than the current allowance ensures a secure implementation. Additionally, nullification is achieved by setting the new allowance to 0 when `subtractedValue` is equal to or exceeds the current allowance. This approach adds an extra layer of security and simplifies the
 
 
+=== ERC-8354 ===
+TITLE: Confidential Agent Policy Verdicts
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-16
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1, ,,  , 7, 8, 1, 2, ,,  , 8, 0, 0, 4
+
+SUMMARY:
+This proposal defines a minimal interface for consuming a **confidential policy verdict**: a zero-knowledge proof that a proposed agent action was evaluated against a committed policy and permitted, where the policy itself is never revealed on-chain. A Policy Domain registers a commitment to its ruleset as a statement in the [ERC-7812](./eip-7812.md) Evidence Registry. An off-chain policy engine evaluates a candidate action against the ruleset and emits a proof whose public inputs bind the verdict to an [ERC-8004](./eip-8004.md) agent identity, the [ERC-7812](./eip-7812.md) policy root the decision was made against, a commitment to the action, the address permitted to execute
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Normative core and recommended companion The **normative core** of this standard is the `Verdict` envelope, the `actionCommitment` definition, and the `IConfidentialPolicyVerdict` interface. Any compliant Guard MUST implement these. A `Verdict` is an integrity property only: it proves the committed interpreter was evaluated over the action and returned ALLOW. It says nothing about whether the underlying policy is correct, fair, or non-malicious. Implementers MUST NOT treat
+
+MOTIVATION:
+The agent standards landing on Ethereum authorize agent behaviour in one of two ways. The first is **retrospective**: [ERC-8004](./eip-8004.md) records identity, reputation, and validation attestations after an agent has acted. This is useful for relying party selection and useless for interdiction. The second is **mandate-based**: a verifier confirms, before execution, that an agent's batch matches an intent the user signed in advance. A bounded mandate meters how much authority an agent has spent. Both approaches derive authority from a principal who signs a specific grant. A large class of real deployments fits neither. Consider a corporate expense card.
+
+RATIONALE:
+### Why a fixed interpreter rather than a circuit compiled per policy This is the load-bearing choice. If the policy is compiled into a circuit, every policy update produces a new verification key, which means a new verifier deployment, on every chain, for every rule change. For a ruleset that changes weekly this is not an operational inconvenience, it is a disqualification. By proving a fixed **interpreter** and passing the ruleset as witness, `programKey` stays constant across policy updates. Only the [ERC-7812](./eip-7812.md) root moves. This is why the specification insists the program be an interpreter, and it is
+
+
 === ERC-2615 ===
 TITLE: Non-Fungible Token with mortgage and rental functions
 TYPE: Standards Track ERC
@@ -7487,7 +7527,7 @@ RATIONALE:
 === ERC-5516 ===
 TITLE: Soulbound Multi-owner Tokens
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2022-08-19
 REQUIRES: 165
 
@@ -7692,15 +7732,15 @@ The use of smart contracts to apply for, renew, suspend and revoke Licences will
 === ERC-7945 ===
 TITLE: Confidential Transactions Supported Token
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-05-09
 REQUIRES: 20
 
 SUMMARY:
-Classic token contracts like [ERC-20](./eip-20.md) enable their token holders to make transfers and/or approve others to make transfers on their behalves. The generality of token standard [ERC-20](./eip-20.md) catalyzed decentralized finance and many other blockchain applications. However, when it comes to privacy, although some technical schemes have been proposed, few standards have been established, which limits the evolution of privacy-preserving blockchain applications. This proposal draws up a standard interface for fungible token contracts supporting confidential transactions. It provides basic transfer functionality without loss of generality, and allowance and approve functionalities. Contracts following the standard can provide confidentiality for users’
+Classic token contracts like [ERC-20](./eip-20.md) enable their token holders to make transfers and/or approve others to make transfers on their behalves. The generality of token standard [ERC-20](./eip-20.md) catalyzed decentralized finance and many other blockchain applications. However, when it comes to privacy, although some technical schemes have been proposed, few standards have been established, which limits the evolution of privacy-preserving blockchain applications. This proposal draws up a standard interface for fungible token contracts supporting confidential transactions. It provides basic transfer functionality without loss of generality, and allowance and approve functionalities. Contracts following the standard can provide confidentiality for users'
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Contract Interface Compliant contracts MUST implement the following interface: ```solidity interface IERC7945 { function confidentialBalanceOf(address owner) external view returns (bytes memory confidentialBalance); function confidentialTransfer( address _to, bytes memory _confidentialTransferValue, bytes memory _proof ) external returns (bool success); function confidentialTransferFrom( address _from, address _to, bytes memory _confidentialTransferValue, bytes memory _proof ) external returns (bool success); function confidentialApprove( address _spender, bytes memory _confidentialValue, bytes memory
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Contract Interface Compliant contracts MUST implement the following interface: ```solidity interface IERC7945 { function confidentialBalanceOf(address owner) external view returns (bytes memory confidentialBalance); function confidentialTransfer( address _to, bytes memory _confidentialTransferValue, bytes memory _proof ) external; function confidentialTransferFrom( address _from, address _to, bytes memory _confidentialTransferValue, bytes memory _proof ) external; function confidentialApprove( address _spender, bytes memory _confidentialValue, bytes memory _proof ) external; function confidentialAllowance( address
 
 MOTIVATION:
 Confidential transactions have been implemented in many blockchains, either natively through blockchain protocols like Monero and Zcash, or through smart contracts like Zether[^1] without modifying the blockchain protocol. However, few standards are proposed on Ethereum (and/or other EVM-compatible blockchains) to illustrate privacy-preserving contracts without modifying the underlying protocol. Users and applications cannot easily detect whether a token contract supports confidential transactions or not, and so cannot reliably make transfers without revealing the actual amount. Consequently, this proposal is to standardize confidential-transaction-supported token contracts, without loss of generality, by only specifying core methods and events. Such a standard interface

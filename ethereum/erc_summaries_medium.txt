@@ -3300,6 +3300,26 @@ RATIONALE:
 **Why do you use an anchor<>tokenId mapping and not simply use tokenIds directly?** Especially for collectable use-cases, special or sequential tokenIds (for example low numbers), have value. Holders may be proud to have claimed tokenId=1 respectively the off-chain ASSET with tokenId=1 may increase in value, because it was the
 
 
+=== ERC-8349 ===
+TITLE: Index-Based Multi-Facet Proxy
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-25
+REQUIRES: 165
+
+SUMMARY:
+This standard introduces Cento, an index-based multi-facet routing model for the Ethereum Virtual Machine. Unlike existing modular proxy standards, this specification establishes an explicit facet identity, realized as routing indices appended to calldata, while preserving conventional function selectors for compatibility with standardized Ethereum interfaces and external tooling. The introduction
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Terminology The terminology defined below follows the conceptual hierarchy established by this specification, beginning
+
+MOTIVATION:
+The Ethereum ecosystem has demonstrated strong demand for modular smart contract architectures. [ERC-2535](./eip-2535.md) introduced selector-centric modular routing (Diamond), enabling protocols to distribute logic across multiple facets while maintaining a single external address. This approach has proven valuable in production deployments and established modular proxies as a practical foundation for
+
+RATIONALE:
+The architectural decisions of this specification follow directly from the separation between routing and behavioral concerns introduced in the [Motivation](#motivation). The remaining sections explain why the selected realization of the Cento routing model was chosen over alternative realizations. ### Why Explicit Facet Identity? **Scaling**: selector-centric systems scale routing metadata
+
+
 === ERC-1191 ===
 TITLE: Add chain id to mixed-case checksum address encoding
 TYPE: Standards Track ERC
@@ -5681,6 +5701,26 @@ RATIONALE:
 The technical design choices within this ERC are driven by the following considerations: - The introduction of the `decreaseAllowanceBySpender` function empowers spenders by allowing them to autonomously revoke or decrease allowances. This design choice aligns with the goal of providing more direct control to spenders over their authorization levels.
 
 
+=== ERC-8354 ===
+TITLE: Confidential Agent Policy Verdicts
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-16
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1, ,,  , 7, 8, 1, 2, ,,  , 8, 0, 0, 4
+
+SUMMARY:
+This proposal defines a minimal interface for consuming a **confidential policy verdict**: a zero-knowledge proof that a proposed agent action was evaluated against a committed policy and permitted, where the policy itself is never revealed on-chain. A Policy Domain registers a commitment to its ruleset as a statement in
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Normative core and recommended companion The **normative core** of this standard is the `Verdict` envelope, the
+
+MOTIVATION:
+The agent standards landing on Ethereum authorize agent behaviour in one of two ways. The first is **retrospective**: [ERC-8004](./eip-8004.md) records identity, reputation, and validation attestations after an agent has acted. This is useful for relying party selection and useless for interdiction. The second is **mandate-based**: a verifier confirms, before
+
+RATIONALE:
+### Why a fixed interpreter rather than a circuit compiled per policy This is the load-bearing choice. If the policy is compiled into a circuit, every policy update produces a new verification key, which means a new verifier deployment, on every chain, for every rule change. For a ruleset
+
+
 === ERC-2615 ===
 TITLE: Non-Fungible Token with mortgage and rental functions
 TYPE: Standards Track ERC
@@ -7487,7 +7527,7 @@ RATIONALE:
 === ERC-5516 ===
 TITLE: Soulbound Multi-owner Tokens
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2022-08-19
 REQUIRES: 165
 
@@ -7692,7 +7732,7 @@ The use of smart contracts to apply for, renew, suspend and revoke Licences will
 === ERC-7945 ===
 TITLE: Confidential Transactions Supported Token
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-05-09
 REQUIRES: 20
 
