@@ -1484,7 +1484,7 @@ CREATED: 2026-02-07
 REQUIRES: 2535
 
 SUMMARY:
-A diamond is a proxy contract that `delegatecall`s to multiple implementation contracts called facets. ![Diagram showing how a diamond contract works](../assets/eip-8153/basic-diamond-diagram.svg) Diamond contracts were originally standardized by [ERC-2535](./eip-2535). This ERC builds on that foundation by defining a facet-based architecture in which facets self-describe their function selectors through a standardized
+A diamond is a proxy contract that `delegatecall`s to multiple implementation contracts called facets. ![Diagram showing how a diamond contract works](../assets/eip-8153/basic-diamond-diagram.svg) Diamond contracts were originally standardized by [ERC-2535](./eip-2535.md). This ERC builds on that foundation by defining a facet-based architecture in which facets self-describe their function selectors through a standardized
 
 SPECIFICATION:
 ### Terms 1. A **diamond** is a smart contract that routes external function calls to one or more implementation contracts, referred to as facets. A diamond is stateful: all persistent data is stored in the diamond's contract storage. A diamond implements the requirements in the [Implementation Requirements](#implementation-requirements) section. 2.
