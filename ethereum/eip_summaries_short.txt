@@ -1008,7 +1008,7 @@ RATIONALE:
 === EIP-7773 ===
 TITLE: Hardfork Meta - Glamsterdam
 TYPE: Meta 
-STATUS: Draft
+STATUS: Review
 CREATED: 2024-09-26
 REQUIRES: 7, 6, 0, 7, ,,  , 7, 7, 2, 3
 
