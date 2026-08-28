@@ -654,7 +654,7 @@ MOTIVATION:
 EOAs can use [EIP-7702](./eip-7702.md) as a bridge to post-quantum authorization. After migration, the account's non-empty code no longer matches the EIP-7702 delegation format `0xef0100
 
 RATIONALE:
-### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., ERC-20
+### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., [ERC-20](./eip-20.md)
 
 
 === EIP-2936 ===
@@ -6765,13 +6765,13 @@ TITLE: SETCODEFROM Code Reuse Instruction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-06-11
-REQUIRES: 2, 2, 0, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 7, 7, 0, 2
+REQUIRES: 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP introduces `SETCODEFROM`, a runtime-only EVM instruction that sets the current account's code hash to the code hash of a source account with
 
 SPECIFICATION:
-### Parameters The opcode and gas parameters are defined as follows: | Parameter | Value | | ----------------------------- | ------------------------------------------------------- | | `SETCODEFROM_OPCODE` |
+### Parameters The opcode is defined as follows: | Parameter | Value | | ------------------------ | ----- | | `SETCODEFROM_OPCODE` | `TBD` | ###
 
 MOTIVATION:
 This EIP has two primary use cases. First, it improves code reuse and deployment economics. Deploying many contracts with identical runtime code is expensive,
@@ -10723,15 +10723,15 @@ This allows contracts to make calls that are clearly non-state-changing, reassur
 === EIP-4444 ===
 TITLE: Bound Historical Data in Execution Clients
 TYPE: Standards Track Networking
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2021-11-02
 REQUIRES: 
 
 SUMMARY:
-Clients must stop serving historical headers, bodies, and receipts older than one year on the p2p layer. Clients may locally prune this historical data.
+Clients must stop serving historical headers, bodies, and receipts older than 33,024 epochs on the p2p layer. Clients may locally prune this historical data.
 
 SPECIFICATION:
-| Parameter | Value | Description | | - | - | - | | `HISTORY_PRUNE_EPOCHS` | 82125 | A year in beacon chain
+| Parameter | Value | Description | | - | - | - | | `HISTORY_PRUNE_EPOCHS` | 33024 | The consensus-layer block retention window
 
 MOTIVATION:
 Historical blocks and receipts currently occupy more than 400GB of disk space (and growing!). Therefore, to validate the chain, users must typically have a

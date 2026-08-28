@@ -654,7 +654,7 @@ MOTIVATION:
 EOAs can use [EIP-7702](./eip-7702.md) as a bridge to post-quantum authorization. After migration, the account's non-empty code no longer matches the EIP-7702 delegation format `0xef0100 || delegate_address`, so [EIP-3607](./eip-3607.md) disables its ECDSA transaction authority at the protocol level. However, `ecRecover` ignores account state. A quantum-capable attacker deriving the old ECDSA
 
 RATIONALE:
-### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., ERC-20 `permit` implementations) are immutable and cannot be updated to check the recovered account's code. A protocol-level change ensures these existing contracts automatically apply the same
+### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., [ERC-20](./eip-20.md) `permit` implementations) are immutable and cannot be updated to check the recovered account's code. A protocol-level change ensures these existing contracts automatically apply the same
 
 
 === EIP-2936 ===
@@ -6765,13 +6765,13 @@ TITLE: SETCODEFROM Code Reuse Instruction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-06-11
-REQUIRES: 2, 2, 0, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 7, 7, 0, 2
+REQUIRES: 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP introduces `SETCODEFROM`, a runtime-only EVM instruction that sets the current account's code hash to the code hash of a source account with existing deployed code. The new code is visible to later code execution.
 
 SPECIFICATION:
-### Parameters The opcode and gas parameters are defined as follows: | Parameter | Value | | ----------------------------- | ------------------------------------------------------- | | `SETCODEFROM_OPCODE` | `TBD` | | `SETCODEFROM_BASE_GAS` | `3000` | | `SOURCE_ACCOUNT_ACCESS_COST` | warm/cold account access cost | | `SETCODEFROM_GAS` | `SETCODEFROM_BASE_GAS + SOURCE_ACCOUNT_ACCESS_COST` | ### `SETCODEFROM` `SETCODEFROM(source)`
+### Parameters The opcode is defined as follows: | Parameter | Value | | ------------------------ | ----- | | `SETCODEFROM_OPCODE` | `TBD` | ### `SETCODEFROM` `SETCODEFROM(source)` takes one stack item. The low 160 bits of the stack item are interpreted as `source`. Before execution: ```text [..., source] ``` After
 
 MOTIVATION:
 This EIP has two primary use cases. First, it improves code reuse and deployment economics. Deploying many contracts with identical runtime code is expensive, especially when contract deployment is repriced more closely to state growth, for example under [EIP-8037](./eip-8037.md). A factory can deploy a minimal initializer runtime, call it
@@ -10723,21 +10723,21 @@ This allows contracts to make calls that are clearly non-state-changing, reassur
 === EIP-4444 ===
 TITLE: Bound Historical Data in Execution Clients
 TYPE: Standards Track Networking
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2021-11-02
 REQUIRES: 
 
 SUMMARY:
-Clients must stop serving historical headers, bodies, and receipts older than one year on the p2p layer. Clients may locally prune this historical data.
+Clients must stop serving historical headers, bodies, and receipts older than 33,024 epochs on the p2p layer. Clients may locally prune this historical data.
 
 SPECIFICATION:
-| Parameter | Value | Description | | - | - | - | | `HISTORY_PRUNE_EPOCHS` | 82125 | A year in beacon chain epochs | Clients SHOULD NOT serve headers, block bodies, and receipts that are older than `HISTORY_PRUNE_EPOCHS` epochs on the p2p network. Clients MAY locally prune
+| Parameter | Value | Description | | - | - | - | | `HISTORY_PRUNE_EPOCHS` | 33024 | The consensus-layer block retention window in epochs | Clients SHOULD NOT serve headers, block bodies, and receipts that are older than `HISTORY_PRUNE_EPOCHS` epochs on the p2p network. Clients MAY locally
 
 MOTIVATION:
 Historical blocks and receipts currently occupy more than 400GB of disk space (and growing!). Therefore, to validate the chain, users must typically have a 1TB disk. Historical data is not necessary for validating new blocks, so once a client has synced the tip of the chain, historical data is
 
 RATIONALE:
-This proposal forces clients to stop serving old historical data over p2p. We make this explicit to force clients to seek historical data from other sources, instead of relying on the optional behavior of some clients which would result in quality degradation. ### Why a year? This proposal sets
+This proposal forces clients to stop serving old historical data over p2p. We make this explicit to force clients to seek historical data from other sources, instead of relying on the optional behavior of some clients which would result in quality degradation. ### Why 33,024 epochs? This proposal sets
 
 
 === EIP-8297 ===
