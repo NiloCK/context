@@ -5989,7 +5989,7 @@ CREATED: 2026-02-16
 REQUIRES: 
 
 SUMMARY:
-This Informational EIP provides background for understanding control flow in the EVM: the history of control flow in computing, the foundations of control flow
+This Informational EIP provides background for understanding control flow in the Ethereum Virtual Machine (EVM): the history of control flow in computing, the foundations
 
 SPECIFICATION:
 Several EIPs, past and current, specify new EVM opcodes and semantics for static control flow: subroutines and static jumps, container-format functions, call and return
@@ -6371,7 +6371,7 @@ SUMMARY:
 Code can be prefixed with `MAGIC` bytes. `MAGIC` code is validated at `CREATE` time to ensure that it cannot execute invalid instructions, jump to
 
 SPECIFICATION:
-> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174).* ###
+> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* ###
 
 MOTIVATION:
 Dynamic jumps obscure the flow of control. A destination is a runtime value, so analysis must assume that any jump can reach any `JUMPDEST`.
@@ -8194,7 +8194,7 @@ CREATED: 2025-12-17
 REQUIRES: 
 
 SUMMARY:
-This is a minimal change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: *
+This is a minimal change to the Ethereum Virtual Machine (EVM) to support calls and returns. This proposal introduces three new control-flow instructions to
 
 SPECIFICATION:
 > *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* The

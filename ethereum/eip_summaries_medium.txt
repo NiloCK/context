@@ -5989,7 +5989,7 @@ CREATED: 2026-02-16
 REQUIRES: 
 
 SUMMARY:
-This Informational EIP provides background for understanding control flow in the EVM: the history of control flow in computing, the foundations of control flow analysis, and the impact of static control flow on Ethereum's scaling roadmap. This document serves as background material for proposals for static control flow —
+This Informational EIP provides background for understanding control flow in the Ethereum Virtual Machine (EVM): the history of control flow in computing, the foundations of control flow analysis, and the impact of static control flow on Ethereum's scaling roadmap. This document serves as background material for proposals for static
 
 SPECIFICATION:
 Several EIPs, past and current, specify new EVM opcodes and semantics for static control flow: subroutines and static jumps, container-format functions, call and return opcodes, and static relative jumps and calls. They are all implemented with the standard Turing return stack architecture, and are for the most part compatible
@@ -6368,16 +6368,16 @@ CREATED: 2026-07-09
 REQUIRES: 3, 5, 4, 1, ,,  , 7, 9, 7, 9
 
 SUMMARY:
-Code can be prefixed with `MAGIC` bytes. `MAGIC` code is validated at `CREATE` time to ensure that it cannot execute invalid instructions, jump to invalid locations, or underflow stack, that every return has a call to return from, and that within each subroutine the depth of the *data stack*
+Code can be prefixed with `MAGIC` bytes. `MAGIC` code is validated at `CREATE` time to ensure that it cannot execute invalid instructions, jump to invalid destinations, or underflow the *data stack*, that every return has a call to return from, and that within each subroutine the depth of the
 
 SPECIFICATION:
-> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174).* ### `MAGIC (0xEF....)` After this EIP has been activated, code beginning with the `MAGIC` bytes MUST be a *valid* program. Execution begins immediately after the `MAGIC`
+> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* ### `MAGIC (0xEF....)` After this EIP has been activated, code beginning with the `MAGIC` bytes MUST be a *valid* program. Execution begins immediately after the `MAGIC`
 
 MOTIVATION:
-Dynamic jumps obscure the flow of control. A destination is a runtime value, so analysis must assume that any jump can reach any `JUMPDEST`. The possible control transfers therefore grow as jumps times destinations: quadratic in the size of the code. For tools that run as code deploys or
+Dynamic jumps obscure the flow of control. A destination is a runtime value, so analysis must assume that any jump can reach any `JUMPDEST`. The possible control transfers therefore grow as jumps times destinations: quadratic in the size of the code. For tools that run when code deploys or
 
 RATIONALE:
-### Why validation? By marking `MAGIC` contracts as *valid* we are promising that their control flow is static, and the many tools that traverse the control flow can know this without inspecting the code for themselves. The intention is to end a vicious cycle: tools work around the EVM's
+### Why validation? By marking `MAGIC` contracts as *valid* we are promising that their control flow is static, and the many tools that traverse the control flow can know this without inspecting the code for themselves. Today each side does the best it can with the machine as it
 
 
 === EIP-3030 ===
@@ -8194,7 +8194,7 @@ CREATED: 2025-12-17
 REQUIRES: 
 
 SUMMARY:
-This is a minimal change to the EVM to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB` transfers control to the *destination* on the *data stack*. * `CALLDEST` marks a subroutine entry: the destination of a `CALLSUB`, or of a `JUMP`
+This is a minimal change to the Ethereum Virtual Machine (EVM) to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB` transfers control to the *destination* on the *data stack*. * `CALLDEST` marks a subroutine entry: the destination of a `CALLSUB`, or
 
 SPECIFICATION:
 > *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* The EVM's machine state includes a *data stack* of 256-bit words, at most 1024 deep, and the program counter, *PC*, whose value is a position in
