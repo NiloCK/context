@@ -1776,16 +1776,16 @@ CREATED: 2026-02-03
 REQUIRES: 7, 7, 3, 2, ,,  , 7, 9, 2, 8
 
 SUMMARY:
-This EIP removes the block access list (BAL) from the `ExecutionPayloadEnvelope` and propagates it as an independent sidecar on a dedicated gossip topic. This
+This EIP removes the block access list (BAL) introduced in [EIP-7928](./eip-7928.md) from the execution payload and propagates it as an independent sidecar on a
 
 SPECIFICATION:
-### Consensus Layer #### Presets | Name | Value | | - | - | | `MAX_BLOCK_ACCESS_LIST_SIZE` | `uint64(2**23)` (= 8 MiB) | ####
+### Execution Layer BAL construction, validation and the `block_access_list_hash` header field remain as specified in [EIP-7928](./eip-7928.md). Only delivery changes: the BAL reaches the execution
 
 MOTIVATION:
-[EIP-7928](./eip-7928.md) adds block access lists to the `ExecutionPayload`. Under [EIP-7732](./eip-7732.md), the execution payload travels inside a `SignedExecutionPayloadEnvelope` that the builder broadcasts after the beacon
+[EIP-7928](./eip-7928.md) adds the BAL to the `ExecutionPayload`, which under [EIP-7732](./eip-7732.md) travels in a `SignedExecutionPayloadEnvelope` that the builder reveals during the slot. The BAL therefore
 
 RATIONALE:
-### Single Commitment, Shared Across Layers [EIP-7928](./eip-7928.md) already commits the BAL into the EL header as `block_access_list_hash = keccak256(rlp(BAL))`. Carrying the same 32 bytes
+### Header Commitment Reuse [EIP-7928](./eip-7928.md) already commits to the BAL in the execution block header as `keccak256(rlp(BAL))`. Carrying the same 32 bytes in the
 
 
 === EIP-6190 ===

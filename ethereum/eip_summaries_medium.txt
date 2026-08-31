@@ -1776,16 +1776,16 @@ CREATED: 2026-02-03
 REQUIRES: 7, 7, 3, 2, ,,  , 7, 9, 2, 8
 
 SUMMARY:
-This EIP removes the block access list (BAL) from the `ExecutionPayloadEnvelope` and propagates it as an independent sidecar on a dedicated gossip topic. This keeps a large object (~70 KiB average, up to 1 MiB) off the latency-critical propagation path and lets the BAL arrive early, so execution layer
+This EIP removes the block access list (BAL) introduced in [EIP-7928](./eip-7928.md) from the execution payload and propagates it as an independent sidecar on a dedicated gossip topic. Builders commit to the BAL by including `keccak256(rlp(BAL))`, the same value written to the execution block header, in the `ExecutionPayloadBid`. Since a
 
 SPECIFICATION:
-### Consensus Layer #### Presets | Name | Value | | - | - | | `MAX_BLOCK_ACCESS_LIST_SIZE` | `uint64(2**23)` (= 8 MiB) | #### Types The `BlockAccessList` type from [EIP-7928](./eip-7928.md): | Name | SSZ equivalent | Description | | - | - | - | | `BlockAccessList` | `ByteList[MAX_BLOCK_ACCESS_LIST_SIZE]`
+### Execution Layer BAL construction, validation and the `block_access_list_hash` header field remain as specified in [EIP-7928](./eip-7928.md). Only delivery changes: the BAL reaches the execution layer through a dedicated engine method instead of inside the payload. ### Consensus Layer #### Constants | Name | Value | Description | | -
 
 MOTIVATION:
-[EIP-7928](./eip-7928.md) adds block access lists to the `ExecutionPayload`. Under [EIP-7732](./eip-7732.md), the execution payload travels inside a `SignedExecutionPayloadEnvelope` that the builder broadcasts after the beacon block. Including the BAL (~70 KiB average, up to 1 MiB) in the envelope increases its size and propagation latency on the critical path. Separating
+[EIP-7928](./eip-7928.md) adds the BAL to the `ExecutionPayload`, which under [EIP-7732](./eip-7732.md) travels in a `SignedExecutionPayloadEnvelope` that the builder reveals during the slot. The BAL therefore arrives with the transactions, on the same topic and under the same deadline. Propagating it as an independent sidecar has four benefits: - **Separation of
 
 RATIONALE:
-### Single Commitment, Shared Across Layers [EIP-7928](./eip-7928.md) already commits the BAL into the EL header as `block_access_list_hash = keccak256(rlp(BAL))`. Carrying the same 32 bytes in the bid gives the CL everything it needs to authenticate a sidecar without introducing a second hashing scheme. The CL holds the BAL only
+### Header Commitment Reuse [EIP-7928](./eip-7928.md) already commits to the BAL in the execution block header as `keccak256(rlp(BAL))`. Carrying the same 32 bytes in the bid gives the consensus layer everything it needs to authenticate a sidecar, without a second hashing scheme and without RLP decoding outside the execution layer.
 
 
 === EIP-6190 ===
