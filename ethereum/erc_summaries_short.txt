@@ -1479,7 +1479,7 @@ This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduc
 === ERC-8153 ===
 TITLE: Facet-Based Diamonds
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-02-07
 REQUIRES: 2535
 
@@ -9933,7 +9933,7 @@ MOTIVATION:
 Within the domain of financial transactions and distributed ledger technology (DLT), the Hash-Linked Contract (HLC) concept has been recognized as valuable and has been
 
 RATIONALE:
-The protocol tries to be parsimonious. The `id` identifies the DvP and is shared by all inceptions belonging to the same multi-party DvP. Individual
+Each implementation treats `id` as a lifetime-unique identifier for one transfer leg and MUST reject reuse even after that leg completes or is cancelled.
 
 
 === ERC-2494 ===

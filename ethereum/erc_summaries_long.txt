@@ -1479,7 +1479,7 @@ This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduc
 === ERC-8153 ===
 TITLE: Facet-Based Diamonds
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-02-07
 REQUIRES: 2535
 
@@ -9927,13 +9927,13 @@ SUMMARY:
 The interfaces in this proposal model a functional transaction scheme to establish a secure *delivery-versus-payment* across two blockchains, where a) no intermediary is required and b) one of the two chains can securely interact with a stateless "decryption oracle". Here, *delivery-versus-payment* refers to the exchange of, e.g., an asset against a payment; however, the concept is generic to make a transfer of one token on one chain (e.g., the payment) conditional to the successful transfer of another token on another chain (e.g., the asset). The scheme is realized by two smart contracts, one on each chain. One smart
 
 SPECIFICATION:
-### Methods #### Smart Contract on the chain that performs the locking (e.g. the asset chain) The following methods specify the functionality of the smart contract implementing the locking. For further information, please also look at the interface documentation [`ILockingContract.sol`](../assets/eip-7573/contracts/ILockingContract.sol). ##### Initiation of Transfer: `inceptTransfer` ```solidity function inceptTransfer(uint256 id, int amount, address from, bytes keyHashedSeller, bytes memory keyEncryptedSeller) external; ``` Called from the buyer of the token to initiate token transfer. Emits a `TransferIncepted` event. The parameter `id` is an identifier of the trade. The parameter `from` is the address of the seller (the address of the buyer
+### Methods #### Smart Contract on the chain that performs the locking (e.g. the asset chain) The following methods specify the functionality of the smart contract implementing the locking. For further information, please also look at the interface documentation [`ILockingContract.sol`](../assets/eip-7573/contracts/ILockingContract.sol). ##### Initiation of Transfer: `inceptTransfer` ```solidity function inceptTransfer( uint256 id, int amount, address from, address to, bytes memory transaction, bytes memory keyHashedSeller, bytes memory keyEncryptedSeller ) external; ``` Initiates token transfer and emits a `TransferIncepted` event. The parameter `id` is the lifetime-unique identifier of this transfer leg. The parameters `from` and `to` are the seller and buyer, respectively.
 
 MOTIVATION:
 Within the domain of financial transactions and distributed ledger technology (DLT), the Hash-Linked Contract (HLC) concept has been recognized as valuable and has been thoroughly investigated. The concept may help to solve the challenge of delivery-versus-payment (DvP), especially in cases where the asset chain and payment system (which may be a chain, too) are separated. A prominent application of smart contracts realizing a secure DvP is that of buying an asset, where the asset is managed on one chain (the asset chain), but the payments are executed on another chain (the payment chain). Proposed solutions are based on
 
 RATIONALE:
-The protocol tries to be parsimonious. The `id` identifies the DvP and is shared by all inceptions belonging to the same multi-party DvP. Individual payment legs are identified by the DvP `id` together with their participant context. Implementations MUST reject overlapping live legs with the same internal leg key. Oracle requests use the separate, oracle-assigned `requestId` and therefore do not impose contract-global lifetime uniqueness on the DvP `id`. The `key` and the `encryptedKey` arguments are strings to allow the flexible use of different encryption schemes. The decryption/encryption scheme should be inferable from the contents of the `encryptedKey`. ###
+Each implementation treats `id` as a lifetime-unique identifier for one transfer leg and MUST reject reuse even after that leg completes or is cancelled. Corresponding locking and decryption contracts may use the same numeric `id` for the two sides of that operation. Applications correlate several distinct legs by encoding a shared group identifier and any other group definition in each leg's immutable `transaction` data. Oracle requests use a separate, oracle-assigned `requestId`. The `key` and the `encryptedKey` arguments are strings to allow the flexible use of different encryption schemes. The decryption/encryption scheme should be inferable from the contents of
 
 
 === ERC-2494 ===
