@@ -1636,7 +1636,7 @@ The intent from individual technical decisions made during the development of **
 === ERC-8167 ===
 TITLE: Modular Dispatch Proxies
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-02-16
 REQUIRES: 
 
