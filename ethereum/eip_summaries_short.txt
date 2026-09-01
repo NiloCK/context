@@ -5904,6 +5904,26 @@ RATIONALE:
 ### Enforcement at deposit ingestion Invalid deposits are already silently ignored by the consensus layer if the signature is invalid. This EIP adds one
 
 
+=== EIP-8355 ===
+TITLE: Precompiles for ML-DSA Verification
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-30
+REQUIRES: 
+
+SUMMARY:
+Three precompiles verify Module-Lattice-Based Digital Signature Algorithm (ML-DSA) signatures[^fips204] at NIST security levels II, III, and V, corresponding to parameter sets ML-DSA-44, ML-DSA-65, and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Ethereum needs a post-quantum signature verifier that a contract can call. ML-DSA is the first lattice signature scheme NIST has published as a final
+
+RATIONALE:
+### Always returning 32 bytes These precompiles deliberately match neither existing verifier. `ECRECOVER` returns an empty byte string on failure, which Solidity surfaces to
+
+
 === EIP-7775 ===
 TITLE: BURN opcode
 TYPE: Standards Track Core

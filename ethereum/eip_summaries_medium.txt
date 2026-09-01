@@ -5904,6 +5904,26 @@ RATIONALE:
 ### Enforcement at deposit ingestion Invalid deposits are already silently ignored by the consensus layer if the signature is invalid. This EIP adds one optional validation condition: if an active preregistration exists for a pubkey, only deposits with matching withdrawal credentials and a valid BLS signature are accepted. Deposits
 
 
+=== EIP-8355 ===
+TITLE: Precompiles for ML-DSA Verification
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-30
+REQUIRES: 
+
+SUMMARY:
+Three precompiles verify Module-Lattice-Based Digital Signature Algorithm (ML-DSA) signatures[^fips204] at NIST security levels II, III, and V, corresponding to parameter sets ML-DSA-44, ML-DSA-65, and ML-DSA-87. Each precompile takes a single concatenated input of the form `pubkey ++ signature ++ message` with no length prefixes. The public key and the
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Precompile addresses Three precompiles are added at a contiguous block of addresses. | Precompile
+
+MOTIVATION:
+Ethereum needs a post-quantum signature verifier that a contract can call. ML-DSA is the first lattice signature scheme NIST has published as a final standard, and the surrounding ecosystem has converged on it: cloud key management services and hardware security modules generate and sign with ML-DSA keys at all
+
+RATIONALE:
+### Always returning 32 bytes These precompiles deliberately match neither existing verifier. `ECRECOVER` returns an empty byte string on failure, which Solidity surfaces to the caller as a zero address, and secp256r1 verification ([EIP-7951](./eip-7951.md)) returns an empty byte string as well. Returning a fixed 32 bytes instead lets a
+
+
 === EIP-7775 ===
 TITLE: BURN opcode
 TYPE: Standards Track Core
