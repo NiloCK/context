@@ -9078,6 +9078,26 @@ RATIONALE:
 ### Why a per-validator seal? Consent should be cryptographic, not implicit. Every validator in a batch signs an authorization binding them to the specific batcher for a specific slot. - **Non-consensual inclusion.** A malicious operator cannot construct a batch claiming validators outside their control. BLS forgery is infeasible. -
 
 
+=== EIP-8369 ===
+TITLE: VOPS Profiles for FOCIL Eligibility
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2026-08-05
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 3, 0, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 0, 5, ,,  , 7, 8, 4, 3, ,,  , 7, 9, 2, 8, ,,  , 8, 1, 4, 1, ,,  , 8, 2, 5, 0, ,,  , 8, 2, 7, 2
+
+SUMMARY:
+This EIP describes two validity-only partial statelessness (VOPS) profiles for fork-choice enforced inclusion list (FOCIL) eligibility. Profile 1 covers legacy, [EIP-2930](./eip-2930.md), [EIP-1559](./eip-1559.md), and [EIP-7702](./eip-7702.md) transactions and keeps the end of payload omission check from FOCIL ([EIP-7805](./eip-7805.md)). Profile 2 covers [EIP-8141](./eip-8141.md) frame transactions whose validation stays within a fixed account
+
+SPECIFICATION:
+This EIP is Informational. It describes a nonbinding reference model for the eligibility boundary, state surface, and budget. A future Standards Track extension to [EIP-7805](./eip-7805.md) must restate every binding rule, constant, encoding, and test vector; see [EIP-7805 extension requirements](#eip-7805-extension-requirements). Must, should, and may are used in their ordinary English
+
+MOTIVATION:
+FOCIL ([EIP-7805](./eip-7805.md)) requires builders to include IL transactions unless a missing transaction is invalid when appended to the payload or the payload does not have enough remaining gas to append it. That rule is cheap for Profile 1 transactions because the omission check depends mainly on gas, nonce, and
+
+RATIONALE:
+A single eligibility boundary prevents nodes from agreeing on an IL while disagreeing on which omissions are enforceable. Separating mempool admission from eligibility lets the public mempool stay conservative while custom paths carry transactions that still fit the FOCIL budget. Profile 1 keeps the end of payload rule because
+
+
 === EIP-649 ===
 TITLE: Metropolis Difficulty Bomb Delay and Block Reward Reduction
 TYPE: Standards Track Core
