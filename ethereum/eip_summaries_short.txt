@@ -3334,6 +3334,26 @@ RATIONALE:
 This EIP aims to reduce the total number of validators without changing anything about the economic security of the protocol. It provides a mechanism
 
 
+=== EIP-8379 ===
+TITLE: Top-up Sync
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-08-06
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces an engine API method for querying the execution client head, distinguishing the head of the block chain from the head for
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Today, execution and consensus clients each obtain blocks independently: consensus clients via gossip and req/resp, execution clients via devp2p. This duplicates network functionality across
+
+RATIONALE:
+### Why a new method? Top-up sync inverts the direction of control: the execution client no longer syncs blocks by itself, so the consensus
+
+
 === EIP-7971 ===
 TITLE: Hard Limits for Transient Storage
 TYPE: Standards Track Core

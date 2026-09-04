@@ -3334,6 +3334,26 @@ RATIONALE:
 This EIP aims to reduce the total number of validators without changing anything about the economic security of the protocol. It provides a mechanism by which large node operators who control significant amounts of stake can consolidate into fewer validators. We analyze the reasoning behind each of the core features. ### Increasing the `MAX_EFFECTIVE_BALANCE`, while creating a `MIN_ACTIVATION_BALANCE` While increasing the `MAX_EFFECTIVE_BALANCE` to allow larger-stake validators, it is important to keep the lower bound of `32 ETH` (by introducing a new constant – `MIN_ACTIVATION_BALANCE`) to encourage solo-staking. ### Allowing for multiple validator indices to be combined through the
 
 
+=== EIP-8379 ===
+TITLE: Top-up Sync
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-08-06
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces an engine API method for querying the execution client head, distinguishing the head of the block chain from the head for which state is held, and refines the payload status semantics so that a missing pre-state is distinguishable from missing block history. Together, these changes allow the consensus client to drive execution block sync deterministically ("top-up sync"), using `engine_newPayload` and `engine_forkchoiceUpdated` as the sole block delivery mechanism.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### `engine_getSyncStatus` This method is added to the engine API. Client software MUST support it from the activation of the fork in which this EIP is included onwards, and MUST advertise it via `engine_exchangeCapabilities`. #### Request * method: `engine_getSyncStatus` * params: none * timeout: 500ms #### Response * result: `SyncStatus` * error: code and message set in case of an exception during processing `SyncStatus`
+
+MOTIVATION:
+Today, execution and consensus clients each obtain blocks independently: consensus clients via gossip and req/resp, execution clients via devp2p. This duplicates network functionality across the two layers. With top-up sync, the consensus client syncs as usual and, in parallel, feeds the execution client each block that immediately follows the execution client head, until the execution client reaches the consensus client head. Enabling this through the engine API provides: 1. **Consensus-driven sync:** The consensus client can provide a canonical block source for the execution client, opening a path towards deprecating the eth protocol block-distribution messages (`GetBlockHeaders`/`BlockHeaders`, `GetBlockBodies`/`BlockBodies`), with snap
+
+RATIONALE:
+### Why a new method? Top-up sync inverts the direction of control: the execution client no longer syncs blocks by itself, so the consensus client needs a query meaningful when the execution client is passive. No existing engine API method reports either head on demand, and queries outside the engine API are not consistently served on the authenticated port nor specified precisely enough for a deterministic sync loop to be built on them. ### A single head rather than a set of heads An alternative design returns the set of chain tips the client is able to extend
+
+
 === EIP-7971 ===
 TITLE: Hard Limits for Transient Storage
 TYPE: Standards Track Core
