@@ -6442,6 +6442,26 @@ RATIONALE:
 This EIP defines the tree; it does not define how existing state is converted to it. Migration is specified in [EIP-8347](./eip-8347.md): the MPT state is converted offline and the tree activates fully populated at the fork. ### Single tree with zones A single key/value tree is simpler to work
 
 
+=== EIP-8360 ===
+TITLE: TCREATE Opcode
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-08-03
+REQUIRES: 1, 6, 1, ,,  , 1, 0, 1, 4, ,,  , 1, 1, 5, 3, ,,  , 3, 5, 2, 9, ,,  , 7, 6, 1, 0, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+
+SUMMARY:
+This EIP introduces a new EVM opcode, `TCREATE`, where `T` stands for transient, providing an official, gas-efficient, and state-aware mechanism for deploying temporary contracts.
+
+SPECIFICATION:
+### Parameters | Parameter| Description| Value | Source | | --- | --- | --- | --- | | `TCREATE` | New opcode | TBD | This EIP | | `BASE_OPCODE_COST` | Base opcode cost | 100 | This EIP | | `CPSB` | State gas price per byte
+
+MOTIVATION:
+Many Ethereum applications do not require deployed code to persist beyond a single transaction. Examples include state-channel contracts, single-use accounts, and other ephemeral execution environments. Today, such patterns rely on a combination of `CREATE`/`CREATE2` and `SELFDESTRUCT`. However, `SELFDESTRUCT` has no longer provided gas refunds since [EIP-3529](./eip-3529.md), can only delete
+
+RATIONALE:
+### Lower Deployment and Execution Costs Today, combining `CREATE` with `SELFDESTRUCT` is the only mechanism for implementing temporary contracts. This approach is relatively expensive and no longer benefits from gas refunds, reducing incentives for efficient state management. By making the cost of temporary contracts comparable to that of a
+
+
 === EIP-8125 ===
 TITLE: Temporary Contract Storage
 TYPE: Standards Track Core
