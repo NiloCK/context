@@ -428,7 +428,7 @@ CREATED: 2026-06-17
 REQUIRES: 4788
 
 SUMMARY:
-Store the root hashes of fixed-depth binary tree structures called "index tables" in the storage of a system contract as part of the block
+Store the root hashes of binary tree hashed lists called "index tables" in the storage of a system contract as part of the block
 
 SPECIFICATION:
 | Parameter | Value | | - | - | | `TABLE_SIZES` | `[1, 4, 16, 64, 256]` | | `TABLES_PER_LEVEL` | `1024` |

@@ -428,7 +428,7 @@ CREATED: 2026-06-17
 REQUIRES: 4788
 
 SUMMARY:
-Store the root hashes of fixed-depth binary tree structures called "index tables" in the storage of a system contract as part of the block processing logic. A new table is generated for each block, then merged into bigger tables indexing multiple blocks. The proposed design prioritizes minimalization of index processing costs during block processing. The EIP has no effect on the bloom filters stored in block headers.
+Store the root hashes of binary tree hashed lists called "index tables" in the storage of a system contract as part of the block processing logic. A new table is generated for each block, then merged into bigger tables indexing multiple blocks. The proposed design prioritizes minimalization of index processing costs during block processing. The EIP has no effect on the bloom filters stored in block headers.
 
 SPECIFICATION:
 | Parameter | Value | | - | - | | `TABLE_SIZES` | `[1, 4, 16, 64, 256]` | | `TABLES_PER_LEVEL` | `1024` | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | | `INDEX_CONTRACT_ADDRESS` | `<TBD>` | The EIP defines `len(TABLE_SIZES)` levels of index tables referenced in the system index contract. On each level the tables are indexing `TABLE_SIZES[i]` blocks each and their root hashes are stored in a ring buffer of `TABLES_PER_LEVEL` length. ### Index tables An index table is an ordered list of _index entries_ hashed into a fixed-depth binary tree. Entries have multiple types and each entry type
