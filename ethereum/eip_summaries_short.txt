@@ -810,6 +810,26 @@ RATIONALE:
 TBA
 
 
+=== EIP-8288 ===
+TITLE: Frame Type for PQ Sig and STARK Aggregation
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-03
+REQUIRES: 2, 7, 1, 8, ,,  , 8, 1, 4, 1
+
+SUMMARY:
+This EIP extends [EIP-8141](./eip-8141.md) with a new frame mode that enables EVM-level aggregation of cryptographic signatures and STARK (Scalable Transparent ARguments of Knowledge) proofs.
+
+SPECIFICATION:
+### Constants | Name | Value | |-----------------------------------|-------------------| | `DEP_VERIFY_FRAME_MODE` | `3` | | `MAX_DEPENDENCIES_PER_FRAME` | `256` | | `LEANSPHINCS_SCHEME` | `0x10` | |
+
+MOTIVATION:
+Quantum-resistant signatures and zero-knowledge proofs both have a very high calldata requirement and gas cost. Current proposals for hash-based signatures are in the range
+
+RATIONALE:
+### Why a new frame mode instead of an EVM opcode? If an EVM opcode were chosen instead, the core question is how to
+
+
 === EIP-2844 ===
 TITLE: Add DID related methods to the JSON-RPC
 TYPE: Standards Track Interface

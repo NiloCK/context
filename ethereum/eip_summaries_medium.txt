@@ -810,6 +810,26 @@ RATIONALE:
 TBA
 
 
+=== EIP-8288 ===
+TITLE: Frame Type for PQ Sig and STARK Aggregation
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-06-03
+REQUIRES: 2, 7, 1, 8, ,,  , 8, 1, 4, 1
+
+SUMMARY:
+This EIP extends [EIP-8141](./eip-8141.md) with a new frame mode that enables EVM-level aggregation of cryptographic signatures and STARK (Scalable Transparent ARguments of Knowledge) proofs. The scheme allows transactions to carry lightweight **dependencies** — `(scheme, data_hash, verification_key_hash)` triples — which are aggregated off-chain into a single recursive STARK. Block validity
+
+SPECIFICATION:
+### Constants | Name | Value | |-----------------------------------|-------------------| | `DEP_VERIFY_FRAME_MODE` | `3` | | `MAX_DEPENDENCIES_PER_FRAME` | `256` | | `LEANSPHINCS_SCHEME` | `0x10` | | `LEANSTARK_SCHEME` | `0x11` | | `LEANSPHINCS_VERIFICATION_GAS` | `3000` | | `LEANSTARK_VERIFICATION_GAS` | `30000` | | `AGGREGATED_VK` | `TBD` | | `AGGREGATION_INTERVAL` | `1000` (milliseconds) |
+
+MOTIVATION:
+Quantum-resistant signatures and zero-knowledge proofs both have a very high calldata requirement and gas cost. Current proposals for hash-based signatures are in the range of ~2-3 kB and ~150,000 to 200,000 gas to verify. Lattice-based signatures have a similar cost. Meanwhile, hash-based zero-knowledge proofs (STARKs) all take over 128
+
+RATIONALE:
+### Why a new frame mode instead of an EVM opcode? If an EVM opcode were chosen instead, the core question is how to handle missing or invalid proofs. From a mempool node's point of view, if it sees a dependency appear during transaction execution, and it has no
+
+
 === EIP-2844 ===
 TITLE: Add DID related methods to the JSON-RPC
 TYPE: Standards Track Interface
