@@ -9030,6 +9030,26 @@ RATIONALE:
 The traditional approach involves using a push method, as depicted in the following diagram: ![](../assets/eip-7533/2.png) If there are 6 chains, each chain needs to
 
 
+=== ERC-8377 ===
+TITLE: Reference-Relative Slippage Bounds
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-08-05
+REQUIRES: 1, 6, 5, ,,  , 7, 7, 2, 6
+
+SUMMARY:
+This proposal defines an interface for reference-relative slippage protection on token swaps. Instead of committing to a static `minAmountOut` at signing time, the caller
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC
+
+MOTIVATION:
+Today a swap is protected by a single `minAmountOut` chosen when the transaction is built. This is the exact lever MEV extraction exploits: -
+
+RATIONALE:
+Why reference-relative instead of a static minimum? A static `minAmountOut` encodes the market as of signing; the attacker operates in the delta to execution.
+
+
 === ERC-7929 ===
 TITLE: PermaLink Asset Bound Token
 TYPE: Standards Track ERC
