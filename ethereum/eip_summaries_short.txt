@@ -811,7 +811,7 @@ TBA
 
 
 === EIP-8288 ===
-TITLE: Frame Type for PQ Sig and STARK Aggregation
+TITLE: In-mempool signature and proof aggregation
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-06-03
