@@ -7354,7 +7354,7 @@ CREATED: 2025-02-21
 REQUIRES: 2, 9, 2, 9, ,,  , 8, 1, 4, 1
 
 SUMMARY:
-This proposal introduces a new opcode that allows contracts to inspect the transaction outcomes on-chain. This opcode will allow contract developers to define assertions for state changes that can be enforced on-chain. These can protect Ethereum users by restricting the behavior of the smart contracts they are interacting with.
+This proposal introduces three opcodes, `TXTRACE`, `TXDIFF`, and `EVENTDATACOPY`, that let a contract inspect the outcome of the transaction executing it: the balance, storage, and code changes it produced, and the events it emitted. `TXTRACE` enumerates the full transaction state diff, `TXDIFF` reads a single entry by key, and
 
 SPECIFICATION:
 The opcode bytes for `TXTRACE`, `TXDIFF`, and `EVENTDATACOPY`, and the `POST_TX` frame mode value, are allocated by the frame-transaction family registry in [EIP-8141](./eip-8141.md), which carries the authoritative opcode and frame-mode assignments for the family. The `TXTRACE` and `TXDIFF` parameter spaces are those opcodes' own operands and are defined here
@@ -8313,7 +8313,7 @@ SUMMARY:
 This proposal increases the cost of state creation operations, thus avoiding excessive state growth under increased block gas limits. It introduces a new variable, `CPSB` (cost per state byte), and sets this unit of gas costs per new state byte by targeting an average state growth of 120 GiB
 
 SPECIFICATION:
-### New parameters | **Parameter** | **Value** | |:---:|:---:| | `CPSB` | 1530 | | `STATE_BYTES_PER_STORAGE_SET` | 64 | | `STATE_BYTES_PER_NEW_ACCOUNT` | 120 | | `STATE_BYTES_PER_AUTH_BASE` | 23 | | `SYSTEM_MAX_SSTORES_PER_CALL` | 16 | ### Parameter changes Upon activation of this EIP, the following parameters of the gas model
+### New parameters | **Parameter** | **Value** | |:---:|:---:| | `CPSB` | 1530 | | `STATE_BYTES_PER_STORAGE_SET` | 64 | | `STATE_BYTES_PER_NEW_ACCOUNT` | 120 | | `STATE_BYTES_PER_AUTH_BASE` | 23 | | `SYSTEM_MAX_SSTORES_PER_CALL` | 16 | | `TX_MAX_TOTAL_GAS_LIMIT` | 4,294,967,295 (2^32 - 1) | ### Parameter changes Upon activation of this
 
 MOTIVATION:
 State creation does not have a harmonized cost, with different methods incurring varied costs for creating the same size of new state. For instance, while contract deployment only costs ~200 gas units per new byte created, new storage slots cost ~313 gas units per new byte created. Also, deploying
@@ -8844,7 +8844,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Hegotá network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) * [EIP-8141](./eip-8141.md): Frame Transaction ### Considered for Inclusion ### Declined for Inclusion ### Proposed for Inclusion *
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) * [EIP-8141](./eip-8141.md): Frame Transaction ### Considered for Inclusion ### Proposed for Inclusion * [EIP-3298](./eip-3298.md): Removal of refunds
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the network upgrade, as well as links to full specification.

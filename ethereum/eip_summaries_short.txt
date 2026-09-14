@@ -7354,7 +7354,7 @@ CREATED: 2025-02-21
 REQUIRES: 2, 9, 2, 9, ,,  , 8, 1, 4, 1
 
 SUMMARY:
-This proposal introduces a new opcode that allows contracts to inspect the transaction outcomes on-chain. This opcode will allow contract developers to define assertions
+This proposal introduces three opcodes, `TXTRACE`, `TXDIFF`, and `EVENTDATACOPY`, that let a contract inspect the outcome of the transaction executing it: the balance, storage,
 
 SPECIFICATION:
 The opcode bytes for `TXTRACE`, `TXDIFF`, and `EVENTDATACOPY`, and the `POST_TX` frame mode value, are allocated by the frame-transaction family registry in [EIP-8141](./eip-8141.md), which
