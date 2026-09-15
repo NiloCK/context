@@ -1734,7 +1734,7 @@ RATIONALE:
 === ERC-7962 ===
 TITLE: Key Hash Based Tokens
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-05-16
 REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 2, 6, 1, 2, ,,  , 5, 5, 6, 4
 
@@ -9570,7 +9570,7 @@ RATIONALE:
 === ERC-5805 ===
 TITLE: Voting with delegation
 TYPE: Standards Track ERC
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2022-07-04
 REQUIRES: 7, 1, 2, ,,  , 6, 3, 7, 2
 
@@ -9578,7 +9578,7 @@ SUMMARY:
 Many DAOs (decentralized autonomous organizations) rely on tokens to represent one's voting power. In order to perform this task effectively, the token contracts need
 
 SPECIFICATION:
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
 
 MOTIVATION:
 Beyond simple monetary transactions, decentralized autonomous organizations are arguably one of the most important use cases of blockchain and smart contract technologies. Today, many
@@ -9590,7 +9590,7 @@ Delegation allows token holders to trust a delegate with their vote while keepin
 === ERC-7562 ===
 TITLE: Account Abstraction Validation Scope Rules
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2023-09-01
 REQUIRES: 
 
