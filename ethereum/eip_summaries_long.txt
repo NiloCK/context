@@ -9381,7 +9381,7 @@ The specific curve `alt_bn128` was chosen because it is particularly well-suited
 === EIP-7784 ===
 TITLE: GETCONTRACT opcode
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Review
 CREATED: 2024-10-07
 REQUIRES: 
 

@@ -5269,21 +5269,21 @@ The contract interface and address format combination has one notable drawback, 
 === ERC-8107 ===
 TITLE: ENS Trust Registry for Agent Coordination
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-12-16
-REQUIRES: 1, 3, 7, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 8, 0, 0, 1
+REQUIRES: 1, 3, 7, ,,  , 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 3, 6, 6, 8, ,,  , 5, 2, 6, 7, ,,  , 8, 0, 0, 1
 
 SUMMARY:
-This ERC defines a **Trust Registry** that enables agents to establish and query transitive trust relationships using ENS names as identifiers. Trust is expressed at four levels (Unknown, None, Marginal, Full) and propagates through signature chains following the GNU Privacy Guard (GnuPG) web of trust model. The registry serves
+This ERC defines a **Trust Registry** that enables agents to establish and query transitive trust relationships using ENS names as identifiers. Trust is expressed at four levels (Unknown, None, Marginal, Full) and propagates through signature chains following the OpenPGP web of trust model described in [RFC 4880](https://www.rfc-editor.org/rfc/rfc4880.html). The registry
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview This ERC specifies: * Trust levels and their semantics * ENS-indexed trust attestation
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Overview This ERC specifies: * Trust levels and their semantics * ENS-indexed trust attestation
 
 MOTIVATION:
-[ERC-8001](./eip-8001.md) defines minimal primitives for multi-party agent coordination but explicitly defers trust to modules: > "Privacy, thresholds, bonding, and cross-chain are left to modules." And in Security Considerations: > "Equivocation: A participant can sign conflicting intents. Mitigate with module-level slashing or reputation." This ERC provides that trust and delegation
+[ERC-8001](./eip-8001.md) defines minimal primitives for multi-party agent coordination and defers everything above them, including reputation, to modules. Its Security Considerations name the gap directly: > "Equivocation: A participant can sign conflicting intents. Mitigate with module-level slashing or reputation." and its Motivation sets the boundary: > "Privacy, thresholds, bonding, and
 
 RATIONALE:
-### Why ENS Instead of a New Identity System? ENS is finalised [EIP-137](./eip-137.md), battle-tested, and widely adopted. Creating a new identity system would: * Add dependency on draft standards * Fragment the identity ecosystem * Require new adoption efforts ENS provides everything needed: stable identifiers, ownership semantics, and extensibility.
+### Why ENS Instead of a New Identity System? ENS is finalised [ERC-137](./eip-137.md), battle-tested, and widely adopted. Creating a new identity system would: * Add dependency on draft standards * Fragment the identity ecosystem * Require new adoption efforts ENS provides everything needed: stable identifiers, ownership semantics, and extensibility.
 
 
 === ERC-7765 ===
