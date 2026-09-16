@@ -2363,7 +2363,7 @@ TITLE: Keystore Accounts
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-14
-REQUIRES: 1, 5, 5, ,,  , 1, 7, 0, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 1, 5, 5, 9, ,,  , 2, 0, 2, 8, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 4, 3, 3, 7, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 8, 1, 9
+REQUIRES: 1, 7, 0, ,,  , 2, 7, 1, 8, ,,  , 7, 6, 2, 3
 
 SUMMARY:
 This proposal introduces a new [EIP-2718](./eip-2718.md) transaction type and an onchain Account Configuration system that together provide account abstraction: custom authentication, call batching, and gas sponsorship. Accounts register actors with onchain authenticator contracts. Transactions declare which authenticator to use, enabling nodes to filter transactions without executing arbitrary wallet code.
