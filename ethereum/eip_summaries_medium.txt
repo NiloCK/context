@@ -3976,10 +3976,10 @@ SUMMARY:
 This EIP establishes a mascot for each Ethereum network upgrade. Mascots serve to humanize and celebrate upgrades, fostering community engagement while adhering to principles of cuteness, relevance, and inclusivity. The mascot is selected through community-driven processes, with safeguards for appropriateness, by a designated facilitator (the "Mascot Wrestler").
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### 1. Mascot Requirements - **Relevance**: The mascot **SHOULD** relate thematically to the network upgrade's
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### 1. Mascot Requirements - **Relevance**: The mascot **MUST** relate thematically to one or more
 
 MOTIVATION:
-Ethereum network upgrades often introduce complex technical changes that can feel abstract to the broader community. Mascots provide a fun, memorable, and relatable symbol for each upgrade, drawing inspiration from its headliner(s). By mandating emoji-representable mascots that are cute and non-offensive, this process: - Enhances community participation and excitement
+Ethereum network upgrades often introduce complex technical changes that can feel abstract to the broader community. Mascots provide a fun, memorable, and relatable symbol for each upgrade, drawing inspiration from its headliners, the namesakes of its layer names, or its client interop events. By mandating emoji-representable mascots that are
 
 RATIONALE:
 This specification balances creativity with guardrails to prevent mascot drift (e.g., unrelated or edgy choices). Emoji-based representation ensures accessibility across digital platforms, while the animal/cute mandate aligns with Ethereum's community ethos of approachability. The self-selected Mascot Wrestler role decentralizes coordination, leveraging vetoes for accountability. Selection flexibility accommodates Ethereum's decentralized
