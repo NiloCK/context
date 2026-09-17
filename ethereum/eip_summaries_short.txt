@@ -1791,6 +1791,26 @@ RATIONALE:
 To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction then its hash, size, and type.
 
 
+=== EIP-8365 ===
+TITLE: BLS withdrawal credential retirement
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-18
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 2, 5, 1, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP retires the `BLS_WITHDRAWAL_PREFIX` (`0x00`) withdrawal credential type. A standing rule in epoch processing initiates the exit of every active validator whose withdrawal
+
+SPECIFICATION:
+### Constants | Name | Value | Comment | | --------------------------- | ----- | ---------------------------------------------------- | | `MAX_RETIREMENTS_PER_EPOCH` | TBD | Maximum retirements initiated
+
+MOTIVATION:
+The `0x00` credential type is the original genesis-era withdrawal format: `0x00 || sha256(withdrawal_bls_pubkey)[1:]`, with withdrawal controlled by a BLS key and no execution address.
+
+RATIONALE:
+### Exit as the retirement mechanism Exiting a validator natively removes it from all duty selection (proposer, attester, sync committee and any future committees)
+
+
 === EIP-8007 ===
 TITLE: Glamsterdam Gas Repricings
 TYPE: Meta 

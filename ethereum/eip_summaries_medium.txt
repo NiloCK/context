@@ -1791,6 +1791,26 @@ RATIONALE:
 To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction then its hash, size, and type. By adding the source and the nonce, the receiver has enough information to make better fetch decisions. ### Overhead The modification adds a significant overhead
 
 
+=== EIP-8365 ===
+TITLE: BLS withdrawal credential retirement
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-18
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 2, 5, 1, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP retires the `BLS_WITHDRAWAL_PREFIX` (`0x00`) withdrawal credential type. A standing rule in epoch processing initiates the exit of every active validator whose withdrawal credentials carry the `0x00` prefix, and deposits that would create new validators with `0x00` credentials are no longer processed. The `BLSToExecutionChange` operation is unchanged: a
+
+SPECIFICATION:
+### Constants | Name | Value | Comment | | --------------------------- | ----- | ---------------------------------------------------- | | `MAX_RETIREMENTS_PER_EPOCH` | TBD | Maximum retirements initiated per epoch transition | ### Consensus layer #### Epoch processing A new per-epoch step, `process_bls_credential_retirement`, is added to `process_epoch` after `process_registry_updates`: ```python def process_bls_credential_retirement(state: BeaconState)
+
+MOTIVATION:
+The `0x00` credential type is the original genesis-era withdrawal format: `0x00 || sha256(withdrawal_bls_pubkey)[1:]`, with withdrawal controlled by a BLS key and no execution address. Since Capella opened one-way conversion to `0x01`, the population has fallen from roughly 600,000 to 9,290 validators (mainnet, July 2026: 9,119 active plus 171 exited
+
+RATIONALE:
+### Exit as the retirement mechanism Exiting a validator natively removes it from all duty selection (proposer, attester, sync committee and any future committees) and ends both reward accrual and penalty exposure. No new exclusion machinery is required, and the frozen state ("no rewards, no penalties, balance intact") is
+
+
 === EIP-8007 ===
 TITLE: Glamsterdam Gas Repricings
 TYPE: Meta 

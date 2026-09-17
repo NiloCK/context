@@ -1791,6 +1791,26 @@ RATIONALE:
 To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction then its hash, size, and type. By adding the source and the nonce, the receiver has enough information to make better fetch decisions. ### Overhead The modification adds a significant overhead to announcements by adding a B_20 and a variable size filed to the current B_32, size, and type fields. We think this overhead is worth the additional gain in protocol efficiency. Details TBD <-- TODO --> . ### Alternatives While the modification is relatively straightforward, there are several design
 
 
+=== EIP-8365 ===
+TITLE: BLS withdrawal credential retirement
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-18
+REQUIRES: 6, 1, 1, 0, ,,  , 7, 2, 5, 1, ,,  , 7, 7, 3, 2
+
+SUMMARY:
+This EIP retires the `BLS_WITHDRAWAL_PREFIX` (`0x00`) withdrawal credential type. A standing rule in epoch processing initiates the exit of every active validator whose withdrawal credentials carry the `0x00` prefix, and deposits that would create new validators with `0x00` credentials are no longer processed. The `BLSToExecutionChange` operation is unchanged: a retired validator's full balance remains recoverable at any time by rotating to `0x01` execution credentials, after which the standard withdrawal sweep pays it out. This is the first stage of a staged deprecation. A companion EIP (balance sunset) gradually reduces retired `0x00` balances to zero ahead of the post-quantum
+
+SPECIFICATION:
+### Constants | Name | Value | Comment | | --------------------------- | ----- | ---------------------------------------------------- | | `MAX_RETIREMENTS_PER_EPOCH` | TBD | Maximum retirements initiated per epoch transition | ### Consensus layer #### Epoch processing A new per-epoch step, `process_bls_credential_retirement`, is added to `process_epoch` after `process_registry_updates`: ```python def process_bls_credential_retirement(state: BeaconState) -> None: current_epoch = get_current_epoch(state) retirements = 0 for index, validator in enumerate(state.validators): if retirements >= MAX_RETIREMENTS_PER_EPOCH: break if ( is_active_validator(validator, current_epoch) and validator.withdrawal_credentials[:1] == BLS_WITHDRAWAL_PREFIX and validator.exit_epoch == FAR_FUTURE_EPOCH ): initiate_validator_exit(state, ValidatorIndex(index)) retirements += 1 ``` This is a standing rule, not a one-time transition: it enforces the
+
+MOTIVATION:
+The `0x00` credential type is the original genesis-era withdrawal format: `0x00 || sha256(withdrawal_bls_pubkey)[1:]`, with withdrawal controlled by a BLS key and no execution address. Since Capella opened one-way conversion to `0x01`, the population has fallen from roughly 600,000 to 9,290 validators (mainnet, July 2026: 9,119 active plus 171 exited awaiting credential rotation), but the decline has stalled. Conversion inclusions have decayed to double digits per month, and of the 9,119 still-active `0x00` validators, 374 have not attested for over six months and 253 have never attested in a 14-month observation window. These are, with high likelihood, validators whose
+
+RATIONALE:
+### Exit as the retirement mechanism Exiting a validator natively removes it from all duty selection (proposer, attester, sync committee and any future committees) and ends both reward accrual and penalty exposure. No new exclusion machinery is required, and the frozen state ("no rewards, no penalties, balance intact") is exactly the intended holding pattern while awaiting credential rotation. ### A standing rule rather than a one-time sweep A one-shot mass exit at the fork transition misses validators still in the deposit and activation pipeline, which can surface weeks later, and would require a second special-case event to catch
+
+
 === EIP-8007 ===
 TITLE: Glamsterdam Gas Repricings
 TYPE: Meta 
