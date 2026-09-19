@@ -3143,6 +3143,26 @@ RATIONALE:
 The `metadata` function was chosen based on existing implementations in standards and applications.
 
 
+=== ERC-8350 ===
+TITLE: Agent Memory State Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-14
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This ERC defines a minimal registry interface for committing authorized state transitions of autonomous-agent memory without placing raw memory in calldata. Each transition is represented by an `ExperienceDelta`, identified by an [EIP-712](./eip-712.md) struct hash, and applied to a linear per-space state machine. A memory space has a controller and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions - **Memory Space**: a namespace with one linear state history. - **Controller**: the
+
+MOTIVATION:
+Agent systems commonly keep long-lived memory in private databases while using Ethereum for identity, payment, or execution. Existing applications can publish an opaque content hash, but a hash alone does not establish: 1. which state it advances; 2. whether the transition is the unique successor of the current state;
+
+RATIONALE:
+### One fixed-width Delta A fixed-width struct is straightforward for independent implementations while binding state, private change, provenance, interpretation, and location. Removing authors and timestamps from the Delta avoids confusing self-asserted metadata with registry authorization or chain observation. ### State roots instead of previous record pointers A previous-record pointer
+
+
 === ERC-7579 ===
 TITLE: Minimal Modular Smart Accounts
 TYPE: Standards Track ERC

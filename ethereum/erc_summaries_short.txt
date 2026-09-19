@@ -3143,6 +3143,26 @@ RATIONALE:
 The `metadata` function was chosen based on existing implementations in standards and applications.
 
 
+=== ERC-8350 ===
+TITLE: Agent Memory State Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-14
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This ERC defines a minimal registry interface for committing authorized state transitions of autonomous-agent memory without placing raw memory in calldata. Each transition is
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Agent systems commonly keep long-lived memory in private databases while using Ethereum for identity, payment, or execution. Existing applications can publish an opaque content
+
+RATIONALE:
+### One fixed-width Delta A fixed-width struct is straightforward for independent implementations while binding state, private change, provenance, interpretation, and location. Removing authors and
+
+
 === ERC-7579 ===
 TITLE: Minimal Modular Smart Accounts
 TYPE: Standards Track ERC

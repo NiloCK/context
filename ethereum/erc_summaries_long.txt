@@ -3143,6 +3143,26 @@ RATIONALE:
 The `metadata` function was chosen based on existing implementations in standards and applications.
 
 
+=== ERC-8350 ===
+TITLE: Agent Memory State Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-14
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This ERC defines a minimal registry interface for committing authorized state transitions of autonomous-agent memory without placing raw memory in calldata. Each transition is represented by an `ExperienceDelta`, identified by an [EIP-712](./eip-712.md) struct hash, and applied to a linear per-space state machine. A memory space has a controller and a replaceable authorizer. Both externally owned accounts and [ERC-1271](./eip-1271.md) contract accounts are supported. Payload semantics, storage, memory taxonomies, inference proofs, deletion attestations, and markets are intentionally outside the core interface.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions - **Memory Space**: a namespace with one linear state history. - **Controller**: the account authorized to replace the controller or authorizer. - **Authorizer**: the account authorized to approve state transitions. - **Experience Delta**: the fixed-width transition claim defined below. - **Private witness**: off-chain data required to open a commitment, including payloads, salts, encryption metadata, and locators. - **Transition ID**: the EIP-712 `hashStruct`
+
+MOTIVATION:
+Agent systems commonly keep long-lived memory in private databases while using Ethereum for identity, payment, or execution. Existing applications can publish an opaque content hash, but a hash alone does not establish: 1. which state it advances; 2. whether the transition is the unique successor of the current state; 3. who controls the namespace and who may authorize updates; 4. whether all externally meaningful references were signed; or 5. whether independent implementations derive the same transition identifier. Publishing raw prompts, embeddings, preferences, policies, or latent state is incompatible with privacy and is often uneconomical. This ERC therefore commits
+
+RATIONALE:
+### One fixed-width Delta A fixed-width struct is straightforward for independent implementations while binding state, private change, provenance, interpretation, and location. Removing authors and timestamps from the Delta avoids confusing self-asserted metadata with registry authorization or chain observation. ### State roots instead of previous record pointers A previous-record pointer proves only list linkage. Binding the exact prior state root and computing the next root makes the transition relation explicit and prevents an update from claiming an unrelated prior memory state. ### Controller and authorizer separation The controller is an administrative recovery boundary. The authorizer may be a hot
+
+
 === ERC-7579 ===
 TITLE: Minimal Modular Smart Accounts
 TYPE: Standards Track ERC
