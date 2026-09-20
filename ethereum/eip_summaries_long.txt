@@ -6487,7 +6487,7 @@ TITLE: TCREATE Opcode
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-08-03
-REQUIRES: 1, 6, 1, ,,  , 1, 0, 1, 4, ,,  , 1, 1, 5, 3, ,,  , 3, 5, 2, 9, ,,  , 7, 6, 1, 0, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 1, 6, 1, ,,  , 6, 8, 4, ,,  , 1, 0, 1, 4, ,,  , 1, 1, 5, 3, ,,  , 3, 5, 2, 9, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP introduces a new EVM opcode, `TCREATE`, where `T` stands for transient, providing an official, gas-efficient, and state-aware mechanism for deploying temporary contracts.
