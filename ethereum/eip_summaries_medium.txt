@@ -8864,7 +8864,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Hegotá network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) * [EIP-8141](./eip-8141.md): Frame Transaction ### Considered for Inclusion ### Proposed for Inclusion * [EIP-3298](./eip-3298.md): Removal of refunds
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) * [EIP-8141](./eip-8141.md): Frame Transaction ### Considered for Inclusion * [EIP-8015](./eip-8015.md): Remove `deposit` and `eth1data` fields ### Proposed
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the network upgrade, as well as links to full specification.
