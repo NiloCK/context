@@ -7652,6 +7652,26 @@ RATIONALE:
 By standardizing the `CreatorAttribution` event, this EIP enables platforms to ascertain creator attribution without relying on implicit assumptions. Establishing a standard for creator attribution empowers platforms to manage the complex aspects of deploying contracts while preserving accurate onchain creator information. This approach ensures a more reliable and transparent method for identifying NFT creators, fostering trust among participants in the NFT ecosystem. [ERC-5375](./eip-5375.md) attempts to solve the same issue and although offchain data offers improved backward compatibility, ensuring accurate and immutable creator attribution is vital for NFTs. A standardized onchain method for creator attribution is inherently more reliable and
 
 
+=== ERC-8410 ===
+TITLE: Portable Execution Plan Artifact
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-04
+REQUIRES: 1, 5, 5, ,,  , 7, 1, 2
+
+SUMMARY:
+This proposal defines the *execution plan*: a self-contained JSON document that describes an ordered sequence of calls one sender is asked to make on one chain, together with a keccak256 *plan digest* over exactly the fields that determine what gets broadcast. A plan is produced by software that holds no keys — a routing service, a protocol front end, a scheduled job, an AI agent's tool server — and is consumed by a wallet that holds the key and decides, on its own, whether to sign. The document is transport-neutral: it can be returned by an HTTP endpoint,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Machine-readable schemas are provided for [the execution plan](../assets/eip-8410/execution-plan.schema.json), [the typed-data signature request](../assets/eip-8410/typed-data-signature-request.schema.json), and [the artifact reference](../assets/eip-8410/artifact-reference.schema.json). ### Quantity encoding A *quantity* is a JSON string holding a canonical unsigned decimal integer: the single character `0`, or an ASCII digit string with no leading zero. A quantity MUST fit in a `uint256`. Decimal strings are used rather than JSON numbers because IEEE-754 doubles cannot represent the full
+
+MOTIVATION:
+Wallets increasingly execute calls they did not construct. The construction is done by a swap router, a lending front end, a yield optimizer, or an autonomous agent, and the wallet's job is reduced to deciding whether to sign. That split is now the normal shape of an onchain interaction, but the object that crosses the split has no agreed form. Today it crosses as an ad-hoc JSON blob whose fields are whatever the producer's SDK happened to emit, or as an in-page JSON-RPC call that exists only for the lifetime of a browser tab. Both work. Neither gives
+
+RATIONALE:
+### Why an artifact rather than an interface call [EIP-5792](./eip-5792.md) also carries a batch of calls to a wallet, as `wallet_sendCalls` arguments, and this proposal borrows its capability negotiation. The difference is lifetime. An interface call exists between two live endpoints; an artifact is a value that can be stored, forwarded, queued for tomorrow, reviewed on a different device, and compared to what was broadcast a month later. The use cases that motivate this proposal — a plan prepared by a service and approved by a person somewhere else, a scheduled job whose output is audited after the
+
+
 === ERC-4671 ===
 TITLE: Non-Tradable Tokens Standard
 TYPE: Standards Track ERC

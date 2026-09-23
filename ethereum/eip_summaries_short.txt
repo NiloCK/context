@@ -5772,7 +5772,7 @@ MOTIVATION:
 Currently, non-Ethereum-L1 EVM chains cannot innovate on the EVM by introducing new instructions, because they run a risk of becoming incompatible with the Ethereum
 
 RATIONALE:
-### No effect on `JUMPDEST` analysis An alternative considered was to have `EXTENSION`: - invalidate `0x5b` byte following it as a jump destination and
+### Usage outside of Ethereum L1 Outside of Ethereum L1, `EXTENSION` may have meaningful behavior during execution, but it is up to the particular
 
 
 === EIP-969 ===
@@ -7612,6 +7612,26 @@ This will simplify certain future features where unless this is implemented, sev
 
 RATIONALE:
 N/A
+
+
+=== EIP-8383 ===
+TITLE: Reduce CL Block Retention Window
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-08-17
+REQUIRES: 
+
+SUMMARY:
+This EIP reduces the minimum consensus-layer (CL) block-serving window from 33,024 epochs to 8,192 epochs. ```text MIN_EPOCHS_FOR_BLOCK_REQUESTS = 8192 ``` The existing window comes
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Consensus clients retain recent signed beacon blocks. Peers request these blocks through `BeaconBlocksByRange` and `BeaconBlocksByRoot`. Checkpoint sync uses this history; a node gets a
+
+RATIONALE:
+### Why 8,192 epochs The protocol does not require a specific multiplier over the current weak-subjectivity bound. The value 4,096 is the smallest power
 
 
 === EIP-7705 ===

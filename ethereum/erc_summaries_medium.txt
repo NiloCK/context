@@ -7652,6 +7652,26 @@ RATIONALE:
 By standardizing the `CreatorAttribution` event, this EIP enables platforms to ascertain creator attribution without relying on implicit assumptions. Establishing a standard for creator attribution empowers platforms to manage the complex aspects of deploying contracts while preserving accurate onchain creator information. This approach ensures a more reliable and transparent method
 
 
+=== ERC-8410 ===
+TITLE: Portable Execution Plan Artifact
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-04
+REQUIRES: 1, 5, 5, ,,  , 7, 1, 2
+
+SUMMARY:
+This proposal defines the *execution plan*: a self-contained JSON document that describes an ordered sequence of calls one sender is asked to make on one chain, together with a keccak256 *plan digest* over exactly the fields that determine what gets broadcast. A plan is produced by software that holds
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Machine-readable schemas are provided for [the execution plan](../assets/eip-8410/execution-plan.schema.json), [the typed-data signature request](../assets/eip-8410/typed-data-signature-request.schema.json), and [the artifact reference](../assets/eip-8410/artifact-reference.schema.json). ###
+
+MOTIVATION:
+Wallets increasingly execute calls they did not construct. The construction is done by a swap router, a lending front end, a yield optimizer, or an autonomous agent, and the wallet's job is reduced to deciding whether to sign. That split is now the normal shape of an onchain interaction,
+
+RATIONALE:
+### Why an artifact rather than an interface call [EIP-5792](./eip-5792.md) also carries a batch of calls to a wallet, as `wallet_sendCalls` arguments, and this proposal borrows its capability negotiation. The difference is lifetime. An interface call exists between two live endpoints; an artifact is a value that can be
+
+
 === ERC-4671 ===
 TITLE: Non-Tradable Tokens Standard
 TYPE: Standards Track ERC

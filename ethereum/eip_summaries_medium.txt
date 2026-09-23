@@ -5772,7 +5772,7 @@ MOTIVATION:
 Currently, non-Ethereum-L1 EVM chains cannot innovate on the EVM by introducing new instructions, because they run a risk of becoming incompatible with the Ethereum L1 EVM and the EVMs on other chains, in the event that these decide to implement new features using overlapping opcodes. By setting aside a
 
 RATIONALE:
-### No effect on `JUMPDEST` analysis An alternative considered was to have `EXTENSION`: - invalidate `0x5b` byte following it as a jump destination and - skip over `PUSHx` instructions following it however that would require this EIP to prescribe the size of the immediate arguments. It would also run
+### Usage outside of Ethereum L1 Outside of Ethereum L1, `EXTENSION` may have meaningful behavior during execution, but it is up to the particular EVM implementations to decide. However, in these EVMs which execute `EXTENSION`, the `JUMPDEST` analysis must still be unaffected by `EXTENSION`, i.e. the set of valid
 
 
 === EIP-969 ===
@@ -7612,6 +7612,26 @@ This will simplify certain future features where unless this is implemented, sev
 
 RATIONALE:
 N/A
+
+
+=== EIP-8383 ===
+TITLE: Reduce CL Block Retention Window
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-08-17
+REQUIRES: 
+
+SUMMARY:
+This EIP reduces the minimum consensus-layer (CL) block-serving window from 33,024 epochs to 8,192 epochs. ```text MIN_EPOCHS_FOR_BLOCK_REQUESTS = 8192 ``` The existing window comes from a worst-case weak-subjectivity calculation, using `MAX_SAFETY_DECAY = 100`. We use `SAFETY_DECAY = 10` for checkpoint sync, so with the current mainnet churn parameters, this
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Set the mainnet block-serving configuration to: ```text MIN_EPOCHS_FOR_BLOCK_REQUESTS = 8192 ``` Replace `compute_min_epochs_for_block_requests()` with: ```python
+
+MOTIVATION:
+Consensus clients retain recent signed beacon blocks. Peers request these blocks through `BeaconBlocksByRange` and `BeaconBlocksByRoot`. Checkpoint sync uses this history; a node gets a trusted weak-subjectivity checkpoint and syncs from that checkpoint to the current head. The current block-serving window includes more history than the configured weak-subjectivity policy requires
+
+RATIONALE:
+### Why 8,192 epochs The protocol does not require a specific multiplier over the current weak-subjectivity bound. The value 4,096 is the smallest power of two above the current 3,532-epoch bound. This EIP selects the next power of two, 8,192, as a conservative initial reduction from 33,024 epochs. ```text
 
 
 === EIP-7705 ===

@@ -7652,6 +7652,26 @@ RATIONALE:
 By standardizing the `CreatorAttribution` event, this EIP enables platforms to ascertain creator attribution without relying on implicit assumptions. Establishing a standard for creator attribution
 
 
+=== ERC-8410 ===
+TITLE: Portable Execution Plan Artifact
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-04
+REQUIRES: 1, 5, 5, ,,  , 7, 1, 2
+
+SUMMARY:
+This proposal defines the *execution plan*: a self-contained JSON document that describes an ordered sequence of calls one sender is asked to make on
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+
+MOTIVATION:
+Wallets increasingly execute calls they did not construct. The construction is done by a swap router, a lending front end, a yield optimizer, or
+
+RATIONALE:
+### Why an artifact rather than an interface call [EIP-5792](./eip-5792.md) also carries a batch of calls to a wallet, as `wallet_sendCalls` arguments, and this
+
+
 === ERC-4671 ===
 TITLE: Non-Tradable Tokens Standard
 TYPE: Standards Track ERC
