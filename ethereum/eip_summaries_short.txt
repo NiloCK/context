@@ -1156,7 +1156,7 @@ CREATED: 2026-06-11
 REQUIRES: 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
-This EIP introduces `SETCODEFROM`, a runtime-only EVM instruction that sets the current account's code hash to the code hash of a source account with
+This EIP introduces `SETCODEFROM`, an EVM instruction that sets the current account's code hash to the code hash of a source account with existing
 
 SPECIFICATION:
 ### Parameters The opcode is defined as follows: | Parameter | Value | | ------------------------ | ----- | | `SETCODEFROM_OPCODE` | `TBD` | ###

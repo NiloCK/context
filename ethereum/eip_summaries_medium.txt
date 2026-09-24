@@ -1156,13 +1156,13 @@ CREATED: 2026-06-11
 REQUIRES: 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
-This EIP introduces `SETCODEFROM`, a runtime-only EVM instruction that sets the current account's code hash to the code hash of a source account with existing deployed code. The new code is visible to later code execution.
+This EIP introduces `SETCODEFROM`, an EVM instruction that sets the current account's code hash to the code hash of a source account with existing deployed code. The new code is visible to later code execution.
 
 SPECIFICATION:
 ### Parameters The opcode is defined as follows: | Parameter | Value | | ------------------------ | ----- | | `SETCODEFROM_OPCODE` | `TBD` | ### `SETCODEFROM` `SETCODEFROM(source)` takes one stack item. The low 160 bits of the stack item are interpreted as `source`. Before execution: ```text [..., source] ``` After
 
 MOTIVATION:
-This EIP has two primary use cases. First, it improves code reuse and deployment economics. Deploying many contracts with identical runtime code is expensive, especially when contract deployment is repriced more closely to state growth, for example under [EIP-8037](./eip-8037.md). A factory can deploy a minimal initializer runtime, call it
+This EIP has two primary use cases. First, it improves code reuse and deployment economics. Deploying many contracts with identical runtime code is expensive, especially when contract deployment is repriced more closely to state growth, for example under [EIP-8037](./eip-8037.md). Initcode can initialize per-instance storage and then adopt shared deployed
 
 RATIONALE:
 Using an address rather than a raw code hash avoids depending on client-local code database contents, which may differ across nodes. A newly synced node may have a smaller local code database than a long-running node because it may not keep historical or unreferenced bytecode entries. For this reason,
@@ -3121,7 +3121,7 @@ SUMMARY:
 This Meta EIP lists the EIPs formally Proposed, Considered, Declined for & Scheduled for Inclusion in the Hegotá network upgrade.
 
 SPECIFICATION:
-Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) * [EIP-8141](./eip-8141.md): Frame Transaction ### Considered for Inclusion * [EIP-8015](./eip-8015.md): Remove `deposit` and `eth1data` fields ### Proposed
+Definitions for `Scheduled for Inclusion`, `Considered for Inclusion`, `Declined for Inclusion` and `Proposed for Inclusion` can be found in [EIP-7723](./eip-7723.md). ### EIPs Scheduled for Inclusion * [EIP-7805](./eip-7805.md): Fork-choice enforced Inclusion Lists (FOCIL) * [EIP-8141](./eip-8141.md): Frame Transaction ### Considered for Inclusion * [EIP-3298](./eip-3298.md): Remove storage-clear refund and refund cap *
 
 RATIONALE:
 This Meta EIP provides a global view of all changes included in the network upgrade, as well as links to full specification.
