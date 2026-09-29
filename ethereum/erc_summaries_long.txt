@@ -1530,7 +1530,7 @@ TITLE: Dynamic Compliant Interop Security Token
 TYPE: Standards Track ERC
 STATUS: Review
 CREATED: 2023-09-14
-REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 5
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 1, 5, 5, ,,  , 1, 2, 7, 1, ,,  , 5, 2, 6, 7
 
 SUMMARY:
 This proposal is a security token standard that extends [ERC-1155](./eip-1155.md) to provide a flexible framework for managing compliant real-asset security tokens. It introduces the concept of partitions, where each `tokenId` represents a distinct partition with its own set of rights and privileges. This makes it suitable for various use cases, particularly semi-fungible asset management. The standard also includes features like token locking, forced transfers for recovery, address freezing, payouts, and dynamic compliance management using off-chain vouchers.
@@ -1542,7 +1542,7 @@ MOTIVATION:
 The growing demand for tokenized real-world assets necessitates a token standard that can accommodate the unique requirements of security tokens. Existing standards, while powerful, do not fully address the need for flexible partitioning and comprehensive compliance management. This standard builds upon [ERC-1155](./eip-1155.md) by introducing partitions, allowing for the creation of semi-fungible tokens representing fractional ownership, different share classes, or other distinct units within a single token contract. This flexibility is crucial for tokenizing complex real-world assets like real estate or funds. Furthermore, it includes features essential for security tokens, such as token locking for vesting or holding periods,
 
 RATIONALE:
-### Enhancing Compliance Management The `canTransfer` function facilitates compliance checks during token transfers, offering adaptability through diverse implementation methods such as on-chain storage, oracle utilization, or any off-chain methodologies. This versatility ensures seamless integration with existing compliance frameworks, particularly in enforcing regulatory standards like KYC/AML. Additionally, functionalities like `freezeAddress`, `restrictTransfer`, `lockToken` and `forceTransfer` empower entities to regulate token movements based on specified conditions or regulatory requirements. Complementing these, the `unlockToken` function enhances transparency and accountability by facilitating the release of tokens post-compliance actions. ### Fractionalization Fractionalization in this standard is realized natively through [ERC-1155](./eip-1155.md) balances. For a given
+### Enhancing Compliance Management The `canTransfer` function facilitates compliance checks during token transfers, offering adaptability through diverse implementation methods such as on-chain storage, oracle utilization, or any off-chain methodologies. This versatility ensures seamless integration with existing compliance frameworks, particularly in enforcing regulatory standards like KYC/AML. Additionally, functionalities like `freezeAddress`, `restrictTransfer`, `lockToken` and `forceTransfer` empower entities to regulate token movements based on specified conditions or regulatory requirements. Complementing these, the `unlockToken` function enhances transparency and accountability by facilitating the release of tokens post-compliance actions. ### Compliance Authorization The authorization extension defines a typed approval for one transfer. It binds
 
 
 === ERC-2942 ===
@@ -6344,7 +6344,7 @@ Using the existing `Transfer` event instead of creating a new event (e.g. `Creat
 === ERC-7813 ===
 TITLE: Store, Table-Based Introspectable Storage
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-11-08
 REQUIRES: 
 
@@ -6355,10 +6355,10 @@ SPECIFICATION:
 ### Definitions #### Store A smart contract that implements the interface proposed by this ERC and organizes data in Tables. It emits events for each data operation so that off-chain components can replicate the state of all tables. #### Table A storage structure that holds **Records** sharing the same **Schema**. - **On-chain Table**: Stores its state on-chain and emits events for off-chain- indexers. - **Off-chain Table**: Does not store state on-chain but emits events for off-chain indexers. #### Record A piece of data stored in a **Table**, addressed by one or more keys. #### `ResourceId` A 32-byte value
 
 MOTIVATION:
-The absence of consistent standards for on-chain data management in smart contracts can lead to rigid implementations, tightly coupled contract logic with off-chain services, and challenges in updating or extending a contract’s data layout without breaking existing integrations. Using the storage mechanism defined in this ERC provides the following benefits: 1. **Automatic Indexing**: By emitting consistent, standardized events during state changes, off-chain services can automatically track on-chain state and provide schema-aware indexer APIs. 2. **Elimination of Custom Getter Functions**: Any contract or off-chain service can read stored data through a consistent interface, decoupling smart contract implementation from specific
+The absence of consistent standards for on-chain data management in smart contracts can lead to rigid implementations, tightly coupled contract logic with off-chain services, and challenges in updating or extending a contract's data layout without breaking existing integrations. Using the storage mechanism defined in this ERC provides the following benefits: 1. **Automatic Indexing**: By emitting consistent, standardized events during state changes, off-chain services can automatically track on-chain state and provide schema-aware indexer APIs. 2. **Elimination of Custom Getter Functions**: Any contract or off-chain service can read stored data through a consistent interface, decoupling smart contract implementation from specific
 
 RATIONALE:
-### Splice Events While the `Store_SetRecord` event suffices for tracking the data of each record off-chain, including `Splice` events (`Store_SpliceStaticData` and `Store_SpliceDynamicData`) allows for more efficient partial updates. When only a portion of a record changes, emitting a full `SetRecord` event would be inefficient because the entire record data would need to be read from storage and emitted. `Splice` events enable the store to emit only the minimal necessary data for the update, reducing gas consumption. This is particularly important for records with large dynamic fields, as the cost of updating them doesn’t grow with the field’s size.
+### Splice Events While the `Store_SetRecord` event suffices for tracking the data of each record off-chain, including `Splice` events (`Store_SpliceStaticData` and `Store_SpliceDynamicData`) allows for more efficient partial updates. When only a portion of a record changes, emitting a full `SetRecord` event would be inefficient because the entire record data would need to be read from storage and emitted. `Splice` events enable the store to emit only the minimal necessary data for the update, reducing gas consumption. This is particularly important for records with large dynamic fields, as the cost of updating them doesn't grow with the field's size.
 
 
 === ERC-7674 ===

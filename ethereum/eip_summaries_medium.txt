@@ -2583,20 +2583,20 @@ Two alternative solutions were considered so far: 1. Extending the structure of 
 
 
 === EIP-7907 ===
-TITLE: Meter Contract Code Size And Increase Limit
+TITLE: Meter Contract Code Size
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-03-14
-REQUIRES: 1, 7, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 8, 6, 0, ,,  , 7, 7, 0, 2
+REQUIRES: 1, 7, 0, ,,  , 2, 9, 2, 9, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 5, 4
 
 SUMMARY:
-This EIP increases the contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 64KB (65536 bytes), and adds gas metering for excess code loading. It introduces a gas cost of 2 gas per (32 byte) word for contract code exceeding 24KB, allowing deployment of contracts of
+This EIP adds gas metering for excess code loading, introducing a gas cost of 2 gas per (32 byte) word for contract code exceeding 24KB (24576 bytes). It builds on [EIP-7954](./eip-7954.md), which raises the contract code size limit to 64KB (65536 bytes) and the initcode size limit to 128KB
 
 SPECIFICATION:
 ### Definitions | Name | Value | Description | | --- | --- | --- | | `COLD_SLOAD_COST` | `2100` | The cost charged for cold loading storage as defined by [EIP-2929](./eip-2929.md). | | `WARM_STORAGE_READ_COST` | `100` | The cost charged for loading warm storage as defined by [EIP-2929](./eip-2929.md).
 
 MOTIVATION:
-EIP-170 introduced a 24KB contract code size limit to prevent potential DoS attacks, as large contract code requires O(n) resource cost in terms of disk reads, VM preprocessing, and Merkle proof sizes, all of which are not directly compensated by gas fees. However, this limit restricts legitimate use cases
+[EIP-170](./eip-170.md) introduced a 24KB contract code size limit to prevent potential DoS attacks, as large contract code requires O(n) resource cost in terms of disk reads, VM preprocessing, and Merkle proof sizes, all of which are not directly compensated by gas fees. [EIP-7954](./eip-7954.md) raises this limit to 64KB, allowing
 
 RATIONALE:
 The gas cost of 2 per word was chosen to account for: 1. The additional disk I/O for retrieving larger contract code 2. The increased computational resources for preprocessing larger code for execution (a.k.a. "JUMPDEST analysis"). 3. The growth in Merkle proof sizes for blocks containing larger contracts This
@@ -7963,23 +7963,23 @@ Here are two charts, taken from a full sync using Geth. The execution time was m
 
 
 === EIP-7716 ===
-TITLE: Anti-correlation attestation penalties
+TITLE: Anti-Correlation Attestation Penalties
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-05-25
 REQUIRES: 
 
 SUMMARY:
-The decentralization of the validator set is one of the most important properties of Ethereum for credible neutrality and censorship resistance. By adjusting penalties to foster decentralization, diversification and fault-tolerance, this EIP proposes to adjust penalties in a way that more diversified entities get lower penalties while entities with
+The decentralization of the validator set is one of the most important properties of Ethereum for credible neutrality and censorship resistance. This EIP scales the attestation penalty of validators that fail to attest as a function of how many *other* validators failed at the same time. Each slot receives
 
 SPECIFICATION:
-| Parameter | Value | | - | - | | `PENALTY_ADJUSTMENT_FACTOR` | `4096` | | `MAX_PENALTY_FACTOR` | `4` | Add a variable `NET_EXCESS_PENALTIES` to the beacon state. Let `penalty_factor` be determined through ``` min( (non_attesting_balance * PENALTY_ADJUSTMENT_FACTOR) // (NET_EXCESS_PENALTIES * total_active_balance + 1), MAX_PENALTY_FACTOR ) ``` Let `NET_EXCESS_PENALTIES`
+| Parameter | Value | Description | | - | - | - | | `MAX_PENALTY_FACTOR` | `uint64(256)` | Ceiling on the penalty factor; the single severity parameter | | `PENALTY_SLOPE` | `uint64(765)` | Slope of the penalty factor in excess offline stake; equal to `3 * (MAX_PENALTY_FACTOR -
 
 MOTIVATION:
-As of now, during times of usual network operation, there are no economic incentives to diversify node operations through using multiple different nodes, geographical locations, clients, ISP providers, etc., except for reducing the risk of penalties affecting all validators simultaneously, thereby limiting the impact to only a fraction of
+During normal network operation there is no economic incentive to diversify node operations across nodes, geographies, clients, Internet Service Providers (ISPs), or cloud providers, other than reducing the chance that all of one's validators fail simultaneously. Attestation penalties are agnostic to the behavior of other participants: a validator that
 
 RATIONALE:
-### PENALTY_ADJUSTMENT_FACTOR This variable impacts the sensitivity of the `NET_EXCESS_PENALTIES`. Given stable participation, the `penalty_factor` is one. If participation decreases, the `penalty_factor` will temporarily increase above one until `net_excess_penalties` catches up. If participation increases, the `penalty_factor` will temporarily be zero until `net_excess_penalties` catches up. The `PENALTY_ADJUSTMENT_FACTOR` regulates how fast
+### Relative-to-trailing-average design The penalty factor compares the current slot's offline balance to a slowly-updating exponential moving average of the same quantity. This has three consequences: 1. **Front-loading.** At the onset of a correlated outage the factor jumps to a value proportional to the size of the anomaly, then
 
 
 === EIP-8197 ===
@@ -10596,7 +10596,7 @@ TITLE: Frame Transaction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-01-29
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 7, 8, 0, ,,  , 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 7, 7, 8, ,,  , 7, 8, 2, 5, ,,  , 8, 0, 3, 7
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 7, 8, 0, ,,  , 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 7, 7, 8, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 7, 6, ,,  , 8, 0, 3, 7
 
 SUMMARY:
 Adds a new transaction whose validity and gas payment can be defined abstractly. This is achieved by decomposing the transaction into a sequence of *frames* which are contract calls that validate the transaction, approve gas payment, and execute standard user operations.

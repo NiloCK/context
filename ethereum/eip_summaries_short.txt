@@ -2583,20 +2583,20 @@ Two alternative solutions were considered so far: 1. Extending the structure of 
 
 
 === EIP-7907 ===
-TITLE: Meter Contract Code Size And Increase Limit
+TITLE: Meter Contract Code Size
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-03-14
-REQUIRES: 1, 7, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 8, 6, 0, ,,  , 7, 7, 0, 2
+REQUIRES: 1, 7, 0, ,,  , 2, 9, 2, 9, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 5, 4
 
 SUMMARY:
-This EIP increases the contract code size limit from 24KB (24576 bytes) introduced in [EIP-170](./eip-170.md) to 64KB (65536 bytes), and adds gas metering for
+This EIP adds gas metering for excess code loading, introducing a gas cost of 2 gas per (32 byte) word for contract code exceeding
 
 SPECIFICATION:
 ### Definitions | Name | Value | Description | | --- | --- | --- | | `COLD_SLOAD_COST` | `2100` | The cost charged
 
 MOTIVATION:
-EIP-170 introduced a 24KB contract code size limit to prevent potential DoS attacks, as large contract code requires O(n) resource cost in terms of
+[EIP-170](./eip-170.md) introduced a 24KB contract code size limit to prevent potential DoS attacks, as large contract code requires O(n) resource cost in terms of
 
 RATIONALE:
 The gas cost of 2 per word was chosen to account for: 1. The additional disk I/O for retrieving larger contract code 2. The
@@ -7963,23 +7963,23 @@ Here are two charts, taken from a full sync using Geth. The execution time was m
 
 
 === EIP-7716 ===
-TITLE: Anti-correlation attestation penalties
+TITLE: Anti-Correlation Attestation Penalties
 TYPE: Standards Track Core
-STATUS: Stagnant
+STATUS: Draft
 CREATED: 2024-05-25
 REQUIRES: 
 
 SUMMARY:
-The decentralization of the validator set is one of the most important properties of Ethereum for credible neutrality and censorship resistance. By adjusting penalties
+The decentralization of the validator set is one of the most important properties of Ethereum for credible neutrality and censorship resistance. This EIP scales
 
 SPECIFICATION:
-| Parameter | Value | | - | - | | `PENALTY_ADJUSTMENT_FACTOR` | `4096` | | `MAX_PENALTY_FACTOR` | `4` | Add a variable `NET_EXCESS_PENALTIES`
+| Parameter | Value | Description | | - | - | - | | `MAX_PENALTY_FACTOR` | `uint64(256)` | Ceiling on the penalty factor;
 
 MOTIVATION:
-As of now, during times of usual network operation, there are no economic incentives to diversify node operations through using multiple different nodes, geographical
+During normal network operation there is no economic incentive to diversify node operations across nodes, geographies, clients, Internet Service Providers (ISPs), or cloud providers,
 
 RATIONALE:
-### PENALTY_ADJUSTMENT_FACTOR This variable impacts the sensitivity of the `NET_EXCESS_PENALTIES`. Given stable participation, the `penalty_factor` is one. If participation decreases, the `penalty_factor` will temporarily
+### Relative-to-trailing-average design The penalty factor compares the current slot's offline balance to a slowly-updating exponential moving average of the same quantity. This has
 
 
 === EIP-8197 ===
@@ -10596,7 +10596,7 @@ TITLE: Frame Transaction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-01-29
-REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 7, 8, 0, ,,  , 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 7, 7, 8, ,,  , 7, 8, 2, 5, ,,  , 8, 0, 3, 7
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 7, 8, 0, ,,  , 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 7, 7, 8, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 7, 6, ,,  , 8, 0, 3, 7
 
 SUMMARY:
 Adds a new transaction whose validity and gas payment can be defined abstractly. This is achieved by decomposing the transaction into a sequence of

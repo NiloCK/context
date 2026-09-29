@@ -1530,7 +1530,7 @@ TITLE: Dynamic Compliant Interop Security Token
 TYPE: Standards Track ERC
 STATUS: Review
 CREATED: 2023-09-14
-REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 5
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 1, 5, 5, ,,  , 1, 2, 7, 1, ,,  , 5, 2, 6, 7
 
 SUMMARY:
 This proposal is a security token standard that extends [ERC-1155](./eip-1155.md) to provide a flexible framework for managing compliant real-asset security tokens. It introduces the
@@ -6344,7 +6344,7 @@ Using the existing `Transfer` event instead of creating a new event (e.g. `Creat
 === ERC-7813 ===
 TITLE: Store, Table-Based Introspectable Storage
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-11-08
 REQUIRES: 
 

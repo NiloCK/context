@@ -1530,7 +1530,7 @@ TITLE: Dynamic Compliant Interop Security Token
 TYPE: Standards Track ERC
 STATUS: Review
 CREATED: 2023-09-14
-REQUIRES: 1, 6, 5, ,,  , 1, 1, 5, 5
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 1, 5, 5, ,,  , 1, 2, 7, 1, ,,  , 5, 2, 6, 7
 
 SUMMARY:
 This proposal is a security token standard that extends [ERC-1155](./eip-1155.md) to provide a flexible framework for managing compliant real-asset security tokens. It introduces the concept of partitions, where each `tokenId` represents a distinct partition with its own set of rights and privileges. This makes it suitable for various use
@@ -6344,7 +6344,7 @@ Using the existing `Transfer` event instead of creating a new event (e.g. `Creat
 === ERC-7813 ===
 TITLE: Store, Table-Based Introspectable Storage
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2024-11-08
 REQUIRES: 
 
@@ -6355,7 +6355,7 @@ SPECIFICATION:
 ### Definitions #### Store A smart contract that implements the interface proposed by this ERC and organizes data in Tables. It emits events for each data operation so that off-chain components can replicate the state of all tables. #### Table A storage structure that holds **Records** sharing the same
 
 MOTIVATION:
-The absence of consistent standards for on-chain data management in smart contracts can lead to rigid implementations, tightly coupled contract logic with off-chain services, and challenges in updating or extending a contract’s data layout without breaking existing integrations. Using the storage mechanism defined in this ERC provides the following
+The absence of consistent standards for on-chain data management in smart contracts can lead to rigid implementations, tightly coupled contract logic with off-chain services, and challenges in updating or extending a contract's data layout without breaking existing integrations. Using the storage mechanism defined in this ERC provides the following
 
 RATIONALE:
 ### Splice Events While the `Store_SetRecord` event suffices for tracking the data of each record off-chain, including `Splice` events (`Store_SpliceStaticData` and `Store_SpliceDynamicData`) allows for more efficient partial updates. When only a portion of a record changes, emitting a full `SetRecord` event would be inefficient because the entire record data
