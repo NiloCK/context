@@ -8333,6 +8333,26 @@ RATIONALE:
 Getting rid of the `SELFDESTRUCT` opcode has been considered in the past, and there are currently no strong reasons to use it. This EIP implements a behavior that will attempt to leave some common uses of `SELFDESTRUCT` working, while reducing the complexity of the change on EVM implementations that would come from contract versioning. Handling the account creation and contract creation as two distinct and possibly separate events is needed for use cases such as counterfactual accounts. By allowing the `SELFDESTRUCT` to delete the account at contract creation time it will not result in stubs of counterfactually instantiated
 
 
+=== EIP-8411 ===
+TITLE: Fast Execution Payload Broadcast
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-09-05
+REQUIRES: 7732
+
+SUMMARY:
+[EIP-7732](./eip-7732.md) propagates the execution payload as a single message on the `execution_payload` gossipsub topic. This EIP replaces that topic with `execution_payload_chunks`, which carries the payload envelope split into `TOTAL_EXECUTION_PAYLOAD_CHUNKS` chunks. The builder commits to the chunk set with a Merkle root carried in the execution bid, so each chunk is independently verifiable from a single bid signature check plus an inclusion proof.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Parameters | Constant | Value | | --- | --- | | `TOTAL_EXECUTION_PAYLOAD_CHUNKS` | `64` | | `CHUNK_INCLUSION_PROOF_DEPTH` | `6` | | `MAX_PAYLOAD_CHUNK_SIZE` | `MAX_PAYLOAD_SIZE // TOTAL_EXECUTION_PAYLOAD_CHUNKS` (163,840 bytes) | ### Custom types | Name | SSZ equivalent | Description | | --- | --- | --- | | `ChunkIndex` | `uint64` | Index of a chunk, `0` through `TOTAL_EXECUTION_PAYLOAD_CHUNKS - 1` |
+
+MOTIVATION:
+The gas-limit growth that [EIP-7732](./eip-7732.md) enables implies larger payloads leading to increased latency. If Payload Timeliness Committee (PTC) members do not receive the payload within the attestation deadline, an otherwise valid payload is considered missed. The existing `execution_payload` gossipsub topic scales poorly as payloads grow. Two effects dominate: 1. Once a peer has received a large message, it is hard to cancel in-flight duplicates, so the same bytes arrive several times and consume bandwidth that could carry new data. 2. A peer must download the full message before it can forward any of it, so each hop adds
+
+RATIONALE:
+**Why a Merkle commitment.** Alternatives such as KZG place proof generation on the builder's critical path. A Merkle tree over chunks is cheap enough to build at bid time, and a single root in the bid makes each chunk self-verifying against one already-verified signature. **Why `TOTAL_EXECUTION_PAYLOAD_CHUNKS = 64`.** The value is not derived from measurement; smaller chunk counts already show benefit compared to single large messages. 64 is chosen for forward compatibility in case we decide to extend protocol erasure coding via `c-kzg`, which segments data into 64 chunks and extends them to 128. **Why unpadded `ByteList` chunks.**
+
+
 === EIP-1418 ===
 TITLE: Blockchain Storage Rent Payment
 TYPE: Standards Track Core
@@ -9429,7 +9449,7 @@ SUMMARY:
 This EIP proposes an optional mechanism to set custom balance thresholds for sweep withdrawals for compounding withdrawal credentials (`0x02`) validators. This mechanism allows validators to specify above which balance they want their rewards to be swept to their withdrawal address, providing greater flexibility and control over their staking rewards.
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants #### Execution layer | Name | Value | Comment | | ----------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------ | | `SET_SWEEP_THRESHOLD_REQUEST_TYPE` | `0x03` | The [EIP-7685](./eip-7685.md) type prefix for set sweep threshold request | | `SET_SWEEP_THRESHOLD_REQUEST_PREDEPLOY_ADDRESS` | `TBD` | Where to call and store relevant details about set sweep threshold request mechanism | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | Address used to invoke system operation
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants #### Execution layer | Name | Value | Comment | | ----------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------ | | `SET_SWEEP_THRESHOLD_REQUEST_TYPE` | `0x05` | The [EIP-7685](./eip-7685.md) type prefix for set sweep threshold request | | `SET_SWEEP_THRESHOLD_REQUEST_PREDEPLOY_ADDRESS` | `TBD` | Where to call and store relevant details about set sweep threshold request mechanism | | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | Address used to invoke system operation
 
 MOTIVATION:
 The current default sweep threshold (2,048 ETH) for validators using compounding withdrawal credentials (`0x02`) may not meet the needs of all validators. Some validators may prefer to accumulate rewards on the validator balance, while others may want to sweep before reaching the current threshold of 2,048 ETH. By allowing optional custom sweep thresholds, validators can optimize their reward management according to their individual strategies and preferences. Since the introduction of the `0x02` compounding withdrawal credentials type, we have observed a very low rate of validators transitioning to `0x02`. One reason is that many validators do not want to

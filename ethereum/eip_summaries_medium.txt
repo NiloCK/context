@@ -8333,6 +8333,26 @@ RATIONALE:
 Getting rid of the `SELFDESTRUCT` opcode has been considered in the past, and there are currently no strong reasons to use it. This EIP implements a behavior that will attempt to leave some common uses of `SELFDESTRUCT` working, while reducing the complexity of the change on EVM implementations that
 
 
+=== EIP-8411 ===
+TITLE: Fast Execution Payload Broadcast
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-09-05
+REQUIRES: 7732
+
+SUMMARY:
+[EIP-7732](./eip-7732.md) propagates the execution payload as a single message on the `execution_payload` gossipsub topic. This EIP replaces that topic with `execution_payload_chunks`, which carries the payload envelope split into `TOTAL_EXECUTION_PAYLOAD_CHUNKS` chunks. The builder commits to the chunk set with a Merkle root carried in the execution bid, so each chunk
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Parameters | Constant | Value | | --- | --- | | `TOTAL_EXECUTION_PAYLOAD_CHUNKS` |
+
+MOTIVATION:
+The gas-limit growth that [EIP-7732](./eip-7732.md) enables implies larger payloads leading to increased latency. If Payload Timeliness Committee (PTC) members do not receive the payload within the attestation deadline, an otherwise valid payload is considered missed. The existing `execution_payload` gossipsub topic scales poorly as payloads grow. Two effects dominate: 1.
+
+RATIONALE:
+**Why a Merkle commitment.** Alternatives such as KZG place proof generation on the builder's critical path. A Merkle tree over chunks is cheap enough to build at bid time, and a single root in the bid makes each chunk self-verifying against one already-verified signature. **Why `TOTAL_EXECUTION_PAYLOAD_CHUNKS = 64`.** The
+
+
 === EIP-1418 ===
 TITLE: Blockchain Storage Rent Payment
 TYPE: Standards Track Core
