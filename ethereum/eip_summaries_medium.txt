@@ -1673,23 +1673,23 @@ Making the version available in the EIP's metadata header allows for programmati
 
 
 === EIP-8365 ===
-TITLE: BLS withdrawal credential retirement
+TITLE: Disallow new 0x00 validators
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-07-18
 REQUIRES: 6, 1, 1, 0, ,,  , 7, 2, 5, 1, ,,  , 7, 7, 3, 2
 
 SUMMARY:
-This EIP retires the `BLS_WITHDRAWAL_PREFIX` (`0x00`) withdrawal credential type. A standing rule in epoch processing initiates the exit of every active validator whose withdrawal credentials carry the `0x00` prefix, and deposits that would create new validators with `0x00` credentials are no longer processed. The `BLSToExecutionChange` operation is unchanged: a
+This EIP closes the inflow of the `BLS_WITHDRAWAL_PREFIX` (`0x00`) withdrawal credential type. Deposits that would create new validators with `0x00` credentials are not processed. Existing `0x00` validators are unaffected. They continue to validate, earn rewards, and accrue penalties. The `BLSToExecutionChange` operation remains available for conversion to `0x01` execution credentials.
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | | --------------------------- | ----- | ---------------------------------------------------- | | `MAX_RETIREMENTS_PER_EPOCH` | TBD | Maximum retirements initiated per epoch transition | ### Consensus layer #### Epoch processing A new per-epoch step, `process_bls_credential_retirement`, is added to `process_epoch` after `process_registry_updates`: ```python def process_bls_credential_retirement(state: BeaconState)
+### Consensus layer #### Deposit processing `apply_pending_deposit` is modified so that deposits which would create a new validator with `0x00` withdrawal credentials are not applied: ```python def apply_pending_deposit(state: BeaconState, deposit: PendingDeposit) -> None: validator_pubkeys = [v.pubkey for v in state.validators] if deposit.pubkey not in validator_pubkeys: # [New in this
 
 MOTIVATION:
-The `0x00` credential type is the original genesis-era withdrawal format: `0x00 || sha256(withdrawal_bls_pubkey)[1:]`, with withdrawal controlled by a BLS key and no execution address. Since Capella opened one-way conversion to `0x01`, the population has fallen from roughly 600,000 to 9,290 validators (mainnet, July 2026: 9,119 active plus 171 exited
+The `0x00` credential type is the original genesis-era withdrawal format: `0x00 || sha256(withdrawal_bls_pubkey)[1:]`, with withdrawal controlled by a BLS key and no execution address. Since Capella opened one-way conversion to `0x01`, the population has fallen from roughly 600,000 to about 9,200 validators (mainnet, August 2026), but the decline has
 
 RATIONALE:
-### Exit as the retirement mechanism Exiting a validator natively removes it from all duty selection (proposer, attester, sync committee and any future committees) and ends both reward accrual and penalty exposure. No new exclusion machinery is required, and the frozen state ("no rewards, no penalties, balance intact") is
+### Deposit guard only Stopping new registrations is the first stage of deprecation. The guard prevents the `0x00` validator population from growing. Existing validators can reduce the population by changing credentials. The guard does not change their duties, rewards, penalties, exits, or balances. The consensus layer has no mechanism
 
 
 === EIP-2474 ===

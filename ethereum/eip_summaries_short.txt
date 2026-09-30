@@ -1673,23 +1673,23 @@ Making the version available in the EIP's metadata header allows for programmati
 
 
 === EIP-8365 ===
-TITLE: BLS withdrawal credential retirement
+TITLE: Disallow new 0x00 validators
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-07-18
 REQUIRES: 6, 1, 1, 0, ,,  , 7, 2, 5, 1, ,,  , 7, 7, 3, 2
 
 SUMMARY:
-This EIP retires the `BLS_WITHDRAWAL_PREFIX` (`0x00`) withdrawal credential type. A standing rule in epoch processing initiates the exit of every active validator whose withdrawal
+This EIP closes the inflow of the `BLS_WITHDRAWAL_PREFIX` (`0x00`) withdrawal credential type. Deposits that would create new validators with `0x00` credentials are not processed.
 
 SPECIFICATION:
-### Constants | Name | Value | Comment | | --------------------------- | ----- | ---------------------------------------------------- | | `MAX_RETIREMENTS_PER_EPOCH` | TBD | Maximum retirements initiated
+### Consensus layer #### Deposit processing `apply_pending_deposit` is modified so that deposits which would create a new validator with `0x00` withdrawal credentials are not
 
 MOTIVATION:
 The `0x00` credential type is the original genesis-era withdrawal format: `0x00 || sha256(withdrawal_bls_pubkey)[1:]`, with withdrawal controlled by a BLS key and no execution address.
 
 RATIONALE:
-### Exit as the retirement mechanism Exiting a validator natively removes it from all duty selection (proposer, attester, sync committee and any future committees)
+### Deposit guard only Stopping new registrations is the first stage of deprecation. The guard prevents the `0x00` validator population from growing. Existing validators
 
 
 === EIP-2474 ===
