@@ -649,7 +649,7 @@ Formalizing the `Proposed for Inclusion`, `Considered for Inclusion`, `Scheduled
 === EIP-8333 ===
 TITLE: Align Checkpoint with Epoch Boundary Block
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Withdrawn
 CREATED: 2026-07-06
 REQUIRES: 
 
