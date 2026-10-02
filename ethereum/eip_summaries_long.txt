@@ -1153,7 +1153,7 @@ TITLE: SETCODEFROM Code Reuse Instruction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-06-11
-REQUIRES: 3, 5, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 3, 6, 0, 7, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP introduces `SETCODEFROM`, an EVM instruction that sets the current account's code hash to the code hash of a source account with existing deployed code. The new code is visible to later code execution.
@@ -1165,7 +1165,7 @@ MOTIVATION:
 This EIP has two primary use cases. First, it improves code reuse and deployment economics. Deploying many contracts with identical runtime code is expensive, especially when contract deployment is repriced more closely to state growth, for example under [EIP-8037](./eip-8037.md). Initcode can initialize per-instance storage and then adopt shared deployed code, without paying code-deposit gas for identical runtime code. Existing contracts can also adopt a new shared implementation through their own upgrade logic. Second, it provides an account migration path for disabling ECDSA-based EOA transaction authority. Migration code can store account-specific wallet state, including post-quantum (PQ) wallet state, then
 
 RATIONALE:
-Using an address rather than a raw code hash avoids depending on client-local code database contents, which may differ across nodes. A newly synced node may have a smaller local code database than a long-running node because it may not keep historical or unreferenced bytecode entries. For this reason, this EIP makes `SETCODEFROM` copy the code hash from a live source account, so the adopted code hash is confirmed by current consensus state. `SETCODEFROM` requires that the source account exists, even though a nonexistent account has no code and is already excluded by the `EMPTYCODEHASH` condition in a
+Using an address rather than a raw code hash avoids depending on client-local code database contents, which may differ across nodes. A newly synced node may have a smaller local code database than a long-running node because it may not keep historical or unreferenced bytecode entries. For this reason, this EIP makes `SETCODEFROM` copy the code hash from a live source account, so the adopted code hash is confirmed by current consensus state. A valid source cannot be deleted, but it can replace its own code hash later in the same block; the bytecode it deposited at creation
 
 
 === EIP-6968 ===
@@ -9990,7 +9990,7 @@ SUMMARY:
 This EIP modifies the 'eth' p2p protocol to support Block-level Access Lists (BALs). It adds two new messages, `GetBlockAccessLists` (0x12) and `BlockAccessLists` (0x13), enabling peers to request and serve BALs for synchronization and parallel execution.
 
 SPECIFICATION:
-### Block Header Extension The block header is extended with a new field after `requests-hash`: ``` block-header = [ ... requests-hash: B_32, block-access-list-hash: B_32, ] ``` The `block-access-list-hash` field contains `keccak256(rlp.encode(block-access-list))` as defined in [EIP-7928](./eip-7928.md). This field MUST be present in headers after the Amsterdam fork and absent for earlier blocks. ### Block Access List Encoding BALs are RLP-encoded as a list of account changes, sorted lexicographically by address: ``` block-access-list = [account-changes₁, account-changes₂, ...] account-changes = [ address: B_20, storage-changes, storage-reads, balance-changes, nonce-changes, code-changes, ] storage-changes = [slot-changes₁, slot-changes₂, ...] slot-changes = [slot: B_32, [storage-change₁, storage-change₂, ...]]
+### Block Header Extension The block header is extended with a new field after `requests-hash`: ``` block-header = [ ... requests-hash: B_32, block-access-list-hash: B_32, ] ``` The `block-access-list-hash` field contains `keccak256(rlp.encode(block-access-list))` as defined in [EIP-7928](./eip-7928.md). This field MUST be present in headers after the Amsterdam fork and absent for earlier blocks. ### Block Access List Encoding BALs are RLP-encoded as a list of account changes, sorted lexicographically by address: ``` block-access-list = [account-changes₁, account-changes₂, ...] account-changes = [ address: B_20, storage-changes, storage-reads, balance-changes, nonce-changes, code-changes, ] storage-changes = [slot-changes₁, slot-changes₂, ...] slot-changes = [slot: P, [storage-change₁, storage-change₂, ...]]
 
 MOTIVATION:
 [EIP-7928](./eip-7928.md) introduces block-level access lists that record all state locations accessed during block execution. These lists enable parallel disk reads, parallel transaction execution, and executionless state updates. For syncing clients to leverage these capabilities, BALs must be obtainable from peers. The Engine API provides BALs from the consensus layer during normal operation, but historical BALs and peer-based sync require wire protocol support.
