@@ -1679,15 +1679,15 @@ This EIP's goal, as mentioned in the abstract, is to have a simple interface for
 === ERC-8325 ===
 TITLE: Asset Anchor Registry
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-04
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines interfaces for registries that bind token contracts or token IDs to anchor records representing claims about off-chain assets. Each anchor contains separate commitments to a claimed legal basis and supporting evidence. Bindings distinguish whole-contract scope from token-ID scope, enforce registry-scoped exclusivity, and preserve immutable binding history. Token-side interfaces allow contracts to declare the same registry and anchor, enabling consumers to verify both sides of a binding. A lifecycle interface defines structured metadata, expiry, re-attestation, and permanent deactivation. An optional recovery interface permits disputed bindings to be invalidated without deleting their historical records. The resulting records
+This Ethereum Request for Comments (ERC) defines interfaces for registries that bind token contracts or token IDs to anchor records representing claims about off-chain assets. Each anchor contains separate commitments to a claimed legal basis and supporting evidence. Bindings distinguish whole-contract scope from token-ID scope, enforce registry-scoped exclusivity, and preserve immutable binding history. Token-side interfaces allow contracts to declare the same registry and anchor, enabling consumers to verify both sides of a binding. A lifecycle interface defines structured metadata, expiry, re-attestation, and permanent deactivation. An optional recovery interface permits disputed bindings to be invalidated without deleting their historical
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions An **anchor** is a registry record containing commitments and metadata for an off-chain asset claim. A **contract binding** binds an anchor to an entire token contract. This is appropriate when one contract represents one claimed asset or instrument. A **token-ID binding** binds an anchor to one token ID within a token contract. A **binding tuple** is `(token, bindingScope, tokenId)`. A **valid binding**
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [Request for Comments (RFC) 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions An **anchor** is a registry record containing commitments and metadata for an off-chain asset claim. A **contract binding** binds an anchor to an entire token contract. This is appropriate when one contract represents one claimed asset or instrument. A **token-ID binding** binds an anchor to one token ID within a token contract. A **binding tuple** is `(token, bindingScope, tokenId)`.
 
 MOTIVATION:
 A token can claim in metadata that it represents an off-chain asset, but that claim does not provide a common interface for another contract to determine: - which registry record the token claims; - whether the registry records the same token-to-anchor relationship; - whether the binding is exclusive within that registry; - whether the binding applies to an entire token contract or one token ID; or - whether the anchor is active, expired, deactivated, or invalidated. Deployments subject to institutional or regulatory oversight often need a durable answer to which token tuple was recorded against an asset claim,
@@ -2475,12 +2475,12 @@ This standards offers a way for any type of address (externally owned and contra
 === ERC-8330 ===
 TITLE: Subject-Linked NAV Snapshot Oracle
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines an interface for publishing and querying subject-linked Net Asset Value (NAV) snapshots. Each stream is keyed by `(subjectId, currency)` and has one configured NAV basis. Snapshots include signed NAV, decimal precision, valuation and publication timestamps, provider attribution, methodology references, and correction provenance. The core interface supports raw and staleness-aware latest-value queries, provider-specific history, correction-chain resolution, and administrative invalidation that preserves records while excluding invalid snapshots from current-value queries. An optional aggregation interface defines deterministic lower-median aggregation across provider submissions sharing a valuation timestamp. This ERC standardizes publication and query semantics. It does not calculate NAV,
+This Ethereum Request for Comments (ERC) defines an interface for publishing and querying subject-linked net asset value (NAV) snapshots. Each stream is keyed by `(subjectId, currency)` and has one configured NAV basis. Snapshots include signed NAV, decimal precision, valuation and publication timestamps, provider attribution, methodology references, and correction provenance. The core interface supports raw and staleness-aware latest-value queries, provider-specific history, correction-chain resolution, and administrative invalidation that preserves records while excluding invalid snapshots from current-value queries. An optional aggregation interface defines deterministic lower-median aggregation across provider submissions sharing a valuation timestamp. This ERC standardizes publication and query semantics. It
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **stream** is the namespace identified by `(subjectId, currency)`. A **NAV basis** states whether NAV represents one underlying unit, one share or token, or the total value of the subject. A **provider** is the address recorded as publishing a snapshot. A **valuation timestamp** is the asserted as-of time of the valuation. A **publication timestamp** is the block timestamp at which the snapshot
@@ -6107,12 +6107,12 @@ The choice to utilize ERC-721 or ERC-1155 token as the control token for privile
 === ERC-8329 ===
 TITLE: Subject-Linked Impact Snapshot Log
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines an append-only interface for reporting quantitative impact indicator snapshots against application-defined subjects. Each snapshot records a signed value, decimal precision, unit, completed measurement period, methodology commitment and location, reporter, recording time, and correction provenance. The core interface supports per-subject storage, per-indicator indexing, exact period lookup, and fork-free correction chains. Optional interfaces support append-only endorsement or dispute attestations and future methodology supersession with active and pending methodology discovery. This ERC standardizes representation and lifecycle behavior. It does not define which indicators or methodologies are valid, verify reported measurements, credential reporters or attestors, prevent overlapping claims, or
+This Ethereum Request for Comments (ERC) defines an append-only interface for reporting quantitative impact indicator snapshots against application-defined subjects. Each snapshot records a signed value, decimal precision, unit, completed measurement period, methodology commitment and location, reporter, recording time, and correction provenance. The core interface supports per-subject storage, per-indicator indexing, exact period lookup, and fork-free correction chains. Optional interfaces support append-only endorsement or dispute attestations and future methodology supersession with active and pending methodology discovery. This ERC standardizes representation and lifecycle behavior. It does not define which indicators or methodologies are valid, verify reported measurements, credential reporters or attestors,
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **subject** is an application-defined entity identified by `subjectId`. An **indicator** is an application-defined measured quantity identified by `indicatorId`. A **snapshot** is one reported value for an indicator, subject, and measurement period. A **measurement period** is the half-open interval `[periodStart, periodEnd)`. An **original snapshot** is the first snapshot occupying an exact subject, indicator, and period slot. A **correction chain** is a linear
@@ -6287,18 +6287,18 @@ The `delegateData` struct contains information about the delegate NFT tokens on 
 === ERC-8327 ===
 TITLE: Directional Transfer Domain Registry
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines a token-agnostic registry interface for querying directional transfer-route permission between opaque domains by asset class. For an ordered triple of `sourceDomain`, `destinationDomain`, and `assetClass`, the registry reports whether that route is currently permitted and exposes the evidence commitments and effective timestamp associated with its latest state. The core interface supports immediate route permission and revocation, state retrieval, and batch queries. An optional extension supports delayed revocation with explicit initiation, cancellation, lazy effectiveness, and finalization semantics. This ERC does not assign addresses to domains, derive asset classes, validate evidence, or enforce token transfers. A token or
+This Ethereum Request for Comments (ERC) defines a token-agnostic registry interface for querying directional transfer-route permission between opaque domains by asset class. For an ordered triple of `sourceDomain`, `destinationDomain`, and `assetClass`, the registry reports whether that route is currently permitted and exposes the evidence commitments and effective timestamp associated with its latest state. The core interface supports immediate route permission and revocation, state retrieval, and batch queries. An optional extension supports delayed revocation with explicit initiation, cancellation, lazy effectiveness, and finalization semantics. This ERC does not assign addresses to domains, derive asset classes, validate evidence, or enforce token
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **domain** is an opaque, nonzero `bytes32` identifier for an application-defined logical boundary. An **asset class** is an opaque, nonzero `bytes32` identifier for a category of assets to which one route policy applies. A **route** is the ordered triple `(sourceDomain, destinationDomain, assetClass)`. A **registrar** is an address authorized by the implementation to modify route state. An **evidence hash** is a nonzero `bytes32`
 
 MOTIVATION:
-Transfer restrictions are commonly expressed in token-local or address-level logic. That model is appropriate when eligibility depends on a particular holder, balance, token, or transaction amount. It does not provide a common lookup surface for policies that apply to transfers between logical domains across multiple tokens sharing an asset classification. A domain can represent a jurisdiction, regulated venue, enterprise network, game economy, DAO treasury boundary, or another application-defined context. Transfer compatibility between such domains is often directional: permission from domain A to domain B does not imply permission from B to A. The same route can also differ
+Transfer restrictions are commonly expressed in token-local or address-level logic. That model is appropriate when eligibility depends on a particular holder, balance, token, or transaction amount. It does not provide a common lookup surface for policies that apply to transfers between logical domains across multiple tokens sharing an asset classification. A domain can represent a jurisdiction, regulated venue, enterprise network, game economy, decentralized autonomous organization (DAO) treasury boundary, or another application-defined context. Transfer compatibility between such domains is often directional: permission from domain A to domain B does not imply permission from B to A. The same route
 
 RATIONALE:
 ### Why Directional Routes? Compatibility can be asymmetric. A domain may allow outbound transfers to another domain without accepting inbound transfers from it. Encoding each direction separately avoids an unsafe assumption of reciprocity. ### Why Opaque Domains? Standardizing one universal domain taxonomy would couple the interface to a particular legal, organizational, or application model. Opaque identifiers let independent systems use the same route interface while defining their own meaning and resolution mechanism. ### Why Scope Routes by Asset Class? The same pair of domains can permit one category of assets and prohibit another. Asset-class scoping allows multiple assets
@@ -8690,12 +8690,12 @@ The standard's design prioritizes: 1. Reliability through robust calculations 2.
 === ERC-8328 ===
 TITLE: Subject-Linked Compliance Event Log
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines an append-only interface for subject-linked compliance event records. Each record includes a subject, event type, outcome, technical actor, claimed authority, involved parties, evidence commitment, optional evidence location, versioned payload profile, operation reference, occurrence time, and recording time. Events are indexed per subject and by event type. Corrections are recorded as new events linked to earlier records. A forward pointer on the corrected record prevents correction forks and allows consumers to resolve the terminal event in a correction chain. This ERC is a reporting interface. It does not define compliance policy, identity verification, transfer restrictions, legal
+This Ethereum Request for Comments (ERC) defines an append-only interface for subject-linked compliance event records. Each record includes a subject, event type, outcome, technical actor, claimed authority, involved parties, evidence commitment, optional evidence location, versioned payload profile, operation reference, occurrence time, and recording time. Events are indexed per subject and by event type. Corrections are recorded as new events linked to earlier records. A forward pointer on the corrected record prevents correction forks and allows consumers to resolve the terminal event in a correction chain. This ERC is a reporting interface. It does not define compliance policy, identity
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **subject** is an application-defined entity identified by `subjectId` and, optionally, contextualized by `subjectType`. A **compliance event** is a stored assertion about a compliance-relevant action or state transition concerning a subject. An **actor** is `msg.sender` at the time `recordEvent` is called. It identifies the technical recorder, not necessarily the human decision-maker or legal authority. An **authority** is the recorder's claimed legal, regulatory,
@@ -9627,12 +9627,12 @@ RATIONALE:
 === ERC-8326 ===
 TITLE: Canonical Document Bundle Anchor
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines a deterministic manifest and anchoring interface for commitments to bundles of off-chain documents. Each document is represented by a fixed-width entry containing a content hash, document role, media-type hash, filename hash, and normalization-profile identifier. Entries are placed in a total order and hashed under a schema-version prefix to produce one `bytes32` bundle commitment. The on-chain interface anchors a bundle hash in a `(subjectId, role)` namespace, records declarative metadata, and preserves an append-only supersession history. An optional recovery interface permits administrative reassignment of authority over a contested namespace without rewriting anchored records. This ERC standardizes manifest
+This Ethereum Request for Comments (ERC) defines a deterministic manifest and anchoring interface for commitments to bundles of off-chain documents. Each document is represented by a fixed-width entry containing a content hash, document role, media-type hash, filename hash, and normalization-profile identifier. Entries are placed in a total order and hashed under a schema-version prefix to produce one `bytes32` bundle commitment. The on-chain interface anchors a bundle hash in a `(subjectId, role)` namespace, records declarative metadata, and preserves an append-only supersession history. An optional recovery interface permits administrative reassignment of authority over a contested namespace without rewriting anchored records.
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **document entry** is a fixed-width record describing one normalized document commitment. A **normalization profile** defines how raw document input is converted to the bytes committed by `contentHash`. A **bundle** is a non-empty multiset of document entries. Duplicate entries are retained and affect the resulting bundle hash. A **bundle hash** is the schema-versioned commitment derived from the canonically ordered entries. A **slot**

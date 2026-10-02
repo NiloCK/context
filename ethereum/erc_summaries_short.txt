@@ -1679,12 +1679,12 @@ This EIP's goal, as mentioned in the abstract, is to have a simple interface for
 === ERC-8325 ===
 TITLE: Asset Anchor Registry
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-04
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines interfaces for registries that bind token contracts or token IDs to anchor records representing claims about off-chain assets. Each anchor contains
+This Ethereum Request for Comments (ERC) defines interfaces for registries that bind token contracts or token IDs to anchor records representing claims about off-chain
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -2475,12 +2475,12 @@ This standards offers a way for any type of address (externally owned and contra
 === ERC-8330 ===
 TITLE: Subject-Linked NAV Snapshot Oracle
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines an interface for publishing and querying subject-linked Net Asset Value (NAV) snapshots. Each stream is keyed by `(subjectId, currency)` and has
+This Ethereum Request for Comments (ERC) defines an interface for publishing and querying subject-linked net asset value (NAV) snapshots. Each stream is keyed by
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -6107,12 +6107,12 @@ The choice to utilize ERC-721 or ERC-1155 token as the control token for privile
 === ERC-8329 ===
 TITLE: Subject-Linked Impact Snapshot Log
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines an append-only interface for reporting quantitative impact indicator snapshots against application-defined subjects. Each snapshot records a signed value, decimal precision, unit,
+This Ethereum Request for Comments (ERC) defines an append-only interface for reporting quantitative impact indicator snapshots against application-defined subjects. Each snapshot records a signed
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -6287,12 +6287,12 @@ The `delegateData` struct contains information about the delegate NFT tokens on 
 === ERC-8327 ===
 TITLE: Directional Transfer Domain Registry
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines a token-agnostic registry interface for querying directional transfer-route permission between opaque domains by asset class. For an ordered triple of `sourceDomain`,
+This Ethereum Request for Comments (ERC) defines a token-agnostic registry interface for querying directional transfer-route permission between opaque domains by asset class. For an
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -8690,12 +8690,12 @@ The standard's design prioritizes: 1. Reliability through robust calculations 2.
 === ERC-8328 ===
 TITLE: Subject-Linked Compliance Event Log
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines an append-only interface for subject-linked compliance event records. Each record includes a subject, event type, outcome, technical actor, claimed authority, involved
+This Ethereum Request for Comments (ERC) defines an append-only interface for subject-linked compliance event records. Each record includes a subject, event type, outcome, technical
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -9627,12 +9627,12 @@ RATIONALE:
 === ERC-8326 ===
 TITLE: Canonical Document Bundle Anchor
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This ERC defines a deterministic manifest and anchoring interface for commitments to bundles of off-chain documents. Each document is represented by a fixed-width entry
+This Ethereum Request for Comments (ERC) defines a deterministic manifest and anchoring interface for commitments to bundles of off-chain documents. Each document is represented
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
