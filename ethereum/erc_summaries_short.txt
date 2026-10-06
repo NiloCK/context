@@ -5472,7 +5472,7 @@ TITLE: ENS Trust Registry for Agent Coordination
 TYPE: Standards Track ERC
 STATUS: Review
 CREATED: 2025-12-16
-REQUIRES: 1, 3, 7, ,,  , 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 3, 6, 6, 8, ,,  , 5, 2, 6, 7, ,,  , 8, 0, 0, 1
+REQUIRES: 1, 3, 7, ,,  , 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 5, 2, 6, 7, ,,  , 8, 0, 0, 1
 
 SUMMARY:
 This ERC defines a **Trust Registry** that enables agents to establish and query transitive trust relationships using ENS names as identifiers. Trust is expressed

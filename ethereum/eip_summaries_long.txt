@@ -81,7 +81,7 @@ RATIONALE:
 === EIP-7928 ===
 TITLE: Block-Level Access Lists
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-03-31
 REQUIRES: 
 
@@ -315,7 +315,7 @@ An ETH/ETC client can accidentally connect to an ETC/ETH RPC endpoint without kn
 === EIP-8037 ===
 TITLE: State Creation Gas Cost Increase
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-10-01
 REQUIRES: 1, 6, 1, ,,  , 6, 8, 4, ,,  , 2, 7, 8, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 8, 0, 3, 8
 
@@ -469,7 +469,7 @@ A full list of rationales for the decisions made in this proposal can be found i
 === EIP-7997 ===
 TITLE: Deterministic Factory Contract
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-08-03
 REQUIRES: 1014
 
@@ -1735,7 +1735,7 @@ The EIP repository is well known within the Ethereum community, and Meta EIPs ha
 === EIP-7954 ===
 TITLE: Increase Maximum Contract Size
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-06-09
 REQUIRES: 1, 7, 0, ,,  , 3, 8, 6, 0
 
@@ -2125,7 +2125,7 @@ MOTIVATION:
 Currently, non-Ethereum-L1 EVM chains cannot innovate on the EVM by introducing new instructions, because they run a risk of becoming incompatible with the Ethereum L1 EVM and the EVMs on other chains, in the event that these decide to implement new features using overlapping opcodes. By setting aside a single opcode and agreeing that it will never become a valid instruction on Ethereum L1 EVM, we open up to extensions which can be implemented on other EVM chains. If these extensions prove out to be successful outside of Ethereum L1, then they can be back-ported into Ethereum L1
 
 RATIONALE:
-### Usage outside of Ethereum L1 Outside of Ethereum L1, `EXTENSION` may have meaningful behavior during execution, but it is up to the particular EVM implementations to decide. However, in these EVMs which execute `EXTENSION`, the `JUMPDEST` analysis must still be unaffected by `EXTENSION`, i.e. the set of valid jump destinations must be identical to that obtained on Ethereum L1. The particular behavior of the `EXTENSION` instruction on non-Ethereum-L1 EVMs adopting it must be determined by bytes following `EXTENSION` as immediate args. The non-Ethereum-L1 EVM implementers will coordinate via the discussion thread of this EIP on their specific
+### Usage outside of Ethereum L1 Outside of Ethereum L1, `EXTENSION` may have meaningful behavior during execution, but it is up to the particular EVM implementations to decide. However, in these EVMs which execute `EXTENSION`, the `JUMPDEST` analysis must still be unaffected by `EXTENSION`, i.e. the set of valid jump destinations must be identical to that obtained on Ethereum L1. The particular behavior of the `EXTENSION` instruction on non-Ethereum-L1 EVMs adopting it must be determined by bytes following `EXTENSION` as immediate args. If `0xae` is the last byte of the bytecode, its execution is expected to result in
 
 
 === EIP-7643 ===
@@ -2471,7 +2471,7 @@ Getting rid of the `SELFDESTRUCT` opcode has been considered in the past, and th
 === EIP-8066 ===
 TITLE: Upgrade Mascots
 TYPE: Informational 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-10-29
 REQUIRES: 
 
@@ -2625,7 +2625,7 @@ The given `EVM_CODE` corresponds to ``` CALLDATASIZE PUSH0 PUSH0 CALLDATACOPY CA
 === EIP-8261 ===
 TITLE: Gas Limit Schedule
 TYPE: Informational 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-05-11
 REQUIRES: 1, 5, 5, 9, ,,  , 7, 7, 3, 2, ,,  , 7, 8, 9, 2, ,,  , 7, 9, 3, 5
 
@@ -3170,7 +3170,7 @@ RATIONALE:
 === EIP-8045 ===
 TITLE: Exclude slashed validators from proposing
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-10-16
 REQUIRES: 7917
 
@@ -5121,7 +5121,7 @@ RATIONALE:
 === EIP-8024 ===
 TITLE: Backward compatible SWAPN, DUPN, EXCHANGE
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-08-16
 REQUIRES: 
 
@@ -5238,7 +5238,7 @@ RATIONALE:
 === EIP-8070 ===
 TITLE: eth/72 - Sparse Blobpool
 TYPE: Standards Track Networking
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-10-29
 REQUIRES: 4, 8, 4, 4, ,,  , 7, 5, 9, 4, ,,  , 7, 8, 7, 0, ,,  , 8, 1, 5, 9
 
@@ -5735,7 +5735,7 @@ RATIONALE:
 === EIP-7843 ===
 TITLE: SLOTNUM opcode
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-12-06
 REQUIRES: 
 
@@ -6066,7 +6066,7 @@ Making the `eth_getLogs` response verifiable adds the necessary security attribu
 === EIP-8189 ===
 TITLE: snap/2 - BAL-Based State Healing
 TYPE: Standards Track Networking
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-03-06
 REQUIRES: 7928
 
@@ -6140,7 +6140,7 @@ RATIONALE:
 === EIP-7732 ===
 TITLE: Enshrined Proposer-Builder Separation
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-06-28
 REQUIRES: 
 
@@ -7135,7 +7135,7 @@ RATIONALE:
 === EIP-2780 ===
 TITLE: Resource-based intrinsic transaction gas
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2020-07-11
 REQUIRES: 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 2, 9, 3, 0, ,,  , 6, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
@@ -7634,7 +7634,7 @@ If $f$ and $g$ are two polynomials of $R$, then $f\times g= \text{NTT\_INV}(\tex
 === EIP-7975 ===
 TITLE: eth/70 - partial block receipt lists
 TYPE: Standards Track Networking
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-06-16
 REQUIRES: 7, 6, 4, 2, ,,  , 7, 8, 2, 5
 
@@ -7905,7 +7905,7 @@ RATIONALE:
 === EIP-8038 ===
 TITLE: State-access gas cost update
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-10-03
 REQUIRES: 8037
 
@@ -7925,7 +7925,7 @@ RATIONALE:
 === EIP-7976 ===
 TITLE: Increase Calldata Floor Cost
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-06-18
 REQUIRES: 7623
 
@@ -8561,7 +8561,7 @@ TODO
 === EIP-8136 ===
 TITLE: Cell-Level Deltas for Data Column Broadcast
 TYPE: Standards Track Networking
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-01-23
 REQUIRES: 7594
 
@@ -9421,7 +9421,7 @@ The motivation section covers a total motivation to have operations over the BLS
 === EIP-8282 ===
 TITLE: Builder Execution Requests
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-05-22
 REQUIRES: 1, 5, 5, 9, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2
 
@@ -9791,19 +9791,19 @@ TITLE: Uniform price auction over inclusion lists
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-16
-REQUIRES: 7805
+REQUIRES: 7, 8, 0, 5, ,,  , 8, 0, 3, 7, ,,  , 8, 1, 4, 1, ,,  , 8, 3, 6, 9
 
 SUMMARY:
 This EIP proposes a uniform price auction over inclusion lists (UPIL), which ranks transactions by their offered ranking fee per gas. When the block is full, no transaction is allowed to displace an inclusion-list (IL) transaction that passes regular inclusion criteria and offers a higher ranking fee per gas. All included transactions pay a uniform inclusion price, equal to the highest ranking fee offered by any valid IL transaction excluded from the block, and this fee is burned. UPIL achieves strong censorship resistance by not allowing builders to circumvent propagated ILs when the block is full. This is
 
 SPECIFICATION:
-### New transaction format and ranking fee A new field `max_ranking_fee_per_gas` is added to a new [EIP-2718](./eip-2718.md) transaction with `TransactionType` = `RANK_TX_TYPE`. The `TransactionPayload` for this transaction is: <-- TODO --> ```Python # TODO: To be defined after scheduling this EIP relative to EIP-7999 and EIP-8011, etc. ``` The ranking is performed on the `ranking_fee_per_gas`, corresponding to the maximum ranking fee that the transactor was willing to pay under the current base fee. Older transaction formats use their entire headroom for their offered ranking fee, whereas the new format can cap the ranking fee using the `max_ranking_fee_per_gas` field.
+### Ranking fee The ranking is performed on the `ranking_fee_per_gas`, corresponding to the maximum ranking fee that the transactor was willing to pay under the current base fee. Transactions use their entire headroom for their offered ranking fee. ```Python def get_max_fee_per_gas(tx: Transaction) -> int: if is_legacy(tx.type): return tx.gas_price elif is_frame(tx.type): return tx.fees.max_fee_per_gas else: return tx.max_fee_per_gas def get_ranking_fee_per_gas(tx: Transaction, block: Block) -> int: return get_max_fee_per_gas(tx) - block.base_fee_per_gas ``` The ranking fee does not impose ordering constraints within the block, and only governs inclusion. The alternative specifications section discusses other options for computing the `ranking_fee_per_gas`, including a dedicated ranking fee
 
 MOTIVATION:
 Censorship resistance (CR) is a key property of decentralized blockchains. To ensure that transactions cannot be censored by the entity building the block (denoted "builder" in this EIP, which may sometimes be the proposer), a mechanism called fork-choice enforced inclusion lists (FOCIL) has been proposed in [EIP-7805](./eip-7805.md). A set of includers propagate inclusion lists (ILs), and the attesters uphold that the transactions in the ILs are included in the block via the fork-choice. There is no mechanism for ranking transactions in the ILs, and therefore not viable to uphold CR when the block is full. If IL transactions
 
 RATIONALE:
-### Updated inclusion check #### Conservative balance The reason for using a conservative balance in (3b) when validating `T` is to avoid the circular dependencies that can emerge when a transaction is made executable by a lower-ranked transaction. Consider three transactions `A`, `B`, and `C` ranked as `A>B>C`. Without a conservative balance, `A` might be funded only if `B` is included in the block. For example, transaction `B` might fund `A`, so without `B`, `A` cannot be included, and without `A`, `B` cannot be included due to having a lower ranking. There is not enough gas to include
+### Updated inclusion check #### Accounting for ranking The inclusion check accounts for ranking with four goals in mind. First, no lower-ranked transaction should be able to take the place of an IL transaction in a full block, which is the purpose of the auction. Second, an IL transaction should be protected when transactions ranked at least as high make it valid, for example when one of them funds its sender or holds the preceding nonce of that sender. Third, the builder must always be able to construct a block that passes the check, which requires avoiding circular
 
 
 === EIP-3651 ===
@@ -9982,7 +9982,7 @@ This change removes burn behavior at its source instead of adding dedicated hand
 === EIP-8159 ===
 TITLE: eth/71 - Block Access List Exchange
 TYPE: Standards Track Networking
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-02-12
 REQUIRES: 7, 9, 2, 8, ,,  , 7, 9, 7, 5
 
@@ -10082,7 +10082,7 @@ Two scenarios of a halted chain are known based on the current total difficulty 
 === EIP-7778 ===
 TITLE: Block Gas Accounting without Refunds
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-10-01
 REQUIRES: 
 
@@ -10170,7 +10170,7 @@ The byte `0xb6` was chosen to align with [EIP-615](./eip-615.md). The choice to 
 === EIP-8061 ===
 TITLE: Increase exit and consolidation churn
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-10-17
 REQUIRES: 7251
 
@@ -10190,7 +10190,7 @@ RATIONALE:
 === EIP-7708 ===
 TITLE: ETH transfers emit a log
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-05-17
 REQUIRES: 1, 5, 5, 9, ,,  , 4, 7, 8, 8, ,,  , 6, 7, 8, 0, ,,  , 8, 2, 4, 6
 
@@ -10446,7 +10446,7 @@ RATIONALE:
 === EIP-7981 ===
 TITLE: Increase Access List Cost
 TYPE: Standards Track Core
-STATUS: Review
+STATUS: Last Call
 CREATED: 2024-12-27
 REQUIRES: 2, 9, 3, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 9, 7, 6
 
@@ -10622,7 +10622,7 @@ SUMMARY:
 Adds a new transaction whose validity and gas payment can be defined abstractly. This is achieved by decomposing the transaction into a sequence of *frames* which are contract calls that validate the transaction, approve gas payment, and execute standard user operations.
 
 SPECIFICATION:
-### Constants | Name | Value | |----------------------------|-------------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `12000` | | `FRAME_TX_PER_FRAME_COST` | `475` | | `ENTRY_POINT` | `address(0xaa)` | | `EXPIRY_VERIFIER` | `address(0x8141)` | | `EXPIRY_DATA_LENGTH` | `8` | | `MAX_FRAMES` | `64` | | `SECP256K1N` | `0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141` | | `SECP256R1N` | `0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551` | The following parameters are defined in other EIPs and referenced by this specification: | Name | Value | Source | |------|-------|--------| | `TX_MAX_GAS_LIMIT` | `16,777,216` | [EIP-7825](./eip-7825.md) | | `TX_VALUE_COST` | `6,000` | [EIP-2780](./eip-2780.md) | | `CPSB` | `1,530` | [EIP-8037](./eip-8037.md) | | `STATE_BYTES_PER_NEW_ACCOUNT` |
+### Constants | Name | Value | |----------------------------|-------------------| | `FRAME_TX_TYPE` | `0x06` | | `FRAME_TX_INTRINSIC_COST` | `12000` | | `FRAME_TX_PER_FRAME_COST` | `475` | | `ENTRY_POINT` | `address(0xaa)` | | `EXPIRY_VERIFIER` | `0x81413f0cF12e9b6a49B1D0439E081c577D57FfFf` | | `EXPIRY_DATA_LENGTH` | `8` | | `MAX_FRAMES` | `64` | | `SECP256K1N` | `0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141` | | `SECP256R1N` | `0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551` | The following parameters are defined in other EIPs and referenced by this specification: | Name | Value | Source | |------|-------|--------| | `TX_MAX_GAS_LIMIT` | `16,777,216` | [EIP-7825](./eip-7825.md) | | `TX_VALUE_COST` | `6,000` | [EIP-2780](./eip-2780.md) | | `CPSB` | `1,530` | [EIP-8037](./eip-8037.md) | | `STATE_BYTES_PER_NEW_ACCOUNT` |
 
 MOTIVATION:
 The frame transaction type offers UX and security benefits across many areas: - it provides a native off-ramp from the elliptic curve based cryptographic system used to authenticate transactions today, to post-quantum (PQ) secure systems. - accounts are unlinked from their ECDSA keys, allowing native key rotation - smart accounts become simpler and therefore safer by natively providing batch call processing - alternative fee payment schemes are supported without centralized, third party relayers - the default account gives the protocol an even stronger guarantee on the lowest common denominator of account functionality Ultimately, frame transactions realize the original
@@ -11139,7 +11139,7 @@ While this standard is perhaps not the greatest mechanism for communicating betw
 === EIP-7904 ===
 TITLE: Compute Gas Cost Analysis
 TYPE: Informational 
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-02-05
 REQUIRES: 
 
