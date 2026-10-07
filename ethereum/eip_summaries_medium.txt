@@ -2472,7 +2472,7 @@ Getting rid of the `SELFDESTRUCT` opcode has been considered in the past, and th
 TITLE: Upgrade Mascots
 TYPE: Informational 
 STATUS: Last Call
-CREATED: 2024-10-29
+CREATED: 2025-10-29
 REQUIRES: 
 
 SUMMARY:
@@ -9794,7 +9794,7 @@ CREATED: 2025-10-16
 REQUIRES: 7, 8, 0, 5, ,,  , 8, 0, 3, 7, ,,  , 8, 1, 4, 1, ,,  , 8, 3, 6, 9
 
 SUMMARY:
-This EIP proposes a uniform price auction over inclusion lists (UPIL), which ranks transactions by their offered ranking fee per gas. When the block is full, no transaction is allowed to displace an inclusion-list (IL) transaction that passes regular inclusion criteria and offers a higher ranking fee per gas.
+This EIP proposes a uniform price auction over inclusion lists (UPIL), which ranks transactions by their ranking fee: how much they are willing to pay per gas for inclusion above the base fee. When the block is full, no transaction is allowed to displace an inclusion-list (IL) transaction that
 
 SPECIFICATION:
 ### Ranking fee The ranking is performed on the `ranking_fee_per_gas`, corresponding to the maximum ranking fee that the transactor was willing to pay under the current base fee. Transactions use their entire headroom for their offered ranking fee. ```Python def get_max_fee_per_gas(tx: Transaction) -> int: if is_legacy(tx.type): return tx.gas_price elif
