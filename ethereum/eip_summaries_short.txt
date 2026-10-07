@@ -5226,7 +5226,7 @@ SUMMARY:
 This proposal introduces three opcodes, `TXTRACE`, `TXDIFF`, and `EVENTDATACOPY`, that let a contract inspect the outcome of the transaction executing it: the balance, storage,
 
 SPECIFICATION:
-The opcode bytes for `TXTRACE`, `TXDIFF`, and `EVENTDATACOPY`, and the `POST_TX` frame mode value, are allocated by the frame-transaction family registry in [EIP-8141](./eip-8141.md), which
+This EIP defines the following instructions: | Instruction | Opcode | |-----------------|--------| | `TXTRACE` | `0xb6` | | `TXDIFF` | `0xb7` | | `EVENTDATACOPY`
 
 MOTIVATION:
 The total value of crypto assets that have been stolen to date exceeds the yearly GDP of a medium-sized nation. This level of loss
@@ -6296,7 +6296,7 @@ SUMMARY:
 This EIP extends [EIP-8141](./eip-8141.md) with a new frame mode that enables EVM-level aggregation of cryptographic signatures and STARK (Scalable Transparent ARguments of Knowledge) proofs.
 
 SPECIFICATION:
-### Constants | Name | Value | |-----------------------------------|-------------------| | `DEP_VERIFY_FRAME_MODE` | `3` | | `MAX_DEPENDENCIES_PER_FRAME` | `256` | | `LEANSPHINCS_SCHEME` | `0x10` | |
+### Constants | Name | Value | |-----------------------------------|-------------------| | `DEP_VERIFY_FRAME_MODE` | `4` | | `MAX_DEPENDENCIES_PER_FRAME` | `256` | | `LEANSPHINCS_SCHEME` | `0x10` | |
 
 MOTIVATION:
 Quantum-resistant signatures and zero-knowledge proofs both have a very high calldata requirement and gas cost. Current proposals for hash-based signatures are in the range
