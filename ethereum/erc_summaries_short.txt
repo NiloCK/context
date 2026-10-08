@@ -3396,6 +3396,26 @@ RATIONALE:
 The existing convention is to use the 'Ethereum' coin type, leading to paths starting with `m/44'/60'/*`. Because this still assumes a UTXO-based coin, we
 
 
+=== ERC-8176 ===
+TITLE: Descriptor Attestations for ERC-7730
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-26
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 7, 7, 3, 0
+
+SUMMARY:
+This ERC defines an attestation format for [ERC-7730](./eip-7730.md) clear signing descriptor files using the Ethereum Attestation Service (EAS). An attestation is a signed claim
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[ERC-7730](./eip-7730.md) defines a JSON format that enables wallets to display human-readable transaction details before a user signs. Wallets fetch descriptor files from registries and
+
+RATIONALE:
+### Why EAS EAS provides a schema registry, deterministic UIDs, native revocation primitives (onchain and offchain), and existing infrastructure for indexing and discovery. ###
+
+
 === ERC-7746 ===
 TITLE: Composable Security Middleware Hooks
 TYPE: Standards Track ERC

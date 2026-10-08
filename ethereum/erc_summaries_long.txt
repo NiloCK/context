@@ -3396,6 +3396,26 @@ RATIONALE:
 The existing convention is to use the 'Ethereum' coin type, leading to paths starting with `m/44'/60'/*`. Because this still assumes a UTXO-based coin, we contend that this is a poor fit, resulting in standardisation, usability, and security compromises. As a result, we are making the above proposal to define an entirely new hierarchy for Ethereum-based chains.
 
 
+=== ERC-8176 ===
+TITLE: Descriptor Attestations for ERC-7730
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-26
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 7, 7, 3, 0
+
+SUMMARY:
+This ERC defines an attestation format for [ERC-7730](./eip-7730.md) clear signing descriptor files using the Ethereum Attestation Service (EAS). An attestation is a signed claim by a specific party that they have reviewed a descriptor with a specific content hash. Attestations use a canonical EAS schema (`bytes32 descriptorHash`) registered on Ethereum mainnet. They may be created onchain (stored in the EAS contract) or offchain (an [EIP-712](./eip-712.md) signed JSON blob distributed alongside descriptors). Verification follows standard EAS rules, plus matching the attested `descriptorHash` against the descriptor. Revocation uses EAS's native primitives. Wallets fetch attestations from sources they trust and maintain
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Canonical EAS Schema The canonical EAS schema for attestations conforming to this ERC is registered on Ethereum mainnet: | Field | Value | |---|---| | Schema | `bytes32 descriptorHash` | | Schema UID | `0xe023eef113c1670774801c34b377fdf612dd8a4d2fa92fe382e15bd91fafb5c2` | | Resolver | `0x0000000000000000000000000000000000000000` | | Revocable | `true` | | EAS Contract | `0xA1207F3BBa224E2c9c3c6D5aF63D0eb1582Ce587` | | Chain | Ethereum mainnet (`chainId = 1`) | All attestations
+
+MOTIVATION:
+[ERC-7730](./eip-7730.md) defines a JSON format that enables wallets to display human-readable transaction details before a user signs. Wallets fetch descriptor files from registries and use them to format transaction data. A malicious or substituted descriptor can cause a wallet to display misleading signing details. This ERC addresses three cases: - **Registry or repository poisoning.** A contributor submits a descriptor that hides or mislabels important fields. - **Man-in-the-middle substitution.** A network attacker modifies a descriptor in transit. - **Supply-chain substitution.** A registry mirror, CDN cache, or pinning gateway serves a forged descriptor. Existing mechanisms leave gaps: - **ERC-7730 context
+
+RATIONALE:
+### Why EAS EAS provides a schema registry, deterministic UIDs, native revocation primitives (onchain and offchain), and existing infrastructure for indexing and discovery. ### Specific EAS Deployment Dependency This document dedicates the EAS contract and the canonical schema UID on Ethereum mainnet and does not allow for a deployment-agnostic attestation mechanism. This is a deliberate decision. An attestation or its revocation is only meaningful if every verifier agrees on where to check. The EAS contract provides that single point of agreement. ### Why a Minimal Schema The schema is a single field (`bytes32 descriptorHash`). Attester identity, time, expiration,
+
+
 === ERC-7746 ===
 TITLE: Composable Security Middleware Hooks
 TYPE: Standards Track ERC

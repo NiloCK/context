@@ -3396,6 +3396,26 @@ RATIONALE:
 The existing convention is to use the 'Ethereum' coin type, leading to paths starting with `m/44'/60'/*`. Because this still assumes a UTXO-based coin, we contend that this is a poor fit, resulting in standardisation, usability, and security compromises. As a result, we are making the above proposal to define
 
 
+=== ERC-8176 ===
+TITLE: Descriptor Attestations for ERC-7730
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-02-26
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 7, 7, 3, 0
+
+SUMMARY:
+This ERC defines an attestation format for [ERC-7730](./eip-7730.md) clear signing descriptor files using the Ethereum Attestation Service (EAS). An attestation is a signed claim by a specific party that they have reviewed a descriptor with a specific content hash. Attestations use a canonical EAS schema (`bytes32 descriptorHash`) registered on
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Canonical EAS Schema The canonical EAS schema for attestations conforming to this ERC is
+
+MOTIVATION:
+[ERC-7730](./eip-7730.md) defines a JSON format that enables wallets to display human-readable transaction details before a user signs. Wallets fetch descriptor files from registries and use them to format transaction data. A malicious or substituted descriptor can cause a wallet to display misleading signing details. This ERC addresses three cases:
+
+RATIONALE:
+### Why EAS EAS provides a schema registry, deterministic UIDs, native revocation primitives (onchain and offchain), and existing infrastructure for indexing and discovery. ### Specific EAS Deployment Dependency This document dedicates the EAS contract and the canonical schema UID on Ethereum mainnet and does not allow for a deployment-agnostic
+
+
 === ERC-7746 ===
 TITLE: Composable Security Middleware Hooks
 TYPE: Standards Track ERC
