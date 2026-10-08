@@ -2495,7 +2495,7 @@ RATIONALE:
 === ERC-8167 ===
 TITLE: Modular Dispatch Proxies
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-02-16
 REQUIRES: 
 
@@ -2503,7 +2503,7 @@ SUMMARY:
 This proposal standardizes dispatch proxies, which dispatch calls to logic modules, called delegates, according to function selector. A modular proxy architecture facilitates upgrades, extensions,
 
 SPECIFICATION:
-A modular dispatch proxy MUST use `delegatecall` to relay the entire calldata to the delegate corresponding to the first four bytes of the calldata.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
 Proxy contracts utilizing `delegatecall` are widely used for both code sharing and upgradeability. Most common proxies forward calldata to a single implementation contract. Sometimes
@@ -7494,7 +7494,7 @@ REQUIRES: 1066
 === ERC-7945 ===
 TITLE: Confidential Transactions Supported Token
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-05-09
 REQUIRES: 20
 

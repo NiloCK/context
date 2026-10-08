@@ -2495,7 +2495,7 @@ RATIONALE:
 === ERC-8167 ===
 TITLE: Modular Dispatch Proxies
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-02-16
 REQUIRES: 
 
@@ -2503,7 +2503,7 @@ SUMMARY:
 This proposal standardizes dispatch proxies, which dispatch calls to logic modules, called delegates, according to function selector. A modular proxy architecture facilitates upgrades, extensions, and hardening, while working around codesize limits. This minimal standard interface allows tooling to discover the ABI of these proxies and examine their upgrade history.
 
 SPECIFICATION:
-A modular dispatch proxy MUST use `delegatecall` to relay the entire calldata to the delegate corresponding to the first four bytes of the calldata. ```solidity interface IERC8167 { // RECOMMENDED // Emitted when assigning a delegate logic module to a selector // An address(0) delegate signals removal event SelectorDelegated(bytes4
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). A modular dispatch proxy MUST use `delegatecall` to relay the entire calldata to the delegate
 
 MOTIVATION:
 Proxy contracts utilizing `delegatecall` are widely used for both code sharing and upgradeability. Most common proxies forward calldata to a single implementation contract. Sometimes the implementation address is hardcoded, a pattern used by cloning factories to reduce deployment costs, and sometimes the implementation address is mutable, a pattern used
@@ -7494,7 +7494,7 @@ REQUIRES: 1066
 === ERC-7945 ===
 TITLE: Confidential Transactions Supported Token
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2025-05-09
 REQUIRES: 20
 
@@ -7502,7 +7502,7 @@ SUMMARY:
 Classic token contracts like [ERC-20](./eip-20.md) enable their token holders to make transfers and/or approve others to make transfers on their behalves. The generality of token standard [ERC-20](./eip-20.md) catalyzed decentralized finance and many other blockchain applications. However, when it comes to privacy, although some technical schemes have been proposed, few
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Contract Interface Compliant contracts MUST implement the following interface: ```solidity interface IERC7945 { function
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Contract Interface Compliant contracts MUST implement the following interface: ```solidity pragma solidity ^0.8.19; interface
 
 MOTIVATION:
 Confidential transactions have been implemented in many blockchains, either natively through blockchain protocols like Monero and Zcash, or through smart contracts like Zether[^1] without modifying the blockchain protocol. However, few standards are proposed on Ethereum (and/or other EVM-compatible blockchains) to illustrate privacy-preserving contracts without modifying the underlying protocol. Users
