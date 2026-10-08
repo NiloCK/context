@@ -257,19 +257,19 @@ TITLE: Keystore Accounts
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-14
-REQUIRES: 1, 7, 0, ,,  , 2, 7, 1, 8, ,,  , 7, 6, 2, 3
+REQUIRES: 1, 7, 0, ,,  , 1, 0, 1, 4
 
 SUMMARY:
-This proposal introduces a new [EIP-2718](./eip-2718.md) transaction type and an onchain Account Configuration system that together provide account abstraction: custom authentication, call batching, and gas sponsorship. Accounts register actors with onchain authenticator contracts. Transactions declare which authenticator to use, enabling nodes to filter transactions without executing arbitrary wallet code.
+This proposal defines the Keystore: an onchain account configuration system in which each account registers **actors**, each bound to an **authenticator** contract that verifies signatures, with a per-actor scope, expiry, and optional policy. Authenticators answer "who signed"; the Keystore answers "what may that actor do". The Keystore is independent
 
 SPECIFICATION:
-### Overview An account manages its authentication configuration via the keystore, a contract that maps an account to its configured authenticators and stores their authorizations. An **actor** on the account is one that has an authorization in the keystore. Each actor is bound to an **authenticator**, an onchain contract
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview An account manages its authentication configuration via the Keystore, a contract at `KEYSTORE_ADDRESS`
 
 MOTIVATION:
-Account abstraction proposals that delegate validation to wallet code force nodes to simulate arbitrary EVM before accepting a transaction. This requires full state access, tracing infrastructure, and reputation systems to bound the cost of invalid submissions. This proposal separates authentication from account logic. Each transaction explicitly declares its authenticator,
+Account abstraction proposals that delegate validation to wallet code force nodes to simulate arbitrary EVM before accepting a transaction. This requires full state access, tracing infrastructure, and reputation systems to bound the cost of invalid submissions. This proposal separates authentication from account logic. Each authorization declares its authenticator, a
 
 RATIONALE:
-### Why Authenticator Contracts? Enables signature-algorithm extension through authenticator contracts. The authenticator returns the `actorId` rather than accepting it as input, so the protocol never needs algorithm-specific logic. All authenticators share a single `authenticate(hash, data)` interface with no type-based dispatch. Actor scope and policy provide protocol-enforced role separation without
+### Why Authenticator Contracts? Enables signature-algorithm extension through authenticator contracts. The authenticator returns the `actorId` rather than accepting it as input, so the Keystore never needs algorithm-specific logic. All authenticators share a single `authenticate(hash, data)` interface. Actor scope and policy provide role separation without authenticator cooperation. ### Why a
 
 
 === EIP-6465 ===
@@ -4393,13 +4393,13 @@ SUMMARY:
 This EIP improves mempool propagation, extending the devp2p 'eth' protocol's `NewPooledTransactionHashes` message to also announce each transaction's source address and nonce together with the already announced hash, type, and size.
 
 SPECIFICATION:
-### NewPooledTransactionHashes message changes Modify the NewPooledTransactionHashes (0x08) message as follows: (eth/69): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...]] (eth/XX): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...], [txsource₁: B_20, txsource₂: B_20, ...], [txnonce₁: P, txnonce₂: P, ...]] ### Changes
+### NewPooledTransactionHashes message changes Modify the `NewPooledTransactionHashes` (0x08) message as follows: (eth/69): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...]] (eth/XX): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...], [txsource₁: B_20, txsource₂: B_20, ...], [txnonce₁: P, txnonce₂: P, ...]] ### Changes
 
 MOTIVATION:
-Transactions are propagated in the Mempool using the devp2p protocol in two modalities. Eager push is only used for small transactions, and only towards a few nodes, while the rest of nodes receive only announcements. For large transactions and for type 3 transactions, only announcements are sent. This announcement
+Transactions are propagated in the mempool using the devp2p protocol in two modalities. Eager push is only used for small transactions, and only towards a few nodes, while the rest of the nodes receive only announcements. For large transactions and for type 3 transactions, only announcements are sent. This
 
 RATIONALE:
-To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction then its hash, size, and type. By adding the source and the nonce, the receiver has enough information to make better fetch decisions. ### Overhead The modification adds a significant overhead
+To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction than its hash, size, and type. By adding the source and the nonce, the receiver has enough information to make better fetch decisions. ### Overhead The modification adds a significant overhead
 
 
 === EIP-5988 ===
@@ -5232,7 +5232,7 @@ MOTIVATION:
 The total value of crypto assets that have been stolen to date exceeds the yearly GDP of a medium-sized nation. This level of loss and waste is indefensible and has a long list of negative consequences for everyone around the world. The ability of an average user or a
 
 RATIONALE:
-### Selection Parameter Design The `TXTRACE` opcode follows the same `(param, index)` two-argument pattern used by `FRAMEPARAM` in [EIP-8141](./eip-8141.md). This keeps the interface consistent and avoids introducing a separate opcode for every piece of trace information. ### Enumeration and Lookup The `TXTRACE` opcode exposes transaction outcomes through index-based access
+### Selection Parameter Design The `TXTRACE` opcode follows the same selector-and-index idea used by `FRAMEPARAM` in [EIP-8141](./eip-8141.md), a `param` selecting the field and a second operand selecting the entry. Unlike `FRAMEPARAM`, it takes `param` from the top of the stack, as `TXDIFF` does, so both diff opcodes read their
 
 
 === EIP-8070 ===
@@ -9711,7 +9711,7 @@ TITLE: Keyed Nonces for Frame Transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-04-16
-REQUIRES: 7, 6, 2, 3, ,,  , 8, 0, 3, 7, ,,  , 8, 1, 4, 1
+REQUIRES: 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8, ,,  , 8, 1, 4, 1
 
 SUMMARY:
 Replaces the single sender nonce of an [EIP-8141](./eip-8141.md) frame transaction with `(nonce_keys, nonce_seq)`: a bounded set of nonce keys sharing one sequence number. `nonce_keys == [0]` aliases the legacy account nonce; each non-zero key selects an independent protocol-managed nonce sequence stored in a `NONCE_MANAGER` system contract. Transactions whose non-zero

@@ -257,19 +257,19 @@ TITLE: Keystore Accounts
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-14
-REQUIRES: 1, 7, 0, ,,  , 2, 7, 1, 8, ,,  , 7, 6, 2, 3
+REQUIRES: 1, 7, 0, ,,  , 1, 0, 1, 4
 
 SUMMARY:
-This proposal introduces a new [EIP-2718](./eip-2718.md) transaction type and an onchain Account Configuration system that together provide account abstraction: custom authentication, call batching, and
+This proposal defines the Keystore: an onchain account configuration system in which each account registers **actors**, each bound to an **authenticator** contract that verifies
 
 SPECIFICATION:
-### Overview An account manages its authentication configuration via the keystore, a contract that maps an account to its configured authenticators and stores their
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
 Account abstraction proposals that delegate validation to wallet code force nodes to simulate arbitrary EVM before accepting a transaction. This requires full state access,
 
 RATIONALE:
-### Why Authenticator Contracts? Enables signature-algorithm extension through authenticator contracts. The authenticator returns the `actorId` rather than accepting it as input, so the protocol
+### Why Authenticator Contracts? Enables signature-algorithm extension through authenticator contracts. The authenticator returns the `actorId` rather than accepting it as input, so the Keystore
 
 
 === EIP-6465 ===
@@ -4393,13 +4393,13 @@ SUMMARY:
 This EIP improves mempool propagation, extending the devp2p 'eth' protocol's `NewPooledTransactionHashes` message to also announce each transaction's source address and nonce together with the
 
 SPECIFICATION:
-### NewPooledTransactionHashes message changes Modify the NewPooledTransactionHashes (0x08) message as follows: (eth/69): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...]]
+### NewPooledTransactionHashes message changes Modify the `NewPooledTransactionHashes` (0x08) message as follows: (eth/69): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...]]
 
 MOTIVATION:
-Transactions are propagated in the Mempool using the devp2p protocol in two modalities. Eager push is only used for small transactions, and only towards
+Transactions are propagated in the mempool using the devp2p protocol in two modalities. Eager push is only used for small transactions, and only towards
 
 RATIONALE:
-To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction then its hash, size, and type.
+To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction than its hash, size, and type.
 
 
 === EIP-5988 ===
@@ -5232,7 +5232,7 @@ MOTIVATION:
 The total value of crypto assets that have been stolen to date exceeds the yearly GDP of a medium-sized nation. This level of loss
 
 RATIONALE:
-### Selection Parameter Design The `TXTRACE` opcode follows the same `(param, index)` two-argument pattern used by `FRAMEPARAM` in [EIP-8141](./eip-8141.md). This keeps the interface consistent
+### Selection Parameter Design The `TXTRACE` opcode follows the same selector-and-index idea used by `FRAMEPARAM` in [EIP-8141](./eip-8141.md), a `param` selecting the field and a
 
 
 === EIP-8070 ===
@@ -9711,7 +9711,7 @@ TITLE: Keyed Nonces for Frame Transactions
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-04-16
-REQUIRES: 7, 6, 2, 3, ,,  , 8, 0, 3, 7, ,,  , 8, 1, 4, 1
+REQUIRES: 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8, ,,  , 8, 1, 4, 1
 
 SUMMARY:
 Replaces the single sender nonce of an [EIP-8141](./eip-8141.md) frame transaction with `(nonce_keys, nonce_seq)`: a bounded set of nonce keys sharing one sequence number. `nonce_keys
