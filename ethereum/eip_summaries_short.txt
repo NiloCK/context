@@ -10139,6 +10139,26 @@ RATIONALE:
 This change will make the `eth` protocol future-proof for new transaction types that might not be relevant for all nodes. It gives the receiving
 
 
+=== EIP-8247 ===
+TITLE: Ancestor-Indexed BALs
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-03
+REQUIRES: 7928
+
+SUMMARY:
+Replace repeated 20-byte addresses and 32-byte storage keys in [EIP-7928](./eip-7928.md) Block Access Lists (BALs) with compact references into one of the last eight canonical
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
+
+MOTIVATION:
+A large share of BAL bytes are addresses and storage keys that already appeared in a recent block. Referencing the prior position is shorter
+
+RATIONALE:
+### Encoding Savings ```text Address 20 bytes → AccountRef ≈ 5 bytes (1 + 4) StorageKey 32 bytes → SlotRef ≈ 9 bytes (1
+
+
 === EIP-7783 ===
 TITLE: Add Controlled Gas Limit Increase Strategy
 TYPE: Informational 

@@ -2449,7 +2449,7 @@ MOTIVATION:
 The market for tokenized real-world assets is entering a phase of institutional adoption. Platforms operating under regulatory frameworks are starting to support programmable, agent-driven portfolio management on regulated instruments. AI agents that can autonomously execute securities transactions are no longer theoretical; they are being built now, without a standard
 
 RATIONALE:
-RAMS is a separate ERC rather than an extension of any agent identity or token compliance standard because mandate delegation is a distinct concern. Coupling it to a specific standard would limit its use across the fragmented regulated token ecosystem. Mandate storage is keyed by `(agent, principal)` addresses, similar
+RAMS is a separate ERC rather than an extension of any agent identity or token compliance standard because mandate delegation is a distinct concern. Coupling it to a specific standard would limit its use across the fragmented regulated token ecosystem. Mandates are keyed by `(agent, principal, asset)`. A mandate
 
 
 === ERC-820 ===

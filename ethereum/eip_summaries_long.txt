@@ -4393,13 +4393,13 @@ SUMMARY:
 This EIP improves mempool propagation, extending the devp2p 'eth' protocol's `NewPooledTransactionHashes` message to also announce each transaction's source address and nonce together with the already announced hash, type, and size.
 
 SPECIFICATION:
-### NewPooledTransactionHashes message changes Modify the `NewPooledTransactionHashes` (0x08) message as follows: (eth/69): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...]] (eth/XX): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...], [txsource₁: B_20, txsource₂: B_20, ...], [txnonce₁: P, txnonce₂: P, ...]] ### Changes to message handling Changes on the sender side of `NewPooledTransactionHashes` messages are trivial. Only the transmitted data changes. Since the size of announcements is increased, implementations MAY revisit the condition (typically transaction size) to select between eager push and announcement. On the receiver side of `NewPooledTransactionHashes` messages, the extra
+### NewPooledTransactionHashes message changes Modify the `NewPooledTransactionHashes` (0x08) message as follows: (eth/69): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...]] (eth/XX): [txtypes: B, [txsize₁: P, txsize₂: P, ...], [txhash₁: B_32, txhash₂: B_32, ...], [txsource₁: B_20, txsource₂: B_20, ...], [txnonce₁: P, txnonce₂: P, ...]] ### Announced source and nonce `txsource` is the account whose nonce the transaction consumes, and `txnonce` is the nonce value it consumes. For transaction types `0x00` through `0x04`, `txsource` is the address recovered from the transaction's signature and `txnonce` is the transaction's `nonce` field. For [EIP-8141](./eip-8141.md) frame transactions, `txsource` is the
 
 MOTIVATION:
 Transactions are propagated in the mempool using the devp2p protocol in two modalities. Eager push is only used for small transactions, and only towards a few nodes, while the rest of the nodes receive only announcements. For large transactions and for type 3 transactions, only announcements are sent. This announcement is made using the `NewPooledTransactionHashes` message, which only contains the hash, the type and the size of each transaction. As it is now, the receiver of the announcement does not have enough information to make intelligent scheduling choices. This creates several issues: - the receiver of the announcement
 
 RATIONALE:
-To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction than its hash, size, and type. By adding the source and the nonce, the receiver has enough information to make better fetch decisions. ### Overhead The modification adds a significant overhead to announcements by adding a B_20 and a variable-size field to the current B_32, size, and type fields. We think this overhead is worth the additional gain in protocol efficiency. Details TBD <-- TODO --> . ### Alternatives While the modification is relatively straightforward, there are several design variants
+To solve the transaction propagation issues mentioned in the Motivation section, nodes require more information about a transaction than its hash, size, and type. By adding the source and the nonce, the receiver has enough information to make better fetch decisions. ### Account abstraction [EIP-8141](./eip-8141.md) makes the sender an explicit transaction field rather than a value recovered from a signature, so a receiver has no way to derive it before fetching. Its public mempool admits at most one pending frame transaction per sender, requires that transaction's nonce to equal the sender's current nonce, and identifies pending transactions by
 
 
 === EIP-5988 ===
@@ -10137,6 +10137,26 @@ The `NewPooledTransactionHashes` message announces transaction hashes, allowing 
 
 RATIONALE:
 This change will make the `eth` protocol future-proof for new transaction types that might not be relevant for all nodes. It gives the receiving node better control over the data it fetches from the peer as well as allow throttling the download of specific types. The `types` message element is a byte array because early implementations of this EIP erroneously implemented it that way. It was later decided to keep this behavior in order to minimize work.
+
+
+=== EIP-8247 ===
+TITLE: Ancestor-Indexed BALs
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-05-03
+REQUIRES: 7928
+
+SUMMARY:
+Replace repeated 20-byte addresses and 32-byte storage keys in [EIP-7928](./eip-7928.md) Block Access Lists (BALs) with compact references into one of the last eight canonical ancestor BALs. Expected reduction in BAL size is approximately 30–50%, depending on cross-block reuse.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Types ```text AddressKey = Address | AccountRef StorageKeyRef = StorageKey | SlotRef AccountRef = [ancestor_offset: uint8, account_index: uint32] SlotRef = [ancestor_offset: uint8, account_index: uint32, slot_index: uint32] ``` `ancestor_offset ∈ [0..7]`, where `0` is the parent block, `1` the grandparent, and so on up to `7` (the 8th ancestor). `AccountRef` MUST be an RLP list of length 2. `SlotRef` MUST be an RLP list of length 3. References and literals are disambiguated by RLP
+
+MOTIVATION:
+A large share of BAL bytes are addresses and storage keys that already appeared in a recent block. Referencing the prior position is shorter than re-emitting the literal.
+
+RATIONALE:
+### Encoding Savings ```text Address 20 bytes → AccountRef ≈ 5 bytes (1 + 4) StorageKey 32 bytes → SlotRef ≈ 9 bytes (1 + 4 + 4) ``` ### Window of Eight Eight blocks bounds the ancestor state held for validation while capturing most cross-block reuse, and fits `ancestor_offset` in 3 bits. ### Canonical Encoding Rule Forcing the smallest valid reference makes the encoded BAL a function of the block and its ancestors only, preventing producers from bloating the encoding by choosing literals or larger offsets.
 
 
 === EIP-7783 ===
