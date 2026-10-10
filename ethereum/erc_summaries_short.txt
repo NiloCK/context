@@ -5792,7 +5792,7 @@ TITLE: Key Hash Based Tokens
 TYPE: Standards Track ERC
 STATUS: Review
 CREATED: 2025-05-16
-REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 2, 6, 1, 2, ,,  , 5, 5, 6, 4
+REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 5, 2, 6, 7
 
 SUMMARY:
 This EIP proposes two token interfaces: **ERC-KeyHash721** for non-fungible tokens (NFTs) and **ERC-KeyHash20** for fungible tokens (similar to [ERC-20](./eip-20.md)). Both of them utilize cryptographic
