@@ -4660,6 +4660,26 @@ RATIONALE:
 The choice of using a Merkle tree to bundle messages provides the following additional benefits: ### Efficient verification on-chain `_verifyMerkleProof` has a runtime of
 
 
+=== ERC-7963 ===
+TITLE: Oracle-Permissioned ERC-20 with ZK Proofs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-13
+REQUIRES: 2, 0, ,,  , 1, 9, 6, 7
+
+SUMMARY:
+This proposal extends [ERC-20](./eip-20.md) tokens with oracle-permissioned transfers validated by zero-knowledge proofs. Token transfers are only valid when an external "Transfer Oracle" pre-approves them
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Institutional tokenisation requires _both_ ERC-20 fungibility **and** legally enforceable control over who may send value to whom and why. Hard-coding rules in every token
+
+RATIONALE:
+Keeping oracle logic out of the token contract preserves fungibility and lets an issuer change its permissioning rules without redeploying the token. `TransferApproval` uses
+
+
 === ERC-2678 ===
 TITLE: Revised Ethereum Smart Contract Packaging Standard (EthPM v3)
 TYPE: Standards Track ERC

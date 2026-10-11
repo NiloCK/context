@@ -4660,6 +4660,26 @@ RATIONALE:
 The choice of using a Merkle tree to bundle messages provides the following additional benefits: ### Efficient verification on-chain `_verifyMerkleProof` has a runtime of `O(log2(N))` where N is the number of messages that were signed. ### Flexible Verification Modes Applications can require combination of messages be signed together to
 
 
+=== ERC-7963 ===
+TITLE: Oracle-Permissioned ERC-20 with ZK Proofs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2025-05-13
+REQUIRES: 2, 0, ,,  , 1, 9, 6, 7
+
+SUMMARY:
+This proposal extends [ERC-20](./eip-20.md) tokens with oracle-permissioned transfers validated by zero-knowledge proofs. Token transfers are only valid when an external "Transfer Oracle" pre-approves them using off-chain payment instructions in a standardized JSON format, proven on-chain via ZK proofs. The standard defines: + `ITransferOracle` – a minimal interface that any
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Interfaces ```solidity /// @notice One-time ZK-backed approval for a single transfer. struct TransferApproval {
+
+MOTIVATION:
+Institutional tokenisation requires _both_ ERC-20 fungibility **and** legally enforceable control over who may send value to whom and why. Hard-coding rules in every token contract is brittle and non-standard. Moving rules into a dedicated oracle contract and proving off-chain documentation on-chain gives: + **Compliance traceability** – every transfer links
+
+RATIONALE:
+Keeping oracle logic out of the token contract preserves fungibility and lets an issuer change its permissioning rules without redeploying the token. `TransferApproval` uses _amount ranges_ so issuers can sign a single approval before the final FX quote is known. `canTransfer` returns the `proofId`, enabling downstream analytics and regulators
+
+
 === ERC-2678 ===
 TITLE: Revised Ethereum Smart Contract Packaging Standard (EthPM v3)
 TYPE: Standards Track ERC
