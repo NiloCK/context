@@ -6167,7 +6167,7 @@ RATIONALE:
 === ERC-8153 ===
 TITLE: Facet-Based Diamonds
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-02-07
 REQUIRES: 2535
 

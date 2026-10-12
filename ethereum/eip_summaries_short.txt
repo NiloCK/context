@@ -9657,7 +9657,7 @@ CREATED: 2026-07-09
 REQUIRES: 3, 5, 4, 1, ,,  , 7, 9, 7, 9
 
 SUMMARY:
-Code can be prefixed with `MAGIC` bytes. `MAGIC` code is validated at `CREATE` time to ensure that it cannot execute invalid instructions, jump to
+Code can be prefixed with `MAGIC` bytes. `MAGIC` code is validated at `CREATE` time to ensure that it cannot execute invalid *instructions*, jump to
 
 SPECIFICATION:
 > *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* ###
@@ -9666,7 +9666,7 @@ MOTIVATION:
 Dynamic jumps obscure the flow of control. A destination is a runtime value, so analysis must assume that any jump can reach any `JUMPDEST`.
 
 RATIONALE:
-### Why validation? By marking `MAGIC` contracts as *valid* we are promising that their control flow is static, and the many tools that traverse
+### Why validation? By marking `MAGIC` contracts as `valid` we are promising that their *control flow* is static, and the many tools that traverse
 
 
 === EIP-2565 ===
