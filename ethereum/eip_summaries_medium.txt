@@ -1159,7 +1159,7 @@ SUMMARY:
 This EIP introduces `SETCODEFROM`, an EVM instruction that sets the current account's code hash to the code hash of a source account with existing deployed code. The new code is visible to later code execution.
 
 SPECIFICATION:
-### Parameters The opcode is defined as follows: | Parameter | Value | | ------------------------ | ----- | | `SETCODEFROM_OPCODE` | `TBD` | ### `SETCODEFROM` `SETCODEFROM(source)` takes one stack item. The low 160 bits of the stack item are interpreted as `source`. Before execution: ```text [..., source] ``` After
+### Parameters The opcode is defined as follows: | Parameter | Value | | ------------------------ | ----- | | `SETCODEFROM_OPCODE` | `0xA7` | ### `SETCODEFROM` `SETCODEFROM(source)` takes one stack item. The low 160 bits of the stack item are interpreted as `source`. Before execution: ```text [..., source] ``` After
 
 MOTIVATION:
 This EIP has two primary use cases. First, it improves code reuse and deployment economics. Deploying many contracts with identical runtime code is expensive, especially when contract deployment is repriced more closely to state growth, for example under [EIP-8037](./eip-8037.md). Initcode can initialize per-instance storage and then adopt shared deployed
@@ -3885,16 +3885,16 @@ CREATED: 2026-05-05
 REQUIRES: 1, 6, 1, ,,  , 6, 8, 4
 
 SUMMARY:
-At the start of the designated fork block, set the nonce to `1` for a fixed list of accounts that have empty code, zero nonce, and non-empty storage. Bumping the nonce makes these accounts fail the [EIP-684](./eip-684.md) precondition for contract creation (`nonce == 0`), so a future `CREATE`/`CREATE2` cannot
+At the start of the designated fork block, set the nonce to `1` for a per-chain, configured list of accounts that have empty code, zero nonce, and non-empty storage. Bumping the nonce restores the invariant that zero nonce and empty code imply empty storage: the accounts then fail the
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119). ### Mainnet account list The targeted Mainnet accounts are published as [`targeted-accounts.json`](../assets/eip-8253/targeted-accounts.json) (28 entries). Each entry contains the 20-byte address and its `keccak256` hash. The published file additionally records each account's
+The key words "MUST", "MUST NOT", in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119). ### Account list The list of targeted accounts is a chain configuration parameter, in the same way as system contract addresses. For a given chain, the list MUST contain exactly the
 
 MOTIVATION:
-[EIP-684](./eip-684.md) requires zero nonce and zero code length at a `CREATE` destination. Pre-[EIP-161](./eip-161.md), `CREATE` did not increment the nonce before init code ran, so a constructor that wrote storage and returned no code left an account with zero nonce and non-empty storage. EIP-7610 fixes the resulting collision risk by
+[EIP-684](./eip-684.md) requires zero nonce and zero code length at a `CREATE` destination. Pre-[EIP-161](./eip-161.md), `CREATE` did not increment the nonce before init code ran, so a constructor that wrote storage and returned no code left an account with zero nonce and non-empty storage. This is the only shape where zero
 
 RATIONALE:
-**Irregular state transition vs. runtime check.** EIP-7610 leaves the offending state in place and pays a per-creation cost forever to guard a closed address set. This EIP pays a one-time consensus mutation instead, which is the same pattern Ethereum has used for prior cleanups (e.g. EIP-7523). **Nonce bump vs.
+**Irregular state transition vs. runtime check.** A runtime storage check at every contract creation leaves the offending state in place and pays a per-creation cost forever to guard a closed address set. This EIP pays a one-time consensus mutation instead, which is the same pattern Ethereum has used for
 
 
 === EIP-1985 ===
