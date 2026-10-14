@@ -1505,6 +1505,26 @@ RATIONALE:
 ### Addressing Non-Lockable NFT Challenges: Non-lockable NFTs present a unique challenge in decentralized ecosystems, especially in scenarios involving staking or delegating usage rights. The
 
 
+=== ERC-8259 ===
+TITLE: AI Agent Identity & Threat Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-05-07
+REQUIRES: 
+
+SUMMARY:
+This standard defines an on-chain framework for decentralized identity (DID) management, reputation scoring, and threat intelligence sharing for autonomous AI agents operating across Ethereum
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Autonomous AI agents increasingly interact with smart contracts and decentralized finance (DeFi) protocols. This presents specific security and coordination challenges: 1. **Identity Fragmentation**: AI
+
+RATIONALE:
+### Basis-Point Scoring Scale (0–1000) Ethereum smart contracts lack native floating-point math. Using an integer scale of 0 to 1000 provides fine-grained reputation measurement
+
+
 === ERC-3005 ===
 TITLE: Batched meta transactions
 TYPE: Standards Track ERC
@@ -4290,6 +4310,26 @@ Emerging identity standards and related frameworks proposed by the Ethereum comm
 
 RATIONALE:
 We find that at a protocol layer, identities should not rely on specific claim or attestation structures, but should instead be a part of
+
+
+=== ERC-8376 ===
+TITLE: Token Launch Abuse Detection and Remediation
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-08-07
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 2, 1, 4
+
+SUMMARY:
+This ERC defines a standard for detecting abuse by token deployers and refunding their buyers while the money is still reachable. It specifies three
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+A launchpad that lists a token which turns out to be a honeypot does not lose money. It loses the users who bought it,
+
+RATIONALE:
+### The Deployer as Subject Buyers at a launch are harmed by the party that created the asset, not by an anonymous cohort. That
 
 
 === ERC-4950 ===

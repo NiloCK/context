@@ -1505,6 +1505,26 @@ RATIONALE:
 ### Addressing Non-Lockable NFT Challenges: Non-lockable NFTs present a unique challenge in decentralized ecosystems, especially in scenarios involving staking or delegating usage rights. The standard [ERC-721](./eip-721.md) `ownerOf` function returns the current owner of the NFT, which, in the case of staking, would be the staking pool contract. This transfer
 
 
+=== ERC-8259 ===
+TITLE: AI Agent Identity & Threat Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-05-07
+REQUIRES: 
+
+SUMMARY:
+This standard defines an on-chain framework for decentralized identity (DID) management, reputation scoring, and threat intelligence sharing for autonomous AI agents operating across Ethereum protocols. The specification defines interfaces for agent identity registration, multi-tier verification status, reputation tracking, and collaborative threat reporting.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions - **AI Agent**: An autonomous or semi-autonomous software system executing on-chain transactions via
+
+MOTIVATION:
+Autonomous AI agents increasingly interact with smart contracts and decentralized finance (DeFi) protocols. This presents specific security and coordination challenges: 1. **Identity Fragmentation**: AI agents lack standardized identity systems across protocols. 2. **Reputation Silos**: Agent historical behavior remains trapped within individual isolated applications. 3. **Threat Intelligence Gaps**: Exploits and
+
+RATIONALE:
+### Basis-Point Scoring Scale (0–1000) Ethereum smart contracts lack native floating-point math. Using an integer scale of 0 to 1000 provides fine-grained reputation measurement (0.1% resolution) without incurring fixed-point arithmetic overhead in consuming DeFi protocols. ### Separation of Identity and Threat Registries Decoupling `IAgentIdentityRegistry` from `IThreatRegistry` allows protocols to
+
+
 === ERC-3005 ===
 TITLE: Batched meta transactions
 TYPE: Standards Track ERC
@@ -4290,6 +4310,26 @@ Emerging identity standards and related frameworks proposed by the Ethereum comm
 
 RATIONALE:
 We find that at a protocol layer, identities should not rely on specific claim or attestation structures, but should instead be a part of a trustless framework upon which arbitrarily sophisticated claim and attestation structures may be built. The main criticism of existing identity solutions is that they're overly
+
+
+=== ERC-8376 ===
+TITLE: Token Launch Abuse Detection and Remediation
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-08-07
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 2, 1, 4
+
+SUMMARY:
+This ERC defines a standard for detecting abuse by token deployers and refunding their buyers while the money is still reachable. It specifies three parts. **Detection**: a taxonomy of eleven deployer abuse patterns, each with a reference profile, scored from a versioned twelve-signal base vector, extensible per pattern, into
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Overview The following diagram illustrates detection, escrow and remediation end to end: ![ERC-8376 Token
+
+MOTIVATION:
+A launchpad that lists a token which turns out to be a honeypot does not lose money. It loses the users who bought it, and the next hundred deployers who would rather launch somewhere that has not been in that headline. The deployer is pseudonymous and finished; the venue
+
+RATIONALE:
+### The Deployer as Subject Buyers at a launch are harmed by the party that created the asset, not by an anonymous cohort. That gives one identifiable respondent instead of a statistical cluster, one who can be required to post collateral, reachable through a venue that is a natural
 
 
 === ERC-4950 ===
