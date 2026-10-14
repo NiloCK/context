@@ -7532,6 +7532,26 @@ RATIONALE:
 ### Introduction Real world assets operate in messy, non-deterministic environments. Because of this, validating the true state of an asset can be murky, expensive, or time-consuming. For example, in the U.S., change of property ownership is usually recorded at the County Recorder’s office, sometimes using pen and paper. It would be infeasible to continuously update this manual record every time an NFT transaction occurs on the blockchain. Additionally, since real world property rights are enforced by the court of law, it is essential that property ownership be documented in such a way that courts are able to interpret
 
 
+=== ERC-8436 ===
+TITLE: Agent Collective Decision Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-04
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 6, 3, 7, 2
+
+SUMMARY:
+This ERC defines a framework through which qualified participants — autonomous agents, humans or contracts — form **collective decisions** with a defined effect, within explicit authorization, under verifiable and composable rules. It specifies: 1. a **Decision Policy**: an immutable, content-addressed rule template that fixes who may vote, how ballots are counted, how several deciding **bodies** compose, how long each phase lasts and how the procedure ends; policies are versioned through **policy families** whose update authority alone may publish a new version; 2. an **Issue**: the binding of a concrete subject and question to one policy version and to
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. Terminology - **Decision Policy (policy)** — an immutable, content-addressed `PolicySpec` fixing bodies, composition, timing, appeals and acceptance rules. Identified by `policyId = keccak256(abi.encode(spec))`. - **Policy family** — the lineage a policy version belongs to; the family's **update authority** alone may publish its next version. - **Issue** — one concrete collective decision: a subject, a question, a policy version and at most one
+
+MOTIVATION:
+Agents increasingly commit resources on each other's behalf: a task escrow pays a fulfiller when work is accepted, a marketplace admits or suspends a member, a swarm changes a parameter that every member runs under. Existing building blocks each cover one corner. Token-weighted governors decide protocol parameters but assume one electorate and one weighting; multisignature wallets give a fixed roster a K-of-N threshold but no notion of a question, a result record or a procedure that can end without a decision; arbitration interfaces route a dispute to one arbitrator; escrow and commerce standards such as [ERC-8183](./eip-8183.md) deliberately leave
+
+RATIONALE:
+**Why a policy is a hashed struct rather than a referenced module.** The first-order risk in any decision system is that the rule applied is not the rule published. Pinning a module by address and code hash does not close that gap: an [ERC-1967](./eip-1967.md) proxy changes its implementation in a storage slot while its code hash stays the same, and even fixed code can read a mutable threshold. Making the registry execute the very struct whose hash is the policy identifier removes the gap entirely, at the cost of restricting the first version to built-in body kinds. Pluggable
+
+
 === ERC-897 ===
 TITLE: DelegateProxy
 TYPE: Standards Track ERC

@@ -7532,6 +7532,26 @@ RATIONALE:
 ### Introduction Real world assets operate in messy, non-deterministic environments. Because of this, validating the true state of an asset can be murky, expensive,
 
 
+=== ERC-8436 ===
+TITLE: Agent Collective Decision Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-04
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 6, 3, 7, 2
+
+SUMMARY:
+This ERC defines a framework through which qualified participants — autonomous agents, humans or contracts — form **collective decisions** with a defined effect, within
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Agents increasingly commit resources on each other's behalf: a task escrow pays a fulfiller when work is accepted, a marketplace admits or suspends a
+
+RATIONALE:
+**Why a policy is a hashed struct rather than a referenced module.** The first-order risk in any decision system is that the rule applied
+
+
 === ERC-897 ===
 TITLE: DelegateProxy
 TYPE: Standards Track ERC
