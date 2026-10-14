@@ -5708,17 +5708,17 @@ The method name `contractURI()` was chosen based on its existing implementation 
 
 
 === ERC-1613 ===
-TITLE: Gas stations network
+TITLE: Gas Stations Network
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2018-11-18
-REQUIRES: 
+REQUIRES: 7, 1, 2, ,,  , 2, 7, 7, 1
 
 SUMMARY:
-Communicating with dapps currently requires paying ETH for gas, which limits dapp adoption to ether users. Therefore, contract owners may wish to pay for the gas to increase user acquisition, or let their users pay for gas with fiat money. The Gas Station Network (GSN) makes smart contracts accessible to non-ether users by allowing contracts to accept "collect-calls", paying for incoming calls. It lets contracts "listen" on publicly accessible channels (e.g. web URL or a whisper address) and incentivizes nodes to run "gas stations" to facilitate this. It requires no network changes and minimal contract changes. Alternatively, a
+Communicating with dapps currently requires paying ETH for gas, which limits dapp adoption to ether users. Therefore, contract owners may wish to pay for the gas to increase user acquisition, or let their users pay for gas with fiat money. The Gas Station Network makes smart contracts accessible to non-ether users by allowing contracts to accept "collect-calls", paying for incoming calls. It lets contracts "listen" on publicly accessible channels (e.g. web URL or a whisper address) and incentivizes nodes to run "gas stations" to facilitate this. It requires no network changes and minimal contract changes. Alternatively, a 3rd
 
 SPECIFICATION:
-The system consists of a `RelayHub` singleton contract, participating contracts inheriting the `RelayRecipient` contract, a decentralized network of `Relay` nodes, a.k.a. Gas Stations, and user applications (e.g. mobile or web) interacting with contracts via relays. Roles of the `RelayHub`: * Maintain a list of active relays. Senders select a `Relay` from this list for each transaction. The selection process is discussed below. * Mediate all communication between relays and contracts. * Provide contracts with trusted versions of the real msg.sender and msg.data. * Hold ETH stakes placed by relays. A minimum stake size is enforced. Stake can be
+The Gas Stations Network has two audited major versions referred to below as Version 1 and Version 2. Both versions follow the same economic model, with version 2 introducing a new acceptance/payment policy and new signature/replay-protection logic. ### Overview #### How it works 1. A **dapp owner** or a sponsor deposits ETH in the hub, allocated for the contract that will pay. 2. A **sender** with no ETH signs a request describing the call they want to make. 3. A **relay** picks up the request, checks that it will be paid, and submits it to the hub in
 
 MOTIVATION:
 * Increase user adoption of smart contracts by: * Removing the user hassle of acquiring ETH. Transactions are still paid by ETH but costs can be borne by the dapp or paid by the user through other means. * Removing the need to interact directly with the blockchain, while maintaining decentralization and censorship-resistance. Contracts can "listen" on multiple public channels, and users can interact with the contracts through common protocols that are generally permitted even in restrictive environments. * Ethereum nodes get a revenue source without requiring mining equipment. The entire network benefits from having more nodes. *

@@ -5708,17 +5708,17 @@ The method name `contractURI()` was chosen based on its existing implementation 
 
 
 === ERC-1613 ===
-TITLE: Gas stations network
+TITLE: Gas Stations Network
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2018-11-18
-REQUIRES: 
+REQUIRES: 7, 1, 2, ,,  , 2, 7, 7, 1
 
 SUMMARY:
 Communicating with dapps currently requires paying ETH for gas, which limits dapp adoption to ether users. Therefore, contract owners may wish to pay for
 
 SPECIFICATION:
-The system consists of a `RelayHub` singleton contract, participating contracts inheriting the `RelayRecipient` contract, a decentralized network of `Relay` nodes, a.k.a. Gas Stations, and
+The Gas Stations Network has two audited major versions referred to below as Version 1 and Version 2. Both versions follow the same economic
 
 MOTIVATION:
 * Increase user adoption of smart contracts by: * Removing the user hassle of acquiring ETH. Transactions are still paid by ETH but costs

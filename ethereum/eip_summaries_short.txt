@@ -112,6 +112,26 @@ SPECIFICATION:
 - Codename: Istanbul ### Activation - `Block >= 9,069,000` on the Ethereum Mainnet - `Block >= 6,485,846` on the Ropsten testnet - `Block >=
 
 
+=== EIP-8433 ===
+TITLE: Retire 0x00 Validators
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-09-28
+REQUIRES: 7, 2, 5, 1, ,,  , 8, 3, 6, 5
+
+SUMMARY:
+This EIP retires the remaining validators whose withdrawal credentials carry the `BLS_WITHDRAWAL_PREFIX` (`0x00`). Starting at a fixed epoch after fork activation, a standing rule
+
+SPECIFICATION:
+### Constants | Name | Value | Comment | | --------------------------- | ----- | ------------------------------------------------------------------- | | `RETIREMENT_START_EPOCH` | TBD | First epoch at
+
+MOTIVATION:
+The `0x00` credential type is the original genesis-era withdrawal format: `0x00 || sha256(withdrawal_bls_pubkey)[1:]`, with withdrawal controlled by a BLS key and no execution address.
+
+RATIONALE:
+### Exit as the retirement mechanism Exiting a validator natively removes it from all duty selection (proposer, attester, sync committee and any future committees)
+
+
 === EIP-8133 ===
 TITLE: Network Upgrade Naming
 TYPE: Informational 
@@ -6445,7 +6465,7 @@ The usual argument for decentralization and network security. Unless programmabl
 === EIP-8173 ===
 TITLE: Foundations of EVM Control Flow
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-02-16
 REQUIRES: 
 

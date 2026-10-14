@@ -5708,17 +5708,17 @@ The method name `contractURI()` was chosen based on its existing implementation 
 
 
 === ERC-1613 ===
-TITLE: Gas stations network
+TITLE: Gas Stations Network
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2018-11-18
-REQUIRES: 
+REQUIRES: 7, 1, 2, ,,  , 2, 7, 7, 1
 
 SUMMARY:
-Communicating with dapps currently requires paying ETH for gas, which limits dapp adoption to ether users. Therefore, contract owners may wish to pay for the gas to increase user acquisition, or let their users pay for gas with fiat money. The Gas Station Network (GSN) makes smart contracts accessible
+Communicating with dapps currently requires paying ETH for gas, which limits dapp adoption to ether users. Therefore, contract owners may wish to pay for the gas to increase user acquisition, or let their users pay for gas with fiat money. The Gas Station Network makes smart contracts accessible to
 
 SPECIFICATION:
-The system consists of a `RelayHub` singleton contract, participating contracts inheriting the `RelayRecipient` contract, a decentralized network of `Relay` nodes, a.k.a. Gas Stations, and user applications (e.g. mobile or web) interacting with contracts via relays. Roles of the `RelayHub`: * Maintain a list of active relays. Senders select a
+The Gas Stations Network has two audited major versions referred to below as Version 1 and Version 2. Both versions follow the same economic model, with version 2 introducing a new acceptance/payment policy and new signature/replay-protection logic. ### Overview #### How it works 1. A **dapp owner** or a
 
 MOTIVATION:
 * Increase user adoption of smart contracts by: * Removing the user hassle of acquiring ETH. Transactions are still paid by ETH but costs can be borne by the dapp or paid by the user through other means. * Removing the need to interact directly with the blockchain, while

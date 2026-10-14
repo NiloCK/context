@@ -112,6 +112,26 @@ SPECIFICATION:
 - Codename: Istanbul ### Activation - `Block >= 9,069,000` on the Ethereum Mainnet - `Block >= 6,485,846` on the Ropsten testnet - `Block >= 14,111,141` on the Kovan testnet - `Block >= 5,435,345` on the Rinkeby testnet - `Block >= 1,561,651` on the Görli testnet ### Included EIPs -
 
 
+=== EIP-8433 ===
+TITLE: Retire 0x00 Validators
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-09-28
+REQUIRES: 7, 2, 5, 1, ,,  , 8, 3, 6, 5
+
+SUMMARY:
+This EIP retires the remaining validators whose withdrawal credentials carry the `BLS_WITHDRAWAL_PREFIX` (`0x00`). Starting at a fixed epoch after fork activation, a standing rule in epoch processing initiates the exit of active `0x00` validators at a capped rate through the standard exit churn. The `BLSToExecutionChange` operation is unchanged: a
+
+SPECIFICATION:
+### Constants | Name | Value | Comment | | --------------------------- | ----- | ------------------------------------------------------------------- | | `RETIREMENT_START_EPOCH` | TBD | First epoch at which retirements are initiated | | `MAX_RETIREMENTS_PER_EPOCH` | TBD | Maximum retirements initiated per epoch transition | `RETIREMENT_START_EPOCH` is an absolute epoch, not an offset
+
+MOTIVATION:
+The `0x00` credential type is the original genesis-era withdrawal format: `0x00 || sha256(withdrawal_bls_pubkey)[1:]`, with withdrawal controlled by a BLS key and no execution address. Since Capella opened one-way conversion to `0x01`, the population has fallen from roughly 600,000 to about 9,200 validators (mainnet, August 2026), but the decline has
+
+RATIONALE:
+### Exit as the retirement mechanism Exiting a validator natively removes it from all duty selection (proposer, attester, sync committee and any future committees) and ends both reward accrual and penalty exposure. No new exclusion machinery is required, and the frozen state ("no rewards, no penalties, balance intact") is
+
+
 === EIP-8133 ===
 TITLE: Network Upgrade Naming
 TYPE: Informational 
@@ -6445,7 +6465,7 @@ The usual argument for decentralization and network security. Unless programmabl
 === EIP-8173 ===
 TITLE: Foundations of EVM Control Flow
 TYPE: Informational 
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-02-16
 REQUIRES: 
 
