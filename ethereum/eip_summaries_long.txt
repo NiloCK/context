@@ -1028,6 +1028,26 @@ RATIONALE:
 [EIP-658](./eip-658.md) originally proposed adding return data to transaction receipts. However, return data is not charged for (as it is not stored on the blockchain), so adding it to transaction receipts could result in DoS and spam opportunities. Instead, a simple Boolean `status` field was added to transaction receipts. This modified version of EIP 658 was included in the Byzantium hard fork. While the `status` field is useful, applications often need the return data as well. The primary advantage of using the strategy outlined here is efficiency: no extra data needs to be stored on the blockchain, and minimal
 
 
+=== EIP-8357 ===
+TITLE: EVM Verification Key Registry
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-30
+REQUIRES: 1, 6, 1, ,,  , 1, 0, 1, 4, ,,  , 1, 5, 5, 9, ,,  , 7, 9, 1, 0, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 9, 7, ,,  , 8, 0, 2, 5, ,,  , 8, 0, 3, 7, ,,  , 8, 2, 8, 8
+
+SUMMARY:
+This EIP creates a fixed-address system contract containing the canonical EVM verification key hash for each registered L1 feature fork. Each entry maps one exact verification key hash to the `schema_id` of the stateless input accepted by the fork-specific EVM program bound by the corresponding verification key. The contract stores one `current_verification_key_hash`. A caller may retrieve either the current entry or an exact historical entry. This lets a native rollup follow L1 EVM upgrades automatically or deliberately remain on a historical EVM fork.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Parameters | Constant | Value | |---|---:| | `SYSTEM_ADDRESS` | `0xfffffffffffffffffffffffffffffffffffffffe` | | `EVM_VK_REGISTRY_ADDRESS` | `0x00005e9c1447c1a05a642ec9eb76d9c125468357` | | `REGISTRY_DEPLOYMENT_SALT` | `0x5c4fde244aecad9b7c039f836e4f6bff9978d838dd6d0ae179f3c70aa84a997f` | | `CURRENT_VERIFICATION_KEY_HASH_SLOT` | `0` | | `SCHEMA_ID_MAPPING_SLOT` | `1` | The all-zero verification key hash is reserved for current-entry lookup and MUST NOT be registered. ### Registry state `verification_key_hash` is the 32-byte field defined by EIP-8288 for `LEANSTARK_SCHEME`: a hash of
+
+MOTIVATION:
+Native rollups are intended to inherit Ethereum's execution environment and upgrade process instead of maintaining a bespoke verifier and its governance. The rollup contract must therefore identify the verification key that L1 has approved for proving EVM execution. [EIP-8288](./eip-8288.md) verifies proofs against explicitly supplied verification key hashes, but does not tell contracts which hashes L1 recognizes, which one is current, or which input schema each program accepts. A contract needs that schema to reconstruct the program's public output, which commits to it. Hard-coding those values would force each rollup to upgrade through its own governance at every L1
+
+RATIONALE:
+### Deterministic deployment [EIP-7997](./eip-7997.md) allows any account to deploy the contract. Because `EVM_VK_REGISTRY_ADDRESS` is bound to `REGISTRY_INITCODE`, changing the runtime requires different initcode and therefore produces a different address. ### Current and pinned verification key hashes A native rollup can query the current entry to follow L1 EVM upgrades without a separate governance action, or pin a historical entry while its infrastructure adapts. The stored `schema_id` lets either mode reconstruct the program's public output, which commits to the input schema and fork rules the program executed. ### Registry instead of a verifier wildcard A verifier wildcard could select
+
+
 === EIP-8131 ===
 TITLE: Unified Transaction Content Floor
 TYPE: Standards Track Core
@@ -2348,6 +2368,26 @@ RATIONALE:
 We consider a few design decisions present in this EIP. 1. `ReducedSummary` versus `Summary` - The original proposal tries to improve data efficiency by using a `ReducedSummary` and a `Rebuilder`. This allows the full summary to be reconstructed. - This adds a lot of complexity to the spec, so in this initial version, we should consider just using the regular `Summary` and including that in the subsequent block. 3. Gas limit vs no limit. - One consideration is whether the inclusion list should have a gas limit or use the block’s gas limit. - Having a separate gas
 
 
+=== EIP-8364 ===
+TITLE: SSZ Compact Multiproofs
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-08-04
+REQUIRES: 
+
+SUMMARY:
+This EIP introduces a compact encoding for [Merkle multiproofs](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/merkle-proofs.md#merkle-multiproofs). A multiproof of `N` tree nodes is encoded as a *proof descriptor*, a bitlist of `2 * N - 1` bits describing the shape of the proof as a traversal of the Merkle tree, followed by the `N` nodes in traversal order. The descriptor encodes requested nodes and helper nodes uniformly. The descriptor doubles as a request format: a client can describe an arbitrary multiproof to a server in roughly two bits per node, and the server can produce the proof in a single descriptor-guided traversal of its tree,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). This specification extends the [Simple Serialize (SSZ) Merkle proof specification](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/merkle-proofs.md) and reuses its definitions of `GeneralizedIndex` and `get_helper_indices`. The `hash` function is SHA-256, as defined in the [consensus specifications](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/specs/phase0/beacon-chain.md#hash). ### Proof Descriptor A multiproof is a set of `N` tree nodes — requested nodes and helper nodes, treated uniformly — such that no node is a descendant of another and, together, the nodes merkleize
+
+MOTIVATION:
+The existing multiproof format identifies the proven nodes by a list of [generalized indices](https://github.com/ethereum/consensus-specs/blob/b5c3b619887c7850a8c1d3540b471092be73ad84/ssz/merkle-proofs.md#generalized-merkle-tree-index), which are convenient for identifying individual tree nodes but inefficient when used directly to request multiproofs dynamically: - **Bandwidth**: each generalized index requires a varint or fixed-width unsigned integer, typically two to eight bytes. The proof descriptor requires `2 * N - 1` *bits*, where `N` is the total number of proof nodes — the requested indices and all helper indices together. - **Server preprocessing**: to serve a request expressed as generalized indices, a server must compute the helper indices and plan an efficient
+
+RATIONALE:
+### Shape Encoding vs Index Lists A list of generalized indices and a shape encoding carry the same information. For all but the sparsest proofs the shape encoding is cheaper to transmit — about two bits per proof node, helpers included, versus two to eight bytes per requested index — and it is strictly cheaper to serve: the descriptor bits are consumed in the same order as a depth-first tree traversal, so a proof server needs no index arithmetic, helper index computation, or traversal planning. The canonical node ordering also removes any ambiguity in proof node serialization. ###
+
+
 === EIP-1283 ===
 TITLE: Net gas metering for SSTORE without dirty maps
 TYPE: Standards Track Core
@@ -3222,6 +3262,26 @@ Hashing is a dominant performance bottleneck for Consensus Layer implementations
 
 RATIONALE:
 Doubling the throughput of the underlying hash algorithm allows scaling to more validators on the same hardware, or allows using the freed CPU time for other tasks. Even when caching rarely-changed intermediate hashes across computations such as the `validators` list of a `BeaconState`, and employing hardware-accelerated SHA-256 implementations that are further optimized for the tree structure using libraries such as `prysmaticlabs/hashtree`, the state root validation step of the Consensus Layer state transition function can still consume ~25% of CPU time (Holesky test network, ~1.7m validators), mostly dominated by frequently changing per-validator structures such as the `EpochParticipationFlags` lists. If
+
+
+=== EIP-8397 ===
+TITLE: Frame Authenticator Signatures
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-08-26
+REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 2, 8, ,,  , 8, 1, 4, 1
+
+SUMMARY:
+This proposal extends [EIP-8141](./eip-8141.md) with an `AUTHENTICATOR` signature scheme: a bounded, state-independent custom-authentication path for frame transactions. `AUTHENTICATOR` allows a frame transaction to carry a custom authentication proof whose expensive cryptographic verification is executed by protocol in a bounded state-independent context. The signature entry's `signer` is an authenticator contract, and its `signature` carries a claimed `key_id` followed by the `proof`. The authenticator returns the credential identifier proven by the witness; validation succeeds only when that identifier equals the claimed `key_id`. Account authorization remains ordinary stateful `VERIFY`-frame logic and authorizes the authenticator address through EIP-8141's existing resolved-signer path. ```text
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). This specification is a delta against EIP-8141. ### Constants | Name | Value | |---|---:| | `AUTHENTICATOR` | `0x03` | | `AUTHENTICATOR_HEADER_LENGTH` | `32` | | `AUTHENTICATOR_GAS_LIMIT` | `50000` | | `AUTHENTICATOR_BASE_COST` | `COLD_ACCOUNT_ACCESS_COST` | | `AUTHENTICATOR_COST` | `AUTHENTICATOR_BASE_COST + AUTHENTICATOR_GAS_LIMIT` | `AUTHENTICATOR_HEADER_LENGTH` is the length of `key_id`. `AUTHENTICATOR_BASE_COST` is the [EIP-2929](./eip-2929.md) cold account access cost in the active gas schedule, charged for reading
+
+MOTIVATION:
+EIP-8141 validates secp256k1 and P-256 signatures in protocol. Any other scheme must be carried as `ARBITRARY` and verified by account code inside a `VERIFY` frame. This mixes expensive state-independent cryptography with cheap stateful account authorization, and makes the expensive work hard for a sequencer to bound or cache independently of account state. `AUTHENTICATOR` moves only the expensive, state-independent part into protocol validation, with a protocol-fixed gas budget so that every such signature has a statically known cost. Which authenticator an account trusts remains account policy in the `VERIFY` frame, where EIP-8141 already bounds and tracks it.
+
+RATIONALE:
+### Two layers The scheme separates two operations with different cost and state profiles: 1. Protocol authentication: expensive, state-independent, bounded by `AUTHENTICATOR_GAS_LIMIT`. Resolves `(authenticator, key_id)` cryptographically. 2. Account authorization: cheap, stateful, account-specific, inside the ordinary `VERIFY` frame. Authorizes the authenticator address, with optional additional key-level policy chosen by the account. Responsibilities divide as follows. The protocol executes the bounded authenticator, enforces that the authenticated `key_id` equals the claimed one, and exposes the authenticator as `resolved_signer`. The authenticator owns credential selection, proof semantics, cryptographic verification, and derivation of `key_id`. Builders and sequencers see `(authenticator, key_id)` and may use them
 
 
 === EIP-8363 ===
@@ -6390,7 +6450,7 @@ CREATED: 2026-02-16
 REQUIRES: 
 
 SUMMARY:
-This Informational EIP provides background for understanding control flow in the Ethereum Virtual Machine (EVM): the history of control flow in computing, the foundations of control flow analysis, and the impact of static control flow on Ethereum's scaling roadmap. This document serves as background material for proposals for static control flow — past and current proposals for subroutines and static jumps, container-format functions, call and return opcodes, and static relative jumps and calls — for discussions around RISC-V migration and zero-knowledge (ZK) verification infrastructure, and for discussions still to come.
+The Ethereum Virtual Machine (EVM) provides no instructions for calls and returns within a contract, and no validation of deployed code: compilers synthesize calls with dynamic jumps. In this the EVM is an anomaly — the JVM, the CLR, Wasm, and nearly every blockchain VM require validated static control flow, supported by native calls and returns. Static control flow is traversed in linear time. Dynamic jumps create dynamic control flow, which makes traversal quadratic and walking the paths factorial — twenty-nine bytes of code can cost nearly a million walks. Dynamic control flow is a denial-of-service risk for
 
 SPECIFICATION:
 Several EIPs, past and current, specify new EVM opcodes and semantics for static control flow: subroutines and static jumps, container-format functions, call and return opcodes, and static relative jumps and calls. They are all implemented with the standard Turing return stack architecture, and are for the most part compatible with each other. In particular, the simplest of them — three call and return opcodes — can be used to implement all of the others.
@@ -8970,7 +9030,7 @@ CREATED: 2025-12-17
 REQUIRES: 
 
 SUMMARY:
-This is a minimal change to the Ethereum Virtual Machine (EVM) to support calls and returns. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB` transfers control to the *destination* on the *data stack*. * `CALLDEST` marks a subroutine entry: the *destination* of a `CALLSUB`, or of a `JUMP` that eliminates a call. * `RETURNSUB` returns to the *PC* after the most recent `CALLSUB`. These changes are backwards compatible: the instructions behave identically wherever they appear. *Note: Significant assistance from AI is acknowledged, primarily for the reference implementation and its tests.*
+This is a minimal change to the Ethereum Virtual Machine (EVM) to support calls and returns. Compilers must now synthesize calls with dynamic jumps: the flow of control is obscured, and every analysis pays. These instructions make calls explicit — saving code and gas, putting return addresses securely beyond the reach of code, and supporting fully static control flow — code that can be validated, compiled, and analyzed in time linear in its size. This proposal introduces three new control-flow instructions to the EVM: * `CALLSUB` transfers control to the *destination* on the *data stack*. * `CALLDEST` marks
 
 SPECIFICATION:
 > *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* The EVM's machine state includes a *data stack* of 256-bit words, at most 1024 deep, and the program counter, *PC*, whose value is a position in the code — the index of the next instruction to execute. This EIP adds a *return stack* of return addresses, pushed only by `CALLSUB`, popped only by `RETURNSUB`, and not otherwise accessible to EVM code. ### `CALLSUB (0xBC)` Transfers control to a subroutine. 1. Pop the *destination* from the
@@ -9660,7 +9720,7 @@ SUMMARY:
 Code can be prefixed with `MAGIC` bytes. `MAGIC` code is validated at `CREATE` time to ensure that it cannot execute invalid *instructions*, jump to invalid destinations, or underflow the *data stack*, that every return has a call to return from, and that within each *subroutine* the depth of the *data stack* at every *instruction* is the same on every *execution*. Stack overflow remains checked at run time, as the *data stack* is for all code today. The complete *control flow* of `MAGIC` code can be traversed in time and space linear in the size of the code, enabling
 
 SPECIFICATION:
-> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* ### `MAGIC (0xEF....)` After this EIP has been activated, code beginning with the `MAGIC` bytes MUST be a `valid` program. *Execution* begins immediately after the `MAGIC` bytes. *Note: `MAGIC` values are still to be determined, but the `MAGIC` bytes will begin with 0xEF.* ### Validity `valid` code has fully static *control flow*: every transfer of control lands where the code says it does. Validation begins with the JUMPDEST analysis clients already run — the sequential
+> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* ### `MAGIC (0xEF....)` After this EIP has been activated, code beginning with the `MAGIC` bytes MUST be a `valid` program. *Execution* begins immediately after the `MAGIC` bytes; positions in the code — *PC* values and destinations — count from the first `MAGIC` byte. *Note: `MAGIC` values are still to be determined, but the `MAGIC` bytes will begin with 0xEF.* ### Validity `valid` code has fully static *control flow*: every transfer of control lands where the
 
 MOTIVATION:
 Dynamic jumps obscure the flow of control. A destination is a runtime value, so analysis must assume that any jump can reach any `JUMPDEST`. The possible control transfers therefore grow as jumps times destinations: quadratic in the size of the code. For tools that run when code deploys or executes, like validators and compilers to machine code, that is a denial-of-service vulnerability. For analyses done offline — formal analysis, even gas estimates — the state space can grow exponentially or worse. [EIP-8173](./eip-8173.md) lays out these foundations, with worked examples and the literature. Validation ends this: code that forgoes
