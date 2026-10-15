@@ -10174,6 +10174,26 @@ RATIONALE:
 This EIP targets on ERC-20 tokens due to its widespread adoption. However, this extension is designed to be compatible with other token standard. The reason we chose to implement those functions in token contract rather than a separate record contract is as follows: - Token can transfer is more
 
 
+=== ERC-8444 ===
+TITLE: Agentic Resource Discovery (ARD) Onchain
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-12
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This ERC defines an onchain registry of *value records* for agentic resources. A value record binds an ARD entry, as defined by the Agentic Resource Discovery (ARD) specification maintained by the ards-project working group, to an onchain *anchor* — a token-bound executable skill, a token-bound task tender, an address-anchored
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. Terms - **ARD entry**: an entry object as defined by the ARD specification,
+
+MOTIVATION:
+ARD answers *what exists and who says so*. A publisher lists its MCP servers, A2A agents, skills and APIs in a manifest under its own domain; registries crawl, index and federate those manifests; a client asks in natural language and receives entries together with the publisher's identity. ARD deliberately
+
+RATIONALE:
+**One root.** Every earlier design that gave domains and addresses equal standing produced a split authority: a domain could publish a price its key holder had not signed, and a key holder could not prove it owned what a domain said. Making the address the only root, and the
+
+
 === ERC-1154 ===
 TITLE: Oracle Interface
 TYPE: Standards Track ERC

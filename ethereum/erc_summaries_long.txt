@@ -10174,6 +10174,26 @@ RATIONALE:
 This EIP targets on ERC-20 tokens due to its widespread adoption. However, this extension is designed to be compatible with other token standard. The reason we chose to implement those functions in token contract rather than a separate record contract is as follows: - Token can transfer is more convenient and more general than interact with DApp - Token is more standardized and has better UI support - Token is equal to service, make token economy more prosperous - Remove the approve process
 
 
+=== ERC-8444 ===
+TITLE: Agentic Resource Discovery (ARD) Onchain
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-12
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This ERC defines an onchain registry of *value records* for agentic resources. A value record binds an ARD entry, as defined by the Agentic Resource Discovery (ARD) specification maintained by the ards-project working group, to an onchain *anchor* — a token-bound executable skill, a token-bound task tender, an address-anchored agent identity, or an ARD registry endpoint — and, through a *kind adapter*, to the address that controls that anchor. Every record is a valid ARD entry, and every resolver that serves records is a conformant ARD registry, so agents and agent users outside Web3 discover and consume onchain
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. Terms - **ARD entry**: an entry object as defined by the ARD specification, v0.91: `identifier` (a URN of the form `urn:air:<publisher>:<namespace>:<name>`, where `<publisher>` is a fully qualified domain name), `displayName`, `type` (a media type), exactly one of `url` or `data`, and optional members including `description`, `tags`, `capabilities`, `representativeQueries`, `version`, `updatedAt`, `metadata` and `trustManifest`. This ERC does not restate that specification; the entry
+
+MOTIVATION:
+ARD answers *what exists and who says so*. A publisher lists its MCP servers, A2A agents, skills and APIs in a manifest under its own domain; registries crawl, index and federate those manifests; a client asks in natural language and receives entries together with the publisher's identity. ARD deliberately defines nothing beyond discovery: no price, no payment, no settlement, no escrow, no credit. It has no demand side — only resources that are offered, never work that is wanted — and it roots trust in domain ownership. An agent economy needs the complementary half: *what a resource is
+
+RATIONALE:
+**One root.** Every earlier design that gave domains and addresses equal standing produced a split authority: a domain could publish a price its key holder had not signed, and a key holder could not prove it owned what a domain said. Making the address the only root, and the domain an endorsement the address collects, removes the split without excluding anyone — a domain that acknowledges an address in its manifest costs the publisher one JSON member, and a publisher with no key stays discoverable at level 0. **Claims onchain, acknowledgment off-chain.** The chain cannot read a manifest
+
+
 === ERC-1154 ===
 TITLE: Oracle Interface
 TYPE: Standards Track ERC
