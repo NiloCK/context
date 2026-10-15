@@ -8039,7 +8039,7 @@ MOTIVATION:
 The gas price of accessing state has not been updated for quite some time. [EIP-2929](./eip-2929.md) was included in the Berlin fork in March 2021
 
 RATIONALE:
-### Empirical Estimation of Gas Costs #### Selecting which Operations to Reprice The parameters selected for repricing in this EIP were chosen based on
+### Empirical Estimation of Gas Costs The [supporting gas cost report](../assets/eip-8038/gas-cost-report.md) contains the latest evm-gasfit runtime and glue-opcode reports, the gas estimates converted at
 
 
 === EIP-7976 ===
