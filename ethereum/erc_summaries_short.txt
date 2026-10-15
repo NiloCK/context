@@ -5327,6 +5327,26 @@ RATIONALE:
 The interfaces described in this ERC have been chosen as to cover the known flash lending use cases, while allowing for safe and gas
 
 
+=== ERC-8348 ===
+TITLE: Financial Lease
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-23
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 4, 9, 0, 7, ,,  , 8, 3, 2, 5
+
+SUMMARY:
+This EIP defines a standard interface for financial lease agreements represented on-chain. Each lease is identified by a `leaseId` and the lessor position is
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Financial leasing is a major credit instrument worldwide, yet no ERC defines how a lease contract should be queried or observed on-chain. [ERC-4907](./eip-4907.md) standardizes
+
+RATIONALE:
+**Units of account** follow the [ERC-4626](./eip-4626.md) share/asset separation: indexed leases are first-class citizens rather than a special case, which is essential in the jurisdictions
+
+
 === ERC-3589 ===
 TITLE: Assemble assets into NFTs
 TYPE: Standards Track ERC

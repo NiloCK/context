@@ -2622,6 +2622,26 @@ RATIONALE:
 Cost of functions being executed must accurately reflect real CPU time spent on computations, so benchmarking was performed for current precompiles and Keccak256 function
 
 
+=== EIP-8317 ===
+TITLE: Contract Storage Layout Descriptor Format
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2026-06-25
+REQUIRES: 7, 2, 0, 1, ,,  , 7, 7, 3, 0, ,,  , 8, 0, 4, 2
+
+SUMMARY:
+Definition of a JSON format for describing the "storage layout" of an EVM contract. The storage layout represents the mapping from the smart contracts'
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Tools that need to make sense of raw storage slots, such as block explorers, debuggers, wallets that show users the outcome of a transaction
+
+RATIONALE:
+### Transient storage is out of scope While any change persisted in the contract's storage may be extremely consequential for the user, the transient
+
+
 === EIP-2029 ===
 TITLE: State Rent A - State counters contract
 TYPE: Standards Track Core
@@ -3635,6 +3655,26 @@ Clear separation between code and data is one of the main features of EOF1. Data
 
 RATIONALE:
 ### Zero-padding on out of bounds access Existing instructions for reading other kinds of data implicitly pad with zeroes on out of bounds access,
+
+
+=== EIP-8358 ===
+TITLE: Net Gas Metering for Account Changes
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-26
+REQUIRES: 1, 6, 1, ,,  , 2, 2, 0, 0, ,,  , 2, 7, 8, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 5, 2, 9, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+
+SUMMARY:
+This EIP applies net gas metering to account balance changes. A value-bearing `CALL` pays a base cost and a charge for each account it
+
+SPECIFICATION:
+### Parameters | Constant | Value | | - | - | | `CALL_VALUE_BASE_GAS` | `4000` | | `CLEAN_BALANCE_CHANGE_GAS` | `(ACCOUNT_WRITE - CALL_VALUE_BASE_GAS) /
+
+MOTIVATION:
+The gas cost of a value-bearing `CALL` is flat per call: `CALL_VALUE` is `ACCOUNT_WRITE + CALL_STIPEND = 11300`, or `9000` when the unused `2300`
+
+RATIONALE:
+### Per-account decomposition of the value transfer cost The `CALL_VALUE` charge is a lump sum: [EIP-8038](./eip-8038.md) defines it as `ACCOUNT_WRITE + CALL_STIPEND`, charged on
 
 
 === EIP-8360 ===
@@ -8433,6 +8473,26 @@ RATIONALE:
 **Why a Merkle commitment.** Alternatives such as KZG place proof generation on the builder's critical path. A Merkle tree over chunks is cheap enough
 
 
+=== EIP-8374 ===
+TITLE: Persist Warm Access Sets Across Reverts
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-08-06
+REQUIRES: 2929
+
+SUMMARY:
+[EIP-2929](./eip-2929.md) tracks accessed addresses and storage keys in the transaction-scoped sets `accessed_addresses` and `accessed_storage_keys`, and rolls both sets back to their pre-call state when
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Warm and cold pricing exists to reflect the client's real cost of loading state. That cost is paid when the data is first read
+
+RATIONALE:
+Access sets are a metering mechanism, not observable state, so reverting them protects nothing: reverting a frame cannot make the client forget the bytes
+
+
 === EIP-1418 ===
 TITLE: Blockchain Storage Rent Payment
 TYPE: Standards Track Core
@@ -9045,7 +9105,7 @@ Removing the check solves several problems while reducing EVM complexity.
 === EIP-7979 ===
 TITLE: Call and Return Opcodes for the EVM
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-12-17
 REQUIRES: 
 

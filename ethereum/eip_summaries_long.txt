@@ -2622,6 +2622,26 @@ RATIONALE:
 Cost of functions being executed must accurately reflect real CPU time spent on computations, so benchmarking was performed for current precompiles and Keccak256 function to measure running time versus input parameters. ### Detailed summary of repricing approach This EIP relies on two facts: - apriori knowledge of the inner strucute of the hash functions - benchmarks provided by the client teams for some reasonable range of input lengths for random inputs (random byte strings of a given length) ### Benchmarks on the most popular clients Necessary benchmarks for EIP-2666 were provided by the clients and raw form is
 
 
+=== EIP-8317 ===
+TITLE: Contract Storage Layout Descriptor Format
+TYPE: Standards Track Interface
+STATUS: Draft
+CREATED: 2026-06-25
+REQUIRES: 7, 2, 0, 1, ,,  , 7, 7, 3, 0, ,,  , 8, 0, 4, 2
+
+SUMMARY:
+Definition of a JSON format for describing the "storage layout" of an EVM contract. The storage layout represents the mapping from the smart contracts' state variables as defined in the source code to their EVM-level storage locations. The format is extensible and is therefore not tied to any single source language or compiler. It can accommodate layouts produced by any EVM-targeting compiler, as well as more advanced and manually controlled use-cases like [ERC-7201](./eip-7201.md), [ERC-8042](./eip-8042.md), and hand-written EVM assembly storage. Consumers of these descriptors — block explorers, debuggers, source-verification services, security tooling, and wallets performing clear signing, transaction simulations,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### File structure A storage layout file is a JSON object with the following top-level members. See [`storage-layout.schema.json`](../assets/eip-8317/storage-layout.schema.json) for the full JSON Schema, [`example-erc20.json`](../assets/eip-8317/example-erc20.json) for an ordinary sequential layout, [`example-eip7702-namespaced.json`](../assets/eip-8317/example-eip7702-namespaced.json) for a layout mixing sequential and ERC-7201 namespaced storage, and [`example-erc8042-diamond.json`](../assets/eip-8317/example-erc8042-diamond.json) for an ERC-8042 Diamond Storage layout. | Field | Required | Description | |------------|----------|----------------------------------------------------------------------------------------------------| | `$schema` | No | URI of the JSON
+
+MOTIVATION:
+Tools that need to make sense of raw storage slots, such as block explorers, debuggers, wallets that show users the outcome of a transaction before they sign, and other similar projects, currently have no common and trusted layout description format and have to rely on their own custom storage layout interpretation. Solidity's `storageLayout` JSON output often serves as a de facto standard, but it has some structural problems making it unfit to be used in scenarios where a finalized ERC-level standard would be required: 1. **It is Solidity specific.** For example, type identifiers such as `t_uint256` are Solidity-internal
+
+RATIONALE:
+### Transient storage is out of scope While any change persisted in the contract's storage may be extremely consequential for the user, the transient storage is cleared after the transaction completes and bears no effect on the transaction outcome. There is no use-case that would require knowledge of the transient storage variable layout in the same way as the persistent one.
+
+
 === EIP-2029 ===
 TITLE: State Rent A - State counters contract
 TYPE: Standards Track Core
@@ -3635,6 +3655,26 @@ Clear separation between code and data is one of the main features of EOF1. Data
 
 RATIONALE:
 ### Zero-padding on out of bounds access Existing instructions for reading other kinds of data implicitly pad with zeroes on out of bounds access, with the only exception of return data copying. It is beneficial to avoid exceptional failures, because compilers can employ optimizations like removing a code that copies data, but never accesses this copy afterwards, but such optimization is possible only if instruction never has other side effects like exceptional abort. ### Lack of `EXTDATACOPY` `EXTCODECOPY` instruction is deprecated and rejected in EOF contracts and does not copy contract code when being called in legacy with
+
+
+=== EIP-8358 ===
+TITLE: Net Gas Metering for Account Changes
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-26
+REQUIRES: 1, 6, 1, ,,  , 2, 2, 0, 0, ,,  , 2, 7, 8, 0, ,,  , 2, 9, 2, 9, ,,  , 3, 5, 2, 9, ,,  , 7, 7, 0, 2, ,,  , 7, 7, 0, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+
+SUMMARY:
+This EIP applies net gas metering to account balance changes. A value-bearing `CALL` pays a base cost and a charge for each account it changes for the first time in the transaction. Later changes to the same accounts cost less, and restoring an account's original balance earns a refund if its nonce is also unchanged. The gas stipend becomes a minimum callee gas limit. An applied [EIP-7702](./eip-7702.md) authorization marks its authority as changed for later calls.
+
+SPECIFICATION:
+### Parameters | Constant | Value | | - | - | | `CALL_VALUE_BASE_GAS` | `4000` | | `CLEAN_BALANCE_CHANGE_GAS` | `(ACCOUNT_WRITE - CALL_VALUE_BASE_GAS) / 2` (= `2500`) | | `BALANCE_RESET_REFUND` | `CLEAN_BALANCE_CHANGE_GAS` (= `2500`) | | `CALL_STIPEND` | `2300` (unchanged value; now a floor on the subcall gas limit) | `ACCOUNT_WRITE` is `9000` under [EIP-8038](./eip-8038.md). The base accounts for the `2300` stipend and the [EIP-7708](./eip-7708.md) transfer log. Its `4000` value is close to their combined `4056` gas cost. Since `CALL_VALUE_BASE_GAS + 2 * CLEAN_BALANCE_CHANGE_GAS = ACCOUNT_WRITE`, a call that changes two clean accounts consumes `9000` gas, the same
+
+MOTIVATION:
+The gas cost of a value-bearing `CALL` is flat per call: `CALL_VALUE` is `ACCOUNT_WRITE + CALL_STIPEND = 11300`, or `9000` when the unused `2300` stipend returns to the caller. This cost does not depend on earlier changes to the accounts. The dominant resource behind that cost is the state write: at the end of a block, each account whose balance or nonce changed requires one update of its account trie leaf. That write happens once per modified account, not once per transfer. A transaction that moves ether through the same accounts repeatedly pays for state writes that never
+
+RATIONALE:
+### Per-account decomposition of the value transfer cost The `CALL_VALUE` charge is a lump sum: [EIP-8038](./eip-8038.md) defines it as `ACCOUNT_WRITE + CALL_STIPEND`, charged on every value-bearing call. The unused stipend normally returns to the caller, making the effective cost `ACCOUNT_WRITE = 9000`. The base of `4000` prices the stipend and the [EIP-7708](./eip-7708.md) transfer log together. The account access cost is already charged separately under [EIP-2929](./eip-2929.md). The remaining `5000` is split between the two accounts: each clean account that changes pays `2500`. A dirty account pays no further balance-change charge. Thus, a call changing two clean accounts costs `9000`,
 
 
 === EIP-8360 ===
@@ -8433,6 +8473,26 @@ RATIONALE:
 **Why a Merkle commitment.** Alternatives such as KZG place proof generation on the builder's critical path. A Merkle tree over chunks is cheap enough to build at bid time, and a single root in the bid makes each chunk self-verifying against one already-verified signature. **Why `TOTAL_EXECUTION_PAYLOAD_CHUNKS = 64`.** The value is not derived from measurement; smaller chunk counts already show benefit compared to single large messages. 64 is chosen for forward compatibility in case we decide to extend protocol erasure coding via `c-kzg`, which segments data into 64 chunks and extends them to 128. **Why unpadded `ByteList` chunks.**
 
 
+=== EIP-8374 ===
+TITLE: Persist Warm Access Sets Across Reverts
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-08-06
+REQUIRES: 2929
+
+SUMMARY:
+[EIP-2929](./eip-2929.md) tracks accessed addresses and storage keys in the transaction-scoped sets `accessed_addresses` and `accessed_storage_keys`, and rolls both sets back to their pre-call state when a call frame reverts or exceptionally halts. This EIP removes that rollback: once an address or storage key is added to an access set, it remains warm for the rest of the transaction, regardless of any subsequent revert.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). As of the fork block: * When a call frame ends in any outcome other than successful completion, `accessed_addresses` and `accessed_storage_keys` MUST NOT be rolled back. All entries added during the frame's execution, including those added by its subcalls, MUST remain in the sets. For a cold account or storage access, the cold access charge MUST be paid before its address or storage key
+
+MOTIVATION:
+Warm and cold pricing exists to reflect the client's real cost of loading state. That cost is paid when the data is first read from the database; a revert undoes state *changes*, but it does not unload the data — it stays in the client's caches, and a second access within the same transaction is cheap in reality. Rolling the access sets back on revert therefore charges cold prices for accesses that are warm in practice. Removing the rollback aligns the gas schedule with actual execution cost and simplifies implementations: access sets become append-only for the duration of
+
+RATIONALE:
+Access sets are a metering mechanism, not observable state, so reverting them protects nothing: reverting a frame cannot make the client forget the bytes it already read. Making the sets append-only prices the second access at what it actually costs and removes the only piece of the journal that models a cache rather than state. An alternative would be keeping the rollback but discounting repeated cold accesses; that adds a third pricing tier for no benefit over simply keeping entries warm.
+
+
 === EIP-1418 ===
 TITLE: Blockchain Storage Rent Payment
 TYPE: Standards Track Core
@@ -9045,7 +9105,7 @@ Removing the check solves several problems while reducing EVM complexity.
 === EIP-7979 ===
 TITLE: Call and Return Opcodes for the EVM
 TYPE: Standards Track Core
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-12-17
 REQUIRES: 
 

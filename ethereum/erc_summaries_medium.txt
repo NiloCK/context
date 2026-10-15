@@ -5327,6 +5327,26 @@ RATIONALE:
 The interfaces described in this ERC have been chosen as to cover the known flash lending use cases, while allowing for safe and gas efficient implementations. `flashFee` reverts on unsupported tokens, because returning a numerical value would be incorrect. `batchFlashLoan` has been chosen as a function name as descriptive
 
 
+=== ERC-8348 ===
+TITLE: Financial Lease
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-23
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1, ,,  , 4, 9, 0, 7, ,,  , 8, 3, 2, 5
+
+SUMMARY:
+This EIP defines a standard interface for financial lease agreements represented on-chain. Each lease is identified by a `leaseId` and the lessor position is represented as an [ERC-721](./eip-721.md) token, making assignment and securitization of lease portfolios compatible with existing NFT infrastructure. The interface exposes the payment schedule, outstanding balance,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions - **Unit of account**: the abstract denomination of the schedule (e.g. UVA, UF,
+
+MOTIVATION:
+Financial leasing is a major credit instrument worldwide, yet no ERC defines how a lease contract should be queried or observed on-chain. [ERC-4907](./eip-4907.md) standardizes temporary usage rights for NFTs but does not model installments, interest, arrears, purchase options, or assignment. [ERC-2615](./eip-2615.md) (a stagnant Draft) adds rental and mortgage roles
+
+RATIONALE:
+**Units of account** follow the [ERC-4626](./eip-4626.md) share/asset separation: indexed leases are first-class citizens rather than a special case, which is essential in the jurisdictions where leasing volume is concentrated in Latin America. A fixed-rate lease is the degenerate case with identity conversion. **Lessor-position-as-NFT** makes portfolio assignment and securitization free:
+
+
 === ERC-3589 ===
 TITLE: Assemble assets into NFTs
 TYPE: Standards Track ERC
