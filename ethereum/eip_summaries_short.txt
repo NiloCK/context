@@ -431,13 +431,13 @@ TITLE: Account Code Restricted ecRecover
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-02-09
-REQUIRES: 2, 9, 2, 9, ,,  , 3, 6, 0, 7, ,,  , 7, 7, 0, 2
+REQUIRES: 3, 6, 0, 7, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP modifies the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` to apply the [EIP-3607](./eip-3607.md) account-code restriction, except for delegation indicators specified by [EIP-7702](./eip-7702.md). After performing
 
 SPECIFICATION:
-### Modified `ecRecover` Behavior Starting at the activation of this EIP, the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` must perform the following steps: 1. Perform
+### Modified `ecRecover` Behavior Starting at the activation of this EIP, the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` must perform the following steps. Recovery failure
 
 MOTIVATION:
 EOAs can use [EIP-7702](./eip-7702.md) as a bridge to post-quantum authorization. After migration, the account's non-empty code no longer matches the EIP-7702 delegation format `0xef0100
