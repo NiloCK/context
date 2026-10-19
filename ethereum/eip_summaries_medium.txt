@@ -9800,7 +9800,7 @@ SUMMARY:
 Code can be prefixed with `MAGIC` bytes. `MAGIC` code is validated at `CREATE` time to ensure that it cannot execute invalid *instructions*, jump to invalid destinations, or underflow the *data stack*, that every return has a call to return from, and that within each *subroutine* the depth of the
 
 SPECIFICATION:
-> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* ### `MAGIC (0xEF....)` After this EIP has been activated, code beginning with the `MAGIC` bytes MUST be a `valid` program. *Execution* begins immediately after the `MAGIC`
+> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* ### `MAGIC (0xEF 0x79)` `MAGIC` is the two bytes `0xEF 0x79`. The byte after them is the *version*: it names the validation rules the code is
 
 MOTIVATION:
 Dynamic jumps obscure the flow of control. A destination is a runtime value, so analysis must assume that any jump can reach any `JUMPDEST`. The possible control transfers therefore grow as jumps times destinations: quadratic in the size of the code. For tools that run when code deploys or
