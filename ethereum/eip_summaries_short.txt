@@ -6530,7 +6530,7 @@ CREATED: 2026-03-17
 REQUIRES: 7892
 
 SUMMARY:
-This EIP makes `SLOT_DURATION_MS` a runtime configuration on the consensus layer rather than a compile-time constant, then uses that infrastructure to reduce slot duration.
+This EIP makes the slot duration a scheduled consensus-layer configuration — a `SLOT_DURATION_SCHEDULE` whose entries each activate a slot duration at an upgrade epoch
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
@@ -6539,7 +6539,7 @@ MOTIVATION:
 Slot time is the heartbeat of Ethereum's user experience. Every second shaved off means faster transaction landings, faster exchange deposits, and faster real-world payments.
 
 RATIONALE:
-### Why infrastructure first The bottleneck is not picking a number. It is the hardcoded twelve-second assumption spread across every consensus and execution client.
+### A phased approach to shorter slots Nobody knows the safe minimum slot duration with today's client implementations, and the bottleneck is not picking
 
 
 === EIP-7039 ===
