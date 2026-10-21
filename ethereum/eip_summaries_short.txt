@@ -6365,6 +6365,26 @@ CREATED: 2015-11-19
 REQUIRES: 
 
 
+=== EIP-8450 ===
+TITLE: Post-Quantum Validator Key Registry
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-15
+REQUIRES: 7, 0, 0, 2, ,,  , 7, 6, 8, 5, ,,  , 7, 9, 1, 6
+
+SUMMARY:
+This EIP adds a post-quantum public key registry to the beacon state. Each validator registers one hash-based public key, bound to its existing validator
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Every consensus-layer signature today is a BLS12-381 signature: attestations, block proposals, RANDAO reveals, aggregation selection proofs, sync committee messages, payload attestations, inclusion lists, proposer
+
+RATIONALE:
+### Registering before switching The reasons for separating the registry from the signature switch are given in the [Motivation](#motivation). The registered keys are not
+
+
 === EIP-196 ===
 TITLE: Precompiled contracts for addition and scalar multiplication on the elliptic curve alt_bn128
 TYPE: Standards Track Core
