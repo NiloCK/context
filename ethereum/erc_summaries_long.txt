@@ -4703,7 +4703,7 @@ The choice of using a Merkle tree to bundle messages provides the following addi
 === ERC-7963 ===
 TITLE: Oracle-Permissioned ERC-20 with ZK Proofs
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2025-05-13
 REQUIRES: 2, 0, ,,  , 1, 9, 6, 7
 
