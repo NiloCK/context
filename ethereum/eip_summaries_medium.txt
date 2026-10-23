@@ -6567,7 +6567,7 @@ TITLE: Quick Slots
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-03-17
-REQUIRES: 7892
+REQUIRES: 7, 8, 4, 3, ,,  , 7, 8, 9, 2
 
 SUMMARY:
 This EIP makes the slot duration a scheduled consensus-layer configuration — a `SLOT_DURATION_SCHEDULE` whose entries each activate a slot duration at an upgrade epoch — rather than a compile-time constant, then uses that infrastructure to reduce slot duration from twelve to ten seconds. Duration-dependent consensus quantities are rescaled by
