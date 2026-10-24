@@ -12001,6 +12001,26 @@ RATIONALE:
 * **Agent communication protocols**: MCP and A2A are popular, and other protocols could emerge. For this reason, this protocol links from the blockchain to a flexible registration file including a list where endpoints can be added at will, combining AI primitives (MCP, A2A) and Web3 primitives such as wallet
 
 
+=== ERC-8426 ===
+TITLE: Wallet Pass Extension for NFTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-08-07
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1, ,,  , 4, 3, 6, 1, ,,  , 6, 4, 9, 2
+
+SUMMARY:
+This proposal extends [ERC-721](./eip-721.md) so that a token contract can advertise that its tokens are available as native mobile wallet passes, such as Apple Wallet passes and Google Wallet objects. It defines a `passURI` view function, a pass manifest that tells clients how to acquire the pass on each
+
+SPECIFICATION:
+This specification has three parts: a discovery interface and pass manifest, a freshness signal, and the authorization a pass-reachable action requires. Only the first two touch the chain; the third exists because a pass is a bearer artifact and any action it can trigger must be authorized independently of
+
+MOTIVATION:
+Native wallet passes are a programmable surface that ships by default on nearly every smartphone. A pass can display live state, link into web experiences, and receive platform push updates, all without the holder installing an application. Production systems already bind NFTs to wallet passes (memberships, tickets, loyalty balances,
+
+RATIONALE:
+**URI indirection instead of on-chain pass data.** Apple Wallet passes are signed bundles produced with issuer certificates; Google Wallet passes are objects registered through an issuer account. Neither can be constructed on chain, and both change far more often than token metadata (countdowns, balances, standings). A `tokenURI`-style endpoint is
+
+
 === ERC-5773 ===
 TITLE: Context-Dependent Multi-Asset Tokens
 TYPE: Standards Track ERC

@@ -12001,6 +12001,26 @@ RATIONALE:
 * **Agent communication protocols**: MCP and A2A are popular, and other protocols could emerge. For this reason, this protocol links from the blockchain to
 
 
+=== ERC-8426 ===
+TITLE: Wallet Pass Extension for NFTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-08-07
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1, ,,  , 4, 3, 6, 1, ,,  , 6, 4, 9, 2
+
+SUMMARY:
+This proposal extends [ERC-721](./eip-721.md) so that a token contract can advertise that its tokens are available as native mobile wallet passes, such as Apple
+
+SPECIFICATION:
+This specification has three parts: a discovery interface and pass manifest, a freshness signal, and the authorization a pass-reachable action requires. Only the first
+
+MOTIVATION:
+Native wallet passes are a programmable surface that ships by default on nearly every smartphone. A pass can display live state, link into web
+
+RATIONALE:
+**URI indirection instead of on-chain pass data.** Apple Wallet passes are signed bundles produced with issuer certificates; Google Wallet passes are objects registered through
+
+
 === ERC-5773 ===
 TITLE: Context-Dependent Multi-Asset Tokens
 TYPE: Standards Track ERC

@@ -112,6 +112,26 @@ SPECIFICATION:
 - Codename: Istanbul ### Activation - `Block >= 9,069,000` on the Ethereum Mainnet - `Block >= 6,485,846` on the Ropsten testnet - `Block >= 14,111,141` on the Kovan testnet - `Block >= 5,435,345` on the Rinkeby testnet - `Block >= 1,561,651` on the Görli testnet ### Included EIPs - [EIP-152](./eip-152.md): Add Blake2 compression function `F` precompile - [EIP-1108](./eip-1108.md): Reduce alt_bn128 precompile gas costs - [EIP-1344](./eip-1344.md): Add ChainID opcode - [EIP-1884](./eip-1884.md): Repricing for trie-size-dependent opcodes - [EIP-2028](./eip-2028.md): Calldata gas cost reduction - [EIP-2200](./eip-2200.md): Rebalance net-metered SSTORE gas cost with consideration of SLOAD gas cost change
 
 
+=== EIP-8425 ===
+TITLE: Quantum Freeze and Account Recovery
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-09-27
+REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This EIP defines a freeze of legacy ECDSA authorization and two recovery paths for unmigrated accounts: a recovery commitment registered before a trusted cutoff, or stronger ownership evidence such as a proof of knowledge of the original seed. Recovery installs successor authorization without restoring the legacy ECDSA path. Recovery algorithms are TBD.
+
+SPECIFICATION:
+### Parameters | Parameter | Value | Description | | --------- | ----- | ----------- | | `SAFE_RECOVERY_TIME` | TBD | Exclusive timestamp cutoff for eligible recovery commitments | | `QUANTUM_FREEZE_TIME` | TBD | Global Unix timestamp at which the freeze rules take effect | `SAFE_RECOVERY_TIME` is a consensus parameter selected before recovery is enabled. It is distinct from `QUANTUM_FREEZE_TIME` and must be no later than it, including if the freeze is brought forward. An unset cutoff disables commitment-based recovery. `QUANTUM_FREEZE_TIME` can be set in advance as a scheduled migration deadline. In an emergency, such as a demonstrated
+
+MOTIVATION:
+A practical quantum break of ECDSA could expose accounts that have not migrated, including accounts whose owners have lost access. Preparing freeze and recovery rules in advance reduces the implementation work needed during an emergency and gives owners a recovery path where suitable evidence remains available.
+
+RATIONALE:
+A separate commitment cutoff allows an earlier trust boundary than freeze activation. Evidence of an earlier compromise can inform selection of an earlier cutoff before recovery is enabled. Reports and offline evidence inform that coordination; clients do not adjudicate them or choose cutoffs independently. A scheduled migration deadline and an emergency response need the same freeze rules. This EIP therefore defines one freeze mechanism controlled by `QUANTUM_FREEZE_TIME`, which can be scheduled in advance or brought forward through network coordination. Disabling ECDSA-signed transactions alone leaves contracts that use `ecRecover` for authorization exposed to forged signatures. After a practical quantum
+
+
 === EIP-8433 ===
 TITLE: Retire 0x00 Validators
 TYPE: Standards Track Core
@@ -3682,13 +3702,13 @@ TITLE: TCREATE Opcode
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-08-03
-REQUIRES: 1, 6, 1, ,,  , 6, 8, 4, ,,  , 1, 0, 1, 4, ,,  , 1, 1, 5, 3, ,,  , 3, 5, 2, 9, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+REQUIRES: 1, 6, 1, ,,  , 6, 8, 4, ,,  , 1, 0, 1, 4, ,,  , 1, 1, 5, 3, ,,  , 2, 6, 8, 1, ,,  , 3, 5, 2, 9, ,,  , 6, 7, 8, 0, ,,  , 7, 7, 0, 8, ,,  , 7, 9, 2, 8, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
 
 SUMMARY:
 This EIP introduces a new EVM opcode, `TCREATE`, where `T` stands for transient, providing an official, gas-efficient, and state-aware mechanism for deploying temporary contracts.
 
 SPECIFICATION:
-### Parameters | Parameter| Description| Value | Source | | --- | --- | --- | --- | | `TCREATE` | New opcode | TBD | This EIP | | `BASE_OPCODE_COST` | Base opcode cost | 100 | This EIP | | `CPSB` | State gas price per byte | 1530 | [EIP-8037](./eip-8037.md) | | `STATE_BYTES_PER_NEW_ACCOUNT`| State bytes created per account| 120 | [EIP-8037](./eip-8037.md) | | `WARM_ACCESS` | Touch of an already warm account or storage slot| 100 | [EIP-8038](./eip-8038.md) | | `COLD_ACCOUNT_ACCESS` | Cold touch of an account | 3000 | [EIP-8038](./eip-8038.md) | | `ACCOUNT_WRITE` | Surcharge
+### Parameters | Parameter| Description| Value | Source | | --- | --- | --- | --- | | `TCREATE` | New opcode | TBD | This EIP | | `BASE_OPCODE_COST` | Base opcode cost | 100 | This EIP | | `CPSB` | State gas price per byte | 1530 | [EIP-8037](./eip-8037.md) | | `STATE_BYTES_PER_NEW_ACCOUNT`| State bytes created per account| 120 | [EIP-8037](./eip-8037.md) | | `WARM_ACCESS` | Touch of an already warm account or storage slot| 100 | [EIP-8038](./eip-8038.md) | | `COLD_ACCOUNT_ACCESS` | Cold touch of an account | 3000 | [EIP-8038](./eip-8038.md) | | `ACCOUNT_WRITE` | Write
 
 MOTIVATION:
 Many Ethereum applications do not require deployed code to persist beyond a single transaction. Examples include state-channel contracts, single-use accounts, and other ephemeral execution environments. Today, such patterns rely on a combination of `CREATE`/`CREATE2` and `SELFDESTRUCT`. However, `SELFDESTRUCT` has no longer provided gas refunds since [EIP-3529](./eip-3529.md), can only delete contracts created within the same transaction since the Cancun upgrade, and is expected to undergo further semantic restrictions in future protocol upgrades. As a result, the deploy-and-self-destruct pattern is no longer economically attractive, nor can its long-term behavior be relied upon. Providing a dedicated EVM opcode for temporary contract
