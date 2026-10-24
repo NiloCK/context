@@ -120,7 +120,7 @@ CREATED: 2026-09-27
 REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP defines a freeze of legacy ECDSA authorization and two recovery paths for unmigrated accounts: a recovery commitment registered before a trusted cutoff,
+This EIP defines a freeze of legacy ECDSA authorization and two account recovery paths: a recovery commitment registered before a trusted cutoff, or stronger
 
 SPECIFICATION:
 ### Parameters | Parameter | Value | Description | | --------- | ----- | ----------- | | `SAFE_RECOVERY_TIME` | TBD | Exclusive timestamp cutoff

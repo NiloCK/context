@@ -120,7 +120,7 @@ CREATED: 2026-09-27
 REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2
 
 SUMMARY:
-This EIP defines a freeze of legacy ECDSA authorization and two recovery paths for unmigrated accounts: a recovery commitment registered before a trusted cutoff, or stronger ownership evidence such as a proof of knowledge of the original seed. Recovery installs successor authorization without restoring the legacy ECDSA path. Recovery algorithms are TBD.
+This EIP defines a freeze of legacy ECDSA authorization and two account recovery paths: a recovery commitment registered before a trusted cutoff, or stronger ownership evidence such as a proof of knowledge of the original seed. Recovery installs successor authorization without restoring the legacy ECDSA path. Recovery algorithms are TBD.
 
 SPECIFICATION:
 ### Parameters | Parameter | Value | Description | | --------- | ----- | ----------- | | `SAFE_RECOVERY_TIME` | TBD | Exclusive timestamp cutoff for eligible recovery commitments | | `QUANTUM_FREEZE_TIME` | TBD | Global Unix timestamp at which the freeze rules take effect | `SAFE_RECOVERY_TIME` is a consensus parameter selected before recovery is enabled. It is distinct from `QUANTUM_FREEZE_TIME` and must be no later than it, including if the freeze is brought forward. An unset cutoff disables commitment-based recovery. `QUANTUM_FREEZE_TIME` can be set in advance as a scheduled migration deadline. In an emergency, such as a demonstrated
@@ -129,7 +129,7 @@ MOTIVATION:
 A practical quantum break of ECDSA could expose accounts that have not migrated, including accounts whose owners have lost access. Preparing freeze and recovery rules in advance reduces the implementation work needed during an emergency and gives owners a recovery path where suitable evidence remains available.
 
 RATIONALE:
-A separate commitment cutoff allows an earlier trust boundary than freeze activation. Evidence of an earlier compromise can inform selection of an earlier cutoff before recovery is enabled. Reports and offline evidence inform that coordination; clients do not adjudicate them or choose cutoffs independently. A scheduled migration deadline and an emergency response need the same freeze rules. This EIP therefore defines one freeze mechanism controlled by `QUANTUM_FREEZE_TIME`, which can be scheduled in advance or brought forward through network coordination. Disabling ECDSA-signed transactions alone leaves contracts that use `ecRecover` for authorization exposed to forged signatures. After a practical quantum
+A separate commitment cutoff allows an earlier trust boundary than freeze activation. Evidence of an earlier compromise can inform selection of an earlier cutoff before recovery is enabled. Reports and offline evidence inform that coordination; clients do not adjudicate them or choose cutoffs independently. A scheduled migration deadline and an emergency response need the same freeze rules. This EIP therefore defines one freeze mechanism controlled by `QUANTUM_FREEZE_TIME`, which can be scheduled in advance or brought forward through network coordination. Recovery uses account code form and valid proofs because clients can evaluate these conditions consistently across wallet implementations and
 
 
 === EIP-8433 ===
