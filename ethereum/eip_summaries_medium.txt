@@ -5415,6 +5415,26 @@ RATIONALE:
 ### Only Pre-PoS data One might ask why the distinction between pre and post PoS data is made in this EIP. The simple answer is that the at the moment of the merge, the block structure changed substantially. Although execution layer client software today continues on with block data
 
 
+=== EIP-8435 ===
+TITLE: Last-Written Block in PBT Leaves
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-04
+REQUIRES: 7, 9, 5, 4, ,,  , 8, 0, 3, 7, ,,  , 8, 2, 9, 7
+
+SUMMARY:
+This proposal puts the `last_written_block` metadata defined in [EIP-8188](./eip-8188.md) directly into the leaves of the Partitioned Binary Tree (PBT) defined in [EIP-8297](./eip-8297.md). For accounts, `last_written_block` is packed into the existing `BASIC_DATA` leaf. It takes the three reserved bytes plus one byte freed by narrowing `code_size` from four bytes in
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). This proposal does not require EIP-8188. It defines `last_written_block` for the PBT completely and can
+
+MOTIVATION:
+EIP-8188 gives clients a consensus-verified record of when each account and storage slot was last written. State-tiering designs such as [EIP-8295](./eip-8295.md) build on that record. EIP-8188 defines it for the Merkle Patricia Trie (MPT): it adds a fifth element to the account RLP list and wraps each storage slot
+
+RATIONALE:
+### Why pack the account field into `BASIC_DATA`? Every account access already opens the `BASIC_DATA` leaf. Putting `last_written_block` there means reading or updating an account's write age needs no extra branch opening, and accounts grow by zero bytes, compared with 5 bytes per account under EIP-8188. One of the
+
+
 === EIP-7619 ===
 TITLE: Precompile Falcon512 generic verifier
 TYPE: Standards Track Core
