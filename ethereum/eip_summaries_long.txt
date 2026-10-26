@@ -8264,7 +8264,7 @@ TITLE: Milli-gas for High-precision Gas Metering
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-10-17
-REQUIRES: 
+REQUIRES: 1, 5, 0, ,,  , 2, 2, 0, 0, ,,  , 2, 7, 8, 0, ,,  , 8, 0, 3, 7
 
 SUMMARY:
 This proposal introduces the `milli-gas` counter as the EVM's internal gas accounting. Gas costs are defined in `milli_gas` and internal EVM gas accounting is entirely carried out in `milli_gas`. At the end of transaction execution, `milli_gas` is rounded up to `gas`. Gas limits and transaction fees are still computed and verified using the current `gas_used` counter. This new counter enables a more precise accounting of cheap compute without impacting UX.
