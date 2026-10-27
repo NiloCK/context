@@ -2495,7 +2495,7 @@ This standards offers a way for any type of address (externally owned and contra
 === ERC-8330 ===
 TITLE: Subject-Linked NAV Snapshot Oracle
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Review
 CREATED: 2026-07-05
 REQUIRES: 165
 

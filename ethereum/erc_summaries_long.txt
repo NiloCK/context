@@ -2495,12 +2495,12 @@ This standards offers a way for any type of address (externally owned and contra
 === ERC-8330 ===
 TITLE: Subject-Linked NAV Snapshot Oracle
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Review
 CREATED: 2026-07-05
 REQUIRES: 165
 
 SUMMARY:
-This Ethereum Request for Comments (ERC) defines an interface for publishing and querying subject-linked net asset value (NAV) snapshots. Each stream is keyed by `(subjectId, currency)` and has one configured NAV basis. Snapshots include signed NAV, decimal precision, valuation and publication timestamps, provider attribution, methodology references, and correction provenance. The core interface supports raw and staleness-aware latest-value queries, provider-specific history, correction-chain resolution, and administrative invalidation that preserves records while excluding invalid snapshots from current-value queries. An optional aggregation interface defines deterministic lower-median aggregation across provider submissions sharing a valuation timestamp. This ERC standardizes publication and query semantics. It
+This Ethereum Request for Comments (ERC) defines an interface for publishing and querying subject-linked net asset value (NAV) snapshots. Each stream is keyed by `(subjectId, currency)` and has one configured NAV basis. Snapshots include signed NAV, decimal precision, valuation and publication timestamps, provider attribution, methodology references, and correction provenance. The core interface supports raw and staleness-aware latest-value queries, provider-specific history, correction-chain resolution, and administrative invalidation that preserves records while excluding invalid snapshots from current-value queries. An optional aggregation interface defines deterministic lower-median aggregation across a fresh quorum of provider submissions sharing a valuation timestamp. This ERC standardizes publication
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions A **stream** is the namespace identified by `(subjectId, currency)`. A **NAV basis** states whether NAV represents one underlying unit, one share or token, or the total value of the subject. A **provider** is the address recorded as publishing a snapshot. A **valuation timestamp** is the asserted as-of time of the valuation. A **publication timestamp** is the block timestamp at which the snapshot
