@@ -6640,21 +6640,21 @@ RATIONALE:
 === ERC-8262 ===
 TITLE: Zero-Knowledge Compliance Oracle
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-04-07
 REQUIRES: 165
 
 SUMMARY:
-A standard interface for on-chain verification of regulatory compliance (anti-money laundering, sanctions screening, anti-structuring) using zero-knowledge proofs. Users generate proofs client-side that attest to
+A standard interface for on-chain verification of regulatory compliance (anti-money laundering (AML), sanctions screening, anti-structuring) using zero-knowledge (ZK) proofs. Users generate proofs client-side that
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-Public blockchains force a binary choice between transparency and privacy. Transparent execution exposes trades to billions in cumulative MEV extraction. Privacy tools have been
+Public blockchains force a choice between transparency and privacy. Transparent execution exposes trades to maximal extractable value (MEV) extraction. Privacy tools have been sanctioned
 
 RATIONALE:
-**Why client-side computation?** Server-side or TEE-based compliance creates a trusted party that can be coerced, compromised, or surveilled. Client-side ZK proof generation means the
+**Why client-side computation?** Server-side or TEE-based compliance creates a trusted party that can be coerced, compromised, or surveilled. With client-side proving the raw data
 
 
 === ERC-1822 ===
