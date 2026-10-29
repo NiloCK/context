@@ -11328,19 +11328,19 @@ TITLE: Agent NFT Identity Bindings
 TYPE: Standards Track ERC
 STATUS: Draft
 CREATED: 2026-04-05
-REQUIRES: 8004
+REQUIRES: 7, 9, 3, 0, ,,  , 8, 0, 0, 4
 
 SUMMARY:
-This ERC defines a standard onchain metadata record and verification interface for expressing that an [ERC-8004](./eip-8004.md) agent identity is bound to an external NFT
+This ERC defines an onchain metadata record and an interface for expressing that an [ERC-8004](./eip-8004.md) agent identity is controlled by an external object, such
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
 
 MOTIVATION:
-[ERC-8004](./eip-8004.md) registrations are themselves NFTs. For an existing NFT to own an ERC-8004 registration, the two NFTs must be bound together. The owning NFT,
+[ERC-8004](./eip-8004.md) registrations are themselves NFTs. For an existing NFT to own an ERC-8004 registration, the registration must be bound to that NFT. Without that
 
 RATIONALE:
-### Why store the binding contract? The token contract and token id alone are not sufficient. The same token may be interpreted differently by
+### Why multiple standards? Control of an [ERC-8004](./eip-8004.md) agent identity takes several shapes, and each `Standard` value names a different authorization rule. The bound
 
 
 === ERC-7955 ===
