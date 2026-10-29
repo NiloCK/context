@@ -3057,6 +3057,26 @@ RATIONALE:
 The standard uses three different query parameters rather than a single query parameter to avoid confusion - an implementer or a user can easily
 
 
+=== ERC-8441 ===
+TITLE: Hybrid post-quantum stealth address scheme
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-08-28
+REQUIRES: 5, 5, 6, 4, ,,  , 6, 5, 3, 8
+
+SUMMARY:
+[ERC-5564](./eip-5564.md) defines stealth addresses and a `schemeId` namespace, and specifies `schemeId` 1, on secp256k1. This ERC specifies `schemeId` 3. Its payment secret combines a
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+As defined in ERC-5564, stealth-address announcement is public, permanent, and centralized in one contract. Under `schemeId` 1, an announcement's privacy relies on secp256k1 ECDH.
+
+RATIONALE:
+### Why a hybrid ML-KEM is new, and so are its implementations. Combining it with ECDH means that recovering `ss` needs both secrets, so
+
+
 === ERC-7196 ===
 TITLE: Simple token, Simplified ERC-20
 TYPE: Standards Track ERC
