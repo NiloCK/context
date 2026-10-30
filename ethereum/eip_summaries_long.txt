@@ -5832,23 +5832,23 @@ Currently, a transaction must read at least 25 distinct storage slots in `tx.to`
 
 
 === EIP-8450 ===
-TITLE: Post-Quantum Validator Key Registry
+TITLE: Post-Quantum Consensus Key Registry
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-10-15
-REQUIRES: 7, 0, 0, 2, ,,  , 7, 6, 8, 5, ,,  , 7, 9, 1, 6
+REQUIRES: 7, 4, 9, 5, ,,  , 7, 7, 3, 2, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP adds a post-quantum public key registry to the beacon state. Each validator registers one hash-based public key, bound to its existing validator index: a leanXMSS key, used for every message the validator signs once duties switch to it. The leanXMSS key is a two-layer tree: a top tree of `2**16` one-time keys, each of which certifies a bottom tree of `2**16` one-time keys, for a lifetime of `2**32` leaf indices. No step of key generation handles more than `2**16` one-time keys. Every signature carries its leaf index, and the signer chooses how leaf indices are allocated
+This EIP adds a post-quantum public key registry to the beacon state. Each validator registers two hash-based commitments: a leanXMSS key, which will sign all its messages once duties switch to it, and the 32-byte root of a verifiable random function (VRF) tree, which fixes one verifiable random output per index. Each builder registers only a leanXMSS key. Registration is a new beacon block operation carrying the keys and a proof of possession that binds the leanXMSS key to the registrant's BLS public key. The registrant's BLS signing key authorizes it and can replace registered keys, at a
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). The consensus-layer changes apply to the consensus specifications (`ethereum/consensus-specs`) on top of Heze. The execution-layer changes apply on top of the execution-layer fork paired with it. The fork that activates this EIP is assigned by the relevant meta EIP. Functions and constants not defined here keep their meaning from those specifications. ### Cryptographic primitives #### Hash function All post-quantum hashing in this EIP uses
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). The changes apply to the consensus specifications (`ethereum/consensus-specs`) on top of Heze, and are rebased onto the fork that includes this EIP once it is scheduled. The fork that activates this EIP is assigned by the relevant meta EIP. Functions and constants not defined here keep their meaning from those specifications. The *registrant* of a registration is the validator or builder whose index it
 
 MOTIVATION:
-Every consensus-layer signature today is a BLS12-381 signature: attestations, block proposals, RANDAO reveals, aggregation selection proofs, sync committee messages, payload attestations, inclusion lists, proposer preferences, voluntary exits, and the deposit proof of possession. BLS relies on the hardness of discrete logarithms in pairing-friendly groups, which Shor's algorithm breaks. A cryptographically relevant quantum computer (CRQC) recovers a validator's secret key from its public key, and every validator's public key is in the beacon state. BLS therefore has to be replaced, and this EIP splits the replacement into two forks. Generating a post-quantum key involves the validator's secret key material,
+Every consensus-layer signature today is a BLS12-381 signature: attestations, block proposals, RANDAO reveals, aggregation selection proofs, sync committee messages, payload attestations, inclusion lists, proposer preferences, voluntary exits, the deposit proof of possession, and the execution payload bids and envelopes of builders. BLS relies on the hardness of discrete logarithms in pairing-friendly groups, which Shor's algorithm breaks. A cryptographically relevant quantum computer (CRQC) recovers a secret key from its public key, and every validator's and builder's public key is in the beacon state. BLS therefore has to be replaced, and this EIP splits the replacement into two forks. Generating
 
 RATIONALE:
-### Registering before switching The reasons for separating the registry from the signature switch are given in the [Motivation](#motivation). The registered keys are not used for any duty. They cannot cause a missed attestation or a slashing, so the registry can be deployed before the aggregation and networking changes are ready. The fork that switches duties defines how the registered keys are used, including how a replacement of keys already in use takes effect. The operator path can only register keys. The owner path can replace them, before and after the switch. A validator that finds a bug
+### Registering before switching Dormant keys cannot cause a missed attestation or a slashing, so the registry can ship before the aggregation and networking changes are ready. For the same reason, a change of keys replaces stored bytes and affects no duty. ### Two keys per validator A stateful scheme such as leanXMSS signs at most once per leaf index, and several duties produce more than one message per slot. A second, stateless scheme would avoid leaf management at the cost of a second key and verifier and larger signatures. This EIP registers one leanXMSS key for all
 
 
 === EIP-7975 ===

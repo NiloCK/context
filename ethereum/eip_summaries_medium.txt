@@ -5832,23 +5832,23 @@ Currently, a transaction must read at least 25 distinct storage slots in `tx.to`
 
 
 === EIP-8450 ===
-TITLE: Post-Quantum Validator Key Registry
+TITLE: Post-Quantum Consensus Key Registry
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-10-15
-REQUIRES: 7, 0, 0, 2, ,,  , 7, 6, 8, 5, ,,  , 7, 9, 1, 6
+REQUIRES: 7, 4, 9, 5, ,,  , 7, 7, 3, 2, ,,  , 7, 9, 1, 6
 
 SUMMARY:
-This EIP adds a post-quantum public key registry to the beacon state. Each validator registers one hash-based public key, bound to its existing validator index: a leanXMSS key, used for every message the validator signs once duties switch to it. The leanXMSS key is a two-layer tree: a top
+This EIP adds a post-quantum public key registry to the beacon state. Each validator registers two hash-based commitments: a leanXMSS key, which will sign all its messages once duties switch to it, and the 32-byte root of a verifiable random function (VRF) tree, which fixes one verifiable random output
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). The consensus-layer changes apply to the consensus specifications (`ethereum/consensus-specs`) on top of Heze. The execution-layer
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). The changes apply to the consensus specifications (`ethereum/consensus-specs`) on top of Heze, and are rebased
 
 MOTIVATION:
-Every consensus-layer signature today is a BLS12-381 signature: attestations, block proposals, RANDAO reveals, aggregation selection proofs, sync committee messages, payload attestations, inclusion lists, proposer preferences, voluntary exits, and the deposit proof of possession. BLS relies on the hardness of discrete logarithms in pairing-friendly groups, which Shor's algorithm breaks. A
+Every consensus-layer signature today is a BLS12-381 signature: attestations, block proposals, RANDAO reveals, aggregation selection proofs, sync committee messages, payload attestations, inclusion lists, proposer preferences, voluntary exits, the deposit proof of possession, and the execution payload bids and envelopes of builders. BLS relies on the hardness of discrete logarithms
 
 RATIONALE:
-### Registering before switching The reasons for separating the registry from the signature switch are given in the [Motivation](#motivation). The registered keys are not used for any duty. They cannot cause a missed attestation or a slashing, so the registry can be deployed before the aggregation and networking changes
+### Registering before switching Dormant keys cannot cause a missed attestation or a slashing, so the registry can ship before the aggregation and networking changes are ready. For the same reason, a change of keys replaces stored bytes and affects no duty. ### Two keys per validator A stateful
 
 
 === EIP-7975 ===
