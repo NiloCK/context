@@ -8967,6 +8967,26 @@ RATIONALE:
 **Bytecode over Addresses**: Bytecode is deterministic and can be verified on-chain, while addresses are opaque and mutable. **Do not re-index**: There is small, yet non-zero probability of hash collision attack. Disallowing updates to indexed location of bytecode coupes with this. **Gas cost**: This operation is more complex than simple data retrieval, however lookup in the database by hash generally is simpler in complexity.
 
 
+=== EIP-8457 ===
+TITLE: Batched KZG Point Evaluation via EIP-2537
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2026-07-06
+REQUIRES: 2, 5, 3, 7, ,,  , 4, 8, 4, 4
+
+SUMMARY:
+This EIP describes a contract-level technique for verifying `n` Kate-Zaverucha-Goldberg (KZG) opening claims against [EIP-4844](./eip-4844.md) blob commitments with a constant number of precompile calls: two multi-scalar multiplication (MSM) calls to `BLS12_G1MSM` and one `BLS12_PAIRING_CHECK` call from [EIP-2537](./eip-2537.md), instead of `n` calls to the EIP-4844 point evaluation precompile. The `n` claims are folded into a single pairing equation using a Fiat-Shamir random linear combination, so an invalid batch passes with negligible probability. The general case of `n` distinct commitments opened at `n` distinct points is covered, along with the two cheaper shapes that arise in practice: many blobs opened
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Notation The following symbols are used throughout this section. | Symbol | Meaning | | --- | --- | | `q` | The BLS12-381 scalar field modulus, equal to `BLS_MODULUS` in EIP-4844 | | `p` | The BLS12-381 base field modulus | | `G1`, `G2` | The BLS12-381 subgroup generators used by EIP-2537 and the EIP-4844 trusted setup | | `[τ]₂` | The
+
+MOTIVATION:
+Rollups and data-availability contracts that consume blobs commonly need to check several KZG openings in one transaction: one opening per blob when a settlement transaction carries multiple blobs, or several openings of one blob when a proof system samples a commitment at more than one point. The established pattern is to call the EIP-4844 point evaluation precompile once per opening. Each call costs `POINT_EVALUATION_PRECOMPILE_GAS = 50000` plus call and calldata overhead, so a settlement that verifies six blobs already spends more than 300,000 gas on verification alone, and the cost grows linearly with the number of openings. As
+
+RATIONALE:
+### Soundness of the Random Linear Combination Each claim `i` corresponds to a target-group element `t_i = e(C_i - y_i·G1 + z_i·π_i, G2) · e(π_i, [τ]₂)⁻¹`, which equals the identity exactly when the claim holds. Raising each `t_i` to a random power `r_i` and multiplying gives `Π t_i^{r_i} = e(LHS, G2) · e(RHS, [τ]₂)⁻¹` by bilinearity, which is what the pairing check evaluates. If any single `t_j` is not the identity, the exponent `Σ r_i · log(t_i)` is a non-constant linear function of `r_j`, so the product is the identity for exactly one value of `r_j` in `[0,
+
+
 === EIP-2035 ===
 TITLE: Stateless Clients - Repricing SLOAD and SSTORE to pay for block proofs
 TYPE: Standards Track Core

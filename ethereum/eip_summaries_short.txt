@@ -8967,6 +8967,26 @@ RATIONALE:
 **Bytecode over Addresses**: Bytecode is deterministic and can be verified on-chain, while addresses are opaque and mutable. **Do not re-index**: There is small, yet
 
 
+=== EIP-8457 ===
+TITLE: Batched KZG Point Evaluation via EIP-2537
+TYPE: Informational 
+STATUS: Draft
+CREATED: 2026-07-06
+REQUIRES: 2, 5, 3, 7, ,,  , 4, 8, 4, 4
+
+SUMMARY:
+This EIP describes a contract-level technique for verifying `n` Kate-Zaverucha-Goldberg (KZG) opening claims against [EIP-4844](./eip-4844.md) blob commitments with a constant number of precompile calls:
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Rollups and data-availability contracts that consume blobs commonly need to check several KZG openings in one transaction: one opening per blob when a settlement
+
+RATIONALE:
+### Soundness of the Random Linear Combination Each claim `i` corresponds to a target-group element `t_i = e(C_i - y_i·G1 + z_i·π_i, G2) ·
+
+
 === EIP-2035 ===
 TITLE: Stateless Clients - Repricing SLOAD and SSTORE to pay for block proofs
 TYPE: Standards Track Core
