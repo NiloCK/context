@@ -5023,6 +5023,26 @@ RATIONALE:
 `updates` and `updated-by` apply only to EIPs in `active` status as updates to EIPs in `final` status are already handled by EIP headers `superseded-by`
 
 
+=== EIP-8449 ===
+TITLE: Engine API Proposal Lookahead
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-19
+REQUIRES: 7917
+
+SUMMARY:
+This EIP adds an Engine API method, `engine_proposalLookaheadUpdatedV1`, with which a consensus layer client (CL) tells its execution layer client (EL) the slots, timestamps,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+### What the EL knows, and when In the Engine API up to and including Amsterdam, an EL learns that it has to produce
+
+RATIONALE:
+**How this differs from `engine_preparePayload`.** The Engine API's first drafts had a method, `engine_preparePayload`. It took the parent block's hash with the timestamp, `random`
+
+
 === EIP-7701 ===
 TITLE: Native Account Abstraction
 TYPE: Standards Track Core
