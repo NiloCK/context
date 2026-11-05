@@ -752,7 +752,7 @@ CREATED: 2024-12-27
 REQUIRES: 7702
 
 SUMMARY:
-This EIP extends [EIP-7702](./eip-7702.md) with an ECDSA-disabled delegation prefix `0xef0101` and a self-only opcode `SETSELFDELEGATE`. EIP-7702 bootstraps delegation by writing `0xef0100 || delegate_address` through
+This EIP extends [EIP-7702](./eip-7702.md) with an ECDSA-disabled delegation prefix `0xef0101` and a self-only EVM instruction `SETSELFDELEGATE`. EIP-7702 bootstraps delegation by writing `0xef0100 || delegate_address`
 
 SPECIFICATION:
 `||` denotes byte concatenation. `0xef0100 || delegate_address` is an ECDSA-enabled delegation, and `0xef0101 || delegate_address` is an ECDSA-disabled delegation. ECDSA-disabled means the original ECDSA
@@ -5856,7 +5856,7 @@ TITLE: Post-Quantum Consensus Key Registry
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-10-15
-REQUIRES: 7, 4, 9, 5, ,,  , 7, 7, 3, 2, ,,  , 7, 9, 1, 6
+REQUIRES: 7, 4, 9, 5, ,,  , 7, 7, 3, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 2, 8, 2
 
 SUMMARY:
 This EIP adds a post-quantum public key registry to the beacon state. Each validator registers two hash-based commitments: a leanXMSS key, which will sign
@@ -8173,7 +8173,7 @@ SPECIFICATION:
 ### Modified `ecRecover` Behavior Starting at the activation of this EIP, the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` must perform the following steps. Recovery failure
 
 MOTIVATION:
-EOAs can use [EIP-7702](./eip-7702.md) as a bridge to post-quantum authorization. After migration, the account's non-empty code no longer matches the EIP-7702 delegation format `0xef0100
+EOAs can use [EIP-7702](./eip-7702.md) as a bridge to post-quantum authorization. After migration, the account has regular deployed code instead of an EIP-7702 delegation indicator
 
 RATIONALE:
 ### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., [ERC-20](./eip-20.md)

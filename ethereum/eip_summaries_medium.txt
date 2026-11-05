@@ -752,13 +752,13 @@ CREATED: 2024-12-27
 REQUIRES: 7702
 
 SUMMARY:
-This EIP extends [EIP-7702](./eip-7702.md) with an ECDSA-disabled delegation prefix `0xef0101` and a self-only opcode `SETSELFDELEGATE`. EIP-7702 bootstraps delegation by writing `0xef0100 || delegate_address` through the original EOA key. Delegated wallet code can then call `SETSELFDELEGATE` to write `0xef0101 || delegate_address`, permanently disabling residual ECDSA authority while preserving code-controlled delegate
+This EIP extends [EIP-7702](./eip-7702.md) with an ECDSA-disabled delegation prefix `0xef0101` and a self-only EVM instruction `SETSELFDELEGATE`. EIP-7702 bootstraps delegation by writing `0xef0100 || delegate_address` through the original EOA key. Delegated wallet code can then call `SETSELFDELEGATE` to write `0xef0101 || delegate_address`, permanently disabling residual ECDSA authority while preserving code-controlled
 
 SPECIFICATION:
 `||` denotes byte concatenation. `0xef0100 || delegate_address` is an ECDSA-enabled delegation, and `0xef0101 || delegate_address` is an ECDSA-disabled delegation. ECDSA-disabled means the original ECDSA key can no longer authorize transactions or [EIP-7702](./eip-7702.md) delegation changes. It does not mean the delegate target is frozen forever: wallet code is capable of
 
 MOTIVATION:
-[EIP-7702](./eip-7702.md) bootstraps delegation with the original EOA key, but after control has moved into wallet code, users may operate the account through the wallet code itself. This EIP lets wallet code control the delegation lifecycle and burn residual ECDSA authority.
+[EIP-7702](./eip-7702.md) bootstraps delegation with the original EOA key, but after control has moved into wallet code, users may operate the account through the wallet code itself. This EIP lets wallet code control the delegation lifecycle and permanently disable residual protocol-level ECDSA authority.
 
 RATIONALE:
 [EIP-7702](./eip-7702.md) bootstraps delegation with the original EOA key. After bootstrap, the account may be controlled through wallet code, passkeys, multisig, social recovery, or modules. The ECDSA-disabled lifecycle should therefore be available from the delegated account's execution path. `SETSELFDELEGATE` moves this decision into wallet code. The first successful call permanently
@@ -5856,7 +5856,7 @@ TITLE: Post-Quantum Consensus Key Registry
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-10-15
-REQUIRES: 7, 4, 9, 5, ,,  , 7, 7, 3, 2, ,,  , 7, 9, 1, 6
+REQUIRES: 7, 4, 9, 5, ,,  , 7, 7, 3, 2, ,,  , 7, 9, 1, 6, ,,  , 8, 2, 8, 2
 
 SUMMARY:
 This EIP adds a post-quantum public key registry to the beacon state. Each validator registers two hash-based commitments: a leanXMSS key, which will sign all its messages once duties switch to it, and the 32-byte root of a verifiable random function (VRF) tree, which fixes one verifiable random output
@@ -5868,7 +5868,7 @@ MOTIVATION:
 Every consensus-layer signature today is a BLS12-381 signature: attestations, block proposals, RANDAO reveals, aggregation selection proofs, sync committee messages, payload attestations, inclusion lists, proposer preferences, voluntary exits, the deposit proof of possession, and the execution payload bids and envelopes of builders. BLS relies on the hardness of discrete logarithms
 
 RATIONALE:
-### Registering before switching Dormant keys cannot cause a missed attestation or a slashing, so the registry can ship before the aggregation and networking changes are ready. For the same reason, a change of keys replaces stored bytes and affects no duty. ### Two keys per validator A stateful
+### Registering before switching Dormant keys cannot cause a missed attestation or a slashing, so the registry can ship before the aggregation and networking changes are ready. For the same reason, a change of keys replaces stored bytes and affects no duty. ### One signing key and one VRF
 
 
 === EIP-7975 ===
@@ -8173,7 +8173,7 @@ SPECIFICATION:
 ### Modified `ecRecover` Behavior Starting at the activation of this EIP, the `ecRecover` precompile at address `0x0000000000000000000000000000000000000001` must perform the following steps. Recovery failure and a rejected code check both return empty output with `success = 1`. 1. Consume `3000` gas. If the gas is insufficient, halt for out
 
 MOTIVATION:
-EOAs can use [EIP-7702](./eip-7702.md) as a bridge to post-quantum authorization. After migration, the account's non-empty code no longer matches the EIP-7702 delegation format `0xef0100 || delegate_address`, so [EIP-3607](./eip-3607.md) disables its ECDSA transaction authority at the protocol level. However, `ecRecover` ignores account state. A quantum-capable attacker deriving the old ECDSA
+EOAs can use [EIP-7702](./eip-7702.md) as a bridge to post-quantum authorization. After migration, the account has regular deployed code instead of an EIP-7702 delegation indicator `0xef0100 || delegate_address`, so [EIP-3607](./eip-3607.md) disables protocol-level ECDSA transaction origination. However, `ecRecover` ignores account state. A quantum-capable attacker deriving the old ECDSA private key could
 
 RATIONALE:
 ### Protocol-Level Modification Modifying `ecRecover` at the protocol level is chosen because many deployed contracts that rely on `ecRecover` for signature-based authorization (e.g., [ERC-20](./eip-20.md) `permit` implementations) are immutable and cannot be updated to check the recovered account's code. A protocol-level change ensures these existing contracts automatically apply the same
