@@ -3539,7 +3539,7 @@ MOTIVATION:
 Contract metadata today typically relies on offchain storage such as URLs or IPFS, creating trust and availability risks—servers go down, domains expire, and malicious actors can modify data without onchain record. Storing metadata onchain makes contract identity censorship-resistant and enables wallets and block explorers to display verifiable information without
 
 RATIONALE:
-This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of contract metadata. The minimal interface with a single `contractMetadata` function provides all necessary functionality. The optional `setContractMetadata` function enables flexible access control for metadata updates. The required `ContractMetadataUpdated`
+This design prioritizes simplicity and flexibility by using a string-key, bytes-value store that provides an intuitive interface for any type of contract metadata. The minimal interface with a single `metadata` function provides all necessary functionality. The optional `setMetadata` function enables flexible access control for metadata updates. The required `MetadataSet`
 
 
 === ERC-8122 ===
