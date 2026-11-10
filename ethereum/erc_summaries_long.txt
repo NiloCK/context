@@ -101,7 +101,7 @@ RATIONALE:
 === ERC-8326 ===
 TITLE: Canonical Document Bundle Anchor
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-07-05
 REQUIRES: 165
 
@@ -8149,7 +8149,7 @@ The standard follows an already existing approach for address aliasing from Ethe
 === ERC-8327 ===
 TITLE: Directional Transfer Domain Registry
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-07-05
 REQUIRES: 165
 
@@ -10818,7 +10818,7 @@ Previous attempts to reduce spoofing and other copy errors such as [ERC-55](./ei
 === ERC-8325 ===
 TITLE: Asset Anchor Registry
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-07-04
 REQUIRES: 165
 
@@ -10826,10 +10826,10 @@ SUMMARY:
 This Ethereum Request for Comments (ERC) defines interfaces for registries that bind token contracts or token IDs to anchor records representing claims about off-chain assets. Each anchor contains separate commitments to a claimed legal basis and supporting evidence. Bindings distinguish whole-contract scope from token-ID scope, enforce registry-scoped exclusivity, and preserve immutable binding history. Token-side interfaces allow contracts to declare the same registry and anchor, enabling consumers to verify both sides of a binding. A lifecycle interface defines structured metadata, expiry, re-attestation, and permanent deactivation. An optional recovery interface permits disputed bindings to be invalidated without deleting their historical
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [Request for Comments (RFC) 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions An **anchor** is a registry record containing commitments and metadata for an off-chain asset claim. A **contract binding** binds an anchor to an entire token contract. This is appropriate when one contract represents one claimed asset or instrument. A **token-ID binding** binds an anchor to one token ID within a token contract. A **binding tuple** is `(token, bindingScope, tokenId)`.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions An **anchor** is a registry record containing commitments and metadata for an off-chain asset claim. A **contract binding** binds an anchor to an entire token contract. This is appropriate when one contract represents one claimed asset or instrument. A **token-ID binding** binds an anchor to one token ID within a token contract. A **binding tuple** is `(token, bindingScope, tokenId)`. A **valid binding**
 
 MOTIVATION:
-A token can claim in metadata that it represents an off-chain asset, but that claim does not provide a common interface for another contract to determine: - which registry record the token claims; - whether the registry records the same token-to-anchor relationship; - whether the binding is exclusive within that registry; - whether the binding applies to an entire token contract or one token ID; or - whether the anchor is active, expired, deactivated, or invalidated. Deployments subject to institutional or regulatory oversight often need a durable answer to which token tuple was recorded against an asset claim,
+A token can claim in metadata that it represents an off-chain asset, but that claim does not provide a common interface for another contract to determine: - which anchor record the token claims to be bound to; - whether the registry records the same token-to-anchor relationship; - whether the binding is exclusive within that registry; - whether the binding applies to an entire token contract or one token ID; or - whether the anchor is active, expired, deactivated, or invalidated. Deployments subject to institutional or regulatory oversight often need a durable answer to which token tuple was recorded
 
 RATIONALE:
 ### Why Use a Registry? A separate registry allows the same binding interface to compose with fungible, non-fungible, multi-token, permissioned, and future token standards. It also provides one inspection surface for applications that do not control the token implementation. The registry does not create global truth. Consumers select which registry operators and authorization policies they trust. ### Why Two Hashes? Off-chain asset structures often distinguish the instrument or legal basis from evidence about the referenced asset. Separate commitments preserve that distinction without assigning universal semantics to either document set. Deployments that do not need the distinction can commit

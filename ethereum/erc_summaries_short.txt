@@ -101,7 +101,7 @@ RATIONALE:
 === ERC-8326 ===
 TITLE: Canonical Document Bundle Anchor
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-07-05
 REQUIRES: 165
 
@@ -8149,7 +8149,7 @@ The standard follows an already existing approach for address aliasing from Ethe
 === ERC-8327 ===
 TITLE: Directional Transfer Domain Registry
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-07-05
 REQUIRES: 165
 
@@ -10818,7 +10818,7 @@ Previous attempts to reduce spoofing and other copy errors such as [ERC-55](./ei
 === ERC-8325 ===
 TITLE: Asset Anchor Registry
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-07-04
 REQUIRES: 165
 
