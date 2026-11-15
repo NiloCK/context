@@ -1168,7 +1168,7 @@ This standard seeks to optimize gas consumption by minimizing the frequency of e
 === ERC-8330 ===
 TITLE: Subject-Linked NAV Snapshot Oracle
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2026-07-05
 REQUIRES: 165
 
@@ -6856,7 +6856,7 @@ RATIONALE:
 === ERC-8328 ===
 TITLE: Subject-Linked Compliance Event Log
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-07-05
 REQUIRES: 165
 
@@ -7895,7 +7895,7 @@ Storing ABIs onchain avoids the need to introduce additional dependencies for ap
 === ERC-8329 ===
 TITLE: Subject-Linked Impact Snapshot Log
 TYPE: Standards Track ERC
-STATUS: Last Call
+STATUS: Final
 CREATED: 2026-07-05
 REQUIRES: 165
 
