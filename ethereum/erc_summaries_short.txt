@@ -3553,9 +3553,9 @@ Currently permission and access control is performed using a single owner ([ERC-
 === ERC-8376 ===
 TITLE: Token Launch Abuse Detection and Remediation
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-08-07
-REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 2, 1, 4
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 2, 1, 4, ,,  , 7, 9, 9, 7
 
 SUMMARY:
 This ERC defines a standard for detecting abuse by token deployers and refunding their buyers while the money is still reachable. It specifies three
@@ -7330,6 +7330,26 @@ RATIONALE:
 This EIP specifies two aspects of keys derivation in the context of Hierarchical Wallets: - Derivation Path - Grinding Algorithm to enforce a uniform
 
 
+=== ERC-8501 ===
+TITLE: Generative Engine Optimization Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-14
+REQUIRES: 1, 6, 5, ,,  , 6, 3, 7, 2
+
+SUMMARY:
+This proposal defines the Generative Engine Optimization Framework (GEOF): a descriptive framework for recording how generative engines (answer engines, AI search surfaces, agent runtimes
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Generative engines do not rank pages; they retrieve, select, synthesize and attribute. The measurements that grew up around classic search (impressions, clicks, position) describe
+
+RATIONALE:
+**Declarations instead of mandates.** Engines are black boxes that change weekly; measurement methods multiply. Fixing any method would date the framework within months. Fixing
+
+
 === ERC-7573 ===
 TITLE: Conditional-upon-Transfer-Decryption for DvP
 TYPE: Standards Track ERC
@@ -10051,7 +10071,7 @@ RATIONALE:
 === ERC-7963 ===
 TITLE: Oracle-Permissioned ERC-20 with ZK Proofs
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-05-13
 REQUIRES: 2, 0, ,,  , 1, 9, 6, 7
 

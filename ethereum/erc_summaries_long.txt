@@ -3553,9 +3553,9 @@ Currently permission and access control is performed using a single owner ([ERC-
 === ERC-8376 ===
 TITLE: Token Launch Abuse Detection and Remediation
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-08-07
-REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 2, 1, 4
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 2, 1, 4, ,,  , 7, 9, 9, 7
 
 SUMMARY:
 This ERC defines a standard for detecting abuse by token deployers and refunding their buyers while the money is still reachable. It specifies three parts. **Detection**: a taxonomy of eleven deployer abuse patterns, each with a reference profile, scored from a versioned twelve-signal base vector, extensible per pattern, into an `abuseScore` of 0-100 and published as a bonded report committing to chain-verifiable evidence. Every signal describes an action the deployer took; price decline is excluded by rule. **Escrow**: the venue holds sale proceeds and releases them on a schedule, so they remain reachable while abuse typically occurs. **Remediation**:
@@ -7330,6 +7330,26 @@ RATIONALE:
 This EIP specifies two aspects of keys derivation in the context of Hierarchical Wallets: - Derivation Path - Grinding Algorithm to enforce a uniform distribution over the elliptic curve. The derivation path is defined to allow efficient keys separation based on technology and application while maintaining a 1-1 relation with the Layer-1 wallet. In such a way, losing EIP-2645 wallets falls back to losing the Layer-1 wallet.
 
 
+=== ERC-8501 ===
+TITLE: Generative Engine Optimization Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-14
+REQUIRES: 1, 6, 5, ,,  , 6, 3, 7, 2
+
+SUMMARY:
+This proposal defines the Generative Engine Optimization Framework (GEOF): a descriptive framework for recording how generative engines (answer engines, AI search surfaces, agent runtimes with discovery layers) represent an object, how that representation is measured, and how independent parties exchange and verify the resulting measurements. GEOF defines eight content-addressed record types (Object, Frame, Source, Method, Intent, Metric Definition, Observation, Profile), a bounded observation container (Process) with versioned closure, a five-state value vocabulary, a metric identifier grammar, and a minimal on-chain registry that records declarations, observation commitments and attributable profile publications. The framework assigns no desirability to any value:
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. Terms - **Subject / Object** — the thing being represented: a content item, an entity, an offer, an agent, a skill, a task, a registry or a claim. An Object is engine-independent; its representation belongs to an Event. - **Engine** — a system that retrieves, selects, synthesizes and attributes information in response to a trigger: an answer engine, an AI search surface,
+
+MOTIVATION:
+Generative engines do not rank pages; they retrieve, select, synthesize and attribute. The measurements that grew up around classic search (impressions, clicks, position) describe only part of what happens, and the measurements that grew up around generative engines (mention rate, citation rate, share of voice, position-adjusted word count) are published by many tools under incompatible units and denominators. Two parties holding the same number cannot tell whether they measured the same thing. Three further gaps motivate an on-chain framework rather than another metric list: 1. **Agentic discovery.** When the recipient is an agent and the engine is an
+
+RATIONALE:
+**Declarations instead of mandates.** Engines are black boxes that change weekly; measurement methods multiply. Fixing any method would date the framework within months. Fixing what must be declared does not. **No number without its frame.** The same name ("citation share") is published with answers as the denominator by one tool and with all citations under a query as the denominator by another. Both are valid; neither is comparable to the other. Carrying numerator, denominator, eligibility and de-duplication on every ratio moves the disagreement from silent to visible. **Five states.** "Did not appear in a fully read answer" (`ABSENT`),
+
+
 === ERC-7573 ===
 TITLE: Conditional-upon-Transfer-Decryption for DvP
 TYPE: Standards Track ERC
@@ -10051,7 +10071,7 @@ RATIONALE:
 === ERC-7963 ===
 TITLE: Oracle-Permissioned ERC-20 with ZK Proofs
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-05-13
 REQUIRES: 2, 0, ,,  , 1, 9, 6, 7
 

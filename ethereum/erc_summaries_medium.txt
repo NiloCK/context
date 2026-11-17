@@ -3553,9 +3553,9 @@ Currently permission and access control is performed using a single owner ([ERC-
 === ERC-8376 ===
 TITLE: Token Launch Abuse Detection and Remediation
 TYPE: Standards Track ERC
-STATUS: Draft
+STATUS: Review
 CREATED: 2026-08-07
-REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 2, 1, 4
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 2, 1, 4, ,,  , 7, 9, 9, 7
 
 SUMMARY:
 This ERC defines a standard for detecting abuse by token deployers and refunding their buyers while the money is still reachable. It specifies three parts. **Detection**: a taxonomy of eleven deployer abuse patterns, each with a reference profile, scored from a versioned twelve-signal base vector, extensible per pattern, into
@@ -7330,6 +7330,26 @@ RATIONALE:
 This EIP specifies two aspects of keys derivation in the context of Hierarchical Wallets: - Derivation Path - Grinding Algorithm to enforce a uniform distribution over the elliptic curve. The derivation path is defined to allow efficient keys separation based on technology and application while maintaining a 1-1 relation
 
 
+=== ERC-8501 ===
+TITLE: Generative Engine Optimization Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-14
+REQUIRES: 1, 6, 5, ,,  , 6, 3, 7, 2
+
+SUMMARY:
+This proposal defines the Generative Engine Optimization Framework (GEOF): a descriptive framework for recording how generative engines (answer engines, AI search surfaces, agent runtimes with discovery layers) represent an object, how that representation is measured, and how independent parties exchange and verify the resulting measurements. GEOF defines eight content-addressed
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. Terms - **Subject / Object** — the thing being represented: a content item,
+
+MOTIVATION:
+Generative engines do not rank pages; they retrieve, select, synthesize and attribute. The measurements that grew up around classic search (impressions, clicks, position) describe only part of what happens, and the measurements that grew up around generative engines (mention rate, citation rate, share of voice, position-adjusted word count) are
+
+RATIONALE:
+**Declarations instead of mandates.** Engines are black boxes that change weekly; measurement methods multiply. Fixing any method would date the framework within months. Fixing what must be declared does not. **No number without its frame.** The same name ("citation share") is published with answers as the denominator by one
+
+
 === ERC-7573 ===
 TITLE: Conditional-upon-Transfer-Decryption for DvP
 TYPE: Standards Track ERC
@@ -10051,7 +10071,7 @@ RATIONALE:
 === ERC-7963 ===
 TITLE: Oracle-Permissioned ERC-20 with ZK Proofs
 TYPE: Standards Track ERC
-STATUS: Review
+STATUS: Last Call
 CREATED: 2025-05-13
 REQUIRES: 2, 0, ,,  , 1, 9, 6, 7
 
