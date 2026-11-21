@@ -2096,13 +2096,13 @@ TITLE: Unified Transaction Content Floor
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2025-01-21
-REQUIRES: 2, 0, 2, 8, ,,  , 4, 8, 4, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1
+REQUIRES: 2, 0, 2, 8, ,,  , 2, 7, 8, 0, ,,  , 2, 9, 3, 0, ,,  , 4, 8, 4, 4, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1
 
 SUMMARY:
-Charge every user-controlled byte in a transaction (calldata, access-list entries, [EIP-7702](./eip-7702.md) auths, [EIP-4844](./eip-4844.md) blob hashes) at a flat 64 gas at the floor. One rule replaces [EIP-7623](./eip-7623.md)/[EIP-7976](./eip-7976.md) and [EIP-7981](./eip-7981.md) and closes the auth and blob hash floor gaps. Worst-case user-controlled tx content per block is bounded by `block_gas_limit /
+Charge every user-controlled byte in a transaction (calldata, access-list entries, [EIP-7702](./eip-7702.md) auths, [EIP-4844](./eip-4844.md) blob hashes) at a flat 64 gas at the floor. One floor rule replaces the floor terms of [EIP-7623](./eip-7623.md)/[EIP-7976](./eip-7976.md) and [EIP-7981](./eip-7981.md) and closes the auth and blob hash floor gaps. Worst-case user-controlled transaction content per block
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Constants ``` TX_BASE = 21000 FLOOR_GAS_PER_BYTE = 64 # per-byte floor rate established by
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Constants ``` FLOOR_GAS_PER_BYTE = 64 # per-byte floor rate established by EIP-7976 (calldata) and
 
 MOTIVATION:
 Every node must be able to handle the largest block an attacker can build, not the average one. Lowering that worst case buys headroom, which can either be spent on throughput by raising the gas limit or kept as a buffer. Left unspent, it is a direct gain in
@@ -10620,10 +10620,10 @@ TITLE: Block Access List Byte Floor
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-05-23
-REQUIRES: 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 1, 3, 1
+REQUIRES: 2, 7, 8, 0, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2, ,,  , 7, 8, 2, 5, ,,  , 7, 9, 2, 8, ,,  , 7, 9, 7, 6, ,,  , 7, 9, 8, 1, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8, ,,  , 8, 1, 3, 1
 
 SUMMARY:
-Meter the bytes execution adds to the [EIP-7928](./eip-7928.md) Block Access List in an explicit per-transaction counter, and fold that count, at 64 gas/byte, into the transaction's floor accumulator — checked at runtime before the BAL grows. Today an attacker can pack ~1.55 MiB into a 60M-gas block: 75% of
+Meter the bytes execution adds to the [EIP-7928](./eip-7928.md) Block Access List in an explicit per-transaction counter, and fold that count, at 64 gas/byte, into the transaction's floor accumulator — checked at runtime before the BAL grows. With EIP-7928 BALs, an attacker can pack ~1.55 MiB into a 60M-gas block:
 
 SPECIFICATION:
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Constants ``` FLOOR_GAS_PER_BYTE = 64 # per-byte floor rate (EIP-7976) TX_MAX_GAS_LIMIT = 16_777_216 #
@@ -10632,7 +10632,7 @@ MOTIVATION:
 Every node must be able to handle the largest block an attacker can build, not the average one. Lowering that worst case buys headroom, which can either be spent on throughput by raising the gas limit or kept as a buffer. Left unspent, it is a direct gain in
 
 RATIONALE:
-### Floor side, not intrinsic side Raising execution charges would penalise every user, including ones who never bypass. Charging on the floor only bites when execution is too cheap to cover the floor, which is exactly the bypass case. A pure intrinsic surcharge also fails to cap the block
+### Floor side, not intrinsic side Raising execution charges would penalise every user, including ones who never bypass. Charging on the floor only bites when execution is too cheap to cover the floor, which is exactly the bypass case. A pure execution-side surcharge also fails to cap the block
 
 
 === EIP-8125 ===
