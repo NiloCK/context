@@ -11562,6 +11562,26 @@ RATIONALE:
 ### Why Subscription Over Synchronous? Subscriptions provide several advantages over the synchronous approach proposed in EIP-7966: - **Non-blocking**: Clients can perform other operations while
 
 
+=== EIP-8512 ===
+TITLE: eth/74 - Dependency Proof Exchange
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-11-22
+REQUIRES: 8, 2, 8, 8, ,,  , 8, 4, 0, 8
+
+SUMMARY:
+This EIP modifies the 'eth' peer-to-peer (p2p) protocol to support the block-level dependency proofs of [EIP-8288](./eip-8288.md). It adds two new messages, `GetDependencyProofs` (0x16) and
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[EIP-8288](./eip-8288.md) requires every block to carry a dependency proof, currently a recursive Scalable Transparent ARgument of Knowledge (STARK), that proves the validity of all
+
+RATIONALE:
+### Separate Messages vs. Block Body Extension Proofs are transmitted via dedicated messages rather than extending block bodies because: 1. **Size**: A dependency proof
+
+
 === EIP-6913 ===
 TITLE: SETCODE instruction
 TYPE: Standards Track Core

@@ -11562,6 +11562,26 @@ RATIONALE:
 ### Why Subscription Over Synchronous? Subscriptions provide several advantages over the synchronous approach proposed in EIP-7966: - **Non-blocking**: Clients can perform other operations while waiting for confirmation - **Multiplexing**: Multiple transactions can be monitored over a single WebSocket connection - **No timeout complexity**: Subscriptions naturally handle varying confirmation times
 
 
+=== EIP-8512 ===
+TITLE: eth/74 - Dependency Proof Exchange
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-11-22
+REQUIRES: 8, 2, 8, 8, ,,  , 8, 4, 0, 8
+
+SUMMARY:
+This EIP modifies the 'eth' peer-to-peer (p2p) protocol to support the block-level dependency proofs of [EIP-8288](./eip-8288.md). It adds two new messages, `GetDependencyProofs` (0x16) and `DependencyProofs` (0x17), enabling peers to request and serve proofs for synchronization.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Protocol Version This EIP defines `eth/74`, which extends `eth/73` as defined in [EIP-8408](./eip-8408.md) with
+
+MOTIVATION:
+[EIP-8288](./eip-8288.md) requires every block to carry a dependency proof, currently a recursive Scalable Transparent ARgument of Knowledge (STARK), that proves the validity of all dependencies declared by its transactions. The proof is not part of the block header or the block body. The header carries only a 32-byte commitment
+
+RATIONALE:
+### Separate Messages vs. Block Body Extension Proofs are transmitted via dedicated messages rather than extending block bodies because: 1. **Size**: A dependency proof is hundreds of kilobytes. Block bodies already grow with the gas limit, and keeping the proof out of them keeps `BlockBodies` responses and the RLP
+
+
 === EIP-6913 ===
 TITLE: SETCODE instruction
 TYPE: Standards Track Core

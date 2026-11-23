@@ -11562,6 +11562,26 @@ RATIONALE:
 ### Why Subscription Over Synchronous? Subscriptions provide several advantages over the synchronous approach proposed in EIP-7966: - **Non-blocking**: Clients can perform other operations while waiting for confirmation - **Multiplexing**: Multiple transactions can be monitored over a single WebSocket connection - **No timeout complexity**: Subscriptions naturally handle varying confirmation times without timeout parameters - **Proven infrastructure**: Leverages existing `eth_subscribe` implementation present in all major clients The addition of the `transaction` parameter provides complete feature parity with `eth_sendRawTransactionSync` by enabling submission and monitoring in a single call. ### Why Extend `eth_subscribe`? The `eth_subscribe` mechanism is battle-tested and already implemented across
 
 
+=== EIP-8512 ===
+TITLE: eth/74 - Dependency Proof Exchange
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-11-22
+REQUIRES: 8, 2, 8, 8, ,,  , 8, 4, 0, 8
+
+SUMMARY:
+This EIP modifies the 'eth' peer-to-peer (p2p) protocol to support the block-level dependency proofs of [EIP-8288](./eip-8288.md). It adds two new messages, `GetDependencyProofs` (0x16) and `DependencyProofs` (0x17), enabling peers to request and serve proofs for synchronization.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Protocol Version This EIP defines `eth/74`, which extends `eth/73` as defined in [EIP-8408](./eip-8408.md) with two new messages. All earlier messages and their semantics are unchanged. Messages are written in the notation of the [`eth` wire protocol specification](https://github.com/ethereum/devp2p/blob/2c19a28b25c29487773ad6b07243e290fa8d65ec/caps/eth.md), where `P` is a positive integer, `B` a byte string and `B_32` a 32-byte byte string. This EIP uses message IDs 0x16 and 0x17, the next
+
+MOTIVATION:
+[EIP-8288](./eip-8288.md) requires every block to carry a dependency proof, currently a recursive Scalable Transparent ARgument of Knowledge (STARK), that proves the validity of all dependencies declared by its transactions. The proof is not part of the block header or the block body. The header carries only a 32-byte commitment to it, `dependency_proof_hash`, and the proof itself travels in the `ExecutionPayload`. Because the proof is in neither the header nor the body, `GetBlockBodies` cannot serve it, and the Engine API payload body methods reach only the local consensus layer. A node that validates a block by re-execution must verify
+
+RATIONALE:
+### Separate Messages vs. Block Body Extension Proofs are transmitted via dedicated messages rather than extending block bodies because: 1. **Size**: A dependency proof is hundreds of kilobytes. Block bodies already grow with the gas limit, and keeping the proof out of them keeps `BlockBodies` responses and the RLP block size independent of proof size. 2. **Optional retrieval**: A node that trusts finality for a block does not need its proof. It can sync headers and bodies for finalized blocks without downloading proofs. 3. **Retention policy**: Proofs may be pruned per [EIP-8288](./eip-8288.md), while block bodies are retained longer.
+
+
 === EIP-6913 ===
 TITLE: SETCODE instruction
 TYPE: Standards Track Core
