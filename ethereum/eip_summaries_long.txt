@@ -568,7 +568,7 @@ SUMMARY:
 This proposal introduces the sparse blobpool, a construction that brings cell-level, custody-aligned sampling in the Execution Layer (EL). For every new type 3 (blob-carrying) transaction, an EL node fetches full blob payloads only with probability p = 0.15, and otherwise it merely samples the blobs, using the same custody assignment as its Consensus Layer (CL) counterpart. For validators, this means downloading as little as 1/8 of the data (8 out of 64 cells), so that the average bandwidth consumption compared to the (current) full blobpool is 0.15 + 0.85/8 ~ 0.25, a ~4x reduction. The choice of p
 
 SPECIFICATION:
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Execution clients :: devp2p changes We introduce a new devp2p protocol version, `eth/72` extending the existing `eth/71` protocol. **Modify `NewPooledTransactionHashes` (`0x08`) message.** Add a new field `cell_mask` of type `B_16` (`uint128`). This field MUST be interpreted as a bitarray of length `CELLS_PER_EXT_BLOB`, carrying `1` in the indices of columns the announcer has available for **all type 3 txs announced within the message**. This
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Execution clients :: devp2p changes We introduce a new devp2p protocol version, `eth/72` extending the existing `eth/71` protocol. **Modify `NewPooledTransactionHashes` (`0x08`) message.** Add a new field `cell_mask` of type `B_16` (`uint128`). This field MUST be interpreted as a bitarray of length `CELLS_PER_EXT_BLOB`, carrying `1` in the indices of columns the announcer has available for **all type 3 txs announced within the message**. When
 
 MOTIVATION:
 As Blob Parameter Only (BPO) forks progressively increase throughput, the full-replication nature of today's EL blobpool will begin dominating bandwidth utilization, causing us to hit [EIP-7870](./eip-7870.md) limits. Furthermore, this traffic will compete, and potentially starve, block and attestation propagation, risking instability and liveness issues. This behavior has already been observed in Fusaka devnets, where the average bandwidth consumption _of a full node_ is dominated by the EL blobpool, since column propagation on the CL benefits from sampling. ![](../assets/eip-8070/bandwidth-breakdown-fusaka-devnets.png) **Figure 1.** _Breakdown of the average bandwidth consumption (download) of full nodes in Fusaka Devnet 5, for blob count target/max
@@ -2632,6 +2632,26 @@ RATIONALE:
 The Future Salaries is the _only_ known system of distributing significant funds to common good producers. (Quadratic funding aimed to do a similar thing, but in practice as we see on GitCoin it favors a few developers, ignores project of highly advanced scientific research that is hard to explain to an average developer, and encourages colluding, and it just highly random due to small number of donors. Also quadratic funding simply does not gather enough funds to cover common good needs). So this EIP is the only known way to recover the economy. The economical model of Future
 
 
+=== EIP-8491 ===
+TITLE: LUCID Key Publisher Priority Lists
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-11-10
+REQUIRES: 7, 0, 0, 2, ,,  , 7, 6, 8, 5, ,,  , 7, 7, 3, 2, ,,  , 8, 1, 8, 4, ,,  , 8, 2, 8, 2
+
+SUMMARY:
+This EIP extends [EIP-8184](./eip-8184.md) with a validator-managed priority list of key publishers. Sealed transactions using publishers on this list execute before other sealed transactions, mitigating the impact of key publishers' optionality over key release. Publishers are included on the list when supported by more than half of active validator effective balance.
+
+SPECIFICATION:
+### Additional constants and parameters ```python LUCID_KEY_MESSAGE_PREFIX = b"LUCID_KEY_MESSAGE" MAX_KEY_PUBLISHER_ADDRESSES_PER_LIST = TBD MAX_KEY_PUBLISHER_VOTE_LISTS = TBD MAX_KEY_PUBLISHER_VOTE_REQUESTS_PER_PAYLOAD = TBD TARGET_KEY_PUBLISHER_VOTE_REQUESTS_PER_PAYLOAD = TBD MIN_KEY_PUBLISHER_VOTE_REQUEST_FEE = TBD KEY_PUBLISHER_VOTE_REQUEST_FEE_UPDATE_FRACTION = TBD KEY_PUBLISHER_VOTE_SYSTEM_CALL_GAS_LIMIT = TBD SYSTEM_ADDRESS = 0xfffffffffffffffffffffffffffffffffffffffe KEY_PUBLISHER_VOTE_REGISTRY_ADDRESS = TBD DOMAIN_KEY_PUBLISHER_VOTE_SUBSCRIPTION = TBD KEY_PUBLISHER_VOTE_REQUEST_TYPE = TBD ``` ### Key publisher voting Validators vote for key publishers by subscribing to lists of execution addresses. Each list is managed by an owner through a registry contract on the execution layer. Each active validator contributes its full effective balance to every address in its subscribed list. An address has priority when its support exceeds half
+
+MOTIVATION:
+In LUCID, key publishers can choose whether to release a committed transaction's decryption key after learning how later transactions would execute. This optionality can enable frontrunning even when those later transactions are encrypted. Giving execution priority to transactions whose key publishers the validator set deems trusted prevents transactions using other publishers from exploiting selective key release to execute ahead of them.
+
+RATIONALE:
+Priority ordering limits the ability of non-prioritized publishers to exploit key-release optionality against transactions using prioritized publishers, while preserving permissionless participation. Disallowing non-prioritized publishers entirely could further mitigate optionality, but would make the key publisher market more prone to centralization. Validator voting ties publisher selection to Ethereum's existing validator set. Weighting support by effective balance aligns influence with stake. Requiring majority support for priority makes more than 50% of active validator effective balance a natural threshold, although the choice of threshold is arbitrary. Subscriptions to managed lists allow a single list update to change the selections of many
+
+
 === EIP-7480 ===
 TITLE: EOF - Data section access instructions
 TYPE: Standards Track Core
@@ -4637,6 +4657,26 @@ RATIONALE:
 This new formula ensures that the difficulty adjustment algorithm targets a constant average rate of blocks produced including uncles, and so ensures a highly predictable issuance rate that cannot be manipulated upward by manipulating the uncle rate. A formula that accounts for the exact number of included uncles: ``` python adj_factor = max(1 + len(parent.uncles) - ((timestamp - parent.timestamp) // 9), -99) ``` can be fairly easily seen to be (to within a tolerance of ~3/4194304) mathematically equivalent to assuming that a block with `k` uncles is equivalent to a sequence of `k+1` blocks that all appear with
 
 
+=== EIP-8455 ===
+TITLE: RESERVOIR Opcode
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-23
+REQUIRES: 2, 7, 8, 0, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 1, 4, 1
+
+SUMMARY:
+This EIP introduces a new opcode, `RESERVOIR` (`0x4d`), that pushes the state gas available to the executing frame which is not included in the value returned by `GAS`. For transactions that use the reservoir model of [EIP-8037](./eip-8037.md) this is the frame's `state_gas_reservoir`. Inside an [EIP-8141](./eip-8141.md) frame transaction it is the frame's `state_gas_left`. Together with `GAS`, the opcode lets contracts read their full remaining budget and measure the gas consumed by a code region or a call, including state-gas consumption that GAS does not report.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Parameters | Constant | Value | | --- | --- | | `RESERVOIR_OPCODE` | `0x4d` | | `RESERVOIR_GAS_COST` | `2` | ### Behavior A new instruction `RESERVOIR` is introduced at `RESERVOIR_OPCODE`. It takes no stack input and pushes one value, `state_budget`, defined below. Execution of `RESERVOIR` MUST: 1. charge `RESERVOIR_GAS_COST` as execution gas to the `gas_left` of the current call frame, as `GAS`
+
+MOTIVATION:
+EIP-8037 splits the gas of a transaction into `gas_left` and a `state_gas_reservoir` that holds the part of `tx.gas` above `TX_MAX_GAS_LIMIT`. State creation draws from the reservoir first and spills into `gas_left` once the reservoir is empty. The reservoir is passed in full to every child frame, and the `GAS` opcode reports `gas_left` only. Contracts therefore cannot observe their remaining state-gas budget or measure the state gas consumed by a callee. Protocols that meter sub-calls by subtracting two `gasleft()` readings, such as the [ERC-4337](./eip-4337.md) `EntryPoint`, under-count state gas whenever the reservoir pays for it: a call that creates one
+
+RATIONALE:
+### Exposing only the state budget `gas_left` is already observable. The state budget is the only part of a frame's budget that contracts cannot read, so a single instruction returning it completes the picture. Under the reservoir model, state gas that spilled into `gas_left` has already been deducted from `GAS`, and refills return it to a pool that `GAS` or `RESERVOIR` reports. Exposing the spill or the cumulative state gas used would add no information that the use cases need, and it would tie contracts to internal counters that later proposals may change. ### Behavior in frame transactions
+
+
 === EIP-3076 ===
 TITLE: Slashing Protection Interchange Format
 TYPE: Standards Track Interface
@@ -5102,6 +5142,26 @@ RATIONALE:
 ### Permanent Delegation Native key delegation is permanent. Once an account's code is set to `0xef0101 || pubkey`, the ECDSA key is dead — the protocol will never accept it again. This is a deliberate and safe design choice for two reasons. First, permanence is safe because the new key is the root key. The holder of the installed ML-DSA-44 private key can always rotate to a new key via a native-key-signed authorization tuple. There is no loss of authority: the account owner retains full, exclusive control through the current native key. Reverting to ECDSA would only re-introduce
 
 
+=== EIP-8430 ===
+TITLE: AA Transaction Type
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-09-23
+REQUIRES: 1, 5, 5, 9, ,,  , 2, 7, 1, 8, ,,  , 2, 9, 2, 9, ,,  , 7, 6, 2, 3, ,,  , 7, 7, 0, 2
+
+SUMMARY:
+This proposal introduces a new [EIP-2718](./eip-2718.md) transaction type (`AA_TX_TYPE`), split out of [EIP-8130](./eip-8130.md) as an independent transaction type with no Keystore dependency. It works for today's EOAs with native secp256k1 authentication, giving them call batching with phased atomicity, native value in calls, gas sponsorship with bound and open payers, two-dimensional nonces with a nonce-free mode, and in-band [EIP-7702](./eip-7702.md)-style code delegation. Its authenticator selector, authorization-rules hook, and reserved account-change types let other account models plug in without a new transaction type. EIP-8130 specifies one such integration, for the Keystore.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Constants | Name | Value | Comment | |------|-------|---------| | `AA_TX_TYPE` | `0x79` | [EIP-2718](./eip-2718.md) transaction type | | `AA_PAYER_TYPE` | `0x7A` | Magic byte for payer signature domain separation | | `REPLAY_ID_TYPE` | `0x7901` | Magic prefix for `replay_id` domain separation | | `AA_BASE_COST` | `12000` | Base intrinsic gas cost | | `K1_AUTHENTICATOR` | `address(1)` | Selector for native secp256k1 authentication
+
+MOTIVATION:
+Wallets want to batch calls, have a third party pay gas, run independent transaction lanes in parallel, and set code delegation in the same transaction that uses it. Today these require an [ERC-4337](./eip-4337.md) bundler stack, several transactions, or a smart account for every user. This proposal provides these capabilities as protocol features of one transaction type. Validation is fixed-cost: nodes verify a secp256k1 signature per role and check nonce, balance, and validity window, and never simulate wallet code to decide whether a transaction is valid. The wire format is designed so that richer authentication can be added later
+
+RATIONALE:
+### Why Delegation via Account Changes? [EIP-7702](./eip-7702.md) introduced `authorization_list` with a separate signature per authorization. Here delegation is authorized by `sender_auth`, in the same nonce stream as the calls that use the new code. It is restricted to the native secp256k1 path so it stays portable to chains that only support EIP-7702. ### Why Commit the Phase Count in the Receipt? With only `status`, a transaction that reverted in phase 1 and one that reverted in phase 2 leave different state but can produce identical receipts, for example when the phases emit no logs, so the receipts root
+
+
 === EIP-8062 ===
 TITLE: Add sweep withdrawal fee for 0x01 validators
 TYPE: Standards Track Core
@@ -5200,6 +5260,26 @@ Reverting a transaction, or any of its sub-calls, drops any state modifications 
 
 RATIONALE:
 Gas should reflect the cost of use. The revert cost reflects the cost of access during execution, but not the cost of modification.
+
+
+=== EIP-8502 ===
+TITLE: Dynamic individual consolidation incentive
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-11-18
+REQUIRES: 7251
+
+SUMMARY:
+This EIP encourages stakers to consolidate their stake into fewer validators to reduce the network load from carrying and aggregating votes. Each epoch, an individual consolidation incentive is subtracted from validator balances. It makes each additional validator carry a private cost, giving stakers a reason to reduce the public cost they impose on the network. The incentive is largest for 32-ETH validators, up to their attestation reward at full participation, and falls linearly with effective balance to zero at 2048 ETH. Every validator removed through consolidation therefore saves the staker about the same amount. The protocol lowers the
+
+SPECIFICATION:
+### Parameters | Name | Value | Description | | --- | --- | --- | | `FORK_EPOCH` | TBD | Activation epoch | | `VALIDATOR_TARGET_START` | TBD, e.g. `2**19` | Target at ramp start | | `VALIDATOR_TARGET_END` | TBD, e.g. `2**17` | Terminal target | | `VALIDATOR_TARGET_RAMP_DURATION_MS` | `47_304_000_000` | Ramp, 1.5 years | | `CONSOLIDATION_FORCE_RISE_TIME_MS` | `25_920_000_000` | Rise time $\tau_{\uparrow}$, 300 days | | `CONSOLIDATION_FORCE_FALL_TIME_MS` | `2_592_000_000` | Fall time $\tau_{\downarrow}$, 30 days | | `CONSOLIDATION_FORCE_DENOMINATOR` | `10**9` | Force at 100% | ### Beacon state ```python class BeaconState(ProgressiveContainer): ACTIVE_FIELDS = active_fields(width=47, gaps=(8, 9, 10,
+
+MOTIVATION:
+Ethereum takes about 13 minutes to finalize a block, and proposals for faster finality aim to bring this down to a few slots. Typically, every validator votes in each finality round, and finality requires votes from validators holding two-thirds of the stake. Since any validator may be part of that two-thirds, the network must carry and aggregate votes from the whole validator set in every round. The cost grows with the number of validators, not with the amount of stake. At the time of writing, Ethereum has around 815,000 validators, making the validator count a central obstacle to
+
+RATIONALE:
+### Overview The protocol compares the validator count $V$ with a target $T$. The validator count includes all active validators except those already committed to consolidating into another validator. The target moves linearly from `VALIDATOR_TARGET_START` to `VALIDATOR_TARGET_END` over `VALIDATOR_TARGET_RAMP_DURATION_MS`, starting at `FORK_EPOCH`, and then stays at `VALIDATOR_TARGET_END`. A consolidation force $F$ accumulates the relative gap $g = (V - T)/T$ over time. It rises with the rise time $\tau_{\uparrow}$ when the validator count is above target and falls with the shorter fall time $\tau_{\downarrow}$ when it is below. The force is updated once per epoch, with $\Delta t$
 
 
 === EIP-2124 ===
@@ -8292,6 +8372,26 @@ RATIONALE:
 ### New counter vs. new variable type A possible approach to allow for fractional gas would be to change the variable type of all gas-related variables from an integer to a float or a base fractional. Although simple in concept, the implementation of such a change in the EVM is not trivial. In addition, introducing fractional variables would make moving to a zkEVM significantly more complex. Thus, introducing a new counter is the option that least disrupts the current EVM implementation, while allowing for expressive gas costs. ### Rounding at transaction-level With the introduction of a new counter,
 
 
+=== EIP-8452 ===
+TITLE: Jump and Call Tables for the EVM
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-20
+REQUIRES: 7, 9, 7, 9, ,,  , 8, 3, 3, 7
+
+SUMMARY:
+Two instructions. `JUMPV` jumps to one of a table of destinations, chosen by a case on the *data stack*; `CALLSUBV` calls one. The table is data in the code, and its position is on the stack, so the instructions take no immediate data and behave identically in ordinary and validated code. In ordinary code they are as dynamic and as checked as `JUMP`; in `MAGIC` code the `PUSH` before them makes the dispatch static, and validation proves every destination before the code is deployed. They are the multi-way jump and call for which [EIP-7979](./eip-7979.md) reserved `0xBE` and `0xBD`:
+
+SPECIFICATION:
+> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* The *data stack*, the *return stack*, the *PC*, a *return address* and a *subroutine* are as [EIP-7979](./eip-7979.md) defines them; `MAGIC` code, `valid` code, an *instruction*, *reachable*, an *entry*, a *stack offset* and a *net stack effect* are as [EIP-8337](./eip-8337.md) defines them. A *table* is a *count* byte followed by *count* + 1 *destinations* of two bytes each, big-endian, each a position in the code, counted from its first byte. A *table* lies anywhere in the
+
+MOTIVATION:
+Validated code has no computed jumps: [EIP-8337](./eip-8337.md) requires the destination of every jump and call to be a constant in the code, which is what makes its control flow static and its validation linear. The price is dispatch. Choosing among *N* destinations by a value takes *N* comparisons and jumps, or a tree of them, where legacy code takes one computed `JUMP` through a table in memory. Every contract pays this at its entry, dispatching on its selector; interpreters and state machines pay it in their inner loops; and compilers, which lower a `switch` to a jump table
+
+RATIONALE:
+### Why is the *table* in the code and its position on the stack? For the reason [EIP-7979](./eip-7979.md) gave for taking no immediate arguments: backwards compatibility. An instruction with immediate data changes JUMPDEST analysis, and so changes the meaning of any deployed contract whose bytes happen to contain the new opcode, which is the problem the static relative jumps of [EIP-8013](./eip-8013.md) could not solve outside a container. A *table* that is data, reached through a position on the stack, changes nothing: the scan is the one clients run today, the instructions are one byte, and a deployed contract
+
+
 === EIP-999 ===
 TITLE: Restore Contract Code at 0x863DF6BFa4469f3ead0bE8f9F2AAE51c91A907b4
 TYPE: Standards Track Core
@@ -8398,6 +8498,26 @@ TYPE: Standards Track Core
 STATUS: Final
 CREATED: 2016-10-16
 REQUIRES: 
+
+
+=== EIP-8456 ===
+TITLE: CALLSTATUS instruction
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-25
+REQUIRES: 
+
+SUMMARY:
+This EIP adds the `CALLSTATUS` instruction. It pushes the completion status of the most recent `CALL`, `CALLCODE`, `DELEGATECALL`, `STATICCALL`, `CREATE` or `CREATE2` executed in the current frame, as three bits: whether the callee reverted, whether it halted exceptionally or failed consuming its gas, and whether such a failure occurred in a frame below the callee. The values are `0` (success), `1` (reverted or not started), `2` (halted exceptionally, or collided), `4` (succeeded after a halt below) and `5` (reverted after a halt below). A value of `2` or more means that gas forwarded somewhere in the line of
+
+SPECIFICATION:
+### Parameters | Constant | Value | |---|---| | `CALLSTATUS_OPCODE` | `0xA5` | | `CALLSTATUS_GAS` | `2` | ### Status values A status is the sum of up to three bits: | Bit | Value | Meaning | |---|---|---| | 0 | `1` | the operation reverted, or was not started and returned its gas | | 1 | `2` | the operation halted exceptionally, or failed in a way that consumed the gas it would have forwarded | | 2 | `4` | an operation in a frame below halted exceptionally or had an address collision |
+
+MOTIVATION:
+A contract that continues after a failed call needs to know why the call failed. A failure that the callee signalled with `REVERT` can be recorded as final. A failure caused by too little gas must not be, because the transaction sender controls the gas and can use an underfunded call to make the contract record a false failure, for example to burn a retry or to mark a payment as rejected. Today the EVM gives the caller no direct evidence of the cause. The caller sees a success flag of `0`, the return data, and the gas
+
+RATIONALE:
+### A separate instruction instead of a changed success flag The success flag of the call instructions cannot carry more than one bit. Deployed code tests it as a boolean, in both directions, so a status code in its place would change the behaviour of existing contracts. [EIP-7069](./eip-7069.md) replaced the flag with status codes in a new set of call instructions. This EIP keeps the legacy instructions unchanged and adds one instruction that reads a register, in the way that `RETURNDATASIZE` exposes the return data of the last call. ### The codes `0`, `1` and `2` are the
 
 
 === EIP-8045 ===
@@ -9682,6 +9802,26 @@ RATIONALE:
 This EIP chooses to rely on DIDs and JOSE since there is already support for these standards in many places, by current systems and new systems. By using DIDs and JOSE wallet implementers can also choose which signing and encryption algorithms that they want to support, since these formats are fairly agnostic to specific crypto implementations. ### Permission system A simple permission system is proposed where clients can request permissions though path prefixes, e.g. `/some/permission`. When decryption of a JWE is requested the wallet should check if the decrypted payload contains a `paths` property. If this property doesn't
 
 
+=== EIP-8437 ===
+TITLE: eth/75 - Proof Wrapper Propagation
+TYPE: Standards Track Networking
+STATUS: Draft
+CREATED: 2026-10-05
+REQUIRES: 2, 4, 8, 1, ,,  , 2, 7, 1, 8, ,,  , 8, 0, 7, 0, ,,  , 8, 1, 4, 1, ,,  , 8, 2, 5, 0, ,,  , 8, 2, 8, 8, ,,  , 8, 4, 0, 8
+
+SUMMARY:
+This EIP defines `eth/75`, a version of the [`eth` wire protocol](https://github.com/ethereum/devp2p/blob/2c19a28b25c29487773ad6b07243e290fa8d65ec/caps/eth.md) that propagates [EIP-8288](./eip-8288.md) proof wrappers ("wrappers" below). Peers announce wrapper modes, lengths and hashes, with the metadata of mode 0 wrappers' transactions, then retrieve wrappers, or the metadata of their transactions, by hash.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). `eth/75` extends `eth/74`, which extends `eth/73` ([EIP-8408](./eip-8408.md)) with block-level dependency proof retrieval (message IDs 0x16 and 0x17). It uses their message semantics except as specified below. Status (`0x00`) is unchanged; the protocol version and new message IDs are provisional. Request IDs follow [EIP-2481](./eip-2481.md). In the Recursive Length Prefix (RLP) encodings below, `P` is a nonnegative integer (zero encodes as the empty byte string), `B`
+
+MOTIVATION:
+EIP-8288 separates signatures and proofs from transaction envelopes and permits aggregation across transactions. Existing transaction propagation does not identify this shared proof material, so peers need a way to discover and retrieve it.
+
+RATIONALE:
+Wrappers carry transactions alongside their dependency proofs so receivers can validate them together. Separate propagation would require additional mempool state for envelopes awaiting coverage, or fetching those envelopes again after the proof arrives. Reusing EIP-8070's cell announcements preserves its provider and sampler behavior. Putting cell masks in wrappers would make wrapper identity depend on each peer's changing holdings. Mode distinguishes direct-witness verification from recursive-proof verification; length gives the complete wrapper's encoded size. Dependency and transaction digests identify equivalent coverage despite different proof bytes, avoiding redundant downloads. Compared with a dependency hint alone, `txs-hash` adds 33 encoded bytes per
+
+
 === EIP-2242 ===
 TITLE: Transaction Postdata
 TYPE: Standards Track Core
@@ -10855,6 +10995,26 @@ RATIONALE:
 The value 100,000 was chosen after careful technically sound analysis of various economic theories developed over the past century. In spite of the fact that it is a convenient round number, it is actually the exact output of a complex statistical process iterated to determine the optimal distribution of ether between these addresses.
 
 
+=== EIP-8496 ===
+TITLE: Code Reads in Block-Level Access Lists
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-11-12
+REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2, ,,  , 7, 9, 2, 8
+
+SUMMARY:
+This EIP adds a `code_hash` field to the `AccountChanges` entry of the [EIP-7928](./eip-7928.md) block access list (BAL). For every account whose pre-block bytecode is executed, copied, sized or checked for a delegation indicator during the block, the field holds the Keccak-256 hash of that bytecode. For every other account the field is empty. The BAL then names every piece of pre-block state that a block reads. When [EIP-7709](./eip-7709.md) is also active, a stateless or proving input for the block can be assembled from the block, its BAL and a state snapshot, without executing the block.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions - **Pre-block code** of an account is its bytecode at the start of block execution, before the pre-execution system contract calls at `block_access_index = 0`. For an [EIP-7702](./eip-7702.md) delegated account it is the delegation indicator, not the delegate's code. ### Data Structure `AccountChanges` gains a seventh element, `code_hash`: ```python CodeHash = bytes # 32-byte Keccak-256 hash of bytecode, or empty # AccountChanges:
+
+MOTIVATION:
+[EIP-7928](./eip-7928.md) records every account and storage slot a block touches. A stateless verifier or a zkVM prover can use the BAL as the index of the pre-state it has to load: the account leaves of every listed address and the storage leaves of every listed key. Bytecode is the one state exception. The BAL records bytecode only when it changes, in `code_changes`. An address that is only called, or whose code is only copied or sized, appears with empty change lists, indistinguishable from an address whose balance was read. Which bytecode a block needs can today only be
+
+RATIONALE:
+### Hash rather than bytecode Recording the full bytecode would make the BAL self-contained but would add the code of every executed contract to a consensus object that is gossiped with every block. A mainnet block loads a few hundred distinct contracts, so this adds on the order of megabytes per block, against a BAL of roughly 72 KiB at a 60M gas limit per the size analysis of [EIP-7928](./eip-7928.md). Each populated `code_hash` costs 33 bytes, roughly 13 KiB for 400 populated fields, plus one byte for every empty field and any growth in enclosing RLP length prefixes.
+
+
 === EIP-6493 ===
 TITLE: SSZ transaction signature scheme
 TYPE: Standards Track Core
@@ -10873,6 +11033,26 @@ MOTIVATION:
 
 RATIONALE:
 The SSZ signature scheme reduces hashing overhead and ensures that `tx_hash` commitments are available on-chain. It also provides a flexible basis for future transaction functionality.
+
+
+=== EIP-8477 ===
+TITLE: Recent Block Bound Delegation Authorizations
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-30
+REQUIRES: 7702
+
+SUMMARY:
+Require every [EIP-7702](./eip-7702.md) authorization to sign an execution block number and its block header hash. An authorization may be applied only when the referenced block is one of the 256 immediate ancestors of the block including the transaction. Authorizations referencing older blocks, the current block, future blocks, or a different history are skipped. Legacy authorizations without a signed block reference are rejected after activation. This bounds the inclusion window of an unused authorization. It does not impose an expiry on an installed delegation.
+
+SPECIFICATION:
+### Parameters and definitions | Name | Value | | --- | --- | | `AUTHORIZATION_HISTORY_WINDOW` | `256` | | `SET_CODE_TX_TYPE` | `0x04`, unchanged | | `MAGIC` | `0x05`, unchanged | Let `B` be the execution block being processed and `N` its block number. For `0 <= b < N`, `ancestor_hash(B, b)` is the hash of the execution block header at number `b` on the ancestry of `B`. The hash is calculated using the header encoding applicable to that ancestor's fork. It is not a beacon block root, a transaction hash, or an arbitrary header supplied by the
+
+MOTIVATION:
+An unused delegation authorization can remain usable for an indefinite period if its account nonce remains unchanged. An authorization for a future nonce can also become usable later. Access to a previously signed authorization can therefore allow an attacker to install account code after the signer has stopped expecting that authorization to be used. A mandatory recent block reference limits this exposure independently of nonce advancement, signature storage policy, and relayer behavior. Once the referenced block falls outside the permitted ancestor window, the authorization cannot be applied on that chain history even if its nonce subsequently matches. The
+
+RATIONALE:
+### Block number and block hash The hash commits the authorization to a recent execution history. The number identifies the ancestor with a single indexed lookup and makes the window boundary explicit. Signing both prevents a submitter from changing the reference to extend validity. A signed expiry height alone would permit signatures to be prepared arbitrarily far in advance. A recent ancestor hash ties validity to a particular recent chain history, subject to the usual cryptographic assumptions about block hashes. ### A 256-block window The window matches the existing recent-ancestor interval of `BLOCKHASH` (`0x40`). It requires no new
 
 
 === EIP-8011 ===
