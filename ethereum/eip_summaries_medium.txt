@@ -8501,7 +8501,7 @@ REQUIRES:
 
 
 === EIP-8456 ===
-TITLE: CALLSTATUS instruction
+TITLE: CALLSTATUS Instruction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-10-25
@@ -8514,10 +8514,10 @@ SPECIFICATION:
 ### Parameters | Constant | Value | |---|---| | `CALLSTATUS_OPCODE` | `0xA5` | | `CALLSTATUS_GAS` | `2` | ### Status values A status is the sum of up to three bits: | Bit | Value | Meaning | |---|---|---| | 0 | `1` | the operation reverted, or was
 
 MOTIVATION:
-A contract that continues after a failed call needs to know why the call failed. A failure that the callee signalled with `REVERT` can be recorded as final. A failure caused by too little gas must not be, because the transaction sender controls the gas and can use an
+A contract that continues after a failed call needs to know why the call failed. A failure that the callee signalled with `REVERT` (`0xFD`) can be recorded as final. A failure caused by too little gas must not be, because the transaction sender controls the gas and can use
 
 RATIONALE:
-### A separate instruction instead of a changed success flag The success flag of the call instructions cannot carry more than one bit. Deployed code tests it as a boolean, in both directions, so a status code in its place would change the behaviour of existing contracts. [EIP-7069](./eip-7069.md) replaced
+### A separate instruction instead of a changed success flag The success flag of the call instructions cannot carry more than one bit. Deployed code tests it as a boolean, in both directions, so a status code in its place would change the behaviour of existing contracts. [EIP-7069](./eip-7069.md) replaces
 
 
 === EIP-8045 ===

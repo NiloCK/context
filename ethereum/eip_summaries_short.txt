@@ -8501,7 +8501,7 @@ REQUIRES:
 
 
 === EIP-8456 ===
-TITLE: CALLSTATUS instruction
+TITLE: CALLSTATUS Instruction
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-10-25
@@ -8514,7 +8514,7 @@ SPECIFICATION:
 ### Parameters | Constant | Value | |---|---| | `CALLSTATUS_OPCODE` | `0xA5` | | `CALLSTATUS_GAS` | `2` | ### Status values A status is
 
 MOTIVATION:
-A contract that continues after a failed call needs to know why the call failed. A failure that the callee signalled with `REVERT` can
+A contract that continues after a failed call needs to know why the call failed. A failure that the callee signalled with `REVERT` (`0xFD`)
 
 RATIONALE:
 ### A separate instruction instead of a changed success flag The success flag of the call instructions cannot carry more than one bit. Deployed
