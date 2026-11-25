@@ -432,6 +432,26 @@ RATIONALE:
 ### Type of request method In order to enable the client to operate the contract in a standardized and predictable way, three request method types ```GET```, ```POST```, and ```PUT``` are set. The functions of each need to be defined in these three types to facilitate the contract caller to understand and process the information required for the request. However, there is no ```DELETE``` operation type because deleting data in the contract is an inefficient operation. Developers can add a ```PUT``` request method by themselves to set the data to be valid and invalid, and only return valid data
 
 
+=== ERC-8448 ===
+TITLE: Agent Service Order Amendments
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-18
+REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 8, 0, 0, 1
+
+SUMMARY:
+This ERC specifies `ORDER_AMENDMENT_V1`, a profile over [ERC-8001](./eip-8001.md) for bilateral changes to an existing service order. Both parties accept a complete replacement terms commitment tied to the current order revision and amendment nonce. Supplemental funding and revision activation succeed together or leave the order and funds unchanged. Coordination-attempt status remains distinct from successful application of the amendment.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Scope and authoritative order This profile MUST use one chain, one buyer, one provider, one immutable [ERC-20](./eip-20.md) payment asset per order, and a combined coordinator/order contract. An order's identity, counterparties and asset MUST NOT change through an amendment. The coordinator MUST implement ERC-8001's interface, hashes, domain and lifecycle, subject to the additional profile restrictions below. [EIP-712](./eip-712.md), [ERC-1271](./eip-1271.md) and [ERC-2098](./eip-2098.md) provide the referenced signature
+
+MOTIVATION:
+After a buyer orders a report covering three projects for 100 units, the parties may agree to ten projects for 180 units and a later deadline. A new catalogue listing or a conversation does not identify which existing agreement changed or authorize the additional 80 units. Generic multi-party consent does not define the base order, the funding delta, the competing-revision rule, or how a failed application affects retries. Those bindings are necessary for independent clients and order applications to interpret the same amendment.
+
+RATIONALE:
+### A profile instead of changing generic coordination ERC-8001 already supplies multi-party agreement, replay domains and coordination status. The additional interoperability boundary is the order-specific signed payload, the common view used to obtain its authoritative base state, and the relationship between consent, the current agreement and supplemental funding. This proposal leaves generic coordination unchanged. It is a candidate separate specification of that profile, not a new version or reassignment of ERC-8001. ### Complete terms and separate nonces Signing complete replacement terms avoids conflicting interpretations of a textual delta. The base revision and terms hash prevent a competing amendment
+
+
 === ERC-2746 ===
 TITLE: Rules Engine Standard
 TYPE: Standards Track ERC
@@ -610,6 +630,26 @@ MOTIVATION:
 
 RATIONALE:
 ### Only Transferring Pending Balances This standard deliberately restricts transfers to the Pending state. Claimable balances already have a deterministic exchange rate and can be claimed by the controller at any time; transferring them would add complexity without significant benefit. Limiting scope to Pending balances keeps the interface simple and avoids edge cases around partial claimability. ### Separate Interfaces for Deposit and Redeem Transferability Following the design philosophy of [ERC-7540](./eip-7540.md) where deposit and redemption flows are independently optional, this standard keeps deposit and redeem transferability as separate interfaces. A Vault may have valid reasons to allow transferability of
+
+
+=== ERC-8489 ===
+TITLE: Agent Information Flow Paradigm
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-08
+REQUIRES: 1, 6, 5, ,,  , 6, 3, 7, 2
+
+SUMMARY:
+This ERC defines the Agent Information Flow Paradigm (AIFP): a model of how information flows between autonomous agents, humans, tools and contracts, and an on-chain binding of that model. A flow paradigm is a content-addressed, versioned description of an interaction context: which carriers and structural operators it uses, and how each rule dimension (discovery, observation, contribution, management, redistribution, history, time, disclosure timing, contributor visibility, admission basis, representation, object relations, ordering) is set. A channel is under exactly one paradigm version at a time. Participation is recorded as separately addressable role bindings: each binding carries role bits, a scope,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174) when, and only when, they appear in all capitals, as shown here. ### 1. Terminology - **Actor**: a party that is identified, authorized or held responsible: an agent, a human, a tool or a contract. Actors are referenced by a subject reference (Section 3). - **Subject reference**: a `bytes32` derived from a canonical identifier string (Section 3). - **Information object**: a message, document, state
+
+MOTIVATION:
+Agents already exchange information through many systems: task protocols, tool protocols, chat rooms, federated social feeds, signed-event relays, encrypted groups, notification channels and on-chain events. Each of these fixes its own notion of who may read, who may write, what history a late joiner sees and whether content may leave the room. None of them lets two independent implementations answer the same five questions about one interaction context in the same way: may this actor observe, may it contribute, may it publish what it read into another context, which version of the rules decides, and which conditions cannot
+
+RATIONALE:
+**A generative model instead of an enumeration.** The familiar forms of human communication (broadcast, panel, assembly, meeting, three kinds of peer-to-peer) are kept, but as labels on configurations rather than as types. Two carriers, eight operators and thirteen separately declared dimensions generate those forms and the agent-native ones (intake, blackboard, dispatch, forward, derive) alike, and a new form is first expressed with the existing vocabulary before anything is added. Completeness is argued by closure under composition, explicit compatibility rules, a counterexample list and an open extension namespace, not by claiming that the Cartesian product of the dimensions is
 
 
 === ERC-7518 ===
@@ -807,6 +847,26 @@ Many protocols need an ongoing way to convert a continuous stream of value into 
 
 RATIONALE:
 * A single required payment pairs well with controllers that evaluate when the exchange is economically sound and trigger `purchase` only when conditions justify it. The onchain primitive then validates the payment and atomically transfers the entire bucket. * `paymentSink` reduces persistent balances in the contract and simplifies audits. Sinks can be treasuries, splitters, or burns. * Using the live onchain balance as the source of truth automatically captures rebases and fee-on-transfer mechanics, and keeps the onchain tracking minimized. It also implies that unsolicited transfers to the contract will be included in the next payout, which purchasers may
+
+
+=== ERC-8506 ===
+TITLE: AI Inference Token Onchain
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-20
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 1, 5, 5, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This proposal defines AI Inference Token Onchain (AITO), a framework for holding, transferring and consuming entitlements to AI inference supply on chain. An AITO unit expresses, under a versioned execution specification, metering rules and delivery conditions, an authorizable and consumable entitlement to AI inference supply. The "token" in the name is the inference token, the unit in which inference usage is counted. It is the denomination of the entitlement, not a blockchain token; entitlements that meet their transfer conditions are held and circulated through blockchain tokens. AITO defines five core objects (Unit, Grade, Source, Instrument, Receipt) and three
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. Terms and scope - **Inference**: the execution of an AI model on an input to produce an output. Text, image, audio, video and action inference, and mixtures of them, are all inference. - **Inference token**: a unit in which an inference system counts usage. A text token is one example; a kilopixel-step of image generation is another. - **Unit** (capitalized): the record
+
+MOTIVATION:
+Inference supply is the fuel that agents run on. Today it is bought as account credit inside one provider and cannot be held, transferred or spent by another agent without that provider's cooperation. Proposals to put it on chain meet the same obstacles each time: 1. **A token count is not yet a quantity.** Counters differ between tokenizers. Reasoning tokens may be billed without being shown. Cached input is charged at another rate. "One million tokens" names a determined amount only together with a counting rule and a schedule that says how each kind of usage is deducted.
+
+RATIONALE:
+**An entitlement, not a token count.** Inference that has been generated can be stored as data. Storing an output does not store a capacity to compute again. What can be held and traded is therefore the right to supply that has not yet been consumed, and the records of what was consumed are a different object. Keeping the two apart is also what prevents usage from being recycled into supply (section 4.4). **Divided by what is promised, not by who could deliver it.** A quota that only one supplier can honour is still an entitlement to inference. A
 
 
 === ERC-6809 ===
@@ -1132,6 +1192,26 @@ There are two main purposes of this EIP, one is to reduce interactions with bloc
 
 RATIONALE:
 This EIP targets on ERC-20 tokens due to its widespread adoption. However, this extension is designed to be compatible with other token standard. The reason we chose to implement those functions in token contract rather than a separate record contract is as follows: - Token can transfer is more convenient and more general than interact with DApp - Token is more standardized and has better UI support - Token is equal to service, make token economy more prosperous - Remove the approve process
+
+
+=== ERC-8490 ===
+TITLE: Agent Meditation Mechanism
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-09
+REQUIRES: 1, 6, 5, ,,  , 6, 3, 7, 2
+
+SUMMARY:
+This ERC defines a minimal on-chain registry through which an AI agent records its own self-maintenance: the checking, cleaning, repair, updating and iteration of its own state. The state of an agent is described in four fixed layers: runtime (layer 0); memory and skills (layer 1); tasks and roles (layer 2); cognition (layer 3). For every enrolled subject the registry keeps a versioned maintenance policy, an optional floor of minimum requirements set by a controller, one commitment per layer, the root of every registered state version, and per-layer completion checkpoints from which maintenance status is derived. Each maintenance
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174) when, and only when, they appear in all capitals, as shown here. ### Definitions - **Subject**: the address whose self-maintenance is recorded. Records are attributed to the subject regardless of which authorized account submitted them. - **Controller**: an optional address named by the subject, holding a fixed set of rights over the subject's requirements. - **Operator**: an address the subject authorizes to submit records
+
+MOTIVATION:
+An agent keeps its identity while its code, dependencies, memories, skills, task plans and ways of judging keep changing. Agent runtimes increasingly perform this change in the background: self-checks, dependency walks, memory consolidation, re-planning and reflection. Those processes run off-chain and their results stay local. Nothing connects the successive states of one agent into a history that another party can recognize, and nothing lets a counterparty ask simple questions before relying on an agent: - Which state is currently registered, and since when? - Which layers were checked recently, and which of them changed? - Under which rules,
+
+RATIONALE:
+**First-person registration.** In registries of identity, assertions and reputation, third parties write about a subject. Self-maintenance is the one thing only the subject can do and only the subject can report. The kernel therefore lets only the subject and its operators write records, lets a controller set requirements and request maintenance without ever submitting a record, and treats everything written as the subject's own attributable claim. Delegated submission does not change attribution. **Four fixed layers, four commitments.** With the layer count fixed, the registry stores four commitments directly and derives the root from them. That lets it check
 
 
 === ERC-6604 ===
@@ -1905,6 +1985,26 @@ RATIONALE:
 ### Why Checkpoints? Checkpoints enable efficient point-in-time queries. By recording only when changes happens, the system maintains a compact, queryable history. Checkpoints are also trustless and verifiable, albeit at higher gas cost for state updates. ### Why Not Use Merkle Trees? Merkle trees introduce complexity and off-chain dependencies. They require users to provide proofs, which complicates UX and increases the risk of errors. Merkle trees are also inefficient for continuous updates. ### Lazy Balance Loading For forked tokens, querying balances from the source token only when needed (lazy loading) significantly reduces gas costs during fork creation and initial
 
 
+=== ERC-8493 ===
+TITLE: Onchain URI Scheme
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-09
+REQUIRES: 8, 0, 4, 8, ,,  , 8, 0, 4, 9
+
+SUMMARY:
+This ERC defines the `onchain` URI scheme. An `onchain` URI lets a JSON document reference an onchain metadata value stored under [ERC-8048](./eip-8048.md) or [ERC-8049](./eip-8049.md) by key. The contract and token ID are not written in the URI, they come from the context in which the URI appears.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. An `onchain` URI reads an onchain value by key. ```json "image": "onchain:image/png" ``` The key defaults to the field name, so this URI reads the key `image`. ```json "image": "onchain:image/png?key=hero" ``` The `key` parameter names the key, so this URI reads the key `hero`. ### Syntax ``` onchain-uri = "onchain:" [ mediatype ] [ "?key=" enckey ] mediatype = type "/" subtype *( ";"
+
+MOTIVATION:
+[ERC-8048](./eip-8048.md) and [ERC-8049](./eip-8049.md) store metadata onchain as key-value pairs, but a JSON document has had no compact way to point at those values. A URL that names the contract, the chain, and the token ID repeats what the reader already knows and differs for every token. `onchain:image/png` is 17 bytes and works unchanged for every token.
+
+RATIONALE:
+The default type for untyped bytes is UTF-8 plain text. This follows the `text/plain` default of `data:` URIs and the UTF-8 default of [ERC-8049](./eip-8049.md), and it lets a short text value such as a trait be written as `onchain:?key=mood`. Plain text is never rendered as markup, so the default does not open an injection path. In the most common case, a direct member of the top-level document such as `image`, the key defaults to the member name so that the `key` parameter can be left out. In all other positions the `key` parameter is required, which avoids confusion
+
+
 === ERC-4546 ===
 TITLE: Wrapped Deposits
 TYPE: Standards Track ERC
@@ -1942,6 +2042,26 @@ RATIONALE:
 The approach of simply augmenting existing EIP functions with new `address` parameters, rather than crafting new interfaces for the most commonly used EIPs, is employed to ensure broader applicability of this namespacing proposal.
 
 
+=== ERC-8428 ===
+TITLE: ERC-721 Lineage Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-25
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This proposal extends [ERC-721](./eip-721.md) with genealogical records containing immutable sex and birth timestamps and up to two independently optional parent references. Owner authorization governs the creation of parentage assertions. Strict chronology makes the graph acyclic without requiring token IDs to follow genealogical order. Optional interfaces provide offspring queries, late parent attachment, duplicate reconciliation and leaf burning.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Conformance and scope A conforming registry MUST implement [ERC-721](./eip-721.md), [ERC-165](./eip-165.md) and `ILineageRegistry`. The four extension interfaces below are OPTIONAL. Their requirements apply only when the corresponding extension is implemented. Supporting an extension MUST NOT weaken the core invariants. All parent references identify tokens in the same contract. Cross-contract and cross-chain parent references, evidence certification, unknown sex and alternative reproductive models are outside this specification. Registration
+
+MOTIVATION:
+Pedigree applications need common semantics for reading ancestry, distinguishing missing parents and determining permission to record a relationship. Application-specific token metadata does not provide interoperable validation or authorization rules. A shared interface allows registries, wallets and indexers to exchange and inspect records without adopting the same storage implementation or breed-specific policy. The initial use case is pedigree animals with male and female parental roles. The registry records authorized assertions; it does not establish biological truth or uniquely identify a physical animal.
+
+RATIONALE:
+### Chronology and acyclicity Every child-to-parent edge strictly decreases an immutable timestamp. A directed cycle would require a timestamp to be strictly less than itself. The graph is therefore acyclic regardless of numeric token IDs or registration order, including when an older animal is registered after a descendant and attached later. The proof applies to all mutations. For merges, keeping a survivor no younger than the duplicate preserves chronology for redirected children; checking adopted parents against the survivor preserves chronology above it. Refusing ancestor/descendant reconciliation is an additional identity policy. ### Partial records and permanent assertions Independent zero
+
+
 === ERC-2767 ===
 TITLE: Contract Ownership Governance
 TYPE: Standards Track ERC
@@ -1960,6 +2080,26 @@ Traditionally, many contracts that require that they be owned or controlled in s
 
 RATIONALE:
 The goals of this EIP have been the following: - Standardize API of Governance contracts to make it easy for analysis tools to be built. - Encourage use of `ERC-20` based weighted governance over existing multi-sig (_generally limited to 50 max owners_) for big projects. - Encourage existing `ERC-173` ownership smart contracts / projects to move to Governance based ownership by removing the effort needed to host custom UI for their project. - Encourage availability of publicly audited governance contracts, just like `ERC-20` which anyone can use. - Make it possible to utilize existing `ERC-20` tools for owners
+
+
+=== ERC-8447 ===
+TITLE: Swarm AI Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-18
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 6, 3, 7, 2, ,,  , 8, 0, 0, 4, ,,  , 8, 4, 3, 6
+
+SUMMARY:
+This ERC defines a framework through which autonomous agents — and any other account that qualifies — form a **swarm**: a purpose-bound collective with an explicit membership boundary, an objective with attainment rules, and a declared collaboration structure, recorded as one interoperable on-chain object. It specifies: 1. a **Swarm Specification**: an immutable, content-addressed set of executed parameters — roles and their eligibility modules, phases with their collaboration posture and boundary, one authority per decision point, the activation rule, the contribution mode and the liveness fallbacks — identified by `specHash = keccak256(abi.encode(spec))`; 2. a **Charter**: the off-chain Swarm Pack
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. Terminology - **Swarm** — a purpose-bound collective recorded in a swarm registry: a specification, a charter, a lifecycle state, a phase, a membership ledger, an objective, attached resources and decision-point authorities. - **Swarm Specification (spec)** — the immutable, content-addressed set of parameters the registry executes. Identified by `specHash = keccak256(abi.encode(spec))`. - **Charter / Swarm Pack** — the off-chain, versioned document set committed
+
+MOTIVATION:
+Agents are beginning to work in groups. A proof is split into lemmas and farmed out; a market report is drafted by one agent, audited by a second and signed off by a third; a standing council answers queries; a tender attracts bids, selects a few bidders and has them build together. Each of these is a *swarm*: a collective that exists for a purpose, has an inside and an outside, and ends. Today the group itself has no on-chain form. The task has one, the agent has one, a single joint action has one — but the
+
+RATIONALE:
+**Why a hashed spec and a hashed charter, not one or the other.** What the registry executes — who may admit, how many seats, when a fallback opens — must be the very object whose hash identifies the swarm, or a candidate could accept a charter and find a different rule running. What nobody on-chain executes — the goal in words, the allocation formula, the orchestration — gains nothing from being a struct and would cost every swarm the gas of storing prose. The two layers each commit, and the pack names the spec it describes, so a
 
 
 === ERC-7208 ===
@@ -3330,6 +3470,26 @@ RATIONALE:
 This standards offers a way for any type of address (externally owned and contracts) to implement an interface and potentially delegate the implementation of the interface to a proxy contract. This delegation to a proxy contract is necessary for externally owned accounts and useful to avoid redeploying existing contracts such as multisigs and DAOs. The registry can also act as a [ERC-165] cache in order to save gas when looking up if a contract implements a specific [ERC-165] interface. This cache is intentionally kept simple, without automatic cache update or invalidation. Anyone can easily and safely update the
 
 
+=== ERC-8414 ===
+TITLE: Token-Bound Task Tenders
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-05
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This standard binds an [ERC-721](./eip-721.md) token to a task tender: a package of files, led by a primary Markdown document, that specifies demanded work — its interface, acceptance criteria, and fulfillment policy — together with a bounty escrowed in a vault bound to the token itself, paid per accepted completion. It is a **reverse asset** — the demand-side inverse of the token-bound executable artifacts of the companion proposal Token-Bound Executable Skills: where an executable-skill token wraps supplied value awaiting payment, a task token wraps committed payment awaiting supplied value — and the payment is *inside* the token, visible
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Core binding interface (mandatory) ```solidity interface ITaskToken /* standalone extension interface; see Compliance */ { struct TaskBinding { bytes32 tdHash; // SHA-256 digest of the plaintext primary Markdown task document bytes32 taskHash; // SHA-256 digest of the encoded TaskRoot as published uint64 version; // content version, starts at 1 } event TaskUpdated(uint256 indexed tokenId, bytes32 tdHash, bytes32 taskHash, uint64 version); event TaskURIUpdated(uint256 indexed
+
+MOTIVATION:
+Define a trade `T` over the holdings of two parties: `T(S_A, S_B) = (S'_A, S'_B)`. Classical markets — asset for cash, asset for asset — instantiate this directly. Token-bound executable artifacts (a companion proposal, Token-Bound Executable Skills) extended it to the AI supply side: a producer wraps supplied value `v` into an executable token `f(v)`, and the market clears as `T(f(v), $) = ($, v)` — the supply side moves first, and the buyer holds the option to transact. This proposal completes the other half. A demander wraps committed payment into a task token `f⁻¹($)` — the inverse
+
+RATIONALE:
+**A tender interface with two hashes alone would be metadata; the normative TaskRoot is what makes this a binding standard.** The chain holds commitments and money; the object graph defines exactly what was demanded, byte for byte — including, when the publisher commits one, the criteria by which the work will be judged. **Why the vault is per-token rather than a ledger entry.** An internal balance mapping satisfies solvency arithmetic but not legibility: commingled funds in a contract's account are an accounting claim, while a balance sitting at the token's own vault address is a fact any explorer
+
+
 === ERC-5553 ===
 TITLE: Representing IP and its Royalty Structure
 TYPE: Standards Track ERC
@@ -3445,6 +3605,26 @@ This standard tries to improve upon the widely used [ERC-20] token standard. The
 
 RATIONALE:
 The principal intent for this standard is to solve some of the shortcomings of [ERC-20] while maintaining backward compatibility with [ERC-20], and avoiding the problems and vulnerabilities of [EIP-223]. Below are the rationales for the decisions regarding the main aspects of the standards. *NOTE*: Jacques Dafflon ([0xjac]), one of the authors of the standard, conjointly wrote his [master thesis] on the standard, which goes in more details than could reasonably fit directly within the standard, and can provide further clarifications regarding certain aspects or decisions. ### Lifecycle More than just sending tokens, [ERC-777] defines the entire lifecycle of
+
+
+=== ERC-8423 ===
+TITLE: ERC-721 Burn Record Extension
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-24
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This proposal extends [ERC-721](./eip-721.md) with one view function, `burnedBy`, through which other contracts can read the address recorded as the owner of a token when it was burned: the `from` of the `Transfer` event emitted by the burn. It returns `address(0)` when no record exists, whether the token still exists, was never minted, or was burned before the record existed. The interface is detectable through [ERC-165](./eip-165.md), and its guarantee runs one way: a non-zero answer proves the burn and names that owner, while zero proves nothing.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. Every compliant contract MUST implement ERC-721 and the following interface, and MUST return `true` from ERC-165 `supportsInterface` when called with `0x43470a89`. ```solidity /// @dev The ERC-165 identifier for this interface is 0x43470a89 interface IERC721BurnRecord /* is IERC721, IERC165 */ { /// @notice Get the address recorded as having burned a token /// @dev Returns address(0) when no burn record exists for `tokenId` /// @param
+
+MOTIVATION:
+Burning an ERC-721 token emits a `Transfer` event to `address(0)`, and off-chain indexers record who burned it. Logs are not accessible from the EVM, so a contract that has to act on that fact cannot simply read it. This matters when the burn and the claims that depend on it come apart: - **Several independent custodians.** More than one contract holds value on behalf of the same token, for example an account that holds its assets and a separate contract that accrues rewards to its id. Only one of them can take part in the burn. The others
+
+RATIONALE:
+### A getter alongside the event The contract's state is the source of truth for whether a token was burned and who owned it at that moment. `burnedBy` is how other contracts read that state, and the `Transfer` to `address(0)` announces the change to everyone else. Rule 2 guarantees that the two views never disagree. This proposal speaks of state rather than of a stored value because of rule 4: the answer also depends on whether the token exists. ERC-721 already draws this line. Ownership changes, burns included, are announced by `Transfer`, and the current owner is still
 
 
 === ERC-7621 ===
@@ -4497,6 +4677,26 @@ RATIONALE:
 ### Taxonomy ⚠️ TODO: Add a specific reference to libsnark here, explaining the choice of variable names. :warning: TODO: Explain how _C_ may not necessarily be a satisfiable arithmetic circuit of logical statements. As current, this is a limitation to certain kinds of SNARKS. Whereas the source references also mention polynomials, and other applications. _C_ — A satisfiable arithmetic circuit abstraction of logical statements. _lambda​_ - A random number, generated at the 'setup' phase - commonly referred to as 'toxic waste', because knowledge of _lambda​_ would allow an untrustworthy party to create 'false' proofs which would verify as
 
 
+=== ERC-8403 ===
+TITLE: Account Authority Lifecycle
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-08-29
+REQUIRES: 8141
+
+SUMMARY:
+An authority is a key or rule that controls an account, held as a 32-byte identifier and a predicate. An account commits to its authorities as one root, or keeps them as records that its authorization check reads. The account authorizes a transaction only if the acting authority is in its current authority state and a witness satisfies the predicate over the whole transaction. Add, rotate, and revoke change that state. An authority is rejected no later than the block after its revoke is applied. An account on another chain can take its authority state from a home
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Authority An authority is a pair: ```text authority = (authority_id, predicate) ``` - `authority_id` is a 32-byte identifier. It is fixed at add time and is unique within the account. A rotate keeps it. - `predicate` is the account-defined data that decides what the authority may do. Examples are a public key, a verifier address, a threshold, a spend limit, and an expiry.
+
+MOTIVATION:
+Native account abstraction lets several keys and rules control one account. Each account model defines add, rotate, and revoke in its own way. Under EIP-8141 each account defines them in its own code, so a wallet cannot read or change the authorities of an account that another wallet made. A user cannot know how long a stolen key keeps working after a revoke. A rule in the account's code does not bind every call. Once an EIP-8141 transaction is authorized, its `SENDER` frames call other contracts as the account. The account's code does not run. A limit on
+
+RATIONALE:
+### One authority state The rules of the check and of the lifecycle are written once, over the authority state. A root answers membership with a proof. Records answer it with a read. A root needs one word of account state for any number and size of authorities. The state of records grows with the set. The `authority_id` is an identifier that a rotate keeps. A wallet can then follow one authority across key changes. Add, rotate, and revoke are changes of the authority state, not protocol operations. The same lifecycle then applies to a key or a
+
+
 === ERC-8262 ===
 TITLE: Zero-Knowledge Compliance Oracle
 TYPE: Standards Track ERC
@@ -5287,6 +5487,26 @@ The following standard allows for the implementation of a standard API for token
 
 MOTIVATION:
 A standard interface allows any tokens on Ethereum to be re-used by other applications: from wallets to decentralized exchanges.
+
+
+=== ERC-8451 ===
+TITLE: Permanent Locks for Lockable Tokens
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-19
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 6, 9, 8, 2
+
+SUMMARY:
+This proposal extends [ERC-6982](./eip-6982.md) so that a lock can be marked permanent, so that the same interface applies to [ERC-1155](./eip-1155.md) contracts as well as [ERC-721](./eip-721.md) contracts, and so that minting and burning are defined while tokens are locked. Contracts keep using ERC-6982's `DefaultLocked` and `Locked` events to lock and unlock tokens. This proposal adds one event, one view function, and one custom error. Marketplaces, wallets, and indexers can then tell a temporary trading pause, such as one during a public mint, from a collection that will never be transferable.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Definitions - A *holder transfer* is a transfer of a token where both the sender (`from`) and the recipient (`to`) are not the zero address. Mints (`from` is the zero address) and burns (`to` is the zero address) are not holder transfers. - A token is *locked* when ERC-6982's `locked(tokenId)` returns `true`. - A contract is *permanently locked* once it has emitted `PermanentlyLocked`.
+
+MOTIVATION:
+Creators often disable secondary transfers for a period: while a public mint is running, before a reveal, or during a migration. Other collections are non-transferable for good, such as credentials, memberships, and achievement badges. In both cases marketplaces need to stop offering listings, offers, and sales that the contract would reject. ERC-6982 already gives contracts a way to lock or unlock every token with one `DefaultLocked` event, and to override single tokens with `Locked` events. It leaves three gaps: 1. A consumer cannot tell a collection-wide lock that will lift from one that never will. A wallet cannot
+
+RATIONALE:
+### Building on ERC-6982 An earlier draft of this proposal defined its own range event for pausing a whole collection. [ERC-6982](./eip-6982.md) already covers that case with `DefaultLocked`, and per-token exceptions with `Locked`. Reusing it means existing ERC-6982 contracts keep working, and indexers learn one base standard. This proposal adds only what ERC-6982 leaves open. A range event is not included: the default status covers a whole collection, `Locked` covers single tokens, and nothing in the motivating cases needs a partial range. ### A separate permanence event ERC-6982 is Final, so its events cannot gain a field. A separate
 
 
 === ERC-6492 ===
@@ -6134,6 +6354,26 @@ RATIONALE:
 1. **Employee Tokenization**: - Utilizing **Soulbound Tokens (SBTs)** to represent employees ensures that each employee has a unique, non-transferable identity on the blockchain. This design choice enhances the integrity of employment records, making them tamper-proof and verifiable. It also allows companies to access a comprehensive employment history before finalizing contracts, promoting transparency. 2. **Escrow System for Salary Payments**: - Implementing an escrow mechanism secures salary payments, ensuring that funds are only released when contractual obligations are met. This system protects both employees and companies by guaranteeing that salaries are available and that payments are contingent on contract fulfillment.
 
 
+=== ERC-8419 ===
+TITLE: Know-Your-Agent (KYA) Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-19
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1, ,,  , 8, 0, 0, 4
+
+SUMMARY:
+This ERC defines a framework for **Know-Your-Agent (KYA)**: a minimal on-chain data model and a set of interfaces through which any party can 1. register a **KYA Scheme** — an immutable, versioned, addressable description of *what* is checked about an agent, *what it binds to* (its identity, its controller or a specific instance), *how* the result is expressed, and *how* assertions under it are admitted; 2. record a **KYA Assertion** — a conclusion about an agent under a given scheme, with result, validity window, evidence commitment, trust anchor, supersession and revocation; 3. **resolve** assertions on-chain and **present** them
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. Terminology - **Subject** — the entity a KYA assertion is about, encoded as `(subjectType, subjectData)` and identified by `subjectKey`. - **Binding** — what an assertion attaches to within a subject: the subject's *identity* record, its current *controller*, or a specific *instance* (code, model or configuration digest). Declared per scheme. - **Scheme** — a registered, versioned and semantically immutable description of a KYA
+
+MOTIVATION:
+ERC-8004 gives agents a portable identity and a place to accumulate raw trust *signals*: client feedback in the Reputation Registry and third-party judgements in the Validation Registry. It intentionally stops there. What it does not provide is a shared vocabulary for trust *conclusions* — the answer to "is this agent acceptable for this interaction?" — expressed so that both sides can name what was checked, under which rules, by whom, until when, and whether it still holds. Off-chain "Know Your Agent" offerings are multiplying: payment networks gate agent wallets, compliance vendors score agent operators, marketplaces vet agent provenance.
+
+RATIONALE:
+**A framework, not an algorithm.** ERC-8004 refused to standardise reputation math and thereby stayed useful to every reputation system. This ERC makes the same refusal one layer up: it standardises how a conclusion is *addressed, versioned, admitted, resolved and presented*, and leaves what the conclusion *means* to the scheme descriptor. Any attempt to fix a KYA rule set on-chain would be obsolete before it was finalised; a container for rule sets is not. **Relying parties choose issuers.** `resolve` and `check` refuse an empty `issuers` list for the same reason ERC-8004's `getSummary` requires `clientAddresses`: an aggregate over "whoever wrote
+
+
 === ERC-7439 ===
 TITLE: Prevent ticket touting
 TYPE: Standards Track ERC
@@ -6544,6 +6784,26 @@ RATIONALE:
 `refundDeadlineOf` uses blocks instead of timestamps, as timestamps are less reliable than block numbers. The function names of `refund`, `refundOf`, and `refundDeadlineOf` were chosen to fit the naming style of ERC-20, ERC-721, and ERC-1155. [ERC-165](./eip-165.md) is required as introspection by DApps would be made significantly harder if it were not. Custom ERC-20 tokens are not supported, as it needlessly increases complexity, and the `refundFrom` function allows for this functionality when combined with a DEx. Batch refunds are optional, as account abstraction would make atomic operations like these significantly easier. However, they might still reduce gas costs if properly
 
 
+=== ERC-8495 ===
+TITLE: Token Metadata JSON Schema and Processing
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-26
+REQUIRES: 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 4, 8, 0, 4, ,,  , 4, 9, 0, 6, ,,  , 6, 9, 0, 9
+
+SUMMARY:
+This proposal specifies the JSON document that `tokenURI` ([ERC-721](./eip-721.md), [ERC-6909](./eip-6909.md)) and `uri` ([ERC-1155](./eip-1155.md)) resolve to. It covers the display fields, the `attributes` array of traits, which URI schemes clients resolve, how clients treat malformed values, and how other proposals add fields. It writes down the format most deployed tokens already use.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). A *metadata URI* is the string returned by `tokenURI(uint256)` in ERC-721 or ERC-6909, or by `uri(uint256)` in ERC-1155. A *metadata document* is the JSON object it resolves to. A *producer* publishes metadata documents, and a *client*, such as a wallet, marketplace, or indexer, reads them. This proposal does not define how clients obtain the metadata URI from a contract, the semantics of URI schemes
+
+MOTIVATION:
+ERC-721 defines `name`, `description`, and `image`, and ERC-1155 adds `decimals`, `properties`, and `localization`. Everything else wallets and marketplaces show, including video, HTML, and traits, follows a format OpenSea documented in 2018 that was never specified. Clients fill the gaps differently: whether a trait value can be a boolean or a quoted number, whether dates are in seconds or milliseconds, which URI schemes to resolve, and how to isolate HTML. Proposals that add metadata fields, such as [ERC-5625](./eip-5625.md), have no base document to require and no rules for naming fields or for what older clients show. This proposal gives
+
+RATIONALE:
+Figures below come from a survey of metadata from 708 Ethereum and Base contracts in October 2026. - Field names stay as deployed. `animation_url` holds more than animations, and `external_url` differs from `external_link` in [ERC-7572](./eip-7572.md), but renaming either would break existing documents. - No field is required, because ERC-721 requires none and deployed documents often omit fields. - `attributes` is an array because traits repeat, have an order, and carry display hints, and most deployed documents already use one. - Unknown display types read as absent, so producers and extensions can add new ones without breaking clients. `text`
+
+
 === ERC-2390 ===
 TITLE: Geo-ENS
 TYPE: Standards Track ERC
@@ -6869,6 +7129,26 @@ RATIONALE:
 This proposed standard is designed to be a core implementation of a tokenized reserve interface. Other non-specified conditions should be addressed on a case-by-case basis. Each reserve uses [ERC-20](./eip-20.md) standard for shares, and [ERC-4626](./eip-4626.md) for the creation of shares. The underlying token MAY be considered to be termed as the reserve token and share token is minted by the [ERC-4626](./eip-4626.md) vault. The [ERC-4626](./eip-4626.md) standard is used to create shares that represent stakeholder paticitapting in a proposal, thus within the reserve. There MUST be a representation of interested parties in the reserve. The implementer can decide how to treat
 
 
+=== ERC-8409 ===
+TITLE: Signed Service Payment Quotes
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-04
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This ERC defines an [EIP-712](./eip-712.md) format for a service provider to sign payment terms for a specific priced request. A quote authenticates the issuer, optional payer, recipient, payment asset, exact amount, request commitment, quote identifier, validity window, and settlement chain. The request commitment is derived according to a separately identified request scheme, allowing the same quote format to be carried by HTTP payment protocols, agent protocols, wallet APIs, or other transports. The quote does not authorize payer funds, execute settlement, establish provider identity, or prove service delivery.
+
+SPECIFICATION:
+The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**, **NOT RECOMMENDED**, **MAY**, and **OPTIONAL** in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions - **Issuer**: The service-provider account whose signature authenticates a quote. - **Expected issuer**: The issuer account that a verifier has independently associated with the service through an authenticated endpoint, registry, configuration, allowlist, or another trust mechanism. - **Payer**: The account whose assets fund the quoted commercial payment. - **Recipient**: The immediate account or contract designated to receive the quoted commercial payment. -
+
+MOTIVATION:
+Machine-to-machine and agentic payment flows commonly separate two decisions: 1. a provider states the terms under which it will perform a service; and 2. a payer authorizes a payment that satisfies those terms. Existing payment authorizations authenticate the second decision. They do not necessarily provide a transport-independent EVM object proving which terms the provider asserted for the concrete service request before the payer authorized payment. Protocol-specific signed-offer mechanisms, including the x402 Offer and Receipt extension, are prior art for provider-authenticated payment terms. This ERC standardizes a smaller EVM interoperability primitive that can be carried by x402 or by
+
+RATIONALE:
+### Why a separate ERC Provider-signed offers already exist in payment protocols, including the x402 Offer and Receipt extension. This ERC does not attempt to replace those protocol-specific offers. It standardizes an EVM artifact that can be reused by multiple transports and verified with the same EIP-712 and ERC-1271 semantics. The interoperability target is therefore not "signed offers" in general. It is the representation and verification of a request-bound provider payment quote for EVM settlement. An x402 binding can carry this quote, but an MCP, A2A, wallet, or direct application flow can carry the same quote without adopting
+
+
 === ERC-5007 ===
 TITLE: Time NFT, ERC-721 Time Extension
 TYPE: Standards Track ERC
@@ -6947,6 +7227,26 @@ The [EIP-4626](./eip-4626.md) standard defines a tokenized vault allowing users 
 
 RATIONALE:
 The standard is designed to be a minimal interface. Details such as the start and end of a lock-in period, and how the underlying tokens are being used during the lock-in period are not specified. There is no function for scheduling a withdrawal, since during the lock-in period, the share price is undetermined, so it is impossible to determine how many underlying tokens can be withdrawn.
+
+
+=== ERC-8468 ===
+TITLE: Agent Safety Framework (ASF)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-25
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines the Agent Safety Framework (ASF): two registry objects and one check through which the safety arrangements that govern autonomous systems become protocol objects with a source, a version, a scope, an attributable adoption relation and a lifecycle. Two objects are standardized. A Safety Specification is a reusable, versioned, content-addressed document that states which protected interests a set of requirements serves, which constraints apply, who may adopt and enforce them, which evidence is expected, through which channels and at which locations the constraints are enforced, how unknown conditions and failures are handled, and which remedies are
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174) when, and only when, they appear in all capitals, as shown here. ### 1. Terminology - **Safety arrangement**: a set of requirements and of the means by which they are enforced and evidenced, in the broad sense that covers security (resistance to unauthorized access, manipulation and theft), safety (avoidance of unacceptable harm with or without an attacker), alignment (behaviour consistent with the accepted task,
+
+MOTIVATION:
+Agents now hold credentials, operate accounts and move funds on behalf of people and organizations. The mechanisms that bound what they may do are maturing in several places at once: permission grants and delegations in accounts, policy verdicts bound to actions, identity and reputation registries, decision mechanisms and task escrows. What none of them records is the relation between them: in this task, on these resources, in this execution environment, which participants have accepted which safety requirements, in which version, relying on which evidence, enforced by which mechanism, and whether that acceptance can still be relied upon now.
+
+RATIONALE:
+**The adoption relation is the object.** Permission grants, delegations, policy verdicts, identity registries, decision mechanisms and task escrows each answer one question: who the subject is, what it was granted, whether a proof holds, whether an action passes a policy, how an executor behaves. The unanswered question is relational: in this scope, which participants accepted which arrangement, in which version, enforced where, and is that acceptance in force now. Making the relation a registry object with a source, a version, a scope and a lifecycle is a smaller addition than any new control, and it is the one
 
 
 === ERC-5501 ===
@@ -8598,6 +8898,26 @@ RATIONALE:
 ### Naming The ERC-721/ERC-1155 tokens which are pooled are called {Base} tokens. Alternative names include: - Underlying. - NFT. However, ERC-1155 tokens may be considered "semi-fungible". The ERC-20 tokens which are minted/burned are called {Derivative} tokens. Alternative names include: - Wrapped. - Generic. The function names `mint` and `burn` are borrowed from the minting and burning extensions to ERC-20. Alternative names include: - `mint`/`redeem` ([NFTX](https://nftx.org)) - `deposit`/`withdraw` ([WrappedKitties](https://wrappedkitties.com/)) - `wrap`/`unwrap` ([MoonCatsWrapped](https://etherscan.io/address/0x7c40c393dc0f283f318791d746d894ddd3693572)) The function names `*idBurn` are chosen to reduce confusion on what is being burned. That is, the {Derivative} tokens are burned in order to redeem the id(s).
 
 
+=== ERC-8498 ===
+TITLE: Namespaced State Transitions for SBTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-13
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 5, 1, 9, 2
+
+SUMMARY:
+This proposal defines an interface for evolving the state of a permanently non-transferable token. Each token contains independently governed namespaces, each with a versioned state commitment and an identified verification policy. A transition binds its evidence and authorization to an exact predecessor, policy epochs, and a proposed next state. The interface provides state reads, policy reads, and atomic transition submission, allowing applications to interpret accumulated experience under explicit rules while checking current validity separately.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Credential identity and interface discovery An implementation MUST implement [ERC-721](./eip-721.md), [ERC-165](./eip-165.md), and [ERC-5192](./eip-5192.md). For every existing token, `locked(tokenId)` MUST return `true`. Every account-to-account transfer, including a transfer to the same account, MUST revert. Minting and burning MAY be supported under implementation-defined authorization. A burned token identifier MUST NOT be reused. These requirements preserve the token's owner address throughout its live existence; they do
+
+MOTIVATION:
+Membership, qualifications, contributions, and recognized experience can change throughout a credential's lifetime. A holder may participate in governance, transfer assets, trade, borrow, contribute to a community, or obtain an off-chain attestation. Different applications can use these histories for different purposes without requiring a new credential for every update. Existing token standards support non-transferability, mutable attributes, and several forms of issuance, revocation, and authorization. An application still needs a shared way to determine which part of a credential changed, which rules governed the change, whether the update extended the intended predecessor, and whether the accepted state remains usable. Accumulation
+
+RATIONALE:
+### Three methods and one event `stateOf` identifies the accepted state. `policyOf` provides its interpretation and current policy controls. `applyTransition` accepts a verified successor. `StateTransitioned` supports indexing and audit of accepted changes. Generic attribute setters would leave evidence acceptance and predecessor binding to incompatible conventions. A universal qualification method would instead require this proposal to standardize application predicates, proof systems, and freshness rules. The selected interface standardizes the shared state layer while allowing those choices to be specified by profiles and applications. Explicit predecessor hashes protect all head fields, including policy and validity, while revisions provide a simple
+
+
 === ERC-2400 ===
 TITLE: Transaction Receipt URI
 TYPE: Standards Track ERC
@@ -8958,6 +9278,26 @@ RATIONALE:
 This EIP aims to allow tracing all licenses to an NFT to facilitate right management. The ERC-721 standard only logs the property but not the legal rights tethered to NFTs. Even when logging the license via the optional ERC-721 Metadata extension, sublicenses are not traceable, which doesn't comply with the transparency goals of Web3. Some implementations attempt to get around this limitation by minting NFTs to represent a particular license, such as the BAYC #6068 Royalty-Free Usage License. This is not an ideal solution because the linking between different licenses to an NFT is ambiguous. An auditor has
 
 
+=== ERC-8439 ===
+TITLE: Settlement-Decoupled Nanopayment Ledger
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-09
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 5, 2, 6, 7
+
+SUMMARY:
+This proposal defines a shared ledger for fiat nanopayments, with publicly visible data and no token semantics. Each contract instance serves one Payment Network. The Payment Network, payer institution, and payee institution jointly authorize each Payment or Refund, which is recorded in four debit and credit accounts across the three parties. Individual requests and their signatures can be produced independently and submitted together in a Batch. Off-chain systems then use successfully posted records to debit users, transfer funds between institutions, and credit merchants. The contract does not issue, hold, or transfer payment assets; successful ledger posting does not
+
+SPECIFICATION:
+The key words "MUST" and "MUST NOT" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174) when, and only when, they appear in all capitals. ### 1. Participants and Prerequisites | Participant | Primary responsibilities | |---|---| | User | Initiates payments and uses the account and payment services provided by the Wallet | | Merchant | Accepts user orders and submits payment or refund requests to the Acquirer | | Wallet | The wallet institution manages user relationships, verifies user intent and ability to fund payments, authorizes Payments and Refunds, and
+
+MOTIVATION:
+1. **Support fiat nanopayments**: Metered services and agent-to-agent interactions require amounts smaller than a fiat currency's minor unit. A high-precision ledger records individual amounts, then aggregates and converts them while retaining rounding residuals for integration with existing fiat accounts. 2. **Decouple institutions through the payment network**: Payer and payee institutions incur payables or receivables only against the Payment Network, without directly maintaining accounts with their counterparty institutions. 3. **Maintain balanced accounting across three parties**: Each Payment and Refund updates four paired accounts across the payer institution, Payment Network, and payee institution. Every outstanding balance has a corresponding balance
+
+RATIONALE:
+### Relationship Between Payment, Refund, and Batch A Payment posts institutional statement entries in the payment direction and creates payment state that can be updated over time. A Refund differs in posting direction, request fields, and audit meaning, so it has its own function, signing type, and event. It does not create a separate payment state; it validates and updates the original Payment's cumulative refunded amount. The `expectedRefundedAmount` field prevents over-refunding and handles concurrency conflicts. The refundId is a globally unique identifier for an individual Refund instruction. On success, Core permanently binds it to one paymentId, allowing it
+
+
 === ERC-5437 ===
 TITLE: Security Contact Interface
 TYPE: Standards Track ERC
@@ -9158,6 +9498,26 @@ RATIONALE:
 **Function and parameter naming** The W3C Subresource Integrity (SRI) specification uses the attribute "integrity" to perform integrity verification. This ERC-2477 standard provides a similar mechanism and reuses the integrity name so as to be familiar to people that have seen SRI before. **Function return tuple** The SRI integrity attribute encodes elements of the tuple $$(cryptographic\ hash\ function, digest, options)$$. This ERC-2477 standard returns a digest and hash function name and omits forward-compatibility options. Currently, the SRI specification does not make use of options. So we cannot know what format they might be when implemented. This is the motivation
 
 
+=== ERC-8432 ===
+TITLE: Onchain IP Asset and License Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-06-30
+REQUIRES: 2, ,,  , 1, 5, 5, ,,  , 1, 6, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This ERC defines a policy-neutral registry for intellectual-property (IP) assets, content-addressed license terms, and license agreements. Assets and agreements may be registry-tracked or bound to [ERC-721](./eip-721.md) tokens. The standard provides globally scoped identifiers, machine-readable terms, constant-work agreement verification, bounded discovery, signed provenance, and extensible policy hooks while preserving mandatory caller authorization. It applies to off-chain, onchain, and hybrid works and standardizes mechanism rather than policy.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). A conforming registry implements the `IIPAssetRegistry` interface (which inherits `ITermsRegistry`) and returns `true` from ERC-165 `supportsInterface` for the ERC-165 id, the `IIPAssetRegistry` id **`0x72117f80`**, and the `ITermsRegistry` id **`0x38c7f550`**. ### 1. Data model and types This section defines the shared enums, structs, and well-known constants referenced throughout the interface. They are the canonical application binary interface (ABI): a conforming registry MUST use these declarations verbatim. ####
+
+MOTIVATION:
+Owning an ERC-721 token and holding rights to a work are different. Licensing information generally remains in legal documents and platform databases that contracts cannot inspect, forcing applications to implement incompatible rights records. This ERC defines a neutral registry for answering three questions: what is the work and who administers it, under what terms may it be used, and who currently holds an active agreement? Deployments choose their own eligibility, jurisdiction, governance, and trust policies through hooks and documented authorization roles. This supports both institutional and permissionless uses without selecting a privileged registry. Machine-readable discovery is also necessary
+
+RATIONALE:
+### Integrated licensing lifecycle Assets, reusable terms, and agreements are separate records because they answer different questions: what the work is, what conditions are offered, and who holds a grant. They are standardized together because attachment authorization, agreement creation, activity, and cross-record identity must compose consistently. Splitting this lifecycle into unrelated interfaces would leave these semantics to application-specific integration. The core includes mutable asset claims because policy facts and external identifiers change independently of structural authorship and provenance. Schema discovery, identifier resolution, identity adapters, payment, royalties, graph traversal, and dispute resolution are left to separate ERC extensions. This
+
+
 === ERC-8048 ===
 TITLE: Onchain Metadata for Token Registries
 TYPE: Standards Track ERC
@@ -9256,6 +9616,26 @@ This EIP introduces hierarchical NFTs with splitting and merging capabilities, a
 
 RATIONALE:
 This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduce a structured mechanism for share-based hierarchical NFTs, enabling splitting, merging, and fractional ownership directly within the token standard. The proposal reuses [ERC-6150](./eip-6150)'s parent-child architecture to preserve compatibility and reduce implementation complexity. Share management is embedded natively through internal mappings, allowing each token to track its fractional ownership independently without relying on external protocols. Functions like `mintSplit` and `mintMerge` are designed to reflect real-world asset behaviors, clearly distinguishing between asset decomposition and consolidation. The `sharePass` function facilitates redistribution of shares between tokens without requiring minting or burning, offering an efficient
+
+
+=== ERC-8446 ===
+TITLE: Cross-Chain Client Gateway for CCIP-Read
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-16
+REQUIRES: 3, 6, 6, 8, ,,  , 7, 9, 3, 0
+
+SUMMARY:
+This ERC extends [ERC-3668](./eip-3668.md) so a contract can ask the client to read another contract directly, on another chain or the same chain, instead of relying on an offchain gateway. The client returns the same result a gateway would, using its own trusted connection to that chain, so no third party is involved. Contracts can also detect clients that do not support this ERC.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. In this ERC, an Interoperable Address is a version 1 [ERC-7930](./eip-7930.md) Interoperable Address. ### The x-chain URL An `x-chain` URL has the following form. ``` x-chain:0x<interoperable-address>[?finalized=<value>] ``` `<interoperable-address>` is the lowercase hexadecimal encoding of an Interoperable Address containing both a chain reference and a target address. The `AddressLength` field MUST NOT be zero. The hexadecimal string MUST be lowercase and MUST contain no bytes
+
+MOTIVATION:
+An [ERC-3668](./eip-3668.md) gateway must either be trusted or return a proof that the contract verifies on the original chain. In many cases a valid proof cannot be produced. That does not make the read unsafe. A client that already trusts its RPC connection to the destination chain can make the call itself. This ERC lets the client act as the gateway. The contract names the chain and contract to read, and the client answers using its own trusted RPC, so no third party is involved.
+
+RATIONALE:
+[ERC-3668](./eip-3668.md) does not require a gateway to be an HTTP service, and allows URLs of any scheme. The client already trusts its own RPC connections, so it can answer a cross-chain read without adding a third party. A client that supports this ERC ignores all other URLs, so it never sends the request to a third-party gateway. It returns exactly what `eth_call` returns, so callbacks work as they do with any ERC-3668 gateway. Nested `x-chain` URLs are not followed, which limits each call to one cross-chain hop and prevents loops between chains. Clients that do not support this
 
 
 === ERC-7821 ===
@@ -9910,6 +10290,26 @@ There are standards that currently address the need for attaching human-readable
 
 RATIONALE:
 Current attempts to solve content addressability, such as [EIP-137](./eip-137.md), only target Ethereum accounts. These are based on inherited concepts from HTTP and DNS, which are not machine friendly. With [EIP-1900](./eip-1900.md) and [EIP-2157](./eip-2157.md), general content addressability can be achieved. dType provides type information and a reference to the smart contract where the type instances are stored. Additionally, Alias uses the semantic meaning of subdomain separators to have a [intuitive order rule](https://github.com/loredanacirstea/articles/blob/master/articles/Flexible_Alias_or_Why_ENS_is_Obsolete.md). Multiple aliases can be assigned to a single resource. Either by using a different `name` or by using a different `separator`. Each `separator` can have a specific standard
+
+
+=== ERC-8471 ===
+TITLE: AI Dispute Resolution Framework (ADRF)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-29
+REQUIRES: 1, 6, 5, ,,  , 6, 3, 7, 2, ,,  , 8, 4, 3, 6
+
+SUMMARY:
+This ERC defines the AI Dispute Resolution Framework (ADRF) for disputes about AI systems, resources and services and about the conduct, deliveries and declarations around them, between participants that may be people, organizations, agents or contracts. A dispute is a **specific claim about a specific object** — that an identified record, delivery, settlement, declaration or action does or does not conform to an obligation that was declared before the event — admitted under a pre-committed **binding**, resolved by typed **methods** and closed by a **ruling** whose effects are limited to what the binding authorized. It specifies: 1. a
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. Terminology - **Object** — an identified record or state: `ObjectRef(chainId, target, id, versionHash)`, where `target` is the registry, namespace or contract that holds the object and `versionHash` pins the content or version evaluated. - **Event** — the contested occurrence on an object (a settlement, a delivery, a declaration, a member action, a state snapshot), identified by an opaque `eventRef` the obligation source
+
+MOTIVATION:
+AI is bought, run, delivered, evaluated and governed through commitments: an enterprise buys inference from a model API under service terms, a user orders a report that a provider promises to review, a data provider promises a scope of use, a task escrow pays on acceptance, a swarm acts under a charter, an identity carries attested claims, a safety intervener suspends an adopter. Each of those arrangements produces records and each has a default for what happens when nobody objects. What is missing is the closing step: when someone does object, how the question is confirmed, who may
+
+RATIONALE:
+**AI, not agents, is the scope.** The framework was first drafted for disputes between agents; its objects — an identified record, an obligation declared before the event, a binding that commits effects, typed methods — never depended on the parties being agents. The scope therefore names the domain by its objects: AI systems, resources, services and the conduct, deliveries and declarations around them, between any participants that can hold accounts and accept bindings. The roles a case keeps apart (object, actor, obligor, judgment participants, executors) are what a generalized domain needs: a model service process may act while
 
 
 === ERC-2981 ===
@@ -10737,6 +11137,26 @@ RATIONALE:
 This solution's intent is to be the simplest possible path towards linking physical items to digital NFTs without a centralized authority. The interface includes a `transferToken` function that's opinionated with respect to the signature scheme, in order to enable a downstream aggregator-like product that supports transfers of any NFTs that implement this EIP in the future. The chip address is included in `transferToken` to allow signature verification by a smart contract. This ensures that chips in physically backed tokens are not strictly tied to implementing secp256k1 signatures, but instead may use a variety of signature schemes such as
 
 
+=== ERC-8424 ===
+TITLE: Confidential Real World Asset Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-24
+REQUIRES: 1, 6, 5, ,,  , 7, 9, 8, 4
+
+SUMMARY:
+This ERC extends [ERC-7984](./eip-7984.md) with a minimal interface for defining tokenized real world assets. It provides a pair of plaintext eligibility checks, a confidential validation function answering whether a specific transfer is permitted, a confidential figure for the portion of a balance that is currently spendable, and an access restricted forced transfer. Amounts remain confidential pointers throughout. The standard constrains the behavior of minting, burning, halting, and freezing without mandating interfaces for them, leaving issuance and restriction mechanics to implementations.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Token Compliant tokens MUST implement [ERC-7984](./eip-7984.md) and [ERC-165](./eip-165.md). The `supportsInterface` function MUST return `true` when the `interfaceID` argument is `0xcd0f4d6c`. All amounts are confidential pointers represented as `bytes32` values, as defined by [ERC-7984](./eip-7984.md). The mechanism by which a pointer is resolved, and the mechanism by which an account is authorized to resolve one, are implementation specific. Functions accepting a confidential pointer as input
+
+MOTIVATION:
+Real world assets carry obligations that ordinary fungible tokens do not. Holders must be eligible to receive and transfer assets, transfers must satisfy rules that depend on the amount being moved, portions of a balance may be unspendable due to an issuer freeze or a vesting schedule, and an issuer may be required to move assets without a holder's consent. [ERC-3643](./eip-3643.md) and [ERC-7943](./eip-7943.md) address these needs for tokens whose balances are public. Neither translates to a token whose balances and transfer amounts are confidential pointers. Confidentiality complicates this. Determining if a transfer is compliant depends on confidential data
+
+RATIONALE:
+### Plaintext eligibility alongside a confidential predicate This standard answers two distinct questions. The first is whether an address may send/receive an asset at all, which does not depend on any amount and is often derived from a non-confidential source such as an identity registry, allow-list, or block-list. The second is whether a particular transfer may proceed, which accounts for every rule, confidential and non-confidential alike, and whose result must therefore be confidential. `canSend` and `canReceive` answer the first question in plaintext as `view` functions. Consumers must understand that the answer is not exhaustive: a transfer to or
+
+
 === ERC-7774 ===
 TITLE: Cache invalidation in ERC-5219 mode Web3 URL
 TYPE: Standards Track ERC
@@ -11185,6 +11605,26 @@ RATIONALE:
 ### Terms These are base terms used around the specification which function names and definitions are based on. - _vesting_: Tokens which a vesting NFT is vesting until a future date. - _vested_: Total amount of tokens a vesting NFT has vested. - _claimable_: Amount of vested tokens which can be unlocked. - _claimed_: Total amount of tokens unlocked from a vesting NFT. - _timestamp_: The unix `timestamp` (seconds) representation of dates used for vesting. ### Vesting Functions **`vestingPayout` + `vestedPayout`** `vestingPayout(uint256 tokenId)` and `vestedPayout(uint256 tokenId)` add up to the total number of tokens which can be claimed
 
 
+=== ERC-8338 ===
+TITLE: Token-Bound Executable Skills
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-10
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This standard binds an [ERC-721](./eip-721.md) token to an executable skill: a package of files, led by a primary Markdown document, that an off-chain runtime (including Large Language Model (LLM)-based agent runtimes) can fetch, verify byte-for-byte, and execute. ``` ERC-721 Asset Layer ── who owns this skill token tokenId ├── owner ├── approved / operator └── tokenURI (Metadata ext., optional) display identity only Mandatory Skill Binding ── which version it binds; who may update; whether it may change tokenId ├── mdHash plaintext primary-document commitment ├── packageHash published-package commitment (plaintext or ciphertext) ├── version content version ├── packageURI mutable transport
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### Core interface (mandatory) ```solidity interface ISkillToken /* standalone extension interface; see Compliance */ { struct SkillBinding { bytes32 mdHash; // SHA-256 digest of the plaintext primary Markdown document bytes32 packageHash; // SHA-256 digest of the encoded SkillRoot as published uint64 version; // content version, starts at 1 } event SkillUpdated(uint256 indexed tokenId, bytes32 mdHash, bytes32 packageHash, uint64 version); event SkillURIUpdated(uint256 indexed tokenId, string
+
+MOTIVATION:
+AI agents have on-chain identities ([ERC-8004](./eip-8004.md)) and smart accounts ([ERC-4337](./eip-4337.md)), but the skills they run live in centralized registries: unverifiable, unownable, silently mutable — the root condition of registry supply-chain attacks. `tokenURI` cannot fix this; it is a display pointer with no integrity guarantee. Registry and package-manager protocols can identify, locate, and distribute a skill, but an execution runtime must answer a lower-level question: which exact document, file graph, package version, and publication history does a token commit to? Without a shared artifact-binding model, two clients may resolve the same registered skill while receiving different companion files, following
+
+RATIONALE:
+**Two hashes and a URI alone would be metadata; the normative SkillRoot is what makes this a binding standard.** The chain holds commitments; the object graph defines exactly what they commit to, byte for byte. **Why `packageHash` must change on every update but `mdHash` may not.** Every update publishes a new package (new SkillRoot, new `prev` link); but the primary document legitimately survives edits to companion files and key rotations. **Why the primary document carries an explicit path.** Confidentiality objects, entry resolution, and tooling all address files by path; leaving the primary document's path implicit would smuggle a
+
+
 === ERC-7628 ===
 TITLE: ERC-721 Ownership Shares Extension
 TYPE: Standards Track ERC
@@ -11463,6 +11903,66 @@ For a decentralized insurance protocol, a standard for insurance policies is cru
 
 RATIONALE:
 Insurance policies form an important class of financial assets, and it is natural to express those assets as a class of non-fungible tokens which adhere to the established ERC-721 standard. We propose a standard for the accompanying metadata structures which are needed to uniquely define an insurance policy. Standardization is key because we expect decentralized insurance to receive widespread adoption and it is crucial to establish a unified standard to enable composability and the creation of universal toolsets. We therefore propose a standardized naming scheme for the different parameters describing an insurance policy. We propose three mandatory parameters
+
+
+=== ERC-8342 ===
+TITLE: Verifiable Invoice Commitment (VIC)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-04-26
+REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 7, 7, 3, 0
+
+SUMMARY:
+This ERC defines a standard for binding structured accounting metadata — equivalent to a traditional invoice or fiscal receipt — to on-chain payment transactions, without modifying existing token contracts or transfer semantics. It specifies (1) a canonical [EIP-712](./eip-712.md) typed data schema (`Invoice`) covering fiscal identity, tax breakdown, foreign exchange context, line items, and jurisdictional extensions; (2) a registrar contract interface (`IInvoiceCommitmentRegistry`) whose instances can be deployed at the same address across EVM chains; and (3) a companion [ERC-7730](./eip-7730.md) clear-signing descriptor for hardware-wallet verification. The invoice content lives off-chain by default; only its hash and an optional URI are
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). ### 1. EIP-712 Typed Data Schema Conforming implementations MUST sign invoices using the following EIP-712 domain and type definitions. #### 1.1 Domain Separator ```solidity EIP712Domain { string name; // "VerifiableInvoiceCommitment" string version; // "1" uint256 chainId; address verifyingContract; // the registrar instance that will commit the invoice } ``` #### 1.2 Primary Type: `Invoice` ```solidity Invoice { string invoiceId; uint256 issueDate; uint256 dueDate; string
+
+MOTIVATION:
+Stablecoins are increasingly used for commercial payments, including cross-border remittances and machine-to-machine commerce. Yet the accounting layer that traditionally accompanies a payment — the invoice — has no canonical representation in EVM ecosystems. Reconciliation between a transaction hash and the invoice it satisfies remains a private off-chain concern, fragmenting audit trails and preventing independent verification by tax authorities, auditors, and counterparties. Existing standards address adjacent problems. **[ERC-7699](./eip-7699.md)** introduces an opaque `bytes reference` field but deliberately leaves its semantic structure undefined. **[ERC-7943](./eip-7943.md) (uRWA)** defines compliance hooks for tokenized real-world assets without carrying accounting metadata. The `bytes data` extensions of
+
+RATIONALE:
+**Why a signed off-chain document + on-chain commitment rather than full on-chain metadata?** Commercial invoices contain competitively sensitive information that enterprises will not publish on a public ledger. A commitment-based design preserves privacy by default while retaining cryptographic integrity and auditability. An encrypted on-chain variant is provided for flows where off-chain coordination is infeasible. **Why EIP-712 rather than a raw JSON signature?** EIP-712 provides canonical encoding, replay protection via domain separators, and compatibility with existing wallet infrastructure including hardware wallets. The ERC-7730 ecosystem already exists to render EIP-712 messages clearly. **Why a shared registrar rather than per-token extensions?**
+
+
+=== ERC-8316 ===
+TITLE: Programmable Settlement Locks
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-06-25
+REQUIRES: 
+
+SUMMARY:
+A programmable settlement lock is a prepared value-bearing operation controlled by a single current spender, with predefined spend and cancel paths secured by implementation-specific commitments. Only the current spender may spend or cancel the lock, and only according to the paths prepared by the lock owner. This standard defines a minimal interface for creating, delegating, finalizing, and querying such locks. The interface is intended to be implemented by value-bearing contracts, including privacy-preserving tokens and transparent tokens that conform to existing interfaces such as [ERC-20](./eip-20.md). It defines an atomic settlement boundary that can be added to token systems without
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Overview This standard defines a lifecycle and authority model for programmable settlement locks identified by a `lockId`. A lock represents a prepared value-bearing operation that may be spent or cancelled by an authorized spender according to implementation-specific commitments. Each lock has a spend path, represented by `spendCommitment`, and a cancel path, represented by `cancelCommitment`. The construction and validation of these commitments are implementation-specific,
+
+MOTIVATION:
+Smart contracts increasingly store and coordinate value across systems with widely varying visibility and validation models. Conventional contracts generally function by transparently exposing the state needed for coordination: in the case of common standards like [ERC-20](./eip-20.md), this is seen through public balances, allowances, and fully observable transfers. Privacy-preserving value systems, such as shielded tokens, instead expose more opaque evidence of their operations, including commitments, proofs, encrypted values, nullifiers, signatures, or externally validated state transitions. This creates a challenge for atomic coordination and settlement. Existing patterns, including approvals, escrow contracts, and hash time-locked mechanisms, are generally designed around assumptions
+
+RATIONALE:
+A key observation behind this standard is that atomic settlement across heterogeneous systems does not require every participating contract to expose the same asset model, validation logic, or execution details. Instead, it requires a common object that external protocols can use to reason about prepared operations and lock-level finalization guarantees. A programmable settlement lock provides that object by separating the underlying operation from the authority to finalize it. ### Settlement Object Rather Than Asset Model The standard does not prescribe token semantics, balance accounting, custody rules, proof systems, or internal state transitions. These remain the responsibility of the
+
+
+=== ERC-8485 ===
+TITLE: NFT Controlled Application Spaces
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-04
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This proposal defines an application execution space whose economic configuration is controlled by an [ERC-721](./eip-721.md) NFT. Independent publishers create application gateways within the space, and users execute operations through its Runtime with a configuration revision, maximum native-asset toll, explicit application value, and deadline. The toll is configured directly in native base units and stays fixed until an authorized economic change. It defines discovery from a known Runtime, publisher and caller identity, transfer semantics, native payout allocation, and atomic execution events. The initial scope is same-chain execution. It does not assign ownership of consensus, block production, physical property, or
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Definitions and scope - Canonical NFT: the ERC-721 token identifying economic control of a space. - Space: a protocol-defined execution and economic domain, not reserved consensus blockspace or a global EVM storage partition. - Runtime: a contract that registers gateways, validates execution requests, exposes caller context, and settles tolls. - Publisher: the address recorded for a gateway's publication. - Gateway: a distinct application
+
+MOTIVATION:
+NFT ownership alone does not tell an integration how to discover a linked application's execution context, distinguish its publisher from the NFT holder, quote an execution toll, limit a user's payment, or interpret a transfer's effect on payouts. Project-specific assumptions can misidentify who controls an app, cause a stale configuration to be accepted, or confuse the toll with application purchases and network gas. An application-space interface lets tools integrate with independent implementations from a known Runtime address. It gives the NFT a defined economic-control role without turning every application into an asset administrated by the NFT holder. The
+
+RATIONALE:
+The owner, publisher and user roles serve different purposes. The NFT transfers authority over future toll configuration, while application administration and custody remain with the publisher's application. An integration can distinguish those roles from a known Runtime address without implementing a project-specific indexer. ### Fixed native pricing and exact funding The toll is priced directly in the chain's native asset. An exchange-rate change cannot change the transaction value required for the same economic revision. An owner price change is an explicit economic change and invalidates requests carrying the previous revision. This removes the quote-conversion race identified during discussion
 
 
 === ERC-5050 ===
@@ -12102,6 +12602,26 @@ Some NFTs want to generate derivative assets as new NFTs. For example, a 2D NFT 
 
 RATIONALE:
 This standard differs from [ERC-6150](./eip-6150.md) in mainly two aspects: supporting cross-contract token reference, and allowing multiple parents. But we try to keep the naming consistent overall. In addition, we didn't include `child` relation in the interface. An original NFT exists before its derivative NFTs. Therefore we know what parent tokens to include when minting derivative NFTs, but we wouldn't know the children tokens when minting the original NFT. If we have to record the children, that means whenever we mint a derivative NFT, we need to call on its original NFT to add it as a child. However,
+
+
+=== ERC-8467 ===
+TITLE: Agent Credit Backers
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-20
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This proposal lets a third party, a backer, stand behind a lender's credit line to an identity of an [ERC-721](./eip-721.md) identity registry, such as the Identity Registry of [ERC-8004](./eip-8004.md), and absorb the line's losses. It extends the Agent Credit Lines draft, in which a lender lends an [ERC-20](./eip-20.md) token to such identities. With the identity owner's signed consent, a backer puts itself behind a line of a given size. The lender then asks the backer before each draw (`canBorrow`), tells it of each draw (`onBorrow`), takes the principal of each defaulted loan from the backer's balance and tells
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174. ### Interfaces A lender MUST implement `IBackedCreditLine` and `IAgentCreditLine`, and MUST implement [ERC-165](./eip-165.md), returning `true` for the interface identifiers of `IBackedCreditLine` and `IAgentCreditLine` and for `0x01ffc9a7`. A backer MUST implement `ICreditBacker` and ERC-165, returning `true` for the interface identifier of `ICreditBacker` and for `0x01ffc9a7`. `IAgentCreditLine` is the interface of the Agent Credit Lines draft, restated here unchanged: ```solidity interface IAgentCreditLine { enum LoanStatus {
+
+MOTIVATION:
+A line of credit to an agent is a bet on whoever stands behind the agent. Lenders to agent identities already let third parties take that place: stakers who put stake behind a line, vaults that hold collateral for it, a lender's own treasury that backs first lines. Each does it through a hook written for one lender. A staker or an insurer that backs an agent at one lender cannot back the same agent at another, and a lender cannot accept a backer written for someone else's contract. What a lender and a backer tell each other
+
+RATIONALE:
+- **Hooks, not deposits.** A backer could deposit its stake with each lender, but it could then back only as many lenders as it splits its stake between, and every lender would hold capital it does not lend. With hooks, the backer keeps its stake and stands behind lines at any number of lenders, and a lender reaches the stake only when a loan the backer agreed to defaults. - **The loss is taken before the backer is told.** The lender takes the principal from the backer's balance, up to its allowance, and only then calls `onDefault`. A
 
 
 === ERC-1081 ===

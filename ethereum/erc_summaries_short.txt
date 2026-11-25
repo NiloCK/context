@@ -432,6 +432,26 @@ RATIONALE:
 ### Type of request method In order to enable the client to operate the contract in a standardized and predictable way, three request method
 
 
+=== ERC-8448 ===
+TITLE: Agent Service Order Amendments
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-18
+REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 8, 0, 0, 1
+
+SUMMARY:
+This ERC specifies `ORDER_AMENDMENT_V1`, a profile over [ERC-8001](./eip-8001.md) for bilateral changes to an existing service order. Both parties accept a complete replacement terms commitment
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+After a buyer orders a report covering three projects for 100 units, the parties may agree to ten projects for 180 units and a
+
+RATIONALE:
+### A profile instead of changing generic coordination ERC-8001 already supplies multi-party agreement, replay domains and coordination status. The additional interoperability boundary is the
+
+
 === ERC-2746 ===
 TITLE: Rules Engine Standard
 TYPE: Standards Track ERC
@@ -610,6 +630,26 @@ MOTIVATION:
 
 RATIONALE:
 ### Only Transferring Pending Balances This standard deliberately restricts transfers to the Pending state. Claimable balances already have a deterministic exchange rate and can
+
+
+=== ERC-8489 ===
+TITLE: Agent Information Flow Paradigm
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-08
+REQUIRES: 1, 6, 5, ,,  , 6, 3, 7, 2
+
+SUMMARY:
+This ERC defines the Agent Information Flow Paradigm (AIFP): a model of how information flows between autonomous agents, humans, tools and contracts, and an
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Agents already exchange information through many systems: task protocols, tool protocols, chat rooms, federated social feeds, signed-event relays, encrypted groups, notification channels and on-chain
+
+RATIONALE:
+**A generative model instead of an enumeration.** The familiar forms of human communication (broadcast, panel, assembly, meeting, three kinds of peer-to-peer) are kept, but
 
 
 === ERC-7518 ===
@@ -807,6 +847,26 @@ Many protocols need an ongoing way to convert a continuous stream of value into 
 
 RATIONALE:
 * A single required payment pairs well with controllers that evaluate when the exchange is economically sound and trigger `purchase` only when conditions justify
+
+
+=== ERC-8506 ===
+TITLE: AI Inference Token Onchain
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-20
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 1, 5, 5, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This proposal defines AI Inference Token Onchain (AITO), a framework for holding, transferring and consuming entitlements to AI inference supply on chain. An AITO
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Inference supply is the fuel that agents run on. Today it is bought as account credit inside one provider and cannot be held, transferred
+
+RATIONALE:
+**An entitlement, not a token count.** Inference that has been generated can be stored as data. Storing an output does not store a capacity
 
 
 === ERC-6809 ===
@@ -1132,6 +1192,26 @@ There are two main purposes of this EIP, one is to reduce interactions with bloc
 
 RATIONALE:
 This EIP targets on ERC-20 tokens due to its widespread adoption. However, this extension is designed to be compatible with other token standard. The
+
+
+=== ERC-8490 ===
+TITLE: Agent Meditation Mechanism
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-09
+REQUIRES: 1, 6, 5, ,,  , 6, 3, 7, 2
+
+SUMMARY:
+This ERC defines a minimal on-chain registry through which an AI agent records its own self-maintenance: the checking, cleaning, repair, updating and iteration of
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+An agent keeps its identity while its code, dependencies, memories, skills, task plans and ways of judging keep changing. Agent runtimes increasingly perform this
+
+RATIONALE:
+**First-person registration.** In registries of identity, assertions and reputation, third parties write about a subject. Self-maintenance is the one thing only the subject can
 
 
 === ERC-6604 ===
@@ -1905,6 +1985,26 @@ RATIONALE:
 ### Why Checkpoints? Checkpoints enable efficient point-in-time queries. By recording only when changes happens, the system maintains a compact, queryable history. Checkpoints are also
 
 
+=== ERC-8493 ===
+TITLE: Onchain URI Scheme
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-09
+REQUIRES: 8, 0, 4, 8, ,,  , 8, 0, 4, 9
+
+SUMMARY:
+This ERC defines the `onchain` URI scheme. An `onchain` URI lets a JSON document reference an onchain metadata value stored under [ERC-8048](./eip-8048.md) or [ERC-8049](./eip-8049.md)
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[ERC-8048](./eip-8048.md) and [ERC-8049](./eip-8049.md) store metadata onchain as key-value pairs, but a JSON document has had no compact way to point at those values. A
+
+RATIONALE:
+The default type for untyped bytes is UTF-8 plain text. This follows the `text/plain` default of `data:` URIs and the UTF-8 default of [ERC-8049](./eip-8049.md),
+
+
 === ERC-4546 ===
 TITLE: Wrapped Deposits
 TYPE: Standards Track ERC
@@ -1942,6 +2042,26 @@ RATIONALE:
 The approach of simply augmenting existing EIP functions with new `address` parameters, rather than crafting new interfaces for the most commonly used EIPs, is
 
 
+=== ERC-8428 ===
+TITLE: ERC-721 Lineage Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-25
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This proposal extends [ERC-721](./eip-721.md) with genealogical records containing immutable sex and birth timestamps and up to two independently optional parent references. Owner authorization governs
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+
+MOTIVATION:
+Pedigree applications need common semantics for reading ancestry, distinguishing missing parents and determining permission to record a relationship. Application-specific token metadata does not provide
+
+RATIONALE:
+### Chronology and acyclicity Every child-to-parent edge strictly decreases an immutable timestamp. A directed cycle would require a timestamp to be strictly less than
+
+
 === ERC-2767 ===
 TITLE: Contract Ownership Governance
 TYPE: Standards Track ERC
@@ -1960,6 +2080,26 @@ Traditionally, many contracts that require that they be owned or controlled in s
 
 RATIONALE:
 The goals of this EIP have been the following: - Standardize API of Governance contracts to make it easy for analysis tools to be
+
+
+=== ERC-8447 ===
+TITLE: Swarm AI Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-18
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 6, 3, 7, 2, ,,  , 8, 0, 0, 4, ,,  , 8, 4, 3, 6
+
+SUMMARY:
+This ERC defines a framework through which autonomous agents — and any other account that qualifies — form a **swarm**: a purpose-bound collective with
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Agents are beginning to work in groups. A proof is split into lemmas and farmed out; a market report is drafted by one agent,
+
+RATIONALE:
+**Why a hashed spec and a hashed charter, not one or the other.** What the registry executes — who may admit, how many seats,
 
 
 === ERC-7208 ===
@@ -3330,6 +3470,26 @@ RATIONALE:
 This standards offers a way for any type of address (externally owned and contracts) to implement an interface and potentially delegate the implementation of
 
 
+=== ERC-8414 ===
+TITLE: Token-Bound Task Tenders
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-05
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This standard binds an [ERC-721](./eip-721.md) token to a task tender: a package of files, led by a primary Markdown document, that specifies demanded work
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Define a trade `T` over the holdings of two parties: `T(S_A, S_B) = (S'_A, S'_B)`. Classical markets — asset for cash, asset for asset
+
+RATIONALE:
+**A tender interface with two hashes alone would be metadata; the normative TaskRoot is what makes this a binding standard.** The chain holds commitments
+
+
 === ERC-5553 ===
 TITLE: Representing IP and its Royalty Structure
 TYPE: Standards Track ERC
@@ -3445,6 +3605,26 @@ This standard tries to improve upon the widely used [ERC-20] token standard. The
 
 RATIONALE:
 The principal intent for this standard is to solve some of the shortcomings of [ERC-20] while maintaining backward compatibility with [ERC-20], and avoiding the
+
+
+=== ERC-8423 ===
+TITLE: ERC-721 Burn Record Extension
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-24
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This proposal extends [ERC-721](./eip-721.md) with one view function, `burnedBy`, through which other contracts can read the address recorded as the owner of a token
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Burning an ERC-721 token emits a `Transfer` event to `address(0)`, and off-chain indexers record who burned it. Logs are not accessible from the EVM,
+
+RATIONALE:
+### A getter alongside the event The contract's state is the source of truth for whether a token was burned and who owned it
 
 
 === ERC-7621 ===
@@ -4497,6 +4677,26 @@ RATIONALE:
 ### Taxonomy ⚠️ TODO: Add a specific reference to libsnark here, explaining the choice of variable names. :warning: TODO: Explain how _C_ may not
 
 
+=== ERC-8403 ===
+TITLE: Account Authority Lifecycle
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-08-29
+REQUIRES: 8141
+
+SUMMARY:
+An authority is a key or rule that controls an account, held as a 32-byte identifier and a predicate. An account commits to its
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Native account abstraction lets several keys and rules control one account. Each account model defines add, rotate, and revoke in its own way. Under
+
+RATIONALE:
+### One authority state The rules of the check and of the lifecycle are written once, over the authority state. A root answers membership
+
+
 === ERC-8262 ===
 TITLE: Zero-Knowledge Compliance Oracle
 TYPE: Standards Track ERC
@@ -5287,6 +5487,26 @@ The following standard allows for the implementation of a standard API for token
 
 MOTIVATION:
 A standard interface allows any tokens on Ethereum to be re-used by other applications: from wallets to decentralized exchanges.
+
+
+=== ERC-8451 ===
+TITLE: Permanent Locks for Lockable Tokens
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-19
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 6, 9, 8, 2
+
+SUMMARY:
+This proposal extends [ERC-6982](./eip-6982.md) so that a lock can be marked permanent, so that the same interface applies to [ERC-1155](./eip-1155.md) contracts as well as
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Creators often disable secondary transfers for a period: while a public mint is running, before a reveal, or during a migration. Other collections are
+
+RATIONALE:
+### Building on ERC-6982 An earlier draft of this proposal defined its own range event for pausing a whole collection. [ERC-6982](./eip-6982.md) already covers that
 
 
 === ERC-6492 ===
@@ -6134,6 +6354,26 @@ RATIONALE:
 1. **Employee Tokenization**: - Utilizing **Soulbound Tokens (SBTs)** to represent employees ensures that each employee has a unique, non-transferable identity on the blockchain. This
 
 
+=== ERC-8419 ===
+TITLE: Know-Your-Agent (KYA) Framework
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-19
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1, ,,  , 8, 0, 0, 4
+
+SUMMARY:
+This ERC defines a framework for **Know-Your-Agent (KYA)**: a minimal on-chain data model and a set of interfaces through which any party can 1.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+ERC-8004 gives agents a portable identity and a place to accumulate raw trust *signals*: client feedback in the Reputation Registry and third-party judgements in
+
+RATIONALE:
+**A framework, not an algorithm.** ERC-8004 refused to standardise reputation math and thereby stayed useful to every reputation system. This ERC makes the same
+
+
 === ERC-7439 ===
 TITLE: Prevent ticket touting
 TYPE: Standards Track ERC
@@ -6544,6 +6784,26 @@ RATIONALE:
 `refundDeadlineOf` uses blocks instead of timestamps, as timestamps are less reliable than block numbers. The function names of `refund`, `refundOf`, and `refundDeadlineOf` were chosen
 
 
+=== ERC-8495 ===
+TITLE: Token Metadata JSON Schema and Processing
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-26
+REQUIRES: 7, 2, 1, ,,  , 1, 1, 5, 5, ,,  , 4, 8, 0, 4, ,,  , 4, 9, 0, 6, ,,  , 6, 9, 0, 9
+
+SUMMARY:
+This proposal specifies the JSON document that `tokenURI` ([ERC-721](./eip-721.md), [ERC-6909](./eip-6909.md)) and `uri` ([ERC-1155](./eip-1155.md)) resolve to. It covers the display fields, the `attributes` array of
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+ERC-721 defines `name`, `description`, and `image`, and ERC-1155 adds `decimals`, `properties`, and `localization`. Everything else wallets and marketplaces show, including video, HTML, and traits,
+
+RATIONALE:
+Figures below come from a survey of metadata from 708 Ethereum and Base contracts in October 2026. - Field names stay as deployed. `animation_url`
+
+
 === ERC-2390 ===
 TITLE: Geo-ENS
 TYPE: Standards Track ERC
@@ -6869,6 +7129,26 @@ RATIONALE:
 This proposed standard is designed to be a core implementation of a tokenized reserve interface. Other non-specified conditions should be addressed on a case-by-case
 
 
+=== ERC-8409 ===
+TITLE: Signed Service Payment Quotes
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-04
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This ERC defines an [EIP-712](./eip-712.md) format for a service provider to sign payment terms for a specific priced request. A quote authenticates the issuer,
+
+SPECIFICATION:
+The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**, **NOT RECOMMENDED**, **MAY**, and **OPTIONAL** in this document are to
+
+MOTIVATION:
+Machine-to-machine and agentic payment flows commonly separate two decisions: 1. a provider states the terms under which it will perform a service; and 2.
+
+RATIONALE:
+### Why a separate ERC Provider-signed offers already exist in payment protocols, including the x402 Offer and Receipt extension. This ERC does not attempt
+
+
 === ERC-5007 ===
 TITLE: Time NFT, ERC-721 Time Extension
 TYPE: Standards Track ERC
@@ -6947,6 +7227,26 @@ The [EIP-4626](./eip-4626.md) standard defines a tokenized vault allowing users 
 
 RATIONALE:
 The standard is designed to be a minimal interface. Details such as the start and end of a lock-in period, and how the underlying
+
+
+=== ERC-8468 ===
+TITLE: Agent Safety Framework (ASF)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-25
+REQUIRES: 165
+
+SUMMARY:
+This ERC defines the Agent Safety Framework (ASF): two registry objects and one check through which the safety arrangements that govern autonomous systems become
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Agents now hold credentials, operate accounts and move funds on behalf of people and organizations. The mechanisms that bound what they may do are
+
+RATIONALE:
+**The adoption relation is the object.** Permission grants, delegations, policy verdicts, identity registries, decision mechanisms and task escrows each answer one question: who the
 
 
 === ERC-5501 ===
@@ -8598,6 +8898,26 @@ RATIONALE:
 ### Naming The ERC-721/ERC-1155 tokens which are pooled are called {Base} tokens. Alternative names include: - Underlying. - NFT. However, ERC-1155 tokens may be
 
 
+=== ERC-8498 ===
+TITLE: Namespaced State Transitions for SBTs
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-13
+REQUIRES: 1, 6, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 5, 1, 9, 2
+
+SUMMARY:
+This proposal defines an interface for evolving the state of a permanently non-transferable token. Each token contains independently governed namespaces, each with a versioned
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Membership, qualifications, contributions, and recognized experience can change throughout a credential's lifetime. A holder may participate in governance, transfer assets, trade, borrow, contribute to
+
+RATIONALE:
+### Three methods and one event `stateOf` identifies the accepted state. `policyOf` provides its interpretation and current policy controls. `applyTransition` accepts a verified successor.
+
+
 === ERC-2400 ===
 TITLE: Transaction Receipt URI
 TYPE: Standards Track ERC
@@ -8958,6 +9278,26 @@ RATIONALE:
 This EIP aims to allow tracing all licenses to an NFT to facilitate right management. The ERC-721 standard only logs the property but not
 
 
+=== ERC-8439 ===
+TITLE: Settlement-Decoupled Nanopayment Ledger
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-09
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 2, 0, 9, 8, ,,  , 5, 2, 6, 7
+
+SUMMARY:
+This proposal defines a shared ledger for fiat nanopayments, with publicly visible data and no token semantics. Each contract instance serves one Payment Network.
+
+SPECIFICATION:
+The key words "MUST" and "MUST NOT" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174) when, and
+
+MOTIVATION:
+1. **Support fiat nanopayments**: Metered services and agent-to-agent interactions require amounts smaller than a fiat currency's minor unit. A high-precision ledger records individual amounts,
+
+RATIONALE:
+### Relationship Between Payment, Refund, and Batch A Payment posts institutional statement entries in the payment direction and creates payment state that can be
+
+
 === ERC-5437 ===
 TITLE: Security Contact Interface
 TYPE: Standards Track ERC
@@ -9158,6 +9498,26 @@ RATIONALE:
 **Function and parameter naming** The W3C Subresource Integrity (SRI) specification uses the attribute "integrity" to perform integrity verification. This ERC-2477 standard provides a similar
 
 
+=== ERC-8432 ===
+TITLE: Onchain IP Asset and License Registry
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-06-30
+REQUIRES: 2, ,,  , 1, 5, 5, ,,  , 1, 6, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This ERC defines a policy-neutral registry for intellectual-property (IP) assets, content-addressed license terms, and license agreements. Assets and agreements may be registry-tracked or bound
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+
+MOTIVATION:
+Owning an ERC-721 token and holding rights to a work are different. Licensing information generally remains in legal documents and platform databases that contracts
+
+RATIONALE:
+### Integrated licensing lifecycle Assets, reusable terms, and agreements are separate records because they answer different questions: what the work is, what conditions are
+
+
 === ERC-8048 ===
 TITLE: Onchain Metadata for Token Registries
 TYPE: Standards Track ERC
@@ -9256,6 +9616,26 @@ This EIP introduces hierarchical NFTs with splitting and merging capabilities, a
 
 RATIONALE:
 This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduce a structured mechanism for share-based hierarchical NFTs, enabling splitting, merging, and fractional ownership directly within
+
+
+=== ERC-8446 ===
+TITLE: Cross-Chain Client Gateway for CCIP-Read
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-16
+REQUIRES: 3, 6, 6, 8, ,,  , 7, 9, 3, 0
+
+SUMMARY:
+This ERC extends [ERC-3668](./eip-3668.md) so a contract can ask the client to read another contract directly, on another chain or the same chain, instead
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+An [ERC-3668](./eip-3668.md) gateway must either be trusted or return a proof that the contract verifies on the original chain. In many cases a valid
+
+RATIONALE:
+[ERC-3668](./eip-3668.md) does not require a gateway to be an HTTP service, and allows URLs of any scheme. The client already trusts its own RPC
 
 
 === ERC-7821 ===
@@ -9910,6 +10290,26 @@ There are standards that currently address the need for attaching human-readable
 
 RATIONALE:
 Current attempts to solve content addressability, such as [EIP-137](./eip-137.md), only target Ethereum accounts. These are based on inherited concepts from HTTP and DNS, which
+
+
+=== ERC-8471 ===
+TITLE: AI Dispute Resolution Framework (ADRF)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-29
+REQUIRES: 1, 6, 5, ,,  , 6, 3, 7, 2, ,,  , 8, 4, 3, 6
+
+SUMMARY:
+This ERC defines the AI Dispute Resolution Framework (ADRF) for disputes about AI systems, resources and services and about the conduct, deliveries and declarations
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+AI is bought, run, delivered, evaluated and governed through commitments: an enterprise buys inference from a model API under service terms, a user orders
+
+RATIONALE:
+**AI, not agents, is the scope.** The framework was first drafted for disputes between agents; its objects — an identified record, an obligation declared
 
 
 === ERC-2981 ===
@@ -10737,6 +11137,26 @@ RATIONALE:
 This solution's intent is to be the simplest possible path towards linking physical items to digital NFTs without a centralized authority. The interface includes
 
 
+=== ERC-8424 ===
+TITLE: Confidential Real World Asset Token
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-09-24
+REQUIRES: 1, 6, 5, ,,  , 7, 9, 8, 4
+
+SUMMARY:
+This ERC extends [ERC-7984](./eip-7984.md) with a minimal interface for defining tokenized real world assets. It provides a pair of plaintext eligibility checks, a confidential
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Real world assets carry obligations that ordinary fungible tokens do not. Holders must be eligible to receive and transfer assets, transfers must satisfy rules
+
+RATIONALE:
+### Plaintext eligibility alongside a confidential predicate This standard answers two distinct questions. The first is whether an address may send/receive an asset at
+
+
 === ERC-7774 ===
 TITLE: Cache invalidation in ERC-5219 mode Web3 URL
 TYPE: Standards Track ERC
@@ -11185,6 +11605,26 @@ RATIONALE:
 ### Terms These are base terms used around the specification which function names and definitions are based on. - _vesting_: Tokens which a vesting
 
 
+=== ERC-8338 ===
+TITLE: Token-Bound Executable Skills
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-07-10
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This standard binds an [ERC-721](./eip-721.md) token to an executable skill: a package of files, led by a primary Markdown document, that an off-chain runtime
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+AI agents have on-chain identities ([ERC-8004](./eip-8004.md)) and smart accounts ([ERC-4337](./eip-4337.md)), but the skills they run live in centralized registries: unverifiable, unownable, silently mutable —
+
+RATIONALE:
+**Two hashes and a URI alone would be metadata; the normative SkillRoot is what makes this a binding standard.** The chain holds commitments; the
+
+
 === ERC-7628 ===
 TITLE: ERC-721 Ownership Shares Extension
 TYPE: Standards Track ERC
@@ -11463,6 +11903,66 @@ For a decentralized insurance protocol, a standard for insurance policies is cru
 
 RATIONALE:
 Insurance policies form an important class of financial assets, and it is natural to express those assets as a class of non-fungible tokens which
+
+
+=== ERC-8342 ===
+TITLE: Verifiable Invoice Commitment (VIC)
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-04-26
+REQUIRES: 2, 0, ,,  , 7, 1, 2, ,,  , 7, 7, 3, 0
+
+SUMMARY:
+This ERC defines a standard for binding structured accounting metadata — equivalent to a traditional invoice or fiscal receipt — to on-chain payment transactions,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Stablecoins are increasingly used for commercial payments, including cross-border remittances and machine-to-machine commerce. Yet the accounting layer that traditionally accompanies a payment — the
+
+RATIONALE:
+**Why a signed off-chain document + on-chain commitment rather than full on-chain metadata?** Commercial invoices contain competitively sensitive information that enterprises will not publish
+
+
+=== ERC-8316 ===
+TITLE: Programmable Settlement Locks
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-06-25
+REQUIRES: 
+
+SUMMARY:
+A programmable settlement lock is a prepared value-bearing operation controlled by a single current spender, with predefined spend and cancel paths secured by implementation-specific
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Smart contracts increasingly store and coordinate value across systems with widely varying visibility and validation models. Conventional contracts generally function by transparently exposing the
+
+RATIONALE:
+A key observation behind this standard is that atomic settlement across heterogeneous systems does not require every participating contract to expose the same asset
+
+
+=== ERC-8485 ===
+TITLE: NFT Controlled Application Spaces
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-04
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1
+
+SUMMARY:
+This proposal defines an application execution space whose economic configuration is controlled by an [ERC-721](./eip-721.md) NFT. Independent publishers create application gateways within the space,
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+NFT ownership alone does not tell an integration how to discover a linked application's execution context, distinguish its publisher from the NFT holder, quote
+
+RATIONALE:
+The owner, publisher and user roles serve different purposes. The NFT transfers authority over future toll configuration, while application administration and custody remain with
 
 
 === ERC-5050 ===
@@ -12102,6 +12602,26 @@ Some NFTs want to generate derivative assets as new NFTs. For example, a 2D NFT 
 
 RATIONALE:
 This standard differs from [ERC-6150](./eip-6150.md) in mainly two aspects: supporting cross-contract token reference, and allowing multiple parents. But we try to keep the naming
+
+
+=== ERC-8467 ===
+TITLE: Agent Credit Backers
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-20
+REQUIRES: 2, 0, ,,  , 1, 6, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This proposal lets a third party, a backer, stand behind a lender's credit line to an identity of an [ERC-721](./eip-721.md) identity registry, such as
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+A line of credit to an agent is a bet on whoever stands behind the agent. Lenders to agent identities already let third parties
+
+RATIONALE:
+- **Hooks, not deposits.** A backer could deposit its stake with each lender, but it could then back only as many lenders as it
 
 
 === ERC-1081 ===
