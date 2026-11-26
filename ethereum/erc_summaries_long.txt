@@ -9635,7 +9635,7 @@ MOTIVATION:
 An [ERC-3668](./eip-3668.md) gateway must either be trusted or return a proof that the contract verifies on the original chain. In many cases a valid proof cannot be produced. That does not make the read unsafe. A client that already trusts its RPC connection to the destination chain can make the call itself. This ERC lets the client act as the gateway. The contract names the chain and contract to read, and the client answers using its own trusted RPC, so no third party is involved.
 
 RATIONALE:
-[ERC-3668](./eip-3668.md) does not require a gateway to be an HTTP service, and allows URLs of any scheme. The client already trusts its own RPC connections, so it can answer a cross-chain read without adding a third party. A client that supports this ERC ignores all other URLs, so it never sends the request to a third-party gateway. It returns exactly what `eth_call` returns, so callbacks work as they do with any ERC-3668 gateway. Nested `x-chain` URLs are not followed, which limits each call to one cross-chain hop and prevents loops between chains. Clients that do not support this
+[ERC-3668](./eip-3668.md) does not require a gateway to be an HTTP service, and allows URLs of any scheme. The client already trusts its own RPC connections, so it can answer a cross-chain read without adding a third party. A client that supports this ERC ignores all other URLs, so it never sends the request to a third-party gateway. It returns the `eth_call` return data ABI-encoded as `bytes`. Nested `x-chain` URLs are not followed, which limits each call to one cross-chain hop and prevents loops between chains. Clients that do not support this ERC can be detected with a `data:`
 
 
 === ERC-7821 ===
