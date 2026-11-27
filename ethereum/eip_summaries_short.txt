@@ -3585,6 +3585,26 @@ RATIONALE:
 ### Why P256? P256 or secp256r1, is used globally but (more importantly) has an existing implementation in all execution clients. This allows easy implementation
 
 
+=== EIP-8367 ===
+TITLE: Balance sunset for retired BLS validators
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-18
+REQUIRES: 8, 3, 6, 5, ,,  , 8, 4, 3, 3
+
+SUMMARY:
+This EIP introduces a published, epoch-keyed schedule under which the balances of retired `0x00`-credentialed validators ([EIP-8433](./eip-8433.md)), whose withdrawals are controlled by a Boneh-Lynn-Shacham (BLS)
+
+SPECIFICATION:
+### Constants | Name | Value | Comment | | ------------------------ | ---------------------------------- | ------------------------------------------- | | `SUNSET_START_EPOCH` | TBD | First epoch at
+
+MOTIVATION:
+[EIP-8365](./eip-8365.md) closes the inflow of new `0x00` validators and [EIP-8433](./eip-8433.md) retires the existing ones from duty participation, leaving their balances frozen. Freezing alone is
+
+RATIONALE:
+### Ceiling clamp rather than a periodic decrement A clamp (`balance = min(balance, ceiling(epoch))`) gives a deterministic zero date readable directly from the constants,
+
+
 === EIP-616 ===
 TITLE: SIMD Operations for the EVM
 TYPE: Standards Track Core
@@ -6709,6 +6729,26 @@ RATIONALE:
 ### Iterating over pending consolidations The new design introduces an iteration over pending consolidations which increases complexity of consolidation processing. This is done to
 
 
+=== EIP-8476 ===
+TITLE: Permanent EOA Delegation Opt-Out
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-30
+REQUIRES: 1, 6, 1, ,,  , 6, 8, 4, ,,  , 1, 5, 5, 9, ,,  , 2, 6, 8, 1, ,,  , 2, 7, 8, 0, ,,  , 3, 5, 4, 1, ,,  , 3, 6, 0, 7, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+
+SUMMARY:
+Allow an externally owned account (EOA) to permanently disable [EIP-7702](./eip-7702.md) delegation by installing an account-code marker that consensus rules recognize but the EVM observes
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[EIP-7702](./eip-7702.md) gives EOAs a persistent capability to delegate execution. Some accounts, including institutional wallets, exchange hot wallets, and treasuries, do not need this capability.
+
+RATIONALE:
+A code marker uses existing account state and the existing authorization code-eligibility check. Two explicit exceptions are essential: EIP-3607 otherwise prevents transaction origination, and
+
+
 === EIP-7898 ===
 TITLE: Uncouple execution payload from beacon block
 TYPE: Standards Track Core
@@ -7166,6 +7206,26 @@ Many Ethereum applications do not require deployed code to persist beyond a sing
 
 RATIONALE:
 ### Lower Deployment and Execution Costs Today, combining `CREATE` with `SELFDESTRUCT` is the only mechanism for implementing temporary contracts. This approach is relatively expensive
+
+
+=== EIP-8488 ===
+TITLE: Versioned Opcodes for Gas Repricing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-11-08
+REQUIRES: 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+
+SUMMARY:
+This EIP introduces a parallel V2 opcode set whose gas costs follow [EIP-8037](./eip-8037.md) and [EIP-8038](./eip-8038.md). Contracts deployed after activation may contain only V2 opcodes;
+
+SPECIFICATION:
+### V2 Opcode Set For every opcode whose gas cost or observable gas accounting changes under [EIP-8037](./eip-8037.md) or [EIP-8038](./eip-8038.md), a V2 counterpart is defined
+
+MOTIVATION:
+Glamsterdam currently faces a trade-off with [EIP-8037](./eip-8037.md) and [EIP-8038](./eip-8038.md). Applying the new gas schedule and metering rules uniformly risks breaking or griefing existing contracts
+
+RATIONALE:
+- Opcode duplication makes the active gas schedule self-describing in the bytecode. No runtime lookup of deployment block or external version is required beyond
 
 
 === EIP-2718 ===
@@ -11193,6 +11253,26 @@ The motivation is to remove the limit on the code size so that users can deploy 
 
 RATIONALE:
 ### Gas Metering The goal is to measure the CPU/IO cost of the contract read/write operations reusing existing gas metering so that the resources
+
+
+=== EIP-8442 ===
+TITLE: 64-bit Opcodes for the EVM
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-14
+REQUIRES: 
+
+SUMMARY:
+Not every computation needs 256 bits. Counters, offsets, lengths, and the inner loops of hashes and big-number arithmetic fit in 64, and the EVM
+
+SPECIFICATION:
+> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* The
+
+MOTIVATION:
+Most of the values a contract computes with fit in 64 bits. On the 64-bit machines that run the EVM a 256-bit addition is
+
+RATIONALE:
+### Are there real-time performance gains? Yes, measured. [EIP-7979's assets](../assets/eip-7979/riscv/) count executed RISC-V instructions exactly, on five kernels, each exercising a different part of
 
 
 === EIP-4573 ===

@@ -3585,6 +3585,26 @@ RATIONALE:
 ### Why P256? P256 or secp256r1, is used globally but (more importantly) has an existing implementation in all execution clients. This allows easy implementation of a known-safe algorithm, which is perfect for a test algorithm.
 
 
+=== EIP-8367 ===
+TITLE: Balance sunset for retired BLS validators
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-07-18
+REQUIRES: 8, 3, 6, 5, ,,  , 8, 4, 3, 3
+
+SUMMARY:
+This EIP introduces a published, epoch-keyed schedule under which the balances of retired `0x00`-credentialed validators ([EIP-8433](./eip-8433.md)), whose withdrawals are controlled by a Boneh-Lynn-Shacham (BLS) key rather than an execution address, are gradually reduced to zero. Each epoch, every `0x00` balance is clamped to a ceiling that declines linearly from a starting value to zero across the sunset window. Rotating credentials to `0x01` via the unchanged `BLSToExecutionChange` operation stops the reduction at any point and releases the entire remaining balance through the withdrawal sweep. The schedule constants are ordinary spec parameters, revisitable at each hard fork between activation and
+
+SPECIFICATION:
+### Constants | Name | Value | Comment | | ------------------------ | ---------------------------------- | ------------------------------------------- | | `SUNSET_START_EPOCH` | TBD | First epoch at which the ceiling declines | | `SUNSET_END_EPOCH` | TBD | Epoch at which the ceiling reaches zero | | `SUNSET_INITIAL_CEILING` | `Gwei(2**6 * 10**9)` (= 64 ETH) | Ceiling value before and at the start epoch | `SUNSET_START_EPOCH` and `SUNSET_END_EPOCH` are absolute epochs, not offsets from fork activation, so the schedule is unaffected by fork timing slippage. The window between them is intended to span multiple fork cycles (indicatively two to three years). ###
+
+MOTIVATION:
+[EIP-8365](./eip-8365.md) closes the inflow of new `0x00` validators and [EIP-8433](./eip-8433.md) retires the existing ones from duty participation, leaving their balances frozen. Freezing alone is not an end state: it leaves thousands of registry entries with non-zero balances that the consensus layer must carry indefinitely. Whatever registry compaction or state redesign the post-quantum transition brings, entries with zero balance can be dropped or archived freely, since nothing is owed and nothing is lost, while entries holding 32 ETH cannot be removed without that removal itself being a confiscation decision. Deferring that decision to the post-quantum fork means having it
+
+RATIONALE:
+### Ceiling clamp rather than a periodic decrement A clamp (`balance = min(balance, ceiling(epoch))`) gives a deterministic zero date readable directly from the constants, is idempotent, and makes top-ups to sunsetting validators visibly pointless (the ceiling absorbs them next epoch) without any special-case handling. With a per-epoch decrement, the epoch at which a balance reaches zero depends on its starting value and any top-ups received along the way, so a validator can be kept above zero past the intended end of the window by periodically topping it up. ### Starting ceiling of 64 ETH The highest observed `0x00`
+
+
 === EIP-616 ===
 TITLE: SIMD Operations for the EVM
 TYPE: Standards Track Core
@@ -6709,6 +6729,26 @@ RATIONALE:
 ### Iterating over pending consolidations The new design introduces an iteration over pending consolidations which increases complexity of consolidation processing. This is done to handle the case when there are multiple consolidations with the same target and each of them doesn't exceed the max effective balance while all of them together do.
 
 
+=== EIP-8476 ===
+TITLE: Permanent EOA Delegation Opt-Out
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-30
+REQUIRES: 1, 6, 1, ,,  , 6, 8, 4, ,,  , 1, 5, 5, 9, ,,  , 2, 6, 8, 1, ,,  , 2, 7, 8, 0, ,,  , 3, 5, 4, 1, ,,  , 3, 6, 0, 7, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+
+SUMMARY:
+Allow an externally owned account (EOA) to permanently disable [EIP-7702](./eip-7702.md) delegation by installing an account-code marker that consensus rules recognize but the EVM observes as empty code. A narrowly defined, previously invalid form of a set-code transaction performs the opt-out. The account keeps its address and continues to behave as an ordinary EOA at the EVM level, but no subsequent delegation authorization can replace or clear the marker.
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174). Except for the changes below, EIP-7702 and ordinary transaction and EVM rules are unchanged. Here, `sender` is the address recovered from the outer transaction signature; `authority` is the address recovered from an authorization signature. `||` denotes byte concatenation. ### Parameters and Account State | Parameter | Proposed value | | --- | --- | | `OPT_OUT_CODE` | `0xef0200` (exactly 3 bytes) | | `OPT_OUT_STATE_BYTES`
+
+MOTIVATION:
+[EIP-7702](./eip-7702.md) gives EOAs a persistent capability to delegate execution. Some accounts, including institutional wallets, exchange hot wallets, and treasuries, do not need this capability. Their operational controls may include withdrawal approvals, frequency and amount limits, monitoring, and emergency suspension outside Ethereum consensus. Delegated execution can invalidate assumptions behind those controls and compress the time available for intervention. An account owner should be able to eliminate this capability explicitly. This proposal only removes delegation: a compromised private key can still sign ordinary transactions, transfer funds, and authorize actions in contracts. It does not enforce withdrawal delays or replace key
+
+RATIONALE:
+A code marker uses existing account state and the existing authorization code-eligibility check. Two explicit exceptions are essential: EIP-3607 otherwise prevents transaction origination, and executing `0xef` otherwise causes an exceptional halt. The design invariant is that an opted-out account continues to behave as an ordinary EOA at the EVM level; the only permanently disabled capability is EIP-7702 delegation. Treating the marker as empty code for both execution and inspection preserves incoming ETH transfers and keeps applications that classify accounts by `EXTCODESIZE` or `EXTCODEHASH` working. In particular, [ERC-721](./eip-721.md) safe transfers and [ERC-1155](./eip-1155.md) transfers to accounts with nonzero code size
+
+
 === EIP-7898 ===
 TITLE: Uncouple execution payload from beacon block
 TYPE: Standards Track Core
@@ -7166,6 +7206,26 @@ Many Ethereum applications do not require deployed code to persist beyond a sing
 
 RATIONALE:
 ### Lower Deployment and Execution Costs Today, combining `CREATE` with `SELFDESTRUCT` is the only mechanism for implementing temporary contracts. This approach is relatively expensive and no longer benefits from gas refunds, reducing incentives for efficient state management. By making the cost of temporary contracts comparable to that of a regular `CALL`, this proposal encourages experimentation with transient execution models while avoiding unnecessary long-term state growth. ### Address Prefix Selection The `0xfe` prefix is chosen to ensure that the address derivation scheme used by `TCREATE` cannot collide with that of `CREATE2`, which uses the `0xff` prefix as specified in
+
+
+=== EIP-8488 ===
+TITLE: Versioned Opcodes for Gas Repricing
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-11-08
+REQUIRES: 8, 0, 3, 7, ,,  , 8, 0, 3, 8
+
+SUMMARY:
+This EIP introduces a parallel V2 opcode set whose gas costs follow [EIP-8037](./eip-8037.md) and [EIP-8038](./eip-8038.md). Contracts deployed after activation may contain only V2 opcodes; a `code_version` bit is set on acceptance. A new `DELEGATECALL_V2` opcode enforces that its target also has `code_version >= 2`. Legacy contracts continue to execute under the pre-Glamsterdam gas schedule indefinitely.
+
+SPECIFICATION:
+### V2 Opcode Set For every opcode whose gas cost or observable gas accounting changes under [EIP-8037](./eip-8037.md) or [EIP-8038](./eip-8038.md), a V2 counterpart is defined (e.g., `SSTORE_V2`, `SLOAD_V2`, `CALL_V2`, `DELEGATECALL_V2`, `CREATE_V2`, `CREATE2_V2`). Each V2 opcode is identical to its predecessor except: - It uses the gas schedule defined by [EIP-8037](./eip-8037.md) and [EIP-8038](./eip-8038.md). - The following opcodes are not defined in the V2 set: `GAS` (`0x5a`), `GASLIMIT` (`0x45`), and any other opcode whose primary purpose is to expose internal gas metering. Attempts to include them in V2 bytecode are rejected at deployment. All other semantics (stack, memory, storage, call behavior,
+
+MOTIVATION:
+Glamsterdam currently faces a trade-off with [EIP-8037](./eip-8037.md) and [EIP-8038](./eip-8038.md). Applying the new gas schedule and metering rules uniformly risks breaking or griefing existing contracts that rely on current gas-cost invariants. Deferring or removing the EIPs avoids that breakage but also postpones the state-growth controls that support a substantially higher gas limit. This EIP provides a third option. It applies the [EIP-8037](./eip-8037.md)/[EIP-8038](./eip-8038.md) schedule only to newly deployed bytecode, while already-deployed contracts continue under the legacy schedule. Upgradeable systems migrate naturally when their implementations are replaced. The result is that the repricing still occurs for all future code, existing contracts
+
+RATIONALE:
+- Opcode duplication makes the active gas schedule self-describing in the bytecode. No runtime lookup of deployment block or external version is required beyond the one-time `code_version` bit. - The deployment gate is a linear scan of the same class already performed by clients (e.g., [EIP-3541](./eip-3541.md)). - Recording `code_version` at deployment time makes the `DELEGATECALL_V2` check O(1) and reuses work the gate has already performed. - Only delegatecall-style opcodes need the restriction, because only they execute target code in the caller's context. Ordinary calls run in the callee's context under the callee's own opcode set. - Omitting gas-introspection
 
 
 === EIP-2718 ===
@@ -11193,6 +11253,26 @@ The motivation is to remove the limit on the code size so that users can deploy 
 
 RATIONALE:
 ### Gas Metering The goal is to measure the CPU/IO cost of the contract read/write operations reusing existing gas metering so that the resources will not be abused. - For code-size-related opcodes (`CODESIZE`/`EXTCODESIZE`), we would expect the client to implement a mapping from the hash of code to the size, so reading the code size of a large contract should still be O(1). - For `CODECOPY`, the data is already loaded in memory (as part of `CALL/CALLCODE/DELEGATECALL/STATICCALL`), so we do not charge extra gas. - For `EXTCODEHASH`, the value is already in the account, so we do not
+
+
+=== EIP-8442 ===
+TITLE: 64-bit Opcodes for the EVM
+TYPE: Standards Track Core
+STATUS: Draft
+CREATED: 2026-10-14
+REQUIRES: 
+
+SUMMARY:
+Not every computation needs 256 bits. Counters, offsets, lengths, and the inner loops of hashes and big-number arithmetic fit in 64, and the EVM makes them pay for 256 at every step. This proposal adds twenty-eight instructions that compute on the low 64 bits of their operands: each is the *twin* of an existing arithmetic, comparison, bitwise, or memory instruction — the same operation at the same cost tier, one step down — at the existing opcode plus `0xC0`. The instructions take no immediate data and enter no mode: they mix freely with the rest of the instruction
+
+SPECIFICATION:
+> *The key words MUST and MUST NOT in this Specification are to be interpreted as described in RFC 2119 and RFC 8174.* The EVM's machine state includes a *data stack* of 256-bit words. These instructions leave it so. Each reads only the low 64 bits of its operands — the operand modulo 2^64 — and pushes a 64-bit result zero-extended to 256 bits: the high 192 bits of every result are zero. *Signed* instructions read the low 64 bits as a two's-complement integer. No mode is entered or left; the instructions may appear anywhere, in any mix
+
+MOTIVATION:
+Most of the values a contract computes with fit in 64 bits. On the 64-bit machines that run the EVM a 256-bit addition is four limbs and three carries, a multiplication ten partial products, a comparison up to four; the same work on a 64-bit value is one instruction. An interpreter hides most of the difference behind its dispatch. Compiled code does not, and neither does a zero-knowledge (ZK) virtual machine, where the prover pays per RISC-V instruction executed. These instructions let code that fits in 64 bits pay for 64. Measured in [EIP-7979](./eip-7979.md)'s harness, they alone make
+
+RATIONALE:
+### Are there real-time performance gains? Yes, measured. [EIP-7979's assets](../assets/eip-7979/riscv/) count executed RISC-V instructions exactly, on five kernels, each exercising a different part of the machine: *mul chain*, the multiplier on a dependent chain; *call tree*, calls and returns, seven of each per iteration; *xorshift*, the shifter and the logic unit; *euclid*, the divider in a data-dependent loop; and *store and sum*, the memory unit alone. Their code is in the assets. The arithmetic and comparison instructions are at the opcodes proposed here, the memory instructions at placeholders. The counts are rounded; the parentheses give each cell's gain
 
 
 === EIP-4573 ===
