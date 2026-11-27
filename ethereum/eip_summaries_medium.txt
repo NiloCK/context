@@ -6133,19 +6133,19 @@ TITLE: Quantum Freeze and Account Recovery
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-09-27
-REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2
+REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2, ,,  , 8, 1, 4, 1, ,,  , 8, 2, 9, 8
 
 SUMMARY:
-This EIP defines a freeze of legacy ECDSA authorization and two account recovery paths: a recovery commitment registered before a trusted cutoff, or stronger ownership evidence such as a proof of knowledge of the original seed. Recovery installs successor authorization without restoring the legacy ECDSA path. Recovery algorithms are
+Before the freeze, owners can migrate to quantum-resistant wallet code at the same address through [EIP-8298](./eip-8298.md). The freeze rejects transactions carrying protocol-validated secp256k1 signatures and removes the `ecRecover` precompile. An owner who missed migration can install successor code at the same address with a hash-based zero-knowledge proof of the
 
 SPECIFICATION:
-### Parameters | Parameter | Value | Description | | --------- | ----- | ----------- | | `SAFE_RECOVERY_TIME` | TBD | Exclusive timestamp cutoff for eligible recovery commitments | | `QUANTUM_FREEZE_TIME` | TBD | Global Unix timestamp at which the freeze rules take effect | `SAFE_RECOVERY_TIME` is a consensus
+### Parameters | Parameter | Value | Meaning | | --- | --- | --- | | `QUANTUM_FREEZE_TIME` | TBD | Activation timestamp (Unix seconds) | | `RECOVER` | `0x07` | Recovery frame mode | | `SEED_PROOF_GAS` | 2000000 | Execution gas per proof verification attempt | The network
 
 MOTIVATION:
-A practical quantum break of ECDSA could expose accounts that have not migrated, including accounts whose owners have lost access. Preparing freeze and recovery rules in advance reduces the implementation work needed during an emergency and gives owners a recovery path where suitable evidence remains available.
+A practical quantum break of secp256k1 could expose unmigrated accounts. Specifying a response in advance lets clients and wallets implement, test and audit it before an emergency, reducing coordination under time pressure. Whether to activate this response, when to do so, or whether to choose another course remains a
 
 RATIONALE:
-A separate commitment cutoff allows an earlier trust boundary than freeze activation. Evidence of an earlier compromise can inform selection of an earlier cutoff before recovery is enabled. Reports and offline evidence inform that coordination; clients do not adjudicate them or choose cutoffs independently. A scheduled migration deadline and
+The freeze covers EIP-8141 signers because wallets and sponsors can authorize actions from `SIGPARAM` independently of the transaction sender. Starting from the seed supports all BIP-39 word lists and passphrases with one circuit. The journal binds the request. Authorizing a new request under the same seed requires a fresh
 
 
 === EIP-8024 ===
@@ -8605,16 +8605,16 @@ TITLE: Fork-choice enforced Inclusion Lists (FOCIL)
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-11-01
-REQUIRES: 
+REQUIRES: 7, 7, 3, 2, ,,  , 8, 0, 3, 7
 
 SUMMARY:
-FOCIL implements a robust mechanism to preserve Ethereum’s censorship resistance properties by guaranteeing timely transaction inclusion. FOCIL (**Fo**rk-**c**hoice enforced **I**nclusion **L**ists) is built in a few simple steps: - In each slot, a set of validators is selected as inclusion list (IL) committee members. Each member builds and gossips
+FOCIL implements a robust mechanism to preserve Ethereum's censorship resistance properties by guaranteeing timely transaction inclusion. FOCIL (**Fo**rk-**c**hoice enforced **I**nclusion **L**ists) is built in a few simple steps: - In each slot, a set of validators is selected as inclusion list (IL) committee members. Each member builds and gossips
 
 SPECIFICATION:
-### Execution Layer On the execution layer, an additional check is introduced for new payloads. After all of the transactions in the payload have been executed, we check whether any transaction from ILs, that is not already present in the payload, could be validly included (i.e. nonce and balance
+### Execution Layer On the execution layer, an additional check is introduced for new payloads. After all transactions in the payload have been executed and before processing withdrawals and post-execution system calls, the EL determines whether any missing IL transaction passes the checks below. If so, the EL returns
 
 MOTIVATION:
-In an effort to shield the Ethereum validator set from centralizing forces, the right to build blocks has been auctioned off to specialized entities known as *builders*. This has led to a few sophisticated builders dominating block production, leading to a deterioration of the network’s censorship resistance properties. To
+In an effort to shield the Ethereum validator set from centralizing forces, the right to build execution payloads has been auctioned off to specialized entities known as *builders*. This has led to a few sophisticated builders dominating block production, leading to a deterioration of the network's censorship resistance properties.
 
 RATIONALE:
 ### Core Properties - Committee-based: FOCIL relies on a committee of multiple validators, rather than a single proposer, to construct and broadcast ILs. This approach significantly reduces the surface for bribery and extortion attacks and strengthens censorship resistance. - Fork-choice enforced: FOCIL incorporates the force-inclusion mechanism into the fork-choice

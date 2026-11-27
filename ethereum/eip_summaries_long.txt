@@ -6133,19 +6133,19 @@ TITLE: Quantum Freeze and Account Recovery
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-09-27
-REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2
+REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2, ,,  , 8, 1, 4, 1, ,,  , 8, 2, 9, 8
 
 SUMMARY:
-This EIP defines a freeze of legacy ECDSA authorization and two account recovery paths: a recovery commitment registered before a trusted cutoff, or stronger ownership evidence such as a proof of knowledge of the original seed. Recovery installs successor authorization without restoring the legacy ECDSA path. Recovery algorithms are TBD.
+Before the freeze, owners can migrate to quantum-resistant wallet code at the same address through [EIP-8298](./eip-8298.md). The freeze rejects transactions carrying protocol-validated secp256k1 signatures and removes the `ecRecover` precompile. An owner who missed migration can install successor code at the same address with a hash-based zero-knowledge proof of the wallet seed.
 
 SPECIFICATION:
-### Parameters | Parameter | Value | Description | | --------- | ----- | ----------- | | `SAFE_RECOVERY_TIME` | TBD | Exclusive timestamp cutoff for eligible recovery commitments | | `QUANTUM_FREEZE_TIME` | TBD | Global Unix timestamp at which the freeze rules take effect | `SAFE_RECOVERY_TIME` is a consensus parameter selected before recovery is enabled. It is distinct from `QUANTUM_FREEZE_TIME` and must be no later than it, including if the freeze is brought forward. An unset cutoff disables commitment-based recovery. `QUANTUM_FREEZE_TIME` can be set in advance as a scheduled migration deadline. In an emergency, such as a demonstrated
+### Parameters | Parameter | Value | Meaning | | --- | --- | --- | | `QUANTUM_FREEZE_TIME` | TBD | Activation timestamp (Unix seconds) | | `RECOVER` | `0x07` | Recovery frame mode | | `SEED_PROOF_GAS` | 2000000 | Execution gas per proof verification attempt | The network may schedule the timestamp in advance or coordinate an earlier one in an emergency. Nodes must agree on it before activation. ### Freeze For blocks with `block.timestamp >= QUANTUM_FREEZE_TIME`, reject before execution any transaction containing a protocol-validated secp256k1 ECDSA signature. This applies to transactions with a secp256k1 sender signature
 
 MOTIVATION:
-A practical quantum break of ECDSA could expose accounts that have not migrated, including accounts whose owners have lost access. Preparing freeze and recovery rules in advance reduces the implementation work needed during an emergency and gives owners a recovery path where suitable evidence remains available.
+A practical quantum break of secp256k1 could expose unmigrated accounts. Specifying a response in advance lets clients and wallets implement, test and audit it before an emergency, reducing coordination under time pressure. Whether to activate this response, when to do so, or whether to choose another course remains a separate decision.
 
 RATIONALE:
-A separate commitment cutoff allows an earlier trust boundary than freeze activation. Evidence of an earlier compromise can inform selection of an earlier cutoff before recovery is enabled. Reports and offline evidence inform that coordination; clients do not adjudicate them or choose cutoffs independently. A scheduled migration deadline and an emergency response need the same freeze rules. This EIP therefore defines one freeze mechanism controlled by `QUANTUM_FREEZE_TIME`, which can be scheduled in advance or brought forward through network coordination. Recovery uses account code form and valid proofs because clients can evaluate these conditions consistently across wallet implementations and
+The freeze covers EIP-8141 signers because wallets and sponsors can authorize actions from `SIGPARAM` independently of the transaction sender. Starting from the seed supports all BIP-39 word lists and passphrases with one circuit. The journal binds the request. Authorizing a new request under the same seed requires a fresh HMAC even after the first proof becomes public. RISC Zero's hash-based STARK targets post-quantum soundness and seed privacy through zero knowledge, and requires no trusted setup. Rust lets implementers iterate on the guest during drafting. This specification fixes the proof system and its parameters. Changes before activation should be
 
 
 === EIP-8024 ===
@@ -8605,19 +8605,19 @@ TITLE: Fork-choice enforced Inclusion Lists (FOCIL)
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-11-01
-REQUIRES: 
+REQUIRES: 7, 7, 3, 2, ,,  , 8, 0, 3, 7
 
 SUMMARY:
-FOCIL implements a robust mechanism to preserve Ethereum’s censorship resistance properties by guaranteeing timely transaction inclusion. FOCIL (**Fo**rk-**c**hoice enforced **I**nclusion **L**ists) is built in a few simple steps: - In each slot, a set of validators is selected as inclusion list (IL) committee members. Each member builds and gossips one IL according to their subjective view of the mempool. - The proposer and all attesters of the next slot monitor, store and forward available ILs. - The proposer (or the builder if the block is not built locally by the proposer) includes transactions from all collected ILs in
+FOCIL implements a robust mechanism to preserve Ethereum's censorship resistance properties by guaranteeing timely transaction inclusion. FOCIL (**Fo**rk-**c**hoice enforced **I**nclusion **L**ists) is built in a few simple steps: - In each slot, a set of validators is selected as inclusion list (IL) committee members. Each member builds and gossips one IL according to their subjective view of the mempool. - The proposer, builders and all attesters of the next slot receive, store and forward available ILs. - The builder constructs an execution payload that satisfies IL conditions based on the ILs it has collected. The builder then broadcasts
 
 SPECIFICATION:
-### Execution Layer On the execution layer, an additional check is introduced for new payloads. After all of the transactions in the payload have been executed, we check whether any transaction from ILs, that is not already present in the payload, could be validly included (i.e. nonce and balance checks pass). If that is the case for any transaction, then an error is returned to the CL. Although the block is valid, the CL will not attest to it. Let `B` denote the current block. Let `S` denote the execution state following the execution of the last transaction
+### Execution Layer On the execution layer, an additional check is introduced for new payloads. After all transactions in the payload have been executed and before processing withdrawals and post-execution system calls, the EL determines whether any missing IL transaction passes the checks below. If so, the EL returns `false` for `inclusionListSatisfied` to the CL. Although the payload remains valid, the CL will not extend it. Let `B` denote the current block. Let `S` denote the execution state after all transactions in `B` have been executed and before any withdrawals are processed. For each IL transaction `T` not
 
 MOTIVATION:
-In an effort to shield the Ethereum validator set from centralizing forces, the right to build blocks has been auctioned off to specialized entities known as *builders*. This has led to a few sophisticated builders dominating block production, leading to a deterioration of the network’s censorship resistance properties. To address this issue, research has focused on improving Ethereum's transaction inclusion guarantees by enabling validators to impose constraints on builders. This is achieved by force-including transactions in blocks via ILs. ### High-level Overview FOCIL is a committee-based, fork-choice enforced inclusion list (IL) design that improves upon previous IL mechanisms
+In an effort to shield the Ethereum validator set from centralizing forces, the right to build execution payloads has been auctioned off to specialized entities known as *builders*. This has led to a few sophisticated builders dominating block production, leading to a deterioration of the network's censorship resistance properties. To address this issue, research has focused on improving Ethereum's transaction inclusion guarantees by enabling validators to impose constraints on builders. This is achieved by force-including transactions in execution payloads via ILs. ### High-level Overview FOCIL is a committee-based, fork-choice enforced inclusion list (IL) design that improves upon previous
 
 RATIONALE:
-### Core Properties - Committee-based: FOCIL relies on a committee of multiple validators, rather than a single proposer, to construct and broadcast ILs. This approach significantly reduces the surface for bribery and extortion attacks and strengthens censorship resistance. - Fork-choice enforced: FOCIL incorporates the force-inclusion mechanism into the fork-choice rule, an integral component of the consensus process, thereby preventing any actor from bypassing the system. Attesters vote only for blocks that include transactions from a set of ILs provided by the IL committee and that satisfy the IL constraints. Any block failing to meet these criteria will not
+### Core Properties - Committee-based: FOCIL relies on a committee of multiple validators, rather than a single proposer, to construct and broadcast ILs. This approach significantly reduces the surface for bribery and extortion attacks and strengthens censorship resistance. - Fork-choice enforced: FOCIL incorporates the force-inclusion mechanism into the fork-choice rule. Fork choice does not extend an execution payload that fails to satisfy IL conditions. The beacon block can still become canonical but without its execution payload. - Same-slot: With FOCIL running in parallel with the block building process for `slot N+1` during `slot N`, the constraints imposed on
 
 
 === EIP-2972 ===

@@ -6133,19 +6133,19 @@ TITLE: Quantum Freeze and Account Recovery
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2026-09-27
-REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2
+REQUIRES: 2, 9, 2, 9, ,,  , 7, 7, 0, 2, ,,  , 8, 1, 4, 1, ,,  , 8, 2, 9, 8
 
 SUMMARY:
-This EIP defines a freeze of legacy ECDSA authorization and two account recovery paths: a recovery commitment registered before a trusted cutoff, or stronger
+Before the freeze, owners can migrate to quantum-resistant wallet code at the same address through [EIP-8298](./eip-8298.md). The freeze rejects transactions carrying protocol-validated secp256k1 signatures
 
 SPECIFICATION:
-### Parameters | Parameter | Value | Description | | --------- | ----- | ----------- | | `SAFE_RECOVERY_TIME` | TBD | Exclusive timestamp cutoff
+### Parameters | Parameter | Value | Meaning | | --- | --- | --- | | `QUANTUM_FREEZE_TIME` | TBD | Activation timestamp (Unix
 
 MOTIVATION:
-A practical quantum break of ECDSA could expose accounts that have not migrated, including accounts whose owners have lost access. Preparing freeze and recovery
+A practical quantum break of secp256k1 could expose unmigrated accounts. Specifying a response in advance lets clients and wallets implement, test and audit it
 
 RATIONALE:
-A separate commitment cutoff allows an earlier trust boundary than freeze activation. Evidence of an earlier compromise can inform selection of an earlier cutoff
+The freeze covers EIP-8141 signers because wallets and sponsors can authorize actions from `SIGPARAM` independently of the transaction sender. Starting from the seed supports
 
 
 === EIP-8024 ===
@@ -8605,16 +8605,16 @@ TITLE: Fork-choice enforced Inclusion Lists (FOCIL)
 TYPE: Standards Track Core
 STATUS: Draft
 CREATED: 2024-11-01
-REQUIRES: 
+REQUIRES: 7, 7, 3, 2, ,,  , 8, 0, 3, 7
 
 SUMMARY:
-FOCIL implements a robust mechanism to preserve Ethereum’s censorship resistance properties by guaranteeing timely transaction inclusion. FOCIL (**Fo**rk-**c**hoice enforced **I**nclusion **L**ists) is built in
+FOCIL implements a robust mechanism to preserve Ethereum's censorship resistance properties by guaranteeing timely transaction inclusion. FOCIL (**Fo**rk-**c**hoice enforced **I**nclusion **L**ists) is built in
 
 SPECIFICATION:
-### Execution Layer On the execution layer, an additional check is introduced for new payloads. After all of the transactions in the payload have
+### Execution Layer On the execution layer, an additional check is introduced for new payloads. After all transactions in the payload have been executed
 
 MOTIVATION:
-In an effort to shield the Ethereum validator set from centralizing forces, the right to build blocks has been auctioned off to specialized entities
+In an effort to shield the Ethereum validator set from centralizing forces, the right to build execution payloads has been auctioned off to specialized
 
 RATIONALE:
 ### Core Properties - Committee-based: FOCIL relies on a committee of multiple validators, rather than a single proposer, to construct and broadcast ILs. This

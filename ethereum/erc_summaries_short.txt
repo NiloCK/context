@@ -4109,6 +4109,26 @@ RATIONALE:
 The generic way of storing data keys with values was chosen to allow upgradability over time. Stored data values can be changed over time.
 
 
+=== ERC-8517 ===
+TITLE: Post-Quantum Validator Seed Derivation
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-24
+REQUIRES: 
+
+SUMMARY:
+This standard defines how the post-quantum secrets of an Ethereum validator or builder are derived from a seed, usually a [BIP-39](https://github.com/bitcoin/bips/blob/43ce3a461dfb48e62ffa0cfc70f5f54d1eb5c577/bip-0039.mediawiki) mnemonic. It replaces
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+[ERC-2333](./eip-2333.md) derives BLS12-381 secret keys, and [ERC-2334](./eip-2334.md) assigns them paths. Post-quantum consensus replaces BLS with leanXMSS, a stateful hash-based signature scheme, and with a
+
+RATIONALE:
+### Hardened HMAC-SHA512 derivation [ERC-2333](./eip-2333.md) derives every child through a Lamport public key, and outputs a scalar modulo the order of BLS12-381. The Lamport
+
+
 === ERC-7741 ===
 TITLE: Authorize Operator
 TYPE: Standards Track ERC
@@ -5023,6 +5043,26 @@ TYPE: Standards Track ERC
 STATUS: Stagnant
 CREATED: 2018-09-08
 REQUIRES: 
+
+
+=== ERC-8499 ===
+TITLE: Hash-Based Key Derivation from BIP-39
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-13
+REQUIRES: 
+
+SUMMARY:
+This ERC specifies how a wallet derives the secret seeds of hash-based post-quantum keys, such as leanSPHINCS, from a BIP-39 recovery phrase. Every secret
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Hash-based signatures are the most conservative post-quantum option for Ethereum accounts. Accounts can already verify them in contracts through [ERC-1271](./eip-1271.md) and account abstraction, and
+
+RATIONALE:
+**Hash functions only.** BIP-32 mixes elliptic-curve arithmetic into derivation. A quantum adversary who holds an extended public key at any hardened level can compute
 
 
 === ERC-1175 ===
@@ -7064,6 +7104,26 @@ RATIONALE:
 As mentioned in the abstract, this EIP's goal is to have a simple interface for supporting Hierarchical NFTs. Here are a few design decisions
 
 
+=== ERC-8481 ===
+TITLE: Agent Pre-Sign Risk Report
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-31
+REQUIRES: 2, 0, ,,  , 5, 5, ,,  , 7, 1, 2, ,,  , 7, 2, 1, ,,  , 1, 2, 7, 1, ,,  , 2, 6, 1, 2, ,,  , 3, 0, 0, 9, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 0, 4
+
+SUMMARY:
+This proposal defines the report a risk source returns about a prepared, not yet signed, transaction or signature request, so that an artificial intelligence
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+Agents now prepare and sign transactions without a person reading each one. The losses that follow are well known and mostly not exotic: an
+
+RATIONALE:
+- **Facts, not verdicts.** A verdict computed by one source for one policy cannot be compared with another's or reapplied to a consumer's own
+
+
 === ERC-7522 ===
 TITLE: OIDC ZK Verifier for AA Account
 TYPE: Standards Track ERC
@@ -7147,6 +7207,26 @@ Traditional [ERC-721](./eip-721.md) and [ERC-20](./eip-20.md) tokens bind owners
 
 RATIONALE:
 ### Advantages of Key Hash - **Privacy**: `ownerOf` and `balanceOf` return `keyHash`, not addresses. Users can use unique key pairs per token or balance,
+
+
+=== ERC-8478 ===
+TITLE: x402 Payee Verification for ERC-8004 Agents
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-30
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1, ,,  , 7, 7, 0, 2, ,,  , 8, 0, 0, 4
+
+SUMMARY:
+An agent that pays another agent over the x402 Hypertext Transfer Protocol (HTTP) payment flow receives a `payTo` address in the server's `402 Payment
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+x402 lets a client pay for an HTTP resource with a signed stablecoin transfer. The server's 402 answer lists what it accepts: a network,
+
+RATIONALE:
+- **Why the agent wallet and not the identity owner.** ERC-8004 makes the agent wallet the address where the agent receives payments. It starts
 
 
 === ERC-7425 ===
@@ -8383,6 +8463,26 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 RATIONALE:
 - **Deterministic flows**: Lifecycle follows strict state transitions (`issued` to `audited` to `retired`). - **Immutable metadata**: SHA3-512 digests bind metadata and evidence documents to
+
+
+=== ERC-8509 ===
+TITLE: Agent Linkability Report
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-21
+REQUIRES: 6, 5, 3, 8, ,,  , 8, 0, 0, 4
+
+SUMMARY:
+This proposal defines the report a reader returns about what anyone can link to an [ERC-8004](./eip-8004.md) agent from public chain data: whether payments to
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+An ERC-8004 agent publishes its owner, its `agentWallet` and, through the service endpoints in its registration file, the addresses it asks to be paid
+
+RATIONALE:
+- **Facts, not a score.** Readers already disagree on weights, and a consumer paying an agent cares about different links from an operator protecting
 
 
 === ERC-181 ===
@@ -9698,6 +9798,26 @@ RATIONALE:
 [ERC-3668](./eip-3668.md) does not require a gateway to be an HTTP service, and allows URLs of any scheme. The client already trusts its own RPC
 
 
+=== ERC-8470 ===
+TITLE: Token Launch Observations
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-27
+REQUIRES: 1, 6, 5, ,,  , 7, 2, 1, ,,  , 2, 9, 3, 5, ,,  , 8, 0, 0, 4, ,,  , 8, 3, 7, 6
+
+SUMMARY:
+This proposal defines a registry in which any address, acting as a detector, records what it observed about a token launch at a given
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+A launch has two sides that a buyer, a wallet, a lender or an agent needs to compare: what the launchpad and the creator
+
+RATIONALE:
+- **Facts, not verdicts.** A finding is a quantity at a block, which a third party can recompute. A verdict is not, and two
+
+
 === ERC-7821 ===
 TITLE: Minimal Batch Executor Interface
 TYPE: Standards Track ERC
@@ -10430,6 +10550,26 @@ Traditional financial markets are often characterized by inefficiencies, opaque 
 
 RATIONALE:
 ### Fixed Percentage to 10^18 Considering Fixed-Point Arithmetic is to be enforced, it is logical to have 1e18 represent 100% and 1e16 represent 1%
+
+
+=== ERC-8515 ===
+TITLE: GPU Collateral Evidence
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-11-23
+REQUIRES: 7, 1, 2, ,,  , 1, 2, 7, 1
+
+SUMMARY:
+This standard gives lenders, lessors and the people who fund them a common way to ask three questions about a GPU that secures a
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+GPUs are now financed like aircraft and ships: through secured loans, sale-and-leaseback and financial leases, increasingly by on-chain lenders whose depositors cannot inspect a
+
+RATIONALE:
+**Record conflicts, do not prevent them.** If `pledge` reverted on a device pledged elsewhere, anyone could block a device by pledging it first under
 
 
 === ERC-1444 ===
@@ -12514,6 +12654,26 @@ Currently, reading data from Web3 generally relies on a translation done by a We
 
 RATIONALE:
 The purpose of the proposal is to add a decentralized presentation layer for Ethereum. With the layer, we are able to render any web
+
+
+=== ERC-8473 ===
+TITLE: uRWA Policy
+TYPE: Standards Track ERC
+STATUS: Draft
+CREATED: 2026-10-22
+REQUIRES: 1, 6, 5, ,,  , 7, 9, 4, 3
+
+SUMMARY:
+This ERC defines how an [ERC-7943](./eip-7943.md) Universal Real World Asset (uRWA) token delegates its compliance decisions to a separate policy contract. For every movement
+
+SPECIFICATION:
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+
+MOTIVATION:
+ERC-7943 standardises what a permissioned token exposes: - account eligibility (`canSend`, `canReceive`); - a transfer pre-flight (`canTransfer`); - frozen balances; - `forcedTransfer`. It deliberately
+
+RATIONALE:
+### A policy behind ERC-7943 A pause stays in the token, and is not an account-level condition: it makes `canTransfer` return `false` and leaves
 
 
 === ERC-1491 ===
